@@ -10,7 +10,15 @@ VERSION = "0.1"
 # prerequisite: setuptools
 # http://pypi.python.org/pypi/setuptools
 
-REQUIRES = ["requests","urllib3 >= 1.15", "six >= 1.10", "certifi", "python-dateutil", "docopt"]
+REQUIRES = [
+    "click",
+    "requests",
+    "urllib3 >= 1.15",
+    "six >= 1.10",
+    "certifi",
+    "python-dateutil",
+    "docopt"
+]
 
 setup(
     name=NAME,
@@ -19,12 +27,10 @@ setup(
     author_email="",
     url="",
     install_requires=REQUIRES,
-   entry_points={
-    "console_scripts": [
-        "virl=virl.cli.main",
-    ],
-},
-    packages=["virl"],
+    entry_points={"console_scripts": [
+        "virl=virl.cli.main:cli",
+    ]},
+    packages=find_packages(),
     include_package_data=True,
     long_description="""\
     VIRL Command Line Utilities  # noqa: E501

@@ -18,8 +18,8 @@ def ls(**kwargs):
     """
     lists running simulations
     """
-    virl = api.VIRLServer()
-    resp = virl.list_simulations()
+    server = VIRLServer()
+    resp = server.list_simulations()
 
     print resp
 
