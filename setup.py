@@ -10,7 +10,15 @@ VERSION = "0.1"
 # prerequisite: setuptools
 # http://pypi.python.org/pypi/setuptools
 
-REQUIRES = ["requests","urllib3 >= 1.15", "six >= 1.10", "certifi", "python-dateutil", "docopt"]
+REQUIRES = [
+    "click",
+    "requests",
+    "urllib3 >= 1.15",
+    "six >= 1.10",
+    "certifi",
+    "python-dateutil",
+    "docopt"
+]
 
 setup(
     name=NAME,
