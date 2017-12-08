@@ -3,7 +3,7 @@ import tabulate
 
 def sim_list_table(node_dict):
     print("""
-    Here is a list of all the running nodes
+    Here is a list of all the running simulations
     """)
     table = list()
     headers = ["Simulation", "Status", "Launched", "Expires"]
