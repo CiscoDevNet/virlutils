@@ -1,9 +1,15 @@
 import requests
-
+import os
 
 class VIRLServer(object):
 
     def __init__(self, host=None, user=None, passwd=None, port=19399):
+        if not host:
+            host = os.getenv('VIRL_HOST')
+        if not user:
+            user = os.getenv('VIRL_USERNAME', 'guest')
+        if not passwd:
+            passwd = os.getenv('VIRL_PASSWORD', 'guest')
         self._host = host
         self._user = user
         self._passwd = passwd
@@ -44,6 +50,7 @@ class VIRLServer(object):
 
     def post(self, url, data):
         r = requests.post(url, auth=(self.user, self.passwd), headers=self._headers, data=data)
+        return r
 
     def list_simulations(self):
         url = self.base_api + "/simengine/rest/list"
@@ -55,12 +62,12 @@ class VIRLServer(object):
         headers = {"Content-Type": "text/xml;charset=UTF-8"}
         print u
         r = self.post(u, simulation_data)
-        return "{} {}".format(r.status_code, r.text)
+        return r
 
-    def kill_simulation(self, simulation):
+    def stop_simulation(self, simulation):
         u = self.base_api + "/simengine/rest/stop/{}".format(simulation)
         r = self.get(u)
-        return "{} {}".format(r.status_code, r.text)
+        return r
 
     def get_nodes(self, simulation):
         url = self.base_api + "/simengine/rest/nodes/{}".format(simulation)
@@ -68,18 +75,24 @@ class VIRLServer(object):
         return r.json()[simulation]
 
 
-    # def get_node_console(self, simulation, node):
-    #     node_key = "guest|{}|virl|{}".format(simulation, node)
-    #     u = self.base_api + "/simengine/roster/rest"
-    #     r = requests.get(u)
-    #     roster = r.json()
-    #     print roster
-    #     for node in roster.keys():
-    #         if node == node_key:
-    #             try:
-    #                 return {"host": roster[node]["SimulationHost"], "console_port": roster[node]["PortConsole"]}
-    #             except KeyError:
-    #                 pass
+    def get_node_console(self, simulation, node=None, mode='telnet', port='0'):
+        print node
+        u = self.base_api + "/simengine/rest/serial_port/{}".format(simulation)
+        u += "?mode={}&?port={}".format(mode, port)
+        if node is not None:
+            u += "&nodes={}".format(node)
+        print u
+        r = self.get(u)
+        return r
+
+        # roster = r.json()
+        # print roster
+        # for node in roster.keys():
+        #     if node == node_key:
+        #         try:
+        #             return {"host": roster[node]["SimulationHost"], "console_port": roster[node]["PortConsole"]}
+        #         except KeyError:
+        #             pass
 
     # def stop_nodes(self, simulation, nodes):
     #     u = simengine_host + "/simengine/rest/update/{}/stop?".format(simulation)
@@ -121,4 +134,3 @@ class VIRLServer(object):
     #     headers = {"Content-Type": "text/xml;charset=UTF-8"}
     #     r = requests.post(u, auth=(virl_user, virl_password), headers = headers, data = simulation_data)
     #     return "{} {}".format(r.status_code, r.text)
-

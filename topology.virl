@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<topology xmlns="http://www.cisco.com/VIRL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="0.95" xsi:schemaLocation="http://www.cisco.com/VIRL https://raw.github.com/CiscoVIRL/schema/v0.95/virl.xsd">
+    <extensions>
+        <entry key="AutoNetkit.ipv4_infra_prefix" type="String">16</entry>
+        <entry key="AutoNetkit.ipv4_infra_subnet" type="String">10.255.0.0</entry>
+        <entry key="management_network" type="String">flat</entry>
+        <entry key="management_lxc" type="Boolean">true</entry>
+    </extensions>
+    <node name="iosv-1" type="SIMPLE" subtype="IOSv" location="179,159" ipv4="192.168.0.1">
+        <extensions>
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="config" type="String">! IOS Config generated on 2017-09-29 21:31
+! by autonetkit_0.24.0
+!
+hostname iosv-1
+boot-start-marker
+boot-end-marker
+!
+vrf definition Mgmt-intf
+!
+ address-family ipv4
+ exit-address-family
+ !
+ address-family ipv6
+ exit-address-family
+!
+!
+!
+no aaa new-model
+!
+!
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+!
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+no service config
+enable password cisco
+ip classless
+ip subnet-zero
+no ip domain lookup
+ip domain name virl.info
+crypto key generate rsa modulus 768
+ip ssh server algorithm authentication password
+username cisco privilege 15 secret cisco
+line vty 0 4
+ transport input ssh telnet
+ exec-timeout 720 0
+ password cisco
+ login local
+line con 0
+ password cisco
+!
+no cdp run
+!
+!
+interface Loopback0
+  description Loopback
+  ip address 192.168.0.1 255.255.255.255
+!
+interface GigabitEthernet0/0
+  description OOB Management
+  vrf forwarding Mgmt-intf
+  ! Configured on launch
+  no ip address
+  duplex full
+  speed auto
+  no shutdown
+!
+ip route vrf Mgmt-intf 0.0.0.0 0.0.0.0 10.94.238.1
+!
+!
+router ospf 1
+  network 192.168.0.1 0.0.0.0 area 0
+  log-adjacency-changes
+  passive-interface Loopback0
+!
+!
+router bgp 1
+  bgp router-id 192.168.0.1
+  no synchronization
+! ibgp
+  ! ibgp peers
+  !
+  neighbor 192.168.0.2 remote-as 1
+  neighbor 192.168.0.2 description iBGP peer iosv-2
+  neighbor 192.168.0.2 update-source Loopback0
+!
+!
+ !
+ address-family ipv4
+  network 192.168.0.1 mask 255.255.255.255
+  neighbor 192.168.0.2 activate
+ exit-address-family
+!
+!
+!
+end</entry>
+        </extensions>
+    </node>
+    <node name="iosv-2" type="SIMPLE" subtype="IOSv" location="297,184" ipv4="192.168.0.2">
+        <extensions>
+            <entry key="AutoNetkit.mgmt_ip" type="string"></entry>
+            <entry key="config" type="String">! IOS Config generated on 2017-09-29 21:31
+! by autonetkit_0.24.0
+!
+hostname iosv-2
+boot-start-marker
+boot-end-marker
+!
+vrf definition Mgmt-intf
+!
+ address-family ipv4
+ exit-address-family
+ !
+ address-family ipv6
+ exit-address-family
+!
+!
+!
+no aaa new-model
+!
+!
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+!
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+no service config
+enable password cisco
+ip classless
+ip subnet-zero
+no ip domain lookup
+ip domain name virl.info
+crypto key generate rsa modulus 768
+ip ssh server algorithm authentication password
+username cisco privilege 15 secret cisco
+line vty 0 4
+ transport input ssh telnet
+ exec-timeout 720 0
+ password cisco
+ login local
+line con 0
+ password cisco
+!
+no cdp run
+!
+!
+interface Loopback0
+  description Loopback
+  ip address 192.168.0.2 255.255.255.255
+!
+interface GigabitEthernet0/0
+  description OOB Management
+  vrf forwarding Mgmt-intf
+  ! Configured on launch
+  no ip address
+  duplex full
+  speed auto
+  no shutdown
+!
+!
+ip route vrf Mgmt-intf 0.0.0.0 0.0.0.0 10.94.238.1
+
+!
+router ospf 1
+  network 192.168.0.2 0.0.0.0 area 0
+  log-adjacency-changes
+  passive-interface Loopback0
+!
+!
+router bgp 1
+  bgp router-id 192.168.0.2
+  no synchronization
+! ibgp
+  ! ibgp peers
+  !
+  neighbor 192.168.0.1 remote-as 1
+  neighbor 192.168.0.1 description iBGP peer iosv-1
+  neighbor 192.168.0.1 update-source Loopback0
+!
+!
+ !
+ address-family ipv4
+  network 192.168.0.2 mask 255.255.255.255
+  neighbor 192.168.0.1 activate
+ exit-address-family
+!
+!
+!
+end</entry>
+        </extensions>
+    </node>
+    <annotations/>
+</topology>
+

@@ -17,7 +17,8 @@ REQUIRES = [
     "six >= 1.10",
     "certifi",
     "python-dateutil",
-    "docopt"
+    "docopt",
+    "tabulate"
 ]
 
 setup(
@@ -28,7 +29,7 @@ setup(
     url="",
     install_requires=REQUIRES,
     entry_points={"console_scripts": [
-        "virl=virl.cli.main:cli",
+        "virl=virl.cli.main:virl",
     ]},
     packages=find_packages(),
     include_package_data=True,
