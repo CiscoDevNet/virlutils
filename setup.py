@@ -32,7 +32,7 @@ setup(
         "virl=virl.cli.main",
     ],
 },
-    packages=["virl"],
+    packages=find_packages(),
     include_package_data=True,
     long_description="""\
     VIRL Command Line Utilities  # noqa: E501
