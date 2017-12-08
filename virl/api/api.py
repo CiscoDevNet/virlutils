@@ -60,7 +60,6 @@ class VIRLServer(object):
     def launch_simulation(self, simulation_name, simulation_data):
         u = self.base_api + "/simengine/rest/launch?session={}".format(simulation_name)
         headers = {"Content-Type": "text/xml;charset=UTF-8"}
-        print u
         r = self.post(u, simulation_data)
         return r
 

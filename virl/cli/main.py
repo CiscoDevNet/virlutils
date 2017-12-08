@@ -3,8 +3,6 @@ import os
 from subprocess import call
 from virl.api import VIRLServer
 from views import sim_list_table
-import random
-import string
 
 from .console.commands import console
 from .nodes.commands import nodes
@@ -13,8 +11,6 @@ from .up.commands import up
 
 SERVER = VIRLServer()
 
-def id():
-    return '-' + ''.join(random.choice(string.letters + string.digits) for _ in range(6))
 
 @click.group()
 def virl():
