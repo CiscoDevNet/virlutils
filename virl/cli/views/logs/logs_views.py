@@ -13,7 +13,12 @@ def log_table(log_entries):
     for log in log_entries:
         tr = list()
         tr.append(log['time'])
-        tr.append(log['level'])
+        level = log['level']
+        if level == 'INFO':
+            color = "green"
+        else:
+            color = 'yellow'
+        tr.append(click.style(level, fg=color))
         tr.append(log['message'])
         table.append(tr)
     click.echo(tabulate.tabulate(table, headers, tablefmt="fancy_grid"))
