@@ -9,6 +9,7 @@ import string
 from .console.commands import console
 from .nodes.commands import nodes
 from .logs.commands import logs
+from .up.commands import up
 
 SERVER = VIRLServer()
 
@@ -22,30 +23,14 @@ def virl():
 virl.add_command(console)
 virl.add_command(nodes)
 virl.add_command(logs)
-
-@virl.command()
-def up(**kwargs):
-    """
-    start a virl simulation
-    """
-    if os.path.exists('topology.virl'):
-        print ('Launching Simulation from topology.virl')
-        with open('topology.virl') as fh:
-            data = fh.read()
-        server = VIRLServer()
-        dirpath = os.getcwd()
-        foldername = os.path.basename(dirpath)
-        sim_name = foldername + id()
-        resp = server.launch_simulation(sim_name, data)
-        print(resp.text)
-    else:
-        print('Could not find virl file')
+virl.add_command(up)
 
 @virl.command()
 def ls(**kwargs):
     """
     lists running simulations
     """
+    click.secho("FOO", fg="green")
     server = VIRLServer()
     sim_dict = server.list_simulations()
     sim_list_table(sim_dict)
