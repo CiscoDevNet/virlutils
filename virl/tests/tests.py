@@ -21,4 +21,4 @@ def test_virl_ls():
 
 if __name__ == '__main__':
     test_virl_help()
-    test_virl_up()
+    test_virl_ls()
