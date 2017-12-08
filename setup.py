@@ -27,11 +27,9 @@ setup(
     author_email="",
     url="",
     install_requires=REQUIRES,
-   entry_points={
-    "console_scripts": [
-        "virl=virl.cli.main",
-    ],
-},
+    entry_points={"console_scripts": [
+        "virl=virl.cli.main:cli",
+    ]},
     packages=find_packages(),
     include_package_data=True,
     long_description="""\
