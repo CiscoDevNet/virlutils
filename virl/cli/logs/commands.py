@@ -7,7 +7,7 @@ from virl.cli.views import log_table
 @click.argument('sim_name')
 def logs(sim_name, **kwargs):
     """
-    get logs for sim_name
+    Retrieves log information for the provided simulation
     """
     server = VIRLServer()
     resp = server.get_logs(sim_name)
