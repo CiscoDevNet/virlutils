@@ -8,6 +8,7 @@ import string
 
 from .console.commands import console
 from .nodes.commands import nodes
+from .logs.commands import logs
 
 SERVER = VIRLServer()
 
@@ -20,6 +21,7 @@ def virl():
 
 virl.add_command(console)
 virl.add_command(nodes)
+virl.add_command(logs)
 
 @virl.command()
 def up(**kwargs):

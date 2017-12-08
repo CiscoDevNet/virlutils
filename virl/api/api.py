@@ -85,15 +85,10 @@ class VIRLServer(object):
         r = self.get(u)
         return r
 
-        # roster = r.json()
-        # print roster
-        # for node in roster.keys():
-        #     if node == node_key:
-        #         try:
-        #             return {"host": roster[node]["SimulationHost"], "console_port": roster[node]["PortConsole"]}
-        #         except KeyError:
-        #             pass
-
+    def get_logs(self, simulation):
+        u = self.base_api + "/simengine/rest/events/{}".format(simulation)
+        r = self.get(u)
+        return r
     # def stop_nodes(self, simulation, nodes):
     #     u = simengine_host + "/simengine/rest/update/{}/stop?".format(simulation)
     #     node_list = []
