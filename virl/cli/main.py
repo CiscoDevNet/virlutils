@@ -9,6 +9,7 @@ from .logs.commands import logs
 from .up.commands import up
 from .down.commands import down
 from .ls.commands import ls
+from .save.commands import save
 
 @click.group()
 def virl():
@@ -20,7 +21,7 @@ virl.add_command(logs)
 virl.add_command(up)
 virl.add_command(down)
 virl.add_command(ls)
-
+virl.add_command(save)
 
 
 if __name__ == '__main__':

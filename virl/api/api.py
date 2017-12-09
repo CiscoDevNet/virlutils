@@ -73,14 +73,23 @@ class VIRLServer(object):
         r = requests.get(url, auth=(self.user, self.passwd))
         return r.json()[simulation]
 
+    def export(self, simulation, ip=False):
+        """
+        export simulation to local virl file
+        """
+        url = self.base_api + "/simengine/rest/export/{}".format(simulation)
+        url += "?running-configs=config"
+        if ip:
+            url += "&updated=true"
+        r = requests.get(url, auth=(self.user, self.passwd))
+        return r
+
 
     def get_node_console(self, simulation, node=None, mode='telnet', port='0'):
-        print node
         u = self.base_api + "/simengine/rest/serial_port/{}".format(simulation)
         u += "?mode={}&?port={}".format(mode, port)
         if node is not None:
             u += "&nodes={}".format(node)
-        print u
         r = self.get(u)
         return r
 
@@ -88,6 +97,25 @@ class VIRLServer(object):
         u = self.base_api + "/simengine/rest/events/{}".format(simulation)
         r = self.get(u)
         return r
+    def get_sim_roster(self, simulation):
+        """
+        return a roster entry for given sim
+        """
+
+        node_key = "{}|{}|".format(self.user, simulation)
+        u = self.base_api + "/roster/rest"
+        r = self.get(u)
+        roster = r.json()
+
+        for node in roster.keys():
+            if node.startswith(node_key):
+                return roster[node]
+
+            if node == node_key:
+                try:
+                    return {"host": roster[node]["SimulationHost"], "console_port": roster[node]["PortConsole"]}
+                except KeyError:
+                    pass
     # def stop_nodes(self, simulation, nodes):
     #     u = simengine_host + "/simengine/rest/update/{}/stop?".format(simulation)
     #     node_list = []
