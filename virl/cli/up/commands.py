@@ -8,16 +8,20 @@ import errno
 
 @click.command()
 @click.argument('env', default='default')
+@click.option('-f', help='filename', required=False)
 def up(env, **kwargs):
     """
     start a virl simulation
     """
-
-    if os.path.exists('topology.virl'):
+    if kwargs['f']:
+        fname = kwargs['f']
+    else:
+        fname = 'topology.virl'
+    if os.path.exists(fname):
         running = check_sim_running(env)
         if not running:
-            click.secho('Creating {} environment from topology.virl'.format(env))
-            with open('topology.virl') as fh:
+            click.secho('Creating {} environment from {}'.format(env, fname))
+            with open(fname) as fh:
                 data = fh.read()
             server = VIRLServer()
             dirpath = os.getcwd()
