@@ -31,5 +31,7 @@ def console(node):
                 exit(call(['telnet', ip, port]))
             except AttributeError:
                 click.secho("Could not find console info for {}:{}".format(env,node), fg="red")
+            except KeyError:
+                click.secho("Unknown node {}:{}".format(env,node), fg="red")
         else:
             return resp.json()
