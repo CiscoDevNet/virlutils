@@ -1,6 +1,16 @@
 # virl_cli
 
-## installation
+<!-- TOC depthFrom:2 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
+
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Usage](#usage)
+- [Local Development](#local-development)
+	- [Testing](#testing)
+
+<!-- /TOC -->
+
+## Installation
 
 1. Clone this repo
 
@@ -16,7 +26,7 @@ virtualenv venv && source venv/bin/activate
 python setup.py install
 ```
 
-## configuration
+## Configuration
 
 s
 ```
@@ -121,3 +131,8 @@ root@ab89db25addf:/home# python setup.py install
 ....
 root@ab89db25addf:/home# virl
 ```
+
+### Testing
+
+To run the tests in the `tests` folder, you can simply run `make test` from
+the project root.
