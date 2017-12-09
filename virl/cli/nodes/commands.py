@@ -4,6 +4,7 @@ from virl.api import VIRLServer
 from virl.cli.views import node_list_table
 from virl import helpers
 
+
 @click.command()
 @click.argument('env', default='default')
 def nodes(env, **kwargs):
@@ -14,7 +15,7 @@ def nodes(env, **kwargs):
     if running:
         sim_name = running
         server = VIRLServer()
-        resp = server.get_nodes(sim_name)
-        node_list_table(resp)
+        details = server.get_sim_roster(sim_name)
+        node_list_table(details)
     else:
         click.secho("Environment {} is not running".format(env), fg='red')
