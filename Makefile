@@ -25,5 +25,14 @@ clean-test: ## remove test and coverage artifacts
 lint: ## check style with flake8
 	flake8 virl tests
 
+coverage:
+	pip install -r test-requirements.txt
+	coverage run --source virl tests
+
+report: coverage
+	coverage html
+	coverage report
+	open htmlcov/index.html
+	
 test: ## run tests quickly with the default Python
 	python setup.py test
