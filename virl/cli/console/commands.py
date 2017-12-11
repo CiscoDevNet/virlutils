@@ -2,18 +2,28 @@ import click
 from virl.api import VIRLServer
 from subprocess import call
 from virl import helpers
+from virl.cli.views.console import console_table
 
 @click.command()
 @click.argument('node', nargs=-1)
-def console(node):
+@click.option('--display/--none', default='False', help='Display Console information' )
+def console(node, display, **kwargs):
     """
     console for node
     """
+    server = VIRLServer()
+
     if len(node) == 2:
         # we received env and node name
         env = node[0]
         running = helpers.check_sim_running(env)
         node = node[1]
+    elif display:
+        # only displaying output
+        env = 'default'
+        running = helpers.check_sim_running(env)
+        node = None
+
     else:
         # assume default env
         env = 'default'
@@ -22,7 +32,7 @@ def console(node):
     if running:
 
         sim_name = running
-        server = VIRLServer()
+
         resp = server.get_node_console(sim_name, node=node)
         if node:
             print "Attempting to connect to console of {}".format(node)
@@ -34,4 +44,5 @@ def console(node):
             except KeyError:
                 click.secho("Unknown node {}:{}".format(env,node), fg="red")
         else:
-            return resp.json()
+            # defaults to displaying table
+            console_table(resp.json())
