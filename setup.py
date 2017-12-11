@@ -21,6 +21,10 @@ REQUIRES = [
     "tabulate"
 ]
 
+test_requirements = [
+    "requests_mock",
+]
+
 setup(
     name=NAME,
     version=VERSION,
@@ -33,7 +37,7 @@ setup(
     ]},
     packages=find_packages(),
     include_package_data=True,
-    long_description="""\
-    VIRL Command Line Utilities  # noqa: E501
-    """
+    long_description="VIRL Command Line Utilities",
+    test_suite='tests',
+    tests_require=test_requirements,
 )
