@@ -1,6 +1,8 @@
 import os
 from collections import OrderedDict
 from virl.api import VIRLServer
+from virl import helpers
+
 import yaml
 
 def setup_yaml():
@@ -10,7 +12,16 @@ def setup_yaml():
 
 setup_yaml()
 
-def pyats_testbed_generator(env, roster, dev_username='cisco', dev_password='cisco'):
+def generate_topology_dict(sim_data, roster):
+    """
+    given data from virl file and roster will return
+    a topology key suitable for testbed yaml creation
+    """
+    print sim_data
+    print roster
+    exit()
+
+def pyats_testbed_generator(env, virl_data, roster, dev_username='cisco', dev_password='cisco', conn_class='unicon.Unicon'):
     """
     given a sim roster produces a testbed file suitable for
     use with pyats
@@ -19,7 +30,8 @@ def pyats_testbed_generator(env, roster, dev_username='cisco', dev_password='cis
     # testbed:
     #    name: example_testbed
     testbed = OrderedDict()
-    testbed['name'] = env + '_testbed'
+    testbed['testbed'] = OrderedDict()
+    testbed['testbed']['name'] = env + '_testbed'
 
     #
     #     servers:
@@ -30,8 +42,8 @@ def pyats_testbed_generator(env, roster, dev_username='cisco', dev_password='cis
     #             username: "username"
     #             password: "password"
     #
-    testbed['servers'] = dict()
-    servers = testbed['servers']
+    testbed['testbed']['servers'] = dict()
+    servers = testbed['testbed']['servers']
     testbed['devices'] = dict()
     for device, props in roster.items():
         virl_server = str(props.get("SimulationHost", None))
@@ -119,13 +131,17 @@ def pyats_testbed_generator(env, roster, dev_username='cisco', dev_password='cis
     #             alt:
     #                 protocol : telnet
     #                 ip : "5.25.25.3"
-            entry['connections'] = {
-                "console": {
+            entry['connections'] = OrderedDict()
+            entry['connections']['defaults'] = {
+                    "class": conn_class
+                    }
+            entry['connections']['console'] = OrderedDict()
+            entry['connections']['console'] = {
                     "protocol": "telnet",
                     "ip": virl_server,
-                    "port": console_port,
-                }
-            }
+                    "port": console_port
+                    }
+
 
     return yaml.dump(testbed, default_flow_style=False)
 

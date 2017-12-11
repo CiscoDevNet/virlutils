@@ -31,8 +31,10 @@ def pyats(env, **kwargs):
     if running:
         sim_name = running
         server = VIRLServer()
-        data = server.get_sim_roster(sim_name)
-        testbed_yaml = pyats_testbed_generator(sim_name, data)
+        roster = server.get_sim_roster(sim_name)
+        sim_name = "topology-fpyHFs"
+        virl_data = server.export(sim_name, ip=True).content
+        testbed_yaml = pyats_testbed_generator(sim_name, virl_data, roster)
         click.secho("Writing {}".format(file_name))
         with open(file_name, 'w') as yaml_file:
             yaml_file.write(testbed_yaml)
