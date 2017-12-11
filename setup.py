@@ -18,7 +18,8 @@ REQUIRES = [
     "certifi",
     "python-dateutil",
     "docopt",
-    "tabulate"
+    "tabulate",
+    "pyyaml"
 ]
 
 setup(

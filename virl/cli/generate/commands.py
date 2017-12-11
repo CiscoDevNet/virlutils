@@ -1,0 +1,42 @@
+import click
+from virl.api import VIRLServer
+from virl.cli.views import log_table
+from virl import helpers
+from virl.generators import pyats_testbed_generator
+
+
+@click.group()
+def generate():
+    """
+    generate inv file for various tools
+    """
+    pass
+
+@generate.command()
+@click.argument('env', default='default')
+@click.option('--output', '-o', help="output File name ")
+def pyats(env, **kwargs):
+    """
+    Generates a pyats testbed config for an environment
+    """
+    if kwargs.get("output"):
+        # user specified output filename
+        file_name = kwargs.get("output")
+    else:
+        # writes to <env>_testbed.yaml by default
+        file_name = '{}_testbed.yaml'.format(env)
+
+
+    running = helpers.check_sim_running(env)
+    if running:
+        sim_name = running
+        server = VIRLServer()
+        data = server.get_sim_roster(sim_name)
+        testbed_yaml = pyats_testbed_generator(sim_name, data)
+        click.secho("Writing {}".format(file_name))
+        with open(file_name, 'w') as yaml_file:
+            yaml_file.write(testbed_yaml)
+
+
+    else:
+        click.secho("could not find logs for for env: {}".format(env), fg='red')

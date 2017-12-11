@@ -10,10 +10,14 @@ from .up.commands import up
 from .down.commands import down
 from .ls.commands import ls
 from .save.commands import save
+from .telnet.commands import telnet
+from .generate.commands import generate
+
 
 @click.group()
 def virl():
     pass
+
 
 virl.add_command(console)
 virl.add_command(nodes)
@@ -22,6 +26,8 @@ virl.add_command(up)
 virl.add_command(down)
 virl.add_command(ls)
 virl.add_command(save)
+virl.add_command(telnet)
+virl.add_command(generate)
 
 
 if __name__ == '__main__':
