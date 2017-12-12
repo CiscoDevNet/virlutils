@@ -1,6 +1,10 @@
 import requests
 import os
 
+# TODO implement common credentials module
+# TODO implement basic models for the objects (swagger-gen)
+# TODO catch errors at VIRLServer().get() and VIRLServer().post() 
+
 class VIRLServer(object):
 
     def __init__(self, host=None, user=None, passwd=None, port=19399):
@@ -111,6 +115,14 @@ class VIRLServer(object):
             if sim.startswith(sim_key):
                 ret[sim] = roster[sim]
         return ret
+
+    def get_interfaces(self, simulation_name):
+        """
+        returns all interfaces for a simulation
+        """
+        u = self.base_api + '/simengine/rest/interfaces/{}'.format(simulation_name)
+        r = self.get(u)
+        return r
 
     # def stop_nodes(self, simulation, nodes):
     #     u = simengine_host + "/simengine/rest/update/{}/stop?".format(simulation)
