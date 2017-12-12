@@ -19,7 +19,8 @@ REQUIRES = [
     "python-dateutil",
     "docopt",
     "tabulate",
-    "pyyaml"
+    "pyyaml",
+    "jinja2"
 ]
 
 test_requirements = [
@@ -37,6 +38,7 @@ setup(
         "virl=virl.cli.main:virl",
     ]},
     packages=find_packages(),
+    package_data={'virl': ['templates/**/*.j2']},
     include_package_data=True,
     long_description="VIRL Command Line Utilities",
     test_suite='tests',
