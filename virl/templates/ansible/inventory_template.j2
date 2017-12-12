@@ -1,0 +1,47 @@
+# virlutils generated ansible file for sim id {{ sim_name }}
+#
+# the overall structure of the inventory follows best practices
+# at http://docs.ansible.com/ansible/latest/intro_inventory.html
+
+
+# Management LXC containers provided by VIRL
+all:
+  children:
+      mgmt-lxc:
+        hosts:
+          {%- for node_long_name, device in roster.items() %}
+            {%- if device is server %}
+          # {{ node_long_name }}
+          {{ device.NodeName }}:
+
+            # NodeSubtype: {{ device.NodeSubtype }}
+
+            ansible_host: {{ device.SimulationHost }}
+            {%- if device.PortConsole %}
+              port: {{ device.PortConsole }}
+            {%- endif %}
+            ansible_python_interpreter: "/usr/bin/env python"
+            {%- endif %}
+            {%- endfor %}
+
+
+  # Network related devices
+  # we've rendered what we think is best if you disagree, override
+  # virl.generators.ansible_inventory_generator
+
+      network:
+        hosts:
+          {%- for node_long_name, device in roster.items() %}
+            {%- if device is net_device %}
+          # {{ node_long_name }}
+          {{ device.NodeName }}:
+
+            # NodeSubtype: {{ device.NodeSubtype }}
+
+            ansible_host: {{ device.SimulationHost }}
+            {%- if device.PortConsole %}
+            port: {{ device.PortConsole }}
+            {%- endif %}
+            ansible_python_interpreter: "/usr/bin/env python"
+            {%- endif %}
+            {%- endfor %}

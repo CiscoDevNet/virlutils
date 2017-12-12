@@ -11,13 +11,11 @@ from .down.commands import down
 from .ls.commands import ls
 from .save.commands import save
 from .telnet.commands import telnet
-from .generate.commands import generate
-
+from .generate import generate
 
 @click.group()
 def virl():
     pass
-
 
 virl.add_command(console)
 virl.add_command(nodes)

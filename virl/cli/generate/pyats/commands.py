@@ -4,15 +4,7 @@ from virl.cli.views import log_table
 from virl import helpers
 from virl.generators import pyats_testbed_generator
 
-
-@click.group()
-def generate():
-    """
-    generate inv file for various tools
-    """
-    pass
-
-@generate.command()
+@click.command()
 @click.argument('env', default='default')
 @click.option('--output', '-o', help="output File name ")
 def pyats(env, **kwargs):
