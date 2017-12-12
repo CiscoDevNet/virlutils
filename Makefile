@@ -27,12 +27,12 @@ lint: ## check style with flake8
 
 coverage:
 	pip install -r test-requirements.txt
-	coverage run --source virl tests
+	coverage run --include virl ./tests/test_cli.py
 
 report: coverage
 	coverage html
 	coverage report
 	open htmlcov/index.html
-	
+
 test: ## run tests quickly with the default Python
 	python setup.py test
