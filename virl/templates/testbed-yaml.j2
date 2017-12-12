@@ -1,0 +1,10 @@
+topology:
+  {% for dev, dev_ints in devices.items() %}
+  {{dev}}:
+    interfaces:
+      {% for id, interface in dev_ints.items() %}
+      {{ interface.name }}:
+        ipv4: {{ interface['ip-address'] }}
+        link: {{ interface['network'] }}
+      {% endfor %}
+  {% endfor %}

@@ -1,0 +1,61 @@
+testbed:
+  name: pyats-ios-sample_default_Lb3hCh_testbed
+  servers:
+    mgmt-lxc:
+      address: 10.94.238.235
+      path: ''
+      server: ~mgmt-lxc
+devices:
+  ios1:
+    alias: ios1
+    connections:
+      defaults:
+        class: unicon.Unicon
+      console:
+        ip: 10.94.140.41
+        port: '17000'
+        protocol: telnet
+    passwords:
+      enable: cisco
+      line: cisco
+      tacacs: cisco
+    tacacs:
+      username: cisco
+    type: IOSv
+  ios2:
+    alias: ios2
+    connections:
+      defaults:
+        class: unicon.Unicon
+      console:
+        ip: 10.94.140.41
+        port: '17020'
+        protocol: telnet
+    passwords:
+      enable: cisco
+      line: cisco
+      tacacs: cisco
+    tacacs:
+      username: cisco
+    type: IOSv
+topology:
+  ios1:
+    interfaces:
+      GigabitEthernet0/1:
+        ipv4: 10.10.10.1/24
+        link: n1
+        type: ethernet
+      Loopback0:
+        ipv4: 192.168.0.1/32
+        link: ios1_Loopback0
+        type: loopback
+  ios2:
+    interfaces:
+      GigabitEthernet0/1:
+        ipv4: 10.10.10.2/24
+        link: n1
+        type: ethernet
+      Loopback0:
+        ipv4: 192.168.0.2/32
+        link: ios2_Loopback0
+        type: loopback

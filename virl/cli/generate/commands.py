@@ -32,13 +32,18 @@ def pyats(env, **kwargs):
         sim_name = running
         server = VIRLServer()
         roster = server.get_sim_roster(sim_name)
-        sim_name = "topology-fpyHFs"
+        # sim_name = "topology-fpyHFs"
         virl_data = server.export(sim_name, ip=True).content
-        testbed_yaml = pyats_testbed_generator(sim_name, virl_data, roster)
+        interfaces = server.get_interfaces(sim_name).json()
+        testbed_yaml = pyats_testbed_generator(sim_name,
+                                               virl_data,
+                                               roster=roster,
+                                               interfaces=interfaces)
+
         click.secho("Writing {}".format(file_name))
         with open(file_name, 'w') as yaml_file:
             yaml_file.write(testbed_yaml)
 
 
     else:
-        click.secho("could not find logs for for env: {}".format(env), fg='red')
+        click.secho("couldnt generate testbed for for env: {}".format(env), fg='red')

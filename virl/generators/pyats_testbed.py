@@ -2,8 +2,17 @@ import os
 from collections import OrderedDict
 from virl.api import VIRLServer
 from virl import helpers
-
 import yaml
+from jinja2 import Environment, FileSystemLoader, PackageLoader
+import os
+
+THIS_DIR = os.path.dirname(os.path.abspath(__file__))
+
+def render_topl_template(devices):
+    """
+    renders topology: section of testbed yaml
+    """
+    pass
 
 def setup_yaml():
   """ https://stackoverflow.com/a/8661021 """
@@ -12,21 +21,51 @@ def setup_yaml():
 
 setup_yaml()
 
-def generate_topology_dict(sim_data, roster):
+def render_topology_block(virl_xml, roster=None, interfaces=None):
     """
-    given data from virl file and roster will return
-    a topology key suitable for testbed yaml creation
-    """
-    print sim_data
-    print roster
-    exit()
+    we need to merge information from multiple sources to generate all
+    the required parameters for the topology key in the testbed yaml config
 
-def pyats_testbed_generator(env, virl_data, roster, dev_username='cisco', dev_password='cisco', conn_class='unicon.Unicon'):
+    """
+    if not all([virl_xml, roster, interfaces]):
+        raise ValueError("we really need virl_xml, roster, and interfaces")
+
+    # sim_name should be the only key in the dictionary
+    if len(interfaces.keys()) != 1:
+        raise ValueError("too many keys in interface response")
+
+    sim_name = interfaces.keys()[0]
+
+    try:
+        devices = interfaces[sim_name]
+    except KeyError:
+        raise Exception('something went wrong')
+
+
+    # for device, interface in devices.items():
+    #     render_device_template(device, interface)
+
+    # return render_device_template(devices)
+    j2_env = Environment(loader=PackageLoader('virl', 'templates'),
+                         trim_blocks=False)
+    return j2_env.get_template('testbed-yaml.j2').render(devices=devices)
+
+
+
+def pyats_testbed_generator(env,
+                            virl_data,
+                            roster,
+                            interfaces,
+                            dev_username='cisco',
+                            dev_password='cisco',
+                            conn_class='unicon.Unicon'):
     """
     given a sim roster produces a testbed file suitable for
     use with pyats
 
     """
+
+
     # testbed:
     #    name: example_testbed
     testbed = OrderedDict()
@@ -142,8 +181,10 @@ def pyats_testbed_generator(env, virl_data, roster, dev_username='cisco', dev_pa
                     "port": console_port
                     }
 
-
-    return yaml.dump(testbed, default_flow_style=False)
+    print(type(interfaces))
+    testbed_yaml = yaml.dump(testbed, default_flow_style=False)
+    topology_yaml = render_topology_block(virl_data, roster, interfaces)
+    return testbed_yaml + '\n' + topology_yaml
 
 
 
