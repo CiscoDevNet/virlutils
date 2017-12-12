@@ -41,14 +41,9 @@ def render_topology_block(virl_xml, roster=None, interfaces=None):
     except KeyError:
         raise Exception('something went wrong')
 
-
-    # for device, interface in devices.items():
-    #     render_device_template(device, interface)
-
-    # return render_device_template(devices)
-    j2_env = Environment(loader=PackageLoader('virl', 'templates'),
+    j2_env = Environment(loader=PackageLoader('virl'),
                          trim_blocks=False)
-    return j2_env.get_template('testbed-yaml.j2').render(devices=devices)
+    return j2_env.get_template('pyats/testbed_yaml.j2').render(devices=devices)
 
 
 

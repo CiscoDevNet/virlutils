@@ -1,9 +1,0 @@
-
-{{ name }}:
-  interfaces:
-    {% for int in interfaces %}
-    {{ interfaces[int]['name'] }}:
-        ipv4: {{ interfaces[int]['ip-address'] }}
-        link: {{ interfaces[int]['network'] }}
-
-    {% endfor %}
