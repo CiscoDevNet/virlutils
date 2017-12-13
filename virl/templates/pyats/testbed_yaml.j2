@@ -1,10 +1,55 @@
+testbed:
+
+  name: {{ name }}
+
+  servers:
+    {% for srv_name, props in servers.items() %}
+    {{ srv_name }}:
+      address: {{ props.address|default("''", true) }}
+      server: {{ props.server|default("''", true) }}
+
+    {% endfor %}
+
+devices:
+  {%- for dev_name, props in devices.items() %}
+
+  {{ dev_name }}:
+    alias: {{ props.alias|default("''", true) }}
+    type: {{ props.type|default("''", true) }}
+    connections:
+
+      defaults:
+        class: {{ conn_class }}
+
+      {%- for key, props in props.connections.items() %}
+      {{ key }}:
+        {%- for prop, prop_value in props.items() %}
+        {%- if prop and prop_value %}
+        {{ prop }}: {{ prop_value }}
+        {%- endif %}
+
+        {%- endfor %}
+      {%- endfor %}
+
+  {%- endfor %}
+
 topology:
-  {% for dev, dev_ints in devices.items() %}
+  {%- for dev, dev_ints in topology.items() %}
   {{dev}}:
     interfaces:
-      {% for id, interface in dev_ints.items() %}
+      {%- for id, interface in dev_ints.items() %}
       {{ interface.name }}:
+        {%- if interface['ip-address'] %}
         ipv4: {{ interface['ip-address'] }}
+        {%- endif %}
+        {%- if interface['network'] %}
         link: {{ interface['network'] }}
-      {% endfor %}
-  {% endfor %}
+        {%- endif %}
+        {%- if 'oop' in interface['type'] %}
+        type: loopback
+        {%- else %}
+        type: ethernet
+        {%- endif %}
+      
+      {%- endfor %}
+  {%- endfor %}

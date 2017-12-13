@@ -3,10 +3,8 @@ from collections import OrderedDict
 from virl.api import VIRLServer
 from virl import helpers
 import yaml
-from jinja2 import Environment, FileSystemLoader, PackageLoader
+from jinja2 import Environment, PackageLoader
 import os
-
-THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 
 def render_topl_template(devices):
     """
@@ -21,31 +19,35 @@ def setup_yaml():
 
 setup_yaml()
 
-def render_topology_block(virl_xml, roster=None, interfaces=None):
+def render_testbed_template(name,
+                            servers,
+                            devices,
+                            topo_devs,
+                            conn_class='unicon.Unicon'
+                            ):
     """
     we need to merge information from multiple sources to generate all
     the required parameters for the topology key in the testbed yaml config
 
     """
-    if not all([virl_xml, roster, interfaces]):
-        raise ValueError("we really need virl_xml, roster, and interfaces")
-
     # sim_name should be the only key in the dictionary
-    if len(interfaces.keys()) != 1:
-        raise ValueError("too many keys in interface response")
+    if len(topo_devs.keys()) != 1:
+        raise ValueError("too many keys in topo data")
 
-    sim_name = interfaces.keys()[0]
+    sim_name = topo_devs.keys()[0]
 
     try:
-        devices = interfaces[sim_name]
+        topology = topo_devs[sim_name]
     except KeyError:
         raise Exception('something went wrong')
 
     j2_env = Environment(loader=PackageLoader('virl'),
                          trim_blocks=False)
-    return j2_env.get_template('pyats/testbed_yaml.j2').render(devices=devices)
-
-
+    return j2_env.get_template('pyats/testbed_yaml.j2').render(name=sim_name,
+                                                               conn_class=conn_class,
+                                                               servers=servers,
+                                                               devices=devices,
+                                                               topology=topology)
 
 def pyats_testbed_generator(env,
                             virl_data,
@@ -57,29 +59,17 @@ def pyats_testbed_generator(env,
     """
     given a sim roster produces a testbed file suitable for
     use with pyats
-
     """
 
+    # generate a device dictionary for each device
+    name = env + '_testbed'
 
-    # testbed:
-    #    name: example_testbed
-    testbed = OrderedDict()
-    testbed['testbed'] = OrderedDict()
-    testbed['testbed']['name'] = env + '_testbed'
+    devices = dict()
+    servers = dict()
+    topology = interfaces
 
-    #
-    #     servers:
-    #         tftp:
-    #             server: "ott2lab-tftp1"
-    #             address: "223.255.254.254"
-    #             path: ""
-    #             username: "username"
-    #             password: "password"
-    #
-    testbed['testbed']['servers'] = dict()
-    servers = testbed['testbed']['servers']
-    testbed['devices'] = dict()
     for device, props in roster.items():
+        # gather information about the device
         virl_server = str(props.get("SimulationHost", None))
         device_type = str(props.get("NodeSubtype", None))
         device_name = str(props.get("NodeName", None))
@@ -88,7 +78,7 @@ def pyats_testbed_generator(env,
         username = os.getenv("VIRL_USERNAME", "guest")
         username = os.getenv("VIRL_PASSWORD", "guest")
 
-        # prefer external addr
+        # we prefer external addr
         external_ip = str(props.get("externalAddr", ""))
         mgmt_ip = str(props.get("managementIP", ""))
         if len(external_ip) > 6:
@@ -97,132 +87,45 @@ def pyats_testbed_generator(env,
         elif len(mgmt_ip) > 6:
             address = mgmt_ip
 
-        # # minimally required information to generate a meaningful device
-        # REQUIRED_PROPS = [device_type,
-        #                   device_name,
-        #                   address,
-        #                   console_port]
-        #
-        # valid =  None in REQUIRED_PROPS
-        # print REQUIRED_PROPS,
-        # print valid
-        # if not valid:
-        #     print('bailing')
-        #     continue
-
-        # management lxc
+        # add mgmt-lxc devices to testbed->server section
         if device_type == 'mgmt-lxc':
-            servers['mgmt-lxc'] = dict()
-            entry = dict()
-            entry['server'] = device_name
-            entry['address'] = address
-            entry['path'] = ""
-            servers['mgmt-lxc'] = entry
+            servers[device_name] = dict()
+            servers[device_name]['server'] = device_name
+            servers[device_name]['address'] = address
+            servers[device_name]['path'] = ""
+
         # some devices can't conform
-        elif device_type in ['LXC FLAT']:
+        if device_type in ['LXC FLAT']:
             continue
         # all other devices
         else:
-            #     ott-tb1-n7k3:
-
             if device_name == 'None':
                 continue
-
-            testbed['devices'][device_name] = dict()
-            entry = testbed['devices'][device_name]
-
-
-            entry['alias'] = device_name
-            entry['type'] = device_type
-
-    #         tacacs:
-    #             login_prompt: "login:"
-    #             password_prompt: "Password:"
-    #             username: "admin"
-    #         passwords:
-    #             tacacs: password
-    #             enable: password
-    #             line: password
-
-            entry['tacacs'] = {
+            devices[device_name] = dict()
+            devices[device_name]['alias'] = device_name
+            devices[device_name]['type'] = device_type
+            devices[device_name]['tacacs'] = {
                 "username": dev_username
             }
-
-            entry['passwords'] = {
+            devices[device_name]['passwords'] = {
                 "tacacs": dev_password,
                 "enable": dev_password,
                 "line": dev_password
             }
-    #         connections:
-    #             a:
-    #                 protocol: telnet
-    #                 ip: "10.85.87.25"
-    #                 port: 2003
-    #             b:
-    #                 protocol: telnet
-    #                 ip: "10.85.87.25"
-    #                 port: 2004
-    #             alt:
-    #                 protocol : telnet
-    #                 ip : "5.25.25.3"
-            entry['connections'] = OrderedDict()
-            entry['connections']['defaults'] = {
-                    "class": conn_class
-                    }
-            entry['connections']['console'] = OrderedDict()
-            entry['connections']['console'] = {
+            devices[device_name]['connections'] = OrderedDict()
+
+
+            devices[device_name]['connections']['console'] = OrderedDict()
+            devices[device_name]['connections']['console'] = {
                     "protocol": "telnet",
                     "ip": virl_server,
                     "port": console_port
-                    }
+            }
 
-    print(type(interfaces))
-    testbed_yaml = yaml.dump(testbed, default_flow_style=False)
-    topology_yaml = render_topology_block(virl_data, roster, interfaces)
-    return testbed_yaml + '\n' + topology_yaml
+    topology_yaml = render_testbed_template(name,
+                                            servers,
+                                            devices,
+                                            topology,
+                                            conn_class=conn_class)
 
-
-
-
-    #             clean:
-    #                 pre_clean: |
-    #                    switchname %{self}
-    #                    license grace-period
-    #                    feature telnet
-    #                    interface mgmt0
-    #                            ip addr %{self.connections.alt.ip}/24
-    #                    no shut
-    #                    vrf context management
-    #                      ip route 101.0.0.0/24 5.19.27.251
-    #                      ip route 102.0.0.0/24 5.19.27.251
-    #                 post_clean: |
-    #                     switchname %{self}
-    #                     license grace-period
-    #                     feature telnet
-    #                     interface mgmt0
-    #                             ip addr %{self.connections.alt.ip}/24
-    #                     no shut
-    #                     vrf context management
-    #                       ip route 101.0.0.0/24 5.19.27.251
-    #                       ip route 102.0.0.0/24 5.19.27.251
-    # topology:
-    #
-    #     links:
-    #         link-1:
-    #             alias: 'loopback-1'
-    #
-    #     ott-tb1-n7k3:
-    #         interfaces:
-    #             Ethernet3/1:
-    #                 link: link-1
-    #                 type: ethernet
-    #
-    #             Ethernet4/1:
-    #                 link: link-1
-    #                 type: ethernet
-    #
-    #             Ethernet4/2:
-    #                 type: ethernet
-    #
-    #             Ethernet4/3:
-    #                 type: ethernet
+    return topology_yaml
