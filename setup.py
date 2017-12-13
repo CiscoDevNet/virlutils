@@ -30,9 +30,10 @@ test_requirements = [
 setup(
     name=NAME,
     version=VERSION,
-    description="VIRL CLI",
-    author_email="",
-    url="",
+    description="A collection of utilities for interacting with Cisco VIRL",
+    author="Kevin Corbin", 
+    author_email="kecorbin@cisco.com",
+    url="https://github.com/kecorbin/virlutils",
     install_requires=REQUIRES,
     entry_points={"console_scripts": [
         "virl=virl.cli.main:virl",
