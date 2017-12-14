@@ -27,13 +27,13 @@ def telnet(node):
         for node_dict in details.values():
             node_name = node_dict.get("NodeName")
             if node_name == node:
-                print "will attempt a telnet connection with this info"
-                print node_dict
-                # TODO WIP
+                click.secho("Attemping telnet connection to {}".format(node_name))
+
+
 
 
         # if node:
-        #     print "Attempting to connect to console of {}".format(node)
+        #     click.secho("Attempting to connect to console of {}".format(node))
         #     try:
         #         ip, port = resp.json()[node].split(':')
         #         exit(call(['telnet', ip, port]))

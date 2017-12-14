@@ -27,7 +27,7 @@ def render_inventory(virl_xml, roster=None, interfaces=None):
     if len(interfaces.keys()) != 1:
         raise ValueError("too many keys in interface response")
 
-    sim_name = interfaces.keys()[0]
+    sim_name = list(interfaces)[0]
 
     try:
         devices = interfaces[sim_name]

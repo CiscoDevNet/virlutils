@@ -34,7 +34,7 @@ def render_testbed_template(name,
     if len(topo_devs.keys()) != 1:
         raise ValueError("too many keys in topo data")
 
-    sim_name = topo_devs.keys()[0]
+    sim_name = list(topo_devs)[0]
 
     try:
         topology = topo_devs[sim_name]

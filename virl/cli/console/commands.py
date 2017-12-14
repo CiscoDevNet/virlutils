@@ -35,7 +35,7 @@ def console(node, display, **kwargs):
 
         resp = server.get_node_console(sim_name, node=node)
         if node:
-            print "Attempting to connect to console of {}".format(node)
+            click.secho("Attempting to connect to console of {}".format(node))
             try:
                 ip, port = resp.json()[node].split(':')
                 exit(call(['telnet', ip, port]))

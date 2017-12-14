@@ -32,7 +32,7 @@ def remove_sim_info(env='default'):
         click.secho("Could not remove {}".format(path))
 
 def generate_sim_id():
-    return ''.join(random.choice(string.letters + string.digits) for _ in range(6))
+    return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(6))
 
 def get_env_sim_name(env):
     fname = './.virl/{}/id'.format(env)
