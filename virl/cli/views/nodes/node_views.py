@@ -2,9 +2,7 @@ import tabulate
 import click
 
 def node_list_table(node_dict):
-    print("""
-    Here is a list of all the running nodes
-    """)
+    click.secho("Here is a list of all the running nodes")
     table = list()
     headers = ["Node", "Type", "State", "Reachable", "Protocol", "Management Address", "External Address"]
     skip_subtypes = ["LXC FLAT"]
@@ -41,5 +39,4 @@ def node_list_table(node_dict):
 
             table.append(tr)
 
-    # print type(table)
     click.echo(tabulate.tabulate(table, headers, tablefmt="fancy_grid"))

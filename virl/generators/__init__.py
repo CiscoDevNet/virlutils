@@ -1,2 +1,2 @@
-from pyats_testbed import pyats_testbed_generator
-from ansible_inventory import ansible_inventory_generator
+from .pyats_testbed import pyats_testbed_generator
+from .ansible_inventory import ansible_inventory_generator

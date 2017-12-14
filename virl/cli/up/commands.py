@@ -32,4 +32,4 @@ def up(env, **kwargs):
         else:
             click.secho('Sim {} already running'.format(running))
     else:
-        print('Could not find virl file')
+        click.secho('Could not find topology.virl. Maybe try -f', fg="red")

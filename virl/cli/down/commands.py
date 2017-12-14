@@ -27,5 +27,5 @@ def down(sim_name=None, env='default', **kwargs):
         result = click.style(cause, fg="red")
     else:
         result = click.style(resp.text, fg="green")
-    print("Shutting Down Simulation {}.....".format(sim_name)),
+    click.secho("Shutting Down Simulation {}.....".format(sim_name)),
     click.echo(result)

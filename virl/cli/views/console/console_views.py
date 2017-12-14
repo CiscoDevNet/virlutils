@@ -2,10 +2,9 @@ import tabulate
 import click
 
 def console_table(console_entries):
-    print("""
+    click.secho("""
     Here is a list of all the running consoles
     """)
-    print console_entries
     headers = ["Node", "IP", "Port"]
     table = list()
     for node, ip_port in console_entries.items():

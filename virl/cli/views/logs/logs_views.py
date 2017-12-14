@@ -2,9 +2,7 @@ import tabulate
 import click
 
 def log_table(log_entries):
-    print("""
-    Here is a list of all the running nodes
-    """)
+    click.secho("Here is a list of recent log entries")
     # sort by date
     log_entries = newlist = sorted(log_entries, key=lambda k: k['id'])
     headers = ["Timestamp", "Severity", "Message"]

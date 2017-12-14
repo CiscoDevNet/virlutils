@@ -19,7 +19,7 @@ def ls(all, **kwargs):
         # only sims for this project
         dirpath = os.getcwd()
         foldername = os.path.basename(dirpath)
-        for k in sim_dict.keys():
+        for k in list(sim_dict):
             if not k.startswith(foldername):
                 sim_dict.pop(k)
 
