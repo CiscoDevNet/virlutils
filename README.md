@@ -6,7 +6,7 @@
 - [Configuration](#configuration)
 - [Usage](#usage)
 - [Local Development](#local-development)
-	- [Testing](#testing)
+- [Testing](#testing)
 
 <!-- /TOC -->
 
@@ -28,7 +28,7 @@ python setup.py install
 
 ## Configuration
 
-s
+
 ```
 export VIRL_HOST=1.1.1.1
 ```
