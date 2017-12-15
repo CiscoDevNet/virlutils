@@ -21,6 +21,14 @@ git clone https://github.com/kecorbin/virl_cli
 ```
 
 2. Install
+
+### With Pip
+
+```
+pip install virlutils
+```
+
+### Clone & Install
 ```
 git clone https://github.com/kecorbin/virl_cli
 cd virl_cli
