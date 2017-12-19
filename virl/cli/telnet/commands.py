@@ -29,17 +29,16 @@ def telnet(node):
             if node_name == node:
                 click.secho("Attemping telnet connection to {}".format(node_name))
 
+        if node:
 
-
-
-        # if node:
-        #     click.secho("Attempting to connect to console of {}".format(node))
-        #     try:
-        #         ip, port = resp.json()[node].split(':')
-        #         exit(call(['telnet', ip, port]))
-        #     except AttributeError:
-        #         click.secho("Could not find console info for {}:{}".format(env,node), fg="red")
-        #     except KeyError:
-        #         click.secho("Unknown node {}:{}".format(env,node), fg="red")
-        # else:
-        #     return resp.json()
+            try:
+                for k,v in details.items():
+                    if k.endswith(node):
+                        ip = details[k]['managementIP']
+                        exit(call(['telnet', ip]))
+            except AttributeError:
+                click.secho("Could not find console info for {}:{}".format(env,node), fg="red")
+            except KeyError:
+                click.secho("Unknown node {}:{}".format(env,node), fg="red")
+        else:
+            return details.json()
