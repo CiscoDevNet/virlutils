@@ -38,7 +38,7 @@ class VIRLServer(object):
 
     @property
     def passwd(self):
-        return self._user
+        return self._passwd
 
     @passwd.setter
     def passwd(self, passwd):
