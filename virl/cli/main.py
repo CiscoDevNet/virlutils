@@ -11,6 +11,7 @@ from .down.commands import down
 from .ls.commands import ls
 from .save.commands import save
 from .telnet.commands import telnet
+from .ssh.commands import ssh
 from .generate import generate
 
 @click.group()
@@ -25,6 +26,7 @@ virl.add_command(down)
 virl.add_command(ls)
 virl.add_command(save)
 virl.add_command(telnet)
+virl.add_command(ssh)
 virl.add_command(generate)
 
 
