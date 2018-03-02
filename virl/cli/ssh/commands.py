@@ -38,8 +38,10 @@ def ssh(node):
                                 click.secho("Attemping ssh connection to {} at {}".format(node_name, ip))
 
                         exit(call(['ssh', 'cisco@{}'.format(ip)]))
+
             except AttributeError:
                 click.secho("Could not find management info for {}:{}".format(env,node), fg="red")
+
             except KeyError:
                 click.secho("Unknown node {}:{}".format(env,node), fg="red")
         else:
