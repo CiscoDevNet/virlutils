@@ -3,6 +3,7 @@ import random
 import string
 import os
 import shutil
+import errno
 
 # Taken from https://stackoverflow.com/a/600612/119527
 def mkdir_p(path):
