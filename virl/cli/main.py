@@ -31,11 +31,4 @@ virl.add_command(generate)
 
 
 if __name__ == '__main__':
-    simengine_host = os.getenv("VIRL_HOST")
-    virl_user = os.getenv("VIRL_USER")
-    virl_password = os.getenv("VIRL_PASSWORD")
-
-    if not all([simengine_host, virl_user, virl_password]):
-        simengine_host = raw_input("Enter VIRL hostname/IP: ")
-
     cli()
