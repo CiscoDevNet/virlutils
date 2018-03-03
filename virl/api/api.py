@@ -1,22 +1,16 @@
 import requests
 import os
-
+from .credentials import get_credentials
 # TODO implement common credentials module
 # TODO implement basic models for the objects (swagger-gen)
-# TODO catch errors at VIRLServer().get() and VIRLServer().post() 
+# TODO catch errors at VIRLServer().get() and VIRLServer().post()
 
 class VIRLServer(object):
 
     def __init__(self, host=None, user=None, passwd=None, port=19399):
-        if not host:
-            host = os.getenv('VIRL_HOST')
-        if not user:
-            user = os.getenv('VIRL_USERNAME', 'guest')
-        if not passwd:
-            passwd = os.getenv('VIRL_PASSWORD', 'guest')
-        self._host = host
-        self._user = user
-        self._passwd = passwd
+
+        self._host, self._user, self._passwd = get_credentials()
+        
         self._port = port
         self.base_api = "http://{}:{}".format(self.host, self._port)
 
