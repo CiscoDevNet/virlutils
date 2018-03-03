@@ -5,9 +5,9 @@ from virl import helpers
 
 @click.command()
 @click.argument('node', nargs=-1)
-def telnet(node):
+def ssh(node):
     """
-    telnet to a node
+    ssh to a node
     """
     if len(node) == 2:
         # we received env and node name
@@ -35,9 +35,9 @@ def telnet(node):
                         for node_dict in details.values():
                             node_name = node_dict.get("NodeName")
                             if node_name == node:
-                                click.secho("Attemping telnet connection to {} at {}".format(node_name, ip))
+                                click.secho("Attemping ssh connection to {} at {}".format(node_name, ip))
 
-                        exit(call(['telnet', ip]))
+                        exit(call(['ssh', 'cisco@{}'.format(ip)]))
 
             except AttributeError:
                 click.secho("Could not find management info for {}:{}".format(env,node), fg="red")

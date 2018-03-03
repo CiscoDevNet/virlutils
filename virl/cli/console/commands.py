@@ -24,11 +24,14 @@ def console(node, display, **kwargs):
         running = helpers.check_sim_running(env)
         node = None
 
-    else:
+    elif len(node) == 1:
         # assume default env
         env = 'default'
         running = helpers.check_sim_running(env)
         node = node[0]
+    else:
+        # node was not specified, display usage
+        exit(call(['virl', 'console', '--help']))
     if running:
 
         sim_name = running
