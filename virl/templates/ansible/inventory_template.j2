@@ -9,8 +9,10 @@ all:
   children:
       mgmt-lxc:
         hosts:
+
           {%- for node_long_name, device in roster.items() %}
-            {%- if device is server %}
+          {%- if device is server %}
+
           # {{ node_long_name }}
           {{ device.NodeName }}:
 
@@ -18,7 +20,8 @@ all:
 
             ansible_host: {{ device.SimulationHost }}
             {%- if device.PortConsole %}
-              port: {{ device.PortConsole }}
+              console_server: {{ device.SimulationHost }}
+              console_port: {{ device.PortConsole }}
             {%- endif %}
             ansible_python_interpreter: "/usr/bin/env python"
             {%- endif %}
@@ -32,16 +35,29 @@ all:
       network:
         hosts:
           {%- for node_long_name, device in roster.items() %}
-            {%- if device is net_device %}
-          # {{ node_long_name }}
-          {{ device.NodeName }}:
+          {%- if device is net_device %}
 
+
+          {{ device.NodeName }}:
+            # {{ node_long_name }}
             # NodeSubtype: {{ device.NodeSubtype }}
 
-            ansible_host: {{ device.SimulationHost }}
-            {%- if device.PortConsole %}
-            port: {{ device.PortConsole }}
+            {% if 'NX' in device.NodeSubtype %}
+            device_type: nxos
+            {%- elif 'XR' in device.NodeSubtype %}
+            device_type: iosxr
+            {%- elif 'CSR' in device.NodeSubtype %}
+            device_type: ios
+
+            {%- else %}
+            device_type: unknown
             {%- endif %}
-            ansible_python_interpreter: "/usr/bin/env python"
+
+            ansible_host: {{ device['managementIP'] }}
+            {%- if device.PortConsole %}
+            console_server: {{ device.SimulationHost }}
+            console_port: {{ device.PortConsole }}
+
+            {%- endif %}
             {%- endif %}
             {%- endfor %}
