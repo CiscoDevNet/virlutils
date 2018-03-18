@@ -2,7 +2,12 @@
 
 A collection of utilities for interacting with [Cisco VIRL](https://learningnetworkstore.cisco.com/virlfaq/aboutVirl)
 
-These are exposed through a devops style cli
+## Features
+
+### virl up
+
+
+`virl` is a devops style cli which supports the most common VIRL operations.  Adding new ones is easy...
 
 ```
 Usage: virl [OPTIONS] COMMAND [ARGS]...
@@ -27,6 +32,27 @@ Commands:
 
 ```
 
+#### Tab Completions
+
+
+```
+➜  test git:(test) virl l<tab>
+logs  ls  
+
+```
+
+You can activate VIRL autocompletions by executing the following command
+
+```
+eval "$(_VIRL_COMPLETE=source virl)"
+```
+
+zsh users may need to run the following prior
+
+```
+autoload bashcompinit
+bashcompinit
+```
 
 <!-- TOC depthFrom:2 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
