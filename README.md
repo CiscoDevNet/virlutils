@@ -38,10 +38,97 @@ python setup.py install
 
 ## Configuration
 
+There really isn't much to configure, just set your VIRL credentials up.  
+There are a few different ways to accomplish this, pick whichever one works best for you,
+the options listed below are in the `preferred` order.  
+
+
+#### .virlrc in working directory
+
+Add a .virlrc to the working directory, this will always be checked first and
+is useful when you want to override one or more parameters for a particular project
+directory.
+
+The contents would look something like this.
+
+```
+VIRL_HOST=specialvirlserver.foo.com
+```
+
+
+#### environment variables
+You can also add them as environment variables. This is useful if you want to override
+the global VIRL settings.
 
 ```
 export VIRL_HOST=1.1.1.1
+export VIRL_USERNAME=guest
+export VIRL_PASSWORD=guest
 ```
+
+#### .virlrc in your home directory
+
+Configure VIRL credentials globally by putting them in ~/.virlrc the formatting
+
+```
+VIRL_USERNAME=netadmins
+VIRL_PASSWORD=cancodetoo!
+```
+
+
+## Why so many choices??!?!
+
+Understanding the precedence allows you to do some pretty cool things.
+
+Assume the following directory structure...
+
+```
+.
+├── dev
+│   ├── .virlrc
+│   └── topology.virl
+├── prod
+│   ├── .virlrc
+│   └── topology.virl
+└── test
+    ├── .virlrc
+    └── topology.virl
+
+```
+
+This allows three major benefits.  
+
+1. you can easily use different credentials/servers for various environments
+2. you can specify environment specific details into your .virl files if you need to. we find
+this most useful in the context of out-of-band management networks/gateways and such.
+3. you have a badass workflow..
+
+```
+(netdevops-demo) ➜  dev git:(test) ✗ virl ls  
+Running Simulations
+╒══════════════╤══════════╤════════════╤═══════════╕
+│ Simulation   │ Status   │ Launched   │ Expires   │
+╞══════════════╪══════════╪════════════╪═══════════╡
+╘══════════════╧══════════╧════════════╧═══════════╛
+(netdevops-demo) ➜  dev git:(test) ✗ cd ../test
+(netdevops-demo) ➜  test git:(test) ✗ virl ls
+Running Simulations
+╒═════════════════════╤══════════╤════════════════════════════╤═══════════╕
+│ Simulation          │ Status   │ Launched                   │ Expires   │
+╞═════════════════════╪══════════╪════════════════════════════╪═══════════╡
+│ test_default_hfMQHh │ ACTIVE   │ 2018-03-18T06:23:05.607199 │           │
+╘═════════════════════╧══════════╧════════════════════════════╧═══════════╛
+(netdevops-demo) ➜  test git:(test) ✗ cd ../prod
+(netdevops-demo) ➜  prod git:(test) ✗ virl ls
+Running Simulations
+╒═════════════════════╤══════════╤════════════════════════════╤═══════════╕
+│ Simulation          │ Status   │ Launched                   │ Expires   │
+╞═════════════════════╪══════════╪════════════════════════════╪═══════════╡
+│ prod_default_jbdKOW │ ACTIVE   │ 2018-03-18T06:18:04.635601 │           │
+╘═════════════════════╧══════════╧════════════════════════════╧═══════════╛
+```
+
+
 
 ## Usage
 
