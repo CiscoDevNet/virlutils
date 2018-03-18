@@ -10,7 +10,6 @@ class VIRLServer(object):
     def __init__(self, host=None, user=None, passwd=None, port=19399):
 
         self._host, self._user, self._passwd = get_credentials()
-        
         self._port = port
         self.base_api = "http://{}:{}".format(self.host, self._port)
 
@@ -48,6 +47,10 @@ class VIRLServer(object):
 
     def post(self, url, data):
         r = requests.post(url, auth=(self.user, self.passwd), headers=self._headers, data=data)
+        return r
+
+    def put(self, url, data):
+        r = requests.put(url, auth=(self.user, self.passwd), headers=self._headers, data=data)
         return r
 
     def list_simulations(self):
@@ -118,43 +121,18 @@ class VIRLServer(object):
         r = self.get(u)
         return r
 
-    # def stop_nodes(self, simulation, nodes):
-    #     u = simengine_host + "/simengine/rest/update/{}/stop?".format(simulation)
-    #     node_list = []
-    #     for node in nodes.keys():
-    #         node_list.append("nodes={}".format(node))
-    #     node_list = "&".join(node_list)
-    #     u += node_list
-    #     r = requests.put(u, auth=(virl_user, virl_password))
-    #     return r.json()
-    #
-    # def start_nodes(simulation, nodes):
-    #     u = simengine_host + "/simengine/rest/update/{}/start?".format(simulation)
-    #     node_list = []
-    #     for node in nodes.keys():
-    #         node_list.append("nodes={}".format(node))
-    #     node_list = "&".join(node_list)
-    #     u += node_list
-    #     r = requests.put(u, auth=(virl_user, virl_password))
-    #     return r.json()
-    #
-    # def test_node_state(simulation, target_state, test_nodes=None):
-    #     nodes = get_nodes(simulation)
-    #     if test_nodes == None:
-    #         test_nodes = nodes
-    #     for node in test_nodes.keys():
-    #         if not nodes[node]["state"] == target_state:
-    #             return False
-    #     return True
+    def stop_node(self, simulation, node):
+        """
+        stops a `node` in `simulation`
+        """
+        u = self.base_api + "/simengine/rest/update/{}/stop?nodes={}".format(simulation, node)
+        r = self.put(u, None)
+        return r
 
-    #
-    # def kill_simulation(simulation):
-    #     u = simengine_host + "/simengine/rest/stop/{}".format(simulation)
-    #     r = requests.get(u, auth=(virl_user, virl_password))
-    #     return "{} {}".format(r.status_code, r.text)
-    #
-    # def launch_simulation(simulation_name, simulation_data):
-    #     u = simengine_host + "/simengine/rest/launch?session={}".format(simulation_name)
-    #     headers = {"Content-Type": "text/xml;charset=UTF-8"}
-    #     r = requests.post(u, auth=(virl_user, virl_password), headers = headers, data = simulation_data)
-    #     return "{} {}".format(r.status_code, r.text)
+    def start_node(self, simulation, node):
+        """
+        stops a `node` in `simulation`
+        """
+        u = self.base_api + "/simengine/rest/update/{}/start?nodes={}".format(simulation, node)
+        r = self.put(u, None)
+        return r
