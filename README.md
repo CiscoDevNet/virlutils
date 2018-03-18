@@ -2,6 +2,32 @@
 
 A collection of utilities for interacting with [Cisco VIRL](https://learningnetworkstore.cisco.com/virlfaq/aboutVirl)
 
+These are exposed through a devops style cli
+
+```
+Usage: virl [OPTIONS] COMMAND [ARGS]...
+
+Options:
+  --help  Show this message and exit.
+
+Commands:
+  console   console for node
+  down      stop a virl simulation
+  generate  generate inv file for various tools
+  logs      Retrieves log information for the provided...
+  ls        lists running simulations in the current...
+  nodes     get nodes for sim_name
+  save      save simulation to local virl file
+  ssh       ssh to a node
+  start     start a node
+  stop      stop a node
+  telnet    telnet to a node
+  up        start a virl simulation
+  use       use virl simulation launched elsewhere
+
+```
+
+
 <!-- TOC depthFrom:2 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
 - [Installation](#installation)
@@ -76,7 +102,7 @@ VIRL_PASSWORD=cancodetoo!
 ```
 
 
-## Why so many choices??!?!
+### Why so many choices??!?!
 
 Understanding the precedence allows you to do some pretty cool things.
 
@@ -130,7 +156,7 @@ Running Simulations
 
 
 
-## Usage
+### Demo Workflow
 
 in the absence of better documentation, here's a sample workflow
 
