@@ -14,6 +14,8 @@ from .save.commands import save
 from .telnet.commands import telnet
 from .ssh.commands import ssh
 from .generate import generate
+from .start.commands import start
+from .stop.commands import stop
 
 @click.group()
 def virl():
@@ -30,7 +32,8 @@ virl.add_command(save)
 virl.add_command(telnet)
 virl.add_command(ssh)
 virl.add_command(generate)
-
+virl.add_command(start)
+virl.add_command(stop)
 
 if __name__ == '__main__':
     cli()
