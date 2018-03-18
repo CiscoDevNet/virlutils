@@ -41,22 +41,26 @@ def _get_from_file(virlrc, prop_name):
 def get_prop(prop_name):
     """
     Gets a variable using the following order
-    Check environment variables
-    Check for .virlrc in local directory
-    Check ~/.virlrc
-    Prompt user
+
+    * Check for .virlrc in current directory
+
+    * Check environment variables
+
+    * Check ~/.virlrc
+
+    * Prompt user
+
     """
-
-    # try environment first
-    prop = os.getenv(prop_name, None)
-    if prop:
-        return prop
-
     # check for .virlrc in current directory
     cwd = os.getcwd()
     virlrc = os.path.join(cwd, ".virlrc")
     prop = _get_from_file(virlrc, prop_name)
 
+    if prop:
+        return prop
+
+    # try environment next
+    prop = os.getenv(prop_name, None)
     if prop:
         return prop
 
@@ -72,12 +76,15 @@ def get_credentials(rcfile='~/.virlrc'):
     """
     Used to get the VIRL credentials
 
-    The login credentials are taken in the following order
+    * The login credentials are taken in the following order
 
-    Check environment variables
-    Check for .virlrc in current directory
-    Check ~/.virlrc
-    Prompt user
+    * Check for .virlrc in current directory
+
+    * Check environment variables
+
+    * Check ~/.virlrc
+
+    * Prompt user
 
     """
     # initialize vars
