@@ -3,61 +3,34 @@
 # the overall structure of the inventory follows best practices
 # at http://docs.ansible.com/ansible/latest/intro_inventory.html
 
+# we've rendered what we think is best if you disagree, override
+# virl.generators.ansible_inventory_generator
 
-# Management LXC containers provided by VIRL
+# you can modify grouping behavior by adding extension entries
+# to your .virl file as such
+
+# <node name="router1" type="SIMPLE" subtype="CSR1000v" location="361,129" ipv4="172.16.252.6" ipv6="2001:db8:b:0:1::2">
+#    <extensions>
+#        <entry key="ansible_group" type="String">mygroup</entry>
+#    </extensions>
+# </node>
+
 all:
   children:
-      mgmt-lxc:
-        hosts:
 
-          {%- for node_long_name, device in roster.items() %}
-          {%- if device is server %}
+    {%- for group, devices in inventory.all.children.items() %}
+    {{group}}:
+      hosts:
+        {%- for name, device in devices.items() %}
 
-          # {{ node_long_name }}
-          {{ device.NodeName }}:
+        {{ name }}:
+          ansible_host: {{ device.ansible_host }}
+          {%- if device.console_server %}
+          {%- if device.console_port %}
+          console_server: {{ device.console_server }}
+          console_port: {{ device.console_port }}
+          {%- endif %}
+          {%- endif %}
 
-            # NodeSubtype: {{ device.NodeSubtype }}
-
-            ansible_host: {{ device.SimulationHost }}
-            {%- if device.PortConsole %}
-              console_server: {{ device.SimulationHost }}
-              console_port: {{ device.PortConsole }}
-            {%- endif %}
-            ansible_python_interpreter: "/usr/bin/env python"
-            {%- endif %}
-            {%- endfor %}
-
-
-  # Network related devices
-  # we've rendered what we think is best if you disagree, override
-  # virl.generators.ansible_inventory_generator
-
-      network:
-        hosts:
-          {%- for node_long_name, device in roster.items() %}
-          {%- if device is net_device %}
-
-
-          {{ device.NodeName }}:
-            # {{ node_long_name }}
-            # NodeSubtype: {{ device.NodeSubtype }}
-
-            {% if 'NX' in device.NodeSubtype %}
-            device_type: nxos
-            {%- elif 'XR' in device.NodeSubtype %}
-            device_type: iosxr
-            {%- elif 'CSR' in device.NodeSubtype %}
-            device_type: ios
-
-            {%- else %}
-            device_type: unknown
-            {%- endif %}
-
-            ansible_host: {{ device['managementIP'] }}
-            {%- if device.PortConsole %}
-            console_server: {{ device.SimulationHost }}
-            console_port: {{ device.PortConsole }}
-
-            {%- endif %}
-            {%- endif %}
-            {%- endfor %}
+        {%- endfor %}
+    {% endfor %}
