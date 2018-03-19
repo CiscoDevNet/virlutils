@@ -54,6 +54,37 @@ autoload bashcompinit
 bashcompinit
 ```
 
+### Inventory Generation
+
+virlutils will generate inventories for various management systems
+
+#### pyATS Testbed Generation
+
+quickly turn your simulations into a testbed file that can be used for pyATS/Genie
+
+```
+virl generate pyats
+```
+
+#### Ansible Inventory Generation
+
+quickly turn your simulations into an inventory file that can be to run your playbooks
+against
+
+```
+virl generate ansible
+```
+
+#### Cisco Network Services Orchestrator - COMING SOON!!
+
+import your virl devices directly into Network services orchestrator, or generate CLI,API templates
+
+
+```
+virl generate nso [optional NSO URL for auto update]
+```
+
+
 <!-- TOC depthFrom:2 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
 - [Installation](#installation)
