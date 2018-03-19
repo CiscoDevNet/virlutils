@@ -2,7 +2,12 @@
 
 A collection of utilities for interacting with [Cisco VIRL](https://learningnetworkstore.cisco.com/virlfaq/aboutVirl)
 
-These are exposed through a devops style cli
+## Features
+
+### virl up
+
+
+`virl` is a devops style cli which supports the most common VIRL operations.  Adding new ones is easy...
 
 ```
 Usage: virl [OPTIONS] COMMAND [ARGS]...
@@ -25,6 +30,58 @@ Commands:
   up        start a virl simulation
   use       use virl simulation launched elsewhere
 
+```
+
+#### Tab Completions
+
+
+```
+➜  test git:(test) virl l<tab>
+logs  ls  
+
+```
+
+You can activate VIRL autocompletions by executing the following command
+
+```
+eval "$(_VIRL_COMPLETE=source virl)"
+```
+
+zsh users may need to run the following prior
+
+```
+autoload bashcompinit
+bashcompinit
+```
+
+### Inventory Generation
+
+virlutils will generate inventories for various management systems
+
+#### pyATS Testbed Generation
+
+quickly turn your simulations into a testbed file that can be used for pyATS/Genie
+
+```
+virl generate pyats
+```
+
+#### Ansible Inventory Generation
+
+quickly turn your simulations into an inventory file that can be to run your playbooks
+against
+
+```
+virl generate ansible
+```
+
+#### Cisco Network Services Orchestrator - COMING SOON!!
+
+import your virl devices directly into Network services orchestrator, or generate CLI,API templates
+
+
+```
+virl generate nso [optional NSO URL for auto update]
 ```
 
 

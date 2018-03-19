@@ -20,7 +20,8 @@ REQUIRES = [
     "docopt",
     "tabulate",
     "pyyaml",
-    "jinja2"
+    "jinja2",
+    "lxml"
 ]
 
 test_requirements = [
