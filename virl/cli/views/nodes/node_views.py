@@ -38,5 +38,9 @@ def node_list_table(node_dict):
             tr.append(props.get("externalAddr", "N/A"))
 
             table.append(tr)
-
-    click.echo(tabulate.tabulate(table, headers, tablefmt="fancy_grid"))
+    # wrap the output in this try/except block as some terminals
+    # may have problem with the 'fancy_grid'
+    try:
+        click.echo(tabulate.tabulate(table, headers, tablefmt="fancy_grid"))
+    except UnicodeEncodeError:
+        click.echo(tabulate.tabulate(table, headers, tablefmt="grid"))
