@@ -52,11 +52,9 @@ def create_group_map(virl_xmlstr):
     return group_map
 
 
-def render_inventory(virl_xml, roster=None, interfaces=None):
+def generate_inventory_dict(virl_xml, roster=None, interfaces=None):
     """
-    we need to merge information from multiple sources to generate all
-    the required parameters for the inventory
-
+    common inventory info accross yaml/ini
     """
     if not all([virl_xml, roster, interfaces]):
         raise ValueError("we really need virl_xml, roster, and interfaces")
@@ -132,24 +130,52 @@ def render_inventory(virl_xml, roster=None, interfaces=None):
     except KeyError:
         raise Exception('something went wrong')
 
+    return inventory
+
+
+def render_yaml_inventory(virl_xml, roster=None, interfaces=None):
+    """
+    we need to merge information from multiple sources to generate all
+    the required parameters for the inventory
+
+    """
 
     j2_env = Environment(loader=PackageLoader('virl'),
                          trim_blocks=False)
 
+    inventory=generate_inventory_dict(virl_xml, roster=roster, interfaces=interfaces)
     # pass all available data to template for rendering, this can probably be pruned back at some point
-    inventory_dict = j2_env.get_template('ansible/inventory_template.j2').render(devices=devices,
-                                                                     roster=roster,
-                                                                     inventory=inventory,
-                                                                     interfaces=interfaces,
-                                                                     sim_name=sim_name)
-    return inventory_dict
+    inventory_contents = j2_env.get_template('ansible/inventory_template.j2').render(inventory=inventory)
+
+    return inventory_contents
 
 
-def ansible_inventory_generator(env, virl_data, roster, interfaces):
+def render_ini_inventory(virl_xml, roster=None, interfaces=None):
+    """
+    we need to merge information from multiple sources to generate all
+    the required parameters for the inventory
+
+    """
+
+
+    j2_env = Environment(loader=PackageLoader('virl'),
+                         trim_blocks=False)
+
+    inventory=generate_inventory_dict(virl_xml, roster=roster, interfaces=interfaces)
+    # pass all available data to template for rendering, this can probably be pruned back at some point
+    inventory_contents = j2_env.get_template('ansible/inventory_ini_template.j2').render(inventory=inventory)
+    return inventory_contents
+
+
+def ansible_inventory_generator(env, virl_data, roster, interfaces, style="yaml"):
     """
     given a sim roster produces a inventory file suitable for
     use with ansible
 
     """
-    inventory_yaml = render_inventory(virl_data, roster, interfaces)
-    return inventory_yaml
+    if style == "yaml":
+        inventory_yaml = render_yaml_inventory(virl_data, roster, interfaces)
+        return inventory_yaml
+    elif style == "ini":
+        inventory_ini = render_ini_inventory(virl_data, roster, interfaces)
+        return inventory_ini
