@@ -1,6 +1,7 @@
 import click
 import tabulate
 
+
 def sim_list_table(node_dict):
     click.secho("Running Simulations", fg="green")
     table = list()
@@ -19,4 +20,7 @@ def sim_list_table(node_dict):
         tr.append(props['launched'])
         tr.append(props.get('expires', 'N/A'))
         table.append(tr)
-    click.echo(tabulate.tabulate(table, headers, tablefmt="fancy_grid"))
+    try:
+        click.echo(tabulate.tabulate(table, headers, tablefmt="fancy_grid"))
+    except UnicodeEncodeError:
+        click.echo(tabulate.tabulate(table, headers, tablefmt="grid"))
