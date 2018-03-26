@@ -14,4 +14,9 @@ def console_table(console_entries):
             tr.append(ip_port.split(":")[0])
             tr.append(ip_port.split(":")[1])
         table.append(tr)
-    click.echo(tabulate.tabulate(table, headers, tablefmt="fancy_grid"))
+    # wrap the output in this try/except block as some terminals
+    # may have problem with the 'fancy_grid'
+    try:
+        click.echo(tabulate.tabulate(table, headers, tablefmt="fancy_grid"))
+    except UnicodeEncodeError:
+        click.echo(tabulate.tabulate(table, headers, tablefmt="grid"))

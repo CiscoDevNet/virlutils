@@ -19,4 +19,9 @@ def log_table(log_entries):
         tr.append(click.style(level, fg=color))
         tr.append(log['message'])
         table.append(tr)
-    click.echo(tabulate.tabulate(table, headers, tablefmt="fancy_grid"))
+    # wrap the output in this try/except block as some terminals
+    # may have problem with the 'fancy_grid'
+    try:
+        click.echo(tabulate.tabulate(table, headers, tablefmt="fancy_grid"))
+    except UnicodeEncodeError:
+        click.echo(tabulate.tabulate(table, headers, tablefmt="grid"))
