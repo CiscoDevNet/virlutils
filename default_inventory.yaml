@@ -1,0 +1,65 @@
+# virlutils generated ansible file for sim id 
+#
+# the overall structure of the inventory follows best practices
+# at http://docs.ansible.com/ansible/latest/intro_inventory.html
+
+# we've rendered what we think is best if you disagree, override
+# virl.generators.ansible_inventory_generator
+
+# you can modify grouping behavior by adding extension entries
+# to your .virl file as such
+
+# <node name="router1" type="SIMPLE" subtype="CSR1000v" location="361,129" ipv4="172.16.252.6" ipv6="2001:db8:b:0:1::2">
+#    <extensions>
+#        <entry key="ansible_group" type="String">mygroup</entry>
+#    </extensions>
+# </node>
+
+all:
+  children:
+    remotes:
+      hosts:
+
+        partner2:
+          ansible_host: 10.94.241.245
+          console_server: 10.94.241.194
+          console_port: 17006
+
+        partner3:
+          ansible_host: 10.94.241.246
+          console_server: 10.94.241.194
+          console_port: 17008
+
+        partner1:
+          ansible_host: 10.94.241.239
+          console_server: 10.94.241.194
+          console_port: 17004
+
+        partner4:
+          ansible_host: 10.94.241.247
+          console_server: 10.94.241.194
+          console_port: 17010
+    
+    headends:
+      hosts:
+
+        headend:
+          ansible_host: 10.94.241.237
+          console_server: 10.94.241.194
+          console_port: 17000
+    
+    servers:
+      hosts:
+
+        host4:
+          ansible_host: 10.94.241.252
+
+        host3:
+          ansible_host: 10.94.241.251
+
+        host2:
+          ansible_host: 10.94.241.250
+
+        host1:
+          ansible_host: 10.94.241.249
+    

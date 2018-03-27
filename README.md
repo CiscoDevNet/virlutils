@@ -68,7 +68,7 @@ virl generate pyats
 
 #### Ansible Inventory Generation
 
-quickly turn your simulations into an inventory file that can be to run your playbooks
+quickly turn your simulations into an inventory file that can be used to run your playbooks
 against.  Both INI and YAML(default) formats are supported by the tool.
 
 ```
