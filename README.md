@@ -69,11 +69,45 @@ virl generate pyats
 #### Ansible Inventory Generation
 
 quickly turn your simulations into an inventory file that can be to run your playbooks
-against
+against.  Both INI and YAML(default) formats are supported by the tool.
 
 ```
-virl generate ansible
+Usage: virl generate ansible [OPTIONS] [ENV]
+
+  generate ansible inventory
+
+Options:
+  -o, --output TEXT   output File name
+  --style [ini|yaml]  output format (default is yaml)
+  --help              Show this message and exit.
 ```
+
+The ansible group membership can be controlled by adding additional extensions to your
+VIRL files.  
+
+
+```
+<node name="router1" type="SIMPLE" subtype="CSR1000v" location="361,129" ipv4="172.16.252.6" ipv6="2001:db8:b:0:1::2">
+  <extensions>
+    <entry key="ansible_group" type="String">mygroup</entry>
+  </extensions>
+</node>
+```
+
+would result in the following inventory entry
+
+```
+all:
+  children:
+    mygroup:
+      hosts:
+        router1:
+          ansible_host: 172.16.252.6
+
+```
+
+**NOTE:** if th ansible_group key is not specified for a node, that node will not be included during
+inventory generation
 
 #### Cisco Network Services Orchestrator - COMING SOON!!
 
