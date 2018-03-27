@@ -107,7 +107,7 @@ all:
 ```
 
 **NOTE:** if th ansible_group key is not specified for a node, that node will not be included during
-inventory generation
+inventory generation.  
 
 #### Cisco Network Services Orchestrator - COMING SOON!!
 
