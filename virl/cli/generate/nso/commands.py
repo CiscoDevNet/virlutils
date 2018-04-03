@@ -19,7 +19,7 @@ def nso(env, **kwargs):
         file_name = kwargs.get("output")
     else:
         # writes to <env>.json by default
-        file_name = '{}_payload.xml'.format(env)
+        file_name = None
 
     running = helpers.check_sim_running(env)
     if running:
@@ -36,7 +36,9 @@ def nso(env, **kwargs):
                                         interfaces=interfaces)
 
         if file_name:
+            click.secho("Writing payload to {}".format(file_name))
             with open(file_name, 'w') as payload_file:
+
                 payload_file.write(payload)
         else:
             click.secho("Updating NSO....")
