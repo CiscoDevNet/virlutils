@@ -1,7 +1,7 @@
 # virlutils
 
 [![Build Status](https://travis-ci.org/kecorbin/virlutils.svg?branch=master)](https://travis-ci.org/kecorbin/virlutils)
-[![Coverage Status](https://coveralls.io/repos/github/kecorbin/virlutils/badge.svg?branch=master)](https://coveralls.io/github/kecorbin/virlutils?branch=dev)
+[![Coverage Status](https://coveralls.io/repos/github/kecorbin/virlutils/badge.svg?branch=master)](https://coveralls.io/github/kecorbin/virlutils?branch=master)
 
 A collection of utilities for interacting with [Cisco VIRL](https://learningnetworkstore.cisco.com/virlfaq/aboutVirl)
 
