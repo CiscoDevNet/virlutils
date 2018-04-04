@@ -1,10 +1,10 @@
 """
-Collection of utility classes to make getting credentials and
-configuration easier.
+Collection of utility classes to make getting credentials and configuration easier.
 """
 import getpass
 import os
 import sys
+import inspect
 
 
 def _get_from_user(prompt):
@@ -26,7 +26,6 @@ def _get_password(prompt):
     it is typed.
     """
     return getpass.getpass(prompt)
-
 
 def _get_from_file(virlrc, prop_name):
     if os.path.isfile(virlrc):
@@ -65,7 +64,7 @@ def get_prop(prop_name):
     if prop:
         return prop
 
-    # check for .virlrc in home directory
+    #check for .virlrc in home directory
     path = os.path.expanduser("~")
     virlrc = os.path.join(path, ".virlrc")
     prop = _get_from_file(virlrc, prop_name)
@@ -97,8 +96,7 @@ def get_credentials(rcfile='~/.virlrc'):
     username = get_prop('VIRL_USERNAME')
     password = get_prop('VIRL_PASSWORD')
     if not host:
-        prompt = 'Please enter the IP / hostname of your virl server: '
-        host = _get_from_user(prompt)
+        host = _get_from_user('Please enter the IP / hostname of your virl server: ')
 
     if not username:
         username = _get_from_user("Please enter your VIRL username: ")
@@ -107,7 +105,6 @@ def get_credentials(rcfile='~/.virlrc'):
         password = _get_password("Please enter your password: ")
 
     if not all([host, username, password]):
-        prompt = "Unable to determine VIRL credentials, please see docs"
-        sys.exit(prompt)
+        sys.exit("Unable to determine VIRL credentials, please see docs for configuring")
     else:
         return (host, username, password)
