@@ -23,11 +23,10 @@ clean-test: ## remove test and coverage artifacts
 	rm -fr htmlcov/
 
 lint: ## check style with flake8
-	flake8 
+	flake8
 
 coverage:
-	pip install -r test-requirements.txt
-	coverage run --include virl ./tests/test_cli.py
+	coverage run --source=virl tests/test_cli.py
 
 report: coverage
 	coverage html
