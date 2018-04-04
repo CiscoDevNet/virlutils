@@ -136,3 +136,11 @@ class VIRLServer(object):
         u = self.base_api + "/simengine/rest/update/{}/start?nodes={}".format(simulation, node)
         r = self.put(u, None)
         return r
+
+    def get_gateway_for_network(self, network):
+        u = self.base_api + "/openstack/rest/networks"
+        r = self.get(u)
+        for net in r.json():
+            if net.get("Network Name") == network:
+                return net["Gateway"]
+        return None

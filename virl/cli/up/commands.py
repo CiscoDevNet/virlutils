@@ -24,6 +24,14 @@ def up(env, **kwargs):
             with open(fname) as fh:
                 data = fh.read()
             server = VIRLServer()
+            # let's try a bit of hackery
+            if "{{ gateway }}" in data:
+                gateway = server.get_gateway_for_network('flat')
+                if gateway:
+                    click.secho("Localizing flat network with gateway: {}".format(gateway))
+                    data = data.replace("{{ gateway }}", gateway)
+                    print(data)
+                    exit()
             dirpath = os.getcwd()
             foldername = os.path.basename(dirpath)
             sim_name = "{}_{}_{}".format(foldername, env, generate_sim_id())
