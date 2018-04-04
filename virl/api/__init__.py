@@ -1,1 +1,1 @@
-from .api import VIRLServer
+from .api import VIRLServer # noqa
