@@ -111,11 +111,38 @@ inventory generation.
 
 #### Cisco Network Services Orchestrator - COMING SOON!!
 
-import your virl devices directly into Network services orchestrator, or generate CLI,API templates
+import your virl devices directly into Network services orchestrator
 
+Usage
 
 ```
-virl generate nso [optional NSO URL for auto update]
+$ virl generate nso
+```
+
+output
+
+```
+Updating NSO....
+Enter NSO IP/Hostname: localhost
+Enter NSO username: admin
+Enter NSO password:
+Successfully added VIRL devices to NSO
+
+```
+
+**NOTE**:  NSO environment is also attempted to be determined using the following environment
+variables
+
+* NSO_HOST
+* NSO_USERNAME
+* NSO_PASSWORD
+
+NSO Configuration Example
+
+```
+export NSO_HOST=localhost
+export NSO_USERNAME=admin
+export NSO_PASSWORD=admin
 ```
 
 
@@ -134,7 +161,7 @@ virl generate nso [optional NSO URL for auto update]
 1. Clone this repo
 
 ```
-git clone https://github.com/kecorbin/virl_cli
+git clone https://github.com/kecorbin/virlutils
 ```
 
 2. Install
@@ -147,8 +174,8 @@ pip install virlutils
 
 ### Clone & Install
 ```
-git clone https://github.com/kecorbin/virl_cli
-cd virl_cli
+git clone https://github.com/kecorbin/virlutils
+cd virlutils
 virtualenv venv && source venv/bin/activate
 python setup.py install
 ```
