@@ -24,6 +24,27 @@ def up(env, **kwargs):
             with open(fname) as fh:
                 data = fh.read()
             server = VIRLServer()
+
+            # we can expose fairly aribtary substitutions here...
+            # anything that may differ usually related to networking....
+            # <dirty hack>
+            subs = {
+                "{{ gateway }}": server.get_gateway_for_network('flat'),
+                "{{ flat1_gateway}}": server.get_gateway_for_network('flat1'),
+                "{{ dns_server }}": server.get_dns_server_for_network('flat')
+            }
+
+            for tag, value in subs.items():
+                if tag in data:
+                    if value:
+                        # split off the braces
+                        humanize = tag[3:-3]
+                        click.secho("Localizing {} with: {}".format(humanize,
+                                                                    value))
+                        data = data.replace(tag, value)
+
+            # </dirty hack>
+
             dirpath = os.getcwd()
             foldername = os.path.basename(dirpath)
             sim_name = "{}_{}_{}".format(foldername, env, generate_sim_id())
