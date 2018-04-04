@@ -196,6 +196,110 @@ launch the topology directly using `virl up`
 virl up virlfiles/2-ios-router
 ```
 
+### Basic Workflow
+
+in the absence of better documentation, here's a sample workflow
+
+
+```
+(venv) KECORBIN-M-90Y9:virl_cli kecorbin$ virl ls
+
+    Here is a list of all the running nodes
+
+╒═════════════════╤══════════╤════════════════════════════╤═══════════╕
+│ Simulation      │ Status   │ Launched                   │ Expires   │
+╞═════════════════╪══════════╪════════════════════════════╪═══════════╡
+│ topology-CoC73j │ ACTIVE   │ 2017-12-02T14:44:29.209647 │           │
+╘═════════════════╧══════════╧════════════════════════════╧═══════════╛
+(venv) KECORBIN-M-90Y9:virl_cli kecorbin$ virl up
+Launching Simulation from topology.virl
+virl_cli-GnMIWY
+
+
+(venv) KECORBIN-M-90Y9:virl_cli kecorbin$ virl ls
+
+    Here is a list of all the running nodes
+
+╒═════════════════╤══════════╤════════════════════════════╤═══════════╕
+│ Simulation      │ Status   │ Launched                   │ Expires   │
+╞═════════════════╪══════════╪════════════════════════════╪═══════════╡
+│ topology-CoC73j │ ACTIVE   │ 2017-12-02T14:44:29.209647 │           │
+├─────────────────┼──────────┼────────────────────────────┼───────────┤
+│ virl_cli-GnMIWY │ ACTIVE   │ 2017-12-08T07:35:46.444588 │           │
+╘═════════════════╧══════════╧════════════════════════════╧═══════════╛
+
+
+(venv) KECORBIN-M-90Y9:virl_cli kecorbin$ virl nodes virl_cli-GnMIWY
+
+    Here is a list of all the running nodes
+
+╒═══════════╤══════════╤══════════╤═════════════╤═══════════════════════╕
+│ Node      │ Type     │ State    │ Reachable   │ management-protocol   │
+╞═══════════╪══════════╪══════════╪═════════════╪═══════════════════════╡
+│ iosv-2    │ IOSv     │ BUILDING │ False       │ telnet                │
+├───────────┼──────────┼──────────┼─────────────┼───────────────────────┤
+│ ~mgmt-lxc │ mgmt-lxc │ ACTIVE   │ True        │ ssh                   │
+├───────────┼──────────┼──────────┼─────────────┼───────────────────────┤
+│ iosv-1    │ IOSv     │ ACTIVE   │ False       │ telnet                │
+╘═══════════╧══════════╧══════════╧═════════════╧═══════════════════════╛
+
+
+(venv) KECORBIN-M-90Y9:virl_cli kecorbin$ virl console virl_cli-GnMIWY iosv-1
+iosv-1
+Attempting to connect to console of iosv-1
+Trying 10.94.140.41...
+Connected to mm-c1-6620.cisco.com.
+Escape character is '^]'.
+
+[OK] (elapsed time was 9 seconds)
+
+Building configuration...
+
+telnet> quit
+Connection closed.
+
+
+(venv) KECORBIN-M-90Y9:virl_cli kecorbin$ virl down virl_cli-GnMIWY
+Shutting Down Simulation virl_cli-GnMIWY.....SUCCESS
+(venv) KECORBIN-M-90Y9:virl_cli kecorbin$ virl ls
+
+    Here is a list of all the running nodes
+
+╒═════════════════╤══════════╤════════════════════════════╤═══════════╕
+│ Simulation      │ Status   │ Launched                   │ Expires   │
+╞═════════════════╪══════════╪════════════════════════════╪═══════════╡
+│ topology-CoC73j │ ACTIVE   │ 2017-12-02T14:44:29.209647 │           │
+├─────────────────┼──────────┼────────────────────────────┼───────────┤
+│ virl_cli-GnMIWY │ STOP     │ 2017-12-08T07:35:46.444588 │           │
+╘═════════════════╧══════════╧════════════════════════════╧═══════════╛
+
+(venv) KECORBIN-M-90Y9:virl_cli kecorbin$ virl ls
+
+    Here is a list of all the running nodes
+
+╒═════════════════╤══════════╤════════════════════════════╤═══════════╕
+│ Simulation      │ Status   │ Launched                   │ Expires   │
+╞═════════════════╪══════════╪════════════════════════════╪═══════════╡
+│ topology-CoC73j │ ACTIVE   │ 2017-12-02T14:44:29.209647 │           │
+╘═════════════════╧══════════╧════════════════════════════╧═══════════╛
+
+```
+
+### Localization
+
+virlutils provides a handy way of maintaining portability across multiple VIRL
+backend servers.  Any configuration that is stored in your `topology.virl` file
+can make use of some special tags which will be substituted at launch (`virl up`) for parameters
+unique to the virl host.  
+
+Currently the following tags are supported:
+
+* {{ gateway }} - will be replaced with the default gateway of the `flat` network
+* {{ flat1_gateway }} - will be replaced with the gateway IP address of the  `flat1` network
+* {{ dns_server }} - replaced with the dns_server configured on the VIRL host
+
+**NOTE:** these tags must be copied exactly (including surrounding braces+spaces)
+
 ### Inventory Generation
 
 virlutils will generate inventories for various management systems
@@ -297,94 +401,6 @@ export NSO_PASSWORD=admin
 ```
 
 
-### Demo Workflow
-
-in the absence of better documentation, here's a sample workflow
-
-
-```
-(venv) KECORBIN-M-90Y9:virl_cli kecorbin$ virl ls
-
-    Here is a list of all the running nodes
-
-╒═════════════════╤══════════╤════════════════════════════╤═══════════╕
-│ Simulation      │ Status   │ Launched                   │ Expires   │
-╞═════════════════╪══════════╪════════════════════════════╪═══════════╡
-│ topology-CoC73j │ ACTIVE   │ 2017-12-02T14:44:29.209647 │           │
-╘═════════════════╧══════════╧════════════════════════════╧═══════════╛
-(venv) KECORBIN-M-90Y9:virl_cli kecorbin$ virl up
-Launching Simulation from topology.virl
-virl_cli-GnMIWY
-
-
-(venv) KECORBIN-M-90Y9:virl_cli kecorbin$ virl ls
-
-    Here is a list of all the running nodes
-
-╒═════════════════╤══════════╤════════════════════════════╤═══════════╕
-│ Simulation      │ Status   │ Launched                   │ Expires   │
-╞═════════════════╪══════════╪════════════════════════════╪═══════════╡
-│ topology-CoC73j │ ACTIVE   │ 2017-12-02T14:44:29.209647 │           │
-├─────────────────┼──────────┼────────────────────────────┼───────────┤
-│ virl_cli-GnMIWY │ ACTIVE   │ 2017-12-08T07:35:46.444588 │           │
-╘═════════════════╧══════════╧════════════════════════════╧═══════════╛
-
-
-(venv) KECORBIN-M-90Y9:virl_cli kecorbin$ virl nodes virl_cli-GnMIWY
-
-    Here is a list of all the running nodes
-
-╒═══════════╤══════════╤══════════╤═════════════╤═══════════════════════╕
-│ Node      │ Type     │ State    │ Reachable   │ management-protocol   │
-╞═══════════╪══════════╪══════════╪═════════════╪═══════════════════════╡
-│ iosv-2    │ IOSv     │ BUILDING │ False       │ telnet                │
-├───────────┼──────────┼──────────┼─────────────┼───────────────────────┤
-│ ~mgmt-lxc │ mgmt-lxc │ ACTIVE   │ True        │ ssh                   │
-├───────────┼──────────┼──────────┼─────────────┼───────────────────────┤
-│ iosv-1    │ IOSv     │ ACTIVE   │ False       │ telnet                │
-╘═══════════╧══════════╧══════════╧═════════════╧═══════════════════════╛
-
-
-(venv) KECORBIN-M-90Y9:virl_cli kecorbin$ virl console virl_cli-GnMIWY iosv-1
-iosv-1
-Attempting to connect to console of iosv-1
-Trying 10.94.140.41...
-Connected to mm-c1-6620.cisco.com.
-Escape character is '^]'.
-
-[OK] (elapsed time was 9 seconds)
-
-Building configuration...
-
-telnet> quit
-Connection closed.
-
-
-(venv) KECORBIN-M-90Y9:virl_cli kecorbin$ virl down virl_cli-GnMIWY
-Shutting Down Simulation virl_cli-GnMIWY.....SUCCESS
-(venv) KECORBIN-M-90Y9:virl_cli kecorbin$ virl ls
-
-    Here is a list of all the running nodes
-
-╒═════════════════╤══════════╤════════════════════════════╤═══════════╕
-│ Simulation      │ Status   │ Launched                   │ Expires   │
-╞═════════════════╪══════════╪════════════════════════════╪═══════════╡
-│ topology-CoC73j │ ACTIVE   │ 2017-12-02T14:44:29.209647 │           │
-├─────────────────┼──────────┼────────────────────────────┼───────────┤
-│ virl_cli-GnMIWY │ STOP     │ 2017-12-08T07:35:46.444588 │           │
-╘═════════════════╧══════════╧════════════════════════════╧═══════════╛
-
-(venv) KECORBIN-M-90Y9:virl_cli kecorbin$ virl ls
-
-    Here is a list of all the running nodes
-
-╒═════════════════╤══════════╤════════════════════════════╤═══════════╕
-│ Simulation      │ Status   │ Launched                   │ Expires   │
-╞═════════════════╪══════════╪════════════════════════════╪═══════════╡
-│ topology-CoC73j │ ACTIVE   │ 2017-12-02T14:44:29.209647 │           │
-╘═════════════════╧══════════╧════════════════════════════╧═══════════╛
-
-```
 
 #### Tab Completions
 
