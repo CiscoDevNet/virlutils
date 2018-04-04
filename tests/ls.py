@@ -1,4 +1,3 @@
-import os
 from . import BaseTest
 from click.testing import CliRunner
 import requests_mock
@@ -6,7 +5,7 @@ from virl.cli.main import virl
 
 
 class LsTest(BaseTest):
-    
+
     def test_virl_ls(self):
         with requests_mock.mock() as m:
             # Mock the request to return what we expect from the API.

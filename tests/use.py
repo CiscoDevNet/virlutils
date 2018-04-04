@@ -3,6 +3,7 @@ from . import BaseTest
 from click.testing import CliRunner
 from virl.cli.main import virl
 
+
 class UseTest(BaseTest):
     def test_virl_use(self):
         runner = CliRunner()

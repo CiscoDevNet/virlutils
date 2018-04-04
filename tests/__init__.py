@@ -13,4 +13,4 @@ class BaseTest(unittest.TestCase):
         os.environ['VIRL_USERNAME'] = 'guest'
         os.environ['VIRL_PASSWORD'] = 'guest'
         runner = CliRunner()
-        result = runner.invoke(virl, ["use", "TEST_ENV"])
+        runner.invoke(virl, ["use", "TEST_ENV"])
