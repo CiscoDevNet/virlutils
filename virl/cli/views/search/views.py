@@ -2,18 +2,17 @@ import tabulate
 import click
 
 
-def console_table(console_entries):
-    click.secho("""
-    Here is a list of all the running consoles
-    """)
-    headers = ["Node", "IP", "Port"]
+def repo_table(repo_entries):
+
+    # sort by date
+    headers = ["Name", "Stars", "Description"]
     table = list()
-    for node, ip_port in console_entries.items():
+
+    for repo in repo_entries:
         tr = list()
-        tr.append(node)
-        if ip_port:
-            tr.append(ip_port.split(":")[0])
-            tr.append(ip_port.split(":")[1])
+        tr.append(repo['full_name'])
+        tr.append(repo['stargazers_count'])
+        tr.append(repo['description'])
         table.append(tr)
     # wrap the output in this try/except block as some terminals
     # may have problem with the 'fancy_grid'

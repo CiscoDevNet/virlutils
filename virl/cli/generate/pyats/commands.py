@@ -1,8 +1,8 @@
 import click
 from virl.api import VIRLServer
-from virl.cli.views import log_table
 from virl import helpers
 from virl.generators import pyats_testbed_generator
+
 
 @click.command()
 @click.argument('env', default='default')
@@ -17,7 +17,6 @@ def pyats(env, **kwargs):
     else:
         # writes to <env>_testbed.yaml by default
         file_name = '{}_testbed.yaml'.format(env)
-
 
     running = helpers.check_sim_running(env)
     if running:
@@ -36,6 +35,6 @@ def pyats(env, **kwargs):
         with open(file_name, 'w') as yaml_file:
             yaml_file.write(testbed_yaml)
 
-
     else:
-        click.secho("couldnt generate testbed for for env: {}".format(env), fg='red')
+        click.secho("couldnt generate testbed for for env: {}".format(env),
+                    fg='red')

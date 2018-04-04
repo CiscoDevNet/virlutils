@@ -1,0 +1,35 @@
+<devices>
+  <authgroups>
+    <group>
+      <name>virl</name>
+      <default-map>
+        <remote-name>cisco</remote-name>
+        <remote-password>cisco</remote-password>
+      </default-map>
+      <umap>
+        <local-user>admin</local-user>
+        <remote-name>cisco</remote-name>
+        <remote-password>cisco</remote-password>
+      </umap>
+    </group>
+  </authgroups>
+  {% for node in inventory %}
+  <device>
+    <name>{{ node.name }}</name>
+    <address>{{ node.address }}</address>
+    <ssh>
+      <host-key-verification>none</host-key-verification>
+    </ssh>
+    <authgroup>virl</authgroup>
+    <device-type>
+      <cli>
+        <ned-id>{{ node.ned }}</ned-id>
+        <protocol>{{ node.protocol }}</protocol>
+      </cli>
+    </device-type>
+    <state>
+      <admin-state>unlocked</admin-state>
+    </state>
+  </device>
+  {% endfor %}
+</devices>
