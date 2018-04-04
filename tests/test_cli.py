@@ -40,5 +40,5 @@ class VirlCLITest(unittest.TestCase):
             })
             runner = CliRunner()
             result = runner.invoke(virl, ["ls"])
-            print(result)
+            print(result.output)
             self.assertEqual(0, result.exit_code)
