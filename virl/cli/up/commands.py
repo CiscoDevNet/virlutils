@@ -30,8 +30,6 @@ def up(env, **kwargs):
                 if gateway:
                     click.secho("Localizing flat network with gateway: {}".format(gateway))
                     data = data.replace("{{ gateway }}", gateway)
-                    print(data)
-                    exit()
             dirpath = os.getcwd()
             foldername = os.path.basename(dirpath)
             sim_name = "{}_{}_{}".format(foldername, env, generate_sim_id())
