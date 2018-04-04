@@ -26,7 +26,7 @@ def sim_info(virl_xml, roster=None, interfaces=None, protocol="telnet"):
             if 'NX' in type:
                 entry['ned'] = 'cisco-nx'
             elif 'XR' in type:
-                entry['ned'] = 'cisco-iosxr'
+                entry['ned'] = 'cisco-ios-xr'
             elif 'CSR' in type:
                 entry['ned'] = 'cisco-ios'
             elif 'IOS' in type:
