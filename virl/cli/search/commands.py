@@ -11,5 +11,8 @@ def search(query=None, **kwargs):
     """
 
     repos = get_repos(query=query)
-    click.secho("Displaying {} Results For {}".format(len(repos), query))
+    if query is not None:
+        click.secho("Displaying {} Results For {}".format(len(repos), query))
+    else:
+        click.secho("Displaying {} Results".format(len(repos)))
     repo_table(repos)
