@@ -3,7 +3,7 @@ from virl.api import VIRLServer
 from virl.cli.views import sync_table
 from virl import helpers
 from virl.generators import nso_payload_generator
-from .helpers import update_devices, perform_sync_to, perform_sync_from
+from .helpers import update_devices, perform_sync_from
 
 
 @click.command()
@@ -12,9 +12,9 @@ from .helpers import update_devices, perform_sync_to, perform_sync_from
               help="just dump the payload to file without sending")
 @click.option('--syncfrom/--no-syncfrom', default=False,
               help="Perform sync-from after updating devices")
-@click.option('--syncto/--no-syncto', default=False,
-              help="Perform sync-to afgter updating devices")
-def nso(env, syncfrom, syncto, **kwargs):
+# @click.option('--syncto/--no-syncto', default=False,
+#               help="Perform sync-to afgter updating devices")
+def nso(env, syncfrom, **kwargs):
     """
     generate nso inventory
     """
@@ -55,9 +55,6 @@ def nso(env, syncfrom, syncto, **kwargs):
                 click.secho(nso_response.text)
             if syncfrom:
                 resp = perform_sync_from()
-                sync_table(resp.json())
-            if syncto:
-                resp = perform_sync_to()
                 sync_table(resp.json())
 
     else:
