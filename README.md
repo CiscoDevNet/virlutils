@@ -1,8 +1,9 @@
 # virlutils
 
-A collection of utilities for interacting with [Cisco VIRL](https://learningnetworkstore.cisco.com/virlfaq/aboutVirl)
+[![Build Status](https://travis-ci.org/kecorbin/virlutils.svg?branch=master)](https://travis-ci.org/kecorbin/virlutils)
+[![Coverage Status](https://coveralls.io/repos/github/kecorbin/virlutils/badge.svg?branch=master)](https://coveralls.io/github/kecorbin/virlutils?branch=master)
 
-## Features
+A collection of utilities for interacting with [Cisco VIRL](https://learningnetworkstore.cisco.com/virlfaq/aboutVirl)
 
 ### virl up
 
@@ -22,7 +23,9 @@ Commands:
   logs      Retrieves log information for the provided...
   ls        lists running simulations in the current...
   nodes     get nodes for sim_name
+  pull      pull topology.virl from repo
   save      save simulation to local virl file
+  search    lists running simulations in the current...
   ssh       ssh to a node
   start     start a node
   stop      stop a node
@@ -30,102 +33,16 @@ Commands:
   up        start a virl simulation
   use       use virl simulation launched elsewhere
 
-```
-
-#### Tab Completions
-
 
 ```
-➜  test git:(test) virl l<tab>
-logs  ls  
-
-```
-
-You can activate VIRL autocompletions by executing the following command
-
-```
-eval "$(_VIRL_COMPLETE=source virl)"
-```
-
-zsh users may need to run the following prior
-
-```
-autoload bashcompinit
-bashcompinit
-```
-
-### Inventory Generation
-
-virlutils will generate inventories for various management systems
-
-#### pyATS Testbed Generation
-
-quickly turn your simulations into a testbed file that can be used for pyATS/Genie
-
-```
-virl generate pyats
-```
-
-#### Ansible Inventory Generation
-
-quickly turn your simulations into an inventory file that can be used to run your playbooks
-against.  Both INI and YAML(default) formats are supported by the tool.
-
-```
-Usage: virl generate ansible [OPTIONS] [ENV]
-
-  generate ansible inventory
-
-Options:
-  -o, --output TEXT   output File name
-  --style [ini|yaml]  output format (default is yaml)
-  --help              Show this message and exit.
-```
-
-The ansible group membership can be controlled by adding additional extensions to your
-VIRL files.  
-
-
-```
-<node name="router1" type="SIMPLE" subtype="CSR1000v" location="361,129" ipv4="172.16.252.6" ipv6="2001:db8:b:0:1::2">
-  <extensions>
-    <entry key="ansible_group" type="String">mygroup</entry>
-  </extensions>
-</node>
-```
-
-would result in the following inventory entry
-
-```
-all:
-  children:
-    mygroup:
-      hosts:
-        router1:
-          ansible_host: 172.16.252.6
-
-```
-
-**NOTE:** if the ansible_group key is not specified for a node, that node will not be included during
-inventory generation.  
-
-#### Cisco Network Services Orchestrator - COMING SOON!!
-
-import your virl devices directly into Network services orchestrator, or generate CLI,API templates
-
-
-```
-virl generate nso [optional NSO URL for auto update]
-```
-
 
 <!-- TOC depthFrom:2 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
 - [Installation](#installation)
 - [Configuration](#configuration)
-- [Usage](#usage)
-- [Local Development](#local-development)
-- [Testing](#testing)
+- [Usage / Workflows](#usage--workflows)
+- [Development](#local-development)
+
 
 <!-- /TOC -->
 
@@ -134,7 +51,7 @@ virl generate nso [optional NSO URL for auto update]
 1. Clone this repo
 
 ```
-git clone https://github.com/kecorbin/virl_cli
+git clone https://github.com/kecorbin/virlutils
 ```
 
 2. Install
@@ -147,8 +64,8 @@ pip install virlutils
 
 ### Clone & Install
 ```
-git clone https://github.com/kecorbin/virl_cli
-cd virl_cli
+git clone https://github.com/kecorbin/virlutils
+cd virlutils
 virtualenv venv && source venv/bin/activate
 python setup.py install
 ```
@@ -247,7 +164,39 @@ Running Simulations
 
 
 
-### Demo Workflow
+## Usage / Workflows
+
+### Find and import VIRL files
+
+A collection of topologies is being maintained at https://github.com/virlfiles
+
+These repos can be searched from the command line.
+
+```
+$ virl search ios
+Displaying 1 Results For ios
+╒════════════════════════╤═════════╤═══════════════╕
+│ Name                   │   Stars │ Description   │
+╞════════════════════════╪═════════╪═══════════════╡
+│ virlfiles/2-ios-router │       0 │               │
+╘════════════════════════╧═════════╧═══════════════╛
+```
+
+Once you find an intersting topology, you can either `pull` the topology into your
+current environment or launch it directly
+
+pull topology to local directory (as topology.virl)
+```
+virl pull virlfiles/2-ios-router
+```
+
+launch the topology directly using `virl up`
+
+```
+virl up virlfiles/2-ios-router
+```
+
+### Basic Workflow
 
 in the absence of better documentation, here's a sample workflow
 
@@ -335,18 +284,169 @@ Shutting Down Simulation virl_cli-GnMIWY.....SUCCESS
 ╘═════════════════╧══════════╧════════════════════════════╧═══════════╛
 
 ```
-## Local Development
 
-To easily get started, you can run this inside a docker container like so:
+### Localization
+
+virlutils provides a handy way of maintaining portability across multiple VIRL
+backend servers.  Any configuration that is stored in your `topology.virl` file
+can make use of some special tags which will be substituted at launch (`virl up`) for parameters
+unique to the virl host.  
+
+Currently the following tags are supported:
+
+* {{ gateway }} - will be replaced with the default gateway of the `flat` network
+* {{ flat1_gateway }} - will be replaced with the gateway IP address of the  `flat1` network
+* {{ dns_server }} - replaced with the dns_server configured on the VIRL host
+
+**NOTE:** these tags must be copied exactly (including surrounding braces+spaces)
+
+### Inventory Generation
+
+virlutils will generate inventories for various management systems
+
+#### pyATS Testbed Generation
+
+quickly turn your simulations into a testbed file that can be used for pyATS/Genie
 
 ```
-docker run --rm -it -v "$(pwd):/home" --workdir /home python:2.7 /bin/bash
-root@ab89db25addf:/home# python setup.py install
-....
-root@ab89db25addf:/home# virl
+virl generate pyats
+```
+
+#### Ansible Inventory Generation
+
+quickly turn your simulations into an inventory file that can be used to run your playbooks
+against.  Both INI and YAML(default) formats are supported by the tool.
+
+```
+Usage: virl generate ansible [OPTIONS] [ENV]
+
+  generate ansible inventory
+
+Options:
+  -o, --output TEXT   output File name
+  --style [ini|yaml]  output format (default is yaml)
+  --help              Show this message and exit.
+```
+
+The ansible group membership can be controlled by adding additional extensions to your
+VIRL files.  
+
+
+```
+<node name="router1" type="SIMPLE" subtype="CSR1000v" location="361,129" ipv4="172.16.252.6" ipv6="2001:db8:b:0:1::2">
+  <extensions>
+    <entry key="ansible_group" type="String">mygroup</entry>
+  </extensions>
+</node>
+```
+
+would result in the following inventory entry
+
+```
+all:
+  children:
+    mygroup:
+      hosts:
+        router1:
+          ansible_host: 172.16.252.6
+
+```
+
+**NOTE:** if the ansible_group key is not specified for a node, that node will not be included during
+inventory generation.  
+
+#### Cisco Network Services Orchestrator
+
+You can add/update Network Services Orchestrator with your VIRL simulation.
+
+
+Usage
+
+```
+virl generate nso [OPTIONS] [ENV]
+
+  generate nso inventory
+
+Options:
+  -o, --output TEXT           just dump the payload to file without sending
+  --syncfrom / --no-syncfrom  Perform sync-from after updating devices
+  --syncto / --no-syncto      Perform sync-to afgter updating devices
+  --help                      Show this message and exit.
+```
+
+output
+
+```
+Updating NSO....
+Enter NSO IP/Hostname: localhost
+Enter NSO username: admin
+Enter NSO password:
+Successfully added VIRL devices to NSO
+
+```
+
+**NOTE**:  NSO environment is also attempted to be determined using the following environment
+variables
+
+* NSO_HOST
+* NSO_USERNAME
+* NSO_PASSWORD
+
+NSO Configuration Example
+
+```
+export NSO_HOST=localhost
+export NSO_USERNAME=admin
+export NSO_PASSWORD=admin
+```
+
+
+
+#### Tab Completions
+
+
+```
+➜  test git:(test) virl l<tab>
+logs  ls  
+
+```
+
+You can activate VIRL autocompletions by executing the following command
+
+```
+eval "$(_VIRL_COMPLETE=source virl)"
+```
+
+zsh users may need to run the following prior
+
+```
+autoload bashcompinit
+bashcompinit
+```
+
+## Local Development
+
+If you have an idea for a feature you would like to see, we gladly accept pull requests.  To get started developing, simply run the following..
+
+```
+git clone https://github.com/kecorbin/virlutils
+cd virlutils
+python setup.py develop
+```
+
+### Linting
+
+We use flake 8 to lint our code. Please keep the repository clean by running:
+
+```
+flake8
 ```
 
 ### Testing
+
+We have some testing implemented, but would love to have better coverage. If you
+add a feature, or just feel like writing tests please update the appropriate files
+in the `tests` folder.
 
 To run the tests in the `tests` folder, you can simply run `make test` from
 the project root.

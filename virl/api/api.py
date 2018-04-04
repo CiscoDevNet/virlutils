@@ -1,9 +1,7 @@
 import requests
-import os
 from .credentials import get_credentials
-# TODO implement common credentials module
-# TODO implement basic models for the objects (swagger-gen)
 # TODO catch errors at VIRLServer().get() and VIRLServer().post()
+
 
 class VIRLServer(object):
 
@@ -42,15 +40,23 @@ class VIRLServer(object):
         return {"Content-Type": "text/xml;charset=UTF-8"}
 
     def get(self, url):
-        r = requests.get(url, auth=(self.user, self.passwd), headers=self._headers)
+        r = requests.get(url,
+                         auth=(self.user, self.passwd),
+                         headers=self._headers)
         return r
 
     def post(self, url, data):
-        r = requests.post(url, auth=(self.user, self.passwd), headers=self._headers, data=data)
+        r = requests.post(url,
+                          auth=(self.user, self.passwd),
+                          headers=self._headers,
+                          data=data)
         return r
 
     def put(self, url, data):
-        r = requests.put(url, auth=(self.user, self.passwd), headers=self._headers, data=data)
+        r = requests.put(url,
+                         auth=(self.user, self.passwd),
+                         headers=self._headers,
+                         data=data)
         return r
 
     def list_simulations(self):
@@ -59,8 +65,8 @@ class VIRLServer(object):
         return r.json()["simulations"]
 
     def launch_simulation(self, simulation_name, simulation_data):
-        u = self.base_api + "/simengine/rest/launch?session={}".format(simulation_name)
-        headers = {"Content-Type": "text/xml;charset=UTF-8"}
+        u = self.base_api + "/simengine/rest/launch?session={}"
+        u = u.format(simulation_name)
         r = self.post(u, simulation_data)
         return r
 
@@ -84,7 +90,6 @@ class VIRLServer(object):
             url += "&updated=true"
         r = requests.get(url, auth=(self.user, self.passwd))
         return r
-
 
     def get_node_console(self, simulation, node=None, mode='telnet', port='0'):
         u = self.base_api + "/simengine/rest/serial_port/{}".format(simulation)
@@ -117,7 +122,8 @@ class VIRLServer(object):
         """
         returns all interfaces for a simulation
         """
-        u = self.base_api + '/simengine/rest/interfaces/{}'.format(simulation_name)
+        u = self.base_api + '/simengine/rest/interfaces/{}'
+        u = u.format(simulation_name)
         r = self.get(u)
         return r
 
@@ -125,7 +131,8 @@ class VIRLServer(object):
         """
         stops a `node` in `simulation`
         """
-        u = self.base_api + "/simengine/rest/update/{}/stop?nodes={}".format(simulation, node)
+        u = self.base_api + "/simengine/rest/update/{}/stop?nodes={}"
+        u = u.format(simulation, node)
         r = self.put(u, None)
         return r
 
@@ -133,6 +140,23 @@ class VIRLServer(object):
         """
         stops a `node` in `simulation`
         """
-        u = self.base_api + "/simengine/rest/update/{}/start?nodes={}".format(simulation, node)
+        u = self.base_api + "/simengine/rest/update/{}/start?nodes={}"
+        u = u.format(simulation, node)
         r = self.put(u, None)
         return r
+
+    def get_gateway_for_network(self, network):
+        u = self.base_api + "/openstack/rest/networks"
+        r = self.get(u)
+        for net in r.json():
+            if net.get("Network Name") == network:
+                return net["Gateway"]
+        return None
+
+    def get_dns_server_for_network(self, network):
+        u = self.base_api + "/openstack/rest/networks"
+        r = self.get(u)
+        for net in r.json():
+            if net.get("Network Name") == network:
+                return net["DNS"][0]
+        return None
