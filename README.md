@@ -109,14 +109,23 @@ all:
 **NOTE:** if the ansible_group key is not specified for a node, that node will not be included during
 inventory generation.  
 
-#### Cisco Network Services Orchestrator - COMING SOON!!
+#### Cisco Network Services Orchestrator
 
-import your virl devices directly into Network services orchestrator
+You can add/update Network Services Orchestrator with your VIRL simulation.
+
 
 Usage
 
 ```
-$ virl generate nso
+virl generate nso [OPTIONS] [ENV]
+
+  generate nso inventory
+
+Options:
+  -o, --output TEXT           just dump the payload to file without sending
+  --syncfrom / --no-syncfrom  Perform sync-from after updating devices
+  --syncto / --no-syncto      Perform sync-to afgter updating devices
+  --help                      Show this message and exit.
 ```
 
 output
