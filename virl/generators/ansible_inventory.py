@@ -1,14 +1,16 @@
+import os
 from collections import OrderedDict
+from virl.api import VIRLServer
+from virl import helpers
 import yaml
-from jinja2 import Environment, PackageLoader
+from jinja2 import Environment, FileSystemLoader, PackageLoader
+import os
 from lxml import etree
 
-
 def setup_yaml():
-    """ https://stackoverflow.com/a/8661021 """
-    represent_dict_order = lambda self, data:  self.represent_mapping('tag:yaml.org,2002:map', data.items()) # noqa
-    yaml.add_representer(OrderedDict, represent_dict_order)
-
+  """ https://stackoverflow.com/a/8661021 """
+  represent_dict_order = lambda self, data:  self.represent_mapping('tag:yaml.org,2002:map', data.items())
+  yaml.add_representer(OrderedDict, represent_dict_order)
 
 setup_yaml()
 
@@ -18,13 +20,13 @@ def create_group_map(virl_xmlstr):
     retrieves ansible group information from `virl_xmlstr`
     returns a dictionary handy for determining the group that a node belongs to
 
-    NOTE:  `virl_xmlstr` must be received from the VIRL API, not the virl file
+    NOTE:  `virl_xmlstr` must be received from the VIRL API, not the virl file itself
 
     Ansible Groups are controlled by adding an extension to the VIRL XML file
 
     e.g
 
-    <node name="router1" type="SIMPLE" subtype="CSR1000v">
+    <node name="router1" type="SIMPLE" subtype="CSR1000v" location="361,129" ipv4="172.16.252.6" ipv6="2001:db8:b:0:1::2">
         <extensions>
             <entry key="ansible_group" type="String">mygroup</entry>
         </extensions>
@@ -34,18 +36,15 @@ def create_group_map(virl_xmlstr):
     root = etree.fromstring(virl_xmlstr)
 
     # get all ansible_groups
-    groups = root.xpath("//virl:entry[@key='ansible_group']/text()",
-                        namespaces={"virl": "http://www.cisco.com/VIRL"})
+    groups = root.xpath("//virl:entry[@key='ansible_group']/text()", namespaces={"virl":"http://www.cisco.com/VIRL"})
     groups = set(groups)
     group_map = dict()
 
     # populate nodes in correct groups
     for g in groups:
-        # query returns a list strings representing the node names in group
-        q = '//virl:node//virl:entry[text()="{}"]/ancestor::virl:node/@name'
-        query = q.format(g)
-        members = root.xpath(query,
-                             namespaces={"virl": "http://www.cisco.com/VIRL"})
+        # this query returns a list strings representing the node names in group
+        query = '//virl:node//virl:entry[text()="{}"]/ancestor::virl:node/@name'.format(g)
+        members = root.xpath(query, namespaces={"virl":"http://www.cisco.com/VIRL"})
         # add to map so that hostnames can be resolved to groups later
         for m in members:
             group_map[m] = g
@@ -57,11 +56,22 @@ def generate_inventory_dict(virl_xml, roster=None, interfaces=None):
     """
     common inventory info accross yaml/ini
     """
+    if not all([virl_xml, roster, interfaces]):
+        raise ValueError("we really need virl_xml, roster, and interfaces")
+
+    # sim_name should be the only key in the dictionary
+    if len(interfaces.keys()) != 1:
+        raise ValueError("too many keys in interface response")
+
+    sim_name = list(interfaces)[0]
+
     # create inventory skeleton
     inventory = dict()
     inventory['all'] = dict()
     inventory['all']['children'] = dict()
     inventory['all']['hosts'] = dict()
+
+
 
     for node_long_name, device in roster.items():
         # make sure we have at least enough info to be useful
@@ -75,7 +85,7 @@ def generate_inventory_dict(virl_xml, roster=None, interfaces=None):
 
         name = device['NodeName']
         # map console ports if they are available
-        if all(k in device for k in ("SimulationHost", "PortConsole")):
+        if all (k in device for k in ("SimulationHost","PortConsole")):
             entry['console_server'] = device['SimulationHost']
             entry['console_port'] = device['PortConsole']
 
@@ -101,6 +111,7 @@ def generate_inventory_dict(virl_xml, roster=None, interfaces=None):
         group_map = create_group_map(virl_xml)
         # add group to children
 
+
         # try to map to ansible group
         try:
             group = group_map[name]
@@ -111,13 +122,13 @@ def generate_inventory_dict(virl_xml, roster=None, interfaces=None):
                 inventory['all']['children'][group][name] = entry
 
         # otherwise it will go in all:
-        except: # noqa
+        except:
             inventory['all']['hosts'][name] = entry
 
-    # try:
-    #     devices = interfaces[sim_name]
-    # except KeyError:
-    #     raise Exception('something went wrong')
+    try:
+        devices = interfaces[sim_name]
+    except KeyError:
+        raise Exception('something went wrong')
 
     return inventory
 
@@ -132,11 +143,11 @@ def render_yaml_inventory(virl_xml, roster=None, interfaces=None):
     j2_env = Environment(loader=PackageLoader('virl'),
                          trim_blocks=False)
 
-    inventory = generate_inventory_dict(virl_xml,
-                                        roster=roster,
-                                        interfaces=interfaces)
-    template = j2_env.get_template('ansible/inventory_template.j2')
-    return template.render(inventory=inventory)
+    inventory=generate_inventory_dict(virl_xml, roster=roster, interfaces=interfaces)
+    # pass all available data to template for rendering, this can probably be pruned back at some point
+    inventory_contents = j2_env.get_template('ansible/inventory_template.j2').render(inventory=inventory)
+
+    return inventory_contents
 
 
 def render_ini_inventory(virl_xml, roster=None, interfaces=None):
@@ -146,35 +157,22 @@ def render_ini_inventory(virl_xml, roster=None, interfaces=None):
 
     """
 
+
     j2_env = Environment(loader=PackageLoader('virl'),
                          trim_blocks=False)
 
-    inventory = generate_inventory_dict(virl_xml,
-                                        roster=roster,
-                                        interfaces=interfaces)
-    # pass all available data to template for rendering, this can probably
-    # be pruned back at some point
-    template = j2_env.get_template('ansible/inventory_ini_template.j2')
-    return template.render(inventory=inventory)
+    inventory=generate_inventory_dict(virl_xml, roster=roster, interfaces=interfaces)
+    # pass all available data to template for rendering, this can probably be pruned back at some point
+    inventory_contents = j2_env.get_template('ansible/inventory_ini_template.j2').render(inventory=inventory)
+    return inventory_contents
 
 
-def ansible_inventory_generator(env,
-                                virl_data,
-                                roster,
-                                interfaces,
-                                style="yaml"):
+def ansible_inventory_generator(env, virl_data, roster, interfaces, style="yaml"):
     """
     given a sim roster produces a inventory file suitable for
     use with ansible
 
     """
-    if not all([virl_data, roster, interfaces]):
-        raise ValueError("we really need virl_xml, roster, and interfaces")
-
-    # sim_name should be the only key in the dictionary
-    if len(interfaces.keys()) != 1:
-        raise ValueError("too many keys in interface response")
-
     if style == "yaml":
         inventory_yaml = render_yaml_inventory(virl_data, roster, interfaces)
         return inventory_yaml

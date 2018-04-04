@@ -3,7 +3,6 @@ from virl.api import VIRLServer
 from subprocess import call
 from virl import helpers
 
-
 @click.command()
 @click.argument('node', nargs=-1)
 def stop(node):
@@ -30,5 +29,4 @@ def stop(node):
         if resp.ok:
             click.secho("Stopped node {}".format(node))
         else:
-            click.secho("Error Stopping Node {}: {}".format(node, resp),
-                        fg="red")
+            click.secho("Error Stopping Node {}: {}".format(node,resp), fg="red")

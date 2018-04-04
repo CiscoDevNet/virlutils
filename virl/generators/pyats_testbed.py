@@ -1,7 +1,10 @@
+import os
 from collections import OrderedDict
+from virl.api import VIRLServer
+from virl import helpers
 import yaml
 from jinja2 import Environment, PackageLoader
-
+import os
 
 def render_topl_template(devices):
     """
@@ -9,15 +12,12 @@ def render_topl_template(devices):
     """
     pass
 
-
 def setup_yaml():
-    """ https://stackoverflow.com/a/8661021 """
-    represent_dict_order = lambda self, data: self.represent_mapping('tag:yaml.org,2002:map', data.items()) # noqa
-    yaml.add_representer(OrderedDict, represent_dict_order)
-
+  """ https://stackoverflow.com/a/8661021 """
+  represent_dict_order = lambda self, data:  self.represent_mapping('tag:yaml.org,2002:map', data.items())
+  yaml.add_representer(OrderedDict, represent_dict_order)
 
 setup_yaml()
-
 
 def render_testbed_template(name,
                             servers,
@@ -43,13 +43,11 @@ def render_testbed_template(name,
 
     j2_env = Environment(loader=PackageLoader('virl'),
                          trim_blocks=False)
-    template = j2_env.get_template('pyats/testbed_yaml.j2')
-    return template.render(name=sim_name,
-                           conn_class=conn_class,
-                           servers=servers,
-                           devices=devices,
-                           topology=topology)
-
+    return j2_env.get_template('pyats/testbed_yaml.j2').render(name=sim_name,
+                                                               conn_class=conn_class,
+                                                               servers=servers,
+                                                               devices=devices,
+                                                               topology=topology)
 
 def pyats_testbed_generator(env,
                             virl_data,
@@ -75,7 +73,10 @@ def pyats_testbed_generator(env,
         virl_server = str(props.get("SimulationHost", None))
         device_type = str(props.get("NodeSubtype", None))
         device_name = str(props.get("NodeName", None))
+        protocol = str(props.get("managementProtocol", None))
         console_port = str(props.get("PortConsole", None))
+        username = os.getenv("VIRL_USERNAME", "guest")
+        username = os.getenv("VIRL_PASSWORD", "guest")
 
         # we prefer external addr
         external_ip = str(props.get("externalAddr", ""))
@@ -113,12 +114,13 @@ def pyats_testbed_generator(env,
             }
             devices[device_name]['connections'] = OrderedDict()
 
+
             devices[device_name]['connections']['console'] = OrderedDict()
-            console_info = {"protocol": "telnet",
-                            "ip": virl_server,
-                            "port": console_port
-                            }
-            devices[device_name]['connections']['console'] = console_info
+            devices[device_name]['connections']['console'] = {
+                    "protocol": "telnet",
+                    "ip": virl_server,
+                    "port": console_port
+            }
 
     topology_yaml = render_testbed_template(name,
                                             servers,

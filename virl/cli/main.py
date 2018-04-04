@@ -1,4 +1,7 @@
 import click
+import os
+from subprocess import call
+from virl.api import VIRLServer
 
 from .console.commands import console
 from .nodes.commands import nodes
@@ -13,14 +16,10 @@ from .ssh.commands import ssh
 from .generate import generate
 from .start.commands import start
 from .stop.commands import stop
-from .pull.commands import pull
-from .search.commands import search
-
 
 @click.group()
 def virl():
     pass
-
 
 virl.add_command(console)
 virl.add_command(nodes)
@@ -35,9 +34,6 @@ virl.add_command(ssh)
 virl.add_command(generate)
 virl.add_command(start)
 virl.add_command(stop)
-virl.add_command(search)
-virl.add_command(pull)
-
 
 if __name__ == '__main__':
-    virl()
+    cli()

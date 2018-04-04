@@ -4,7 +4,6 @@ from virl.api import VIRLServer
 from virl.cli.views import log_table
 from virl import helpers
 
-
 @click.command()
 @click.argument('env', default='default')
 def logs(env, **kwargs):
@@ -18,5 +17,4 @@ def logs(env, **kwargs):
         resp = server.get_logs(sim_name)
         log_table(resp.json()['events'])
     else:
-        click.secho("could not find logs for for env: {}".format(env),
-                    fg='red')
+        click.secho("could not find logs for for env: {}".format(env), fg='red')
