@@ -28,12 +28,12 @@ class VirlCLITest(unittest.TestCase):
             # Mock the request to return what we expect from the API.
             m.get('http://localhost:19399/simengine/rest/list', json={
                 'simulations': {
-                    'virl_cli_default_1dNVCr': {
+                    'sim1': {
                         'status': 'ACTIVE',
                         'expires': None,
                         'launched': '2017-12-08T23:39:07.721310',
                     },
-                    'topology-fpyHFs': {
+                    'sim2': {
                         'status': 'ACTIVE',
                         'expires': None,
                         'launched': '2017-12-08T18:48:34.174486',
@@ -41,6 +41,6 @@ class VirlCLITest(unittest.TestCase):
                 }
             })
             runner = CliRunner()
-            result = runner.invoke(virl, ["ls"])
+            result = runner.invoke(virl, ["ls", "--all"])
             print(result.output)
             self.assertEqual(0, result.exit_code)

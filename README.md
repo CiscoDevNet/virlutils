@@ -1,5 +1,7 @@
 # virlutils
 
+[![Build Status](https://travis-ci.org/kecorbin/virlutils.svg?branch=master)](https://travis-ci.org/kecorbin/virlutils)
+
 A collection of utilities for interacting with [Cisco VIRL](https://learningnetworkstore.cisco.com/virlfaq/aboutVirl)
 
 ## Features
