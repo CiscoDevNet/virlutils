@@ -1,7 +1,7 @@
 import os
 import requests
-import six
 import getpass
+
 
 def get_credentials():
     try:
@@ -23,49 +23,45 @@ def get_credentials():
 
     return(nso_host, nso_username, nso_password)
 
+
 def perform_sync_from():
     nso_host, nso_username, nso_password = get_credentials()
     url = "http://{}:8080".format(nso_host)
     url = url + "/api/running/devices/_operations/sync-from".format(nso_host)
-    headers = {
-        'Content-Type': "application/vnd.yang.operation+json",
-        'Accept': "application/vnd.yang.operation+json"
-        }
+    headers = {'Content-Type': "application/vnd.yang.operation+json",
+               'Accept': "application/vnd.yang.operation+json"}
 
     response = requests.request("POST",
                                 url,
                                 auth=(nso_username, nso_password),
                                 headers=headers)
     return response
+
 
 def perform_sync_to():
     nso_host, nso_username, nso_password = get_credentials()
     url = "http://{}:8080".format(nso_host)
     url = url + "/api/running/devices/_operations/sync-to".format(nso_host)
-    headers = {
-        'Content-Type': "application/vnd.yang.operation+json",
-        'Accept': "application/vnd.yang.operation+json"
-        }
+    headers = {'Content-Type': "application/vnd.yang.operation+json",
+               'Accept': "application/vnd.yang.operation+json"}
 
     response = requests.request("POST",
                                 url,
                                 auth=(nso_username, nso_password),
                                 headers=headers)
     return response
+
 
 def update_devices(xml_payload):
 
     nso_host, nso_username, nso_password = get_credentials()
     url = "http://{}:8080/api/config/devices/".format(nso_host)
 
-    headers = {
-        'Content-Type': "application/vnd.yang.data+xml",
-        }
+    headers = {'Content-Type': "application/vnd.yang.data+xml"}
 
     response = requests.request("PATCH",
                                 url,
                                 auth=(nso_username, nso_password),
                                 data=xml_payload, headers=headers)
-
 
     return response

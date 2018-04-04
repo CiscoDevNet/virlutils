@@ -1,6 +1,7 @@
 import tabulate
 import click
 
+
 def console_table(console_entries):
     click.secho("""
     Here is a list of all the running consoles

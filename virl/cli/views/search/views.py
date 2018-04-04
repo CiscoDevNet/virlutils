@@ -1,8 +1,9 @@
 import tabulate
 import click
 
+
 def repo_table(repo_entries):
-    
+
     # sort by date
     headers = ["Name", "Stars", "Description"]
     table = list()

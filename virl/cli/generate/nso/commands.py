@@ -60,6 +60,6 @@ def nso(env, syncfrom, syncto, **kwargs):
                 resp = perform_sync_to()
                 sync_table(resp.json())
 
-
     else:
-        click.secho("couldnt generate testbed for for env: {}".format(env), fg='red')
+        click.secho("couldnt generate testbed for for env: {}".format(env),
+                    fg='red')

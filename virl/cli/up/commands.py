@@ -2,8 +2,7 @@ import click
 from subprocess import call
 from virl.api import VIRLServer
 from virl.helpers import generate_sim_id, check_sim_running, store_sim_info
-import os, os.path
-import errno
+import os
 
 
 @click.command()
@@ -49,7 +48,7 @@ def up(repo=None, **kwargs):
             foldername = os.path.basename(dirpath)
             sim_name = "{}_{}_{}".format(foldername, env, generate_sim_id())
             resp = server.launch_simulation(sim_name, data)
-            store_sim_info(resp.text, env=env) # 'topology-2lkx2'
+            store_sim_info(resp.text, env=env)  # 'topology-2lkx2'
         else:
             click.secho('Sim {} already running'.format(running))
     else:

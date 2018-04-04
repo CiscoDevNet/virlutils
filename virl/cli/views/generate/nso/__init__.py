@@ -1,1 +1,1 @@
-from .sync_result import sync_table
+from .sync_result import sync_table # noqa

@@ -3,6 +3,7 @@ from virl.api import VIRLServer
 from subprocess import call
 from virl import helpers
 
+
 @click.command()
 @click.argument('node', nargs=-1)
 def start(node):
@@ -29,5 +30,5 @@ def start(node):
         if resp.ok:
             click.secho("Started node {}".format(node))
         else:
-            click.secho("Error starting Node {}: {}".format(node,resp), fg="red")
-        
+            click.secho("Error starting Node {}: {}".format(node, resp),
+                        fg="red")

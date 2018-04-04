@@ -1,14 +1,16 @@
 import tabulate
 import click
 
+
 def node_list_table(node_dict):
     click.secho("Here is a list of all the running nodes")
     table = list()
-    headers = ["Node", "Type", "State", "Reachable", "Protocol", "Management Address", "External Address"]
+    headers = ["Node", "Type", "State", "Reachable",
+               "Protocol", "Management Address", "External Address"]
     skip_subtypes = ["LXC FLAT"]
     for key, props in node_dict.items():
         tr = list()
-        # make sure we have minimally useful data otherwise we won't display it..
+        # make sure we have minimally useful data otherwise we won't display it
         if all(k in props for k in ["NodeName", "NodeSubtype"]):
             node = props.get("NodeName", "unknown")
             tr.append(node)

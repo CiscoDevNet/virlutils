@@ -1,6 +1,7 @@
 import click
 from virl.api import VIRLServer
-from virl.helpers import get_env_sim_name, check_sim_running, remove_sim_info
+from virl.helpers import check_sim_running, remove_sim_info
+
 
 @click.command()
 @click.argument('env', default='default')
@@ -15,7 +16,7 @@ def down(sim_name=None, env='default', **kwargs):
         sim_name = running
     # by sim name
     elif sim_name:
-        sim_name= sim_name
+        sim_name = sim_name
     else:
         click.secho("Could not find sim for environment {}".format(env))
         exit(1)

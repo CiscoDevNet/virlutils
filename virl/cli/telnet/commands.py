@@ -3,6 +3,7 @@ from virl.api import VIRLServer
 from subprocess import call
 from virl import helpers
 
+
 @click.command()
 @click.argument('node', nargs=-1)
 def telnet(node):
@@ -26,23 +27,25 @@ def telnet(node):
         sim_name = running
         server = VIRLServer()
         details = server.get_sim_roster(sim_name)
-        #resp = server.get_node_console(sim_name, node=node)
+
         if node:
             try:
-                for k,v in details.items():
+                for k, v in details.items():
                     if k.endswith(node):
                         ip = details[k]['managementIP']
                         for node_dict in details.values():
                             node_name = node_dict.get("NodeName")
                             if node_name == node:
-                                click.secho("Attemping telnet connection to {} at {}".format(node_name, ip))
+                                click.secho("Attemping telnet connection to "
+                                            "{} at {}".format(node_name, ip))
 
                         exit(call(['telnet', ip]))
 
             except AttributeError:
-                click.secho("Could not find management info for {}:{}".format(env,node), fg="red")
+                click.secho("Could not find management info "
+                            "for {}:{}".format(env, node), fg="red")
 
             except KeyError:
-                click.secho("Unknown node {}:{}".format(env,node), fg="red")
+                click.secho("Unknown node {}:{}".format(env, node), fg="red")
         else:
             return details.json()

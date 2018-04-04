@@ -1,10 +1,11 @@
 import tabulate
 import click
 
+
 def log_table(log_entries):
     click.secho("Here is a list of recent log entries")
     # sort by date
-    log_entries = newlist = sorted(log_entries, key=lambda k: k['id'])
+    log_entries = sorted(log_entries, key=lambda k: k['id'])
     headers = ["Timestamp", "Severity", "Message"]
     table = list()
 
