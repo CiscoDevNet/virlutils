@@ -16,8 +16,10 @@ class VirlCLITest(unittest.TestCase):
         runner = CliRunner()
         result = runner.invoke(virl, ["--help"])
         self.assertEqual(0, result.exit_code)
-        self.assertIn('console', result.output)
-        self.assertIn('logs', result.output)
+        for command in ["console", "generate", "down", "nodes", "logs",
+                        "ls", "pull", "search", "ssh", "start", "stop",
+                        "telnet", "up", "use"]:
+            self.assertIn(command, result.output)
 
     def test_virl_ls(self):
         with requests_mock.mock() as m:
@@ -38,4 +40,5 @@ class VirlCLITest(unittest.TestCase):
             })
             runner = CliRunner()
             result = runner.invoke(virl, ["ls"])
+            print(result)
             self.assertEqual(0, result.exit_code)
