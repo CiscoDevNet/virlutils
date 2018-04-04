@@ -144,3 +144,11 @@ class VIRLServer(object):
             if net.get("Network Name") == network:
                 return net["Gateway"]
         return None
+
+    def get_dns_server_for_network(self, network):
+        u = self.base_api + "/openstack/rest/networks"
+        r = self.get(u)
+        for net in r.json():
+            if net.get("Network Name") == network:
+                return net["DNS"][0]
+        return None
