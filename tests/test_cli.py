@@ -11,6 +11,8 @@ class VirlCLITest(unittest.TestCase):
         # Only doing this because we don't have a better way of controlling
         # injection of VIRL_HOST
         os.environ['VIRL_HOST'] = 'localhost'
+        os.environ['VIRL_USERNAME'] = 'guest'
+        os.environ['VIRL_PASSWORD'] = 'guest'
 
     def test_virl_help(self):
         runner = CliRunner()
