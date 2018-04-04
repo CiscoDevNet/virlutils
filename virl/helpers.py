@@ -63,5 +63,5 @@ def check_sim_running(env):
             return sim_name
         else:
             return None
-    except Exception as e:
+    except Exception:
         return None

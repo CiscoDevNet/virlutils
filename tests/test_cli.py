@@ -1,15 +1,12 @@
 import os
 import unittest
-
-import click
 from click.testing import CliRunner
 import requests_mock
-
 from virl.cli.main import virl
 
 
 class VirlCLITest(unittest.TestCase):
-    
+
     def setUp(self):
         # Only doing this because we don't have a better way of controlling
         # injection of VIRL_HOST
