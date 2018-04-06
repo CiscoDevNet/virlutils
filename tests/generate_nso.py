@@ -4,7 +4,6 @@ from .mocks.nso import MockNSOServer
 from click.testing import CliRunner
 import requests_mock
 from virl.cli.main import virl
-from virl.api.nso import get_credentials
 try:
     from unittest.mock import patch
 except ImportError:
@@ -36,12 +35,3 @@ class Tests(BaseTest):
             runner = CliRunner()
             result = runner.invoke(virl, ["generate", "nso", "--syncfrom"])
             self.assertEqual(0, result.exit_code)
-
-    @patch('__builtin__.raw_input',
-           return_value='foo')
-    @patch('getpass.getpass', return_value='foo')
-    def test_virl_generate_nso_creds(self,
-                                     raw_input_response,
-                                     getpass_response):
-        creds = get_credentials()
-        self.assertEqual(creds, ('foo', 'foo', 'foo'))
