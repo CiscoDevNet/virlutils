@@ -3,11 +3,9 @@ from .mocks.github import MockGitHub
 from click.testing import CliRunner
 import requests_mock
 from virl.cli.main import virl
-import os
 
 
 class Tests(BaseTest):
-
 
     def test_virl_pull(self):
         with requests_mock.mock() as m:

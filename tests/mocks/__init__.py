@@ -1,1 +1,1 @@
-from .api import MockVIRLServer
+from .api import MockVIRLServer # noqa

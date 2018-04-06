@@ -9,6 +9,7 @@ try:
 except ImportError:
     from mock import patch
 
+
 class Tests(BaseTest):
 
     def setUp(self):
@@ -50,9 +51,8 @@ class Tests(BaseTest):
             topo_url += 'foo/bar/master/topology.virl'
             m.get(topo_url, json=MockGitHub.get_topology())
             runner = CliRunner()
-            result = runner.invoke(virl, ["up", "foo/bar"])
+            runner.invoke(virl, ["up", "foo/bar"])
             call_mock.assert_called_with(['virl', 'up'])
-
 
     def mock_up_response(self):
         response = u'TEST_ENV'
