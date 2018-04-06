@@ -3,7 +3,7 @@ import requests
 import getpass
 
 
-def get_input(prompt):
+def get_input(prompt):  # pragma: no cover
     try:
         input = raw_input
     except NameError:
@@ -11,7 +11,7 @@ def get_input(prompt):
     return input(prompt)
 
 
-def get_credentials():
+def get_credentials():  # pragma: no cover
 
     nso_host = os.getenv('NSO_HOST', None)
     if not nso_host:

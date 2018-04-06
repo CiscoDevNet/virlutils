@@ -7,7 +7,7 @@ import os
 import sys
 
 
-def _get_from_user(prompt):
+def _get_from_user(prompt):  # pragma: no cover
     """
     Get the input from the user through interactive prompt.
     Use raw_input or input based on the Python version.
@@ -96,7 +96,7 @@ def get_credentials(rcfile='~/.virlrc'):
     host = get_prop('VIRL_HOST')
     username = get_prop('VIRL_USERNAME')
     password = get_prop('VIRL_PASSWORD')
-    if not host:
+    if not host:  # pragma: no cover
         prompt = 'Please enter the IP / hostname of your virl server: '
         host = _get_from_user(prompt)
 
@@ -106,7 +106,7 @@ def get_credentials(rcfile='~/.virlrc'):
     if not password:
         password = _get_password("Please enter your password: ")
 
-    if not all([host, username, password]):
+    if not all([host, username, password]):  # pragma: no cover
         prompt = "Unable to determine VIRL credentials, please see docs"
         sys.exit(prompt)
     else:

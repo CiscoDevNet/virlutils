@@ -72,5 +72,5 @@ def nso_payload_generator(env, virl_data, roster, interfaces,
     if style == "xml":
         xml_payload = render_xml_payload(virl_data, roster, interfaces)
         return xml_payload
-    elif style == "json":
+    elif style == "json":  # pragma: no cover
         raise NotImplementedError

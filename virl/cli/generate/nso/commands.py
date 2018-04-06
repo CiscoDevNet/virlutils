@@ -40,7 +40,7 @@ def nso(env, syncfrom, **kwargs):
                                         roster=roster,
                                         interfaces=interfaces)
 
-        if file_name:
+        if file_name:  # pragma: no cover
             click.secho("Writing payload to {}".format(file_name))
             with open(file_name, 'w') as payload_file:
 
