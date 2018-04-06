@@ -7,7 +7,6 @@ from . import debug_on
 
 class Tests(BaseTest):
 
-    @debug_on()
     def test_virl_generate_ansible(self):
         with requests_mock.mock() as m:
             # Mock the request to return what we expect from the API.
