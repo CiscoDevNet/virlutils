@@ -10,9 +10,12 @@ except ImportError:
 class Tests(BaseTest):
 
     def setUp(self):
-        del os.environ['VIRL_HOST']
-        del os.environ['VIRL_USERNAME']
-        del os.environ['VIRL_PASSWORD']
+        if 'VIRL_HOST' in os.environ:
+            del os.environ['VIRL_HOST']
+        if 'VIRL_USERNAME' in os.environ:
+            del os.environ['VIRL_USERNAME']
+        if 'VIRL_PASSWORD' in os.environ:
+            del os.environ['VIRL_PASSWORD']
 
         try:
             os.remove('.virl/default/id')
@@ -23,18 +26,10 @@ class Tests(BaseTest):
     def test_create_virl_server(self, mock_prop):
         server = VIRLServer()
         self.assertIsInstance(server, VIRLServer)
-    #
-    # def test_user(self):
-    #     server = VIRLServer()
-    #     server.user = 'foo'
-    #     self.assertEqual(server.user, 'foo')
-    #
-    # def test_host(self):
-    #     server = VIRLServer()
-    #     server.host = 'notreal'
-    #     self.assertEqual(server.host, 'notreal')
-    #
-    # def test_paaswd(self):
-    #     server = VIRLServer()
-    #     server.passwd = 'notreal'
-    #     self.assertEqual(server.passwd, 'notreal')
+
+    @patch('virl.api.credentials._get_from_user', return_value='userinput')
+    @patch('virl.api.credentials._get_password', return_value='passwordinput')
+    def test_prompt_user(self, user_input, password_input):
+        server = VIRLServer()
+        user = server.user
+        self.assertEqual(user, 'userinput')

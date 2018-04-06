@@ -2,7 +2,6 @@ from . import BaseTest
 from click.testing import CliRunner
 import requests_mock
 from virl.cli.main import virl
-import os
 import filecmp
 
 
@@ -26,7 +25,7 @@ class Tests(BaseTest):
             self.assertTrue(same)
             self.assertEqual(0, result.exit_code)
 
-    def test_virl_generate_ansible_yaml(self):
+    def test_virl_generate_ansible_ini(self):
         with requests_mock.mock() as m:
             # Mock the request to return what we expect from the API.
             roster_url = 'http://localhost:19399/roster/rest'
