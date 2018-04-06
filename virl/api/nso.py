@@ -3,19 +3,23 @@ import requests
 import getpass
 
 
-def get_credentials():
+def get_input(prompt):
     try:
         input = raw_input
     except NameError:
         pass
+    return input(prompt)
+
+
+def get_credentials():
 
     nso_host = os.getenv('NSO_HOST', None)
     if not nso_host:
-        nso_host = input('Enter NSO IP/Hostname: ')
+        nso_host = get_input('Enter NSO IP/Hostname: ')
 
     nso_username = os.getenv('NSO_USERNAME', None)
     if not nso_username:
-        nso_username = input('Enter NSO username: ')
+        nso_username = get_input('Enter NSO username: ')
 
     nso_password = os.getenv('NSO_PASSWORD', None)
     if not nso_password:

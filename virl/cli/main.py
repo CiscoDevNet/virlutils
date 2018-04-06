@@ -40,4 +40,4 @@ virl.add_command(pull)
 
 
 if __name__ == '__main__':
-    virl()
+    virl()  # pragma: no cover

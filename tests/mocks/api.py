@@ -46,7 +46,94 @@ class MockVIRLServer:
                 u'managementIP': u'172.16.30.122',
                 u'managementProtocol': u'telnet',
                 u'SimulationHost': u'10.10.10.170',
-                u'NodeSubtype': u'IOSv',
+                u'NodeSubtype': u'CSR1000',
+                u'PortMonitor': 17030,
+                u'Reachable': True,
+                u'SerialPorts': 2,
+                u'managementProxy': u'jumphost',
+                u'VncConsole': False,
+                u'PortConsole': 17027,
+                u'Annotation': u'REACHABLE'
+            },
+                u'guest|TEST_ENV|virl|router2': {
+                    u'Status': u'ACTIVE',
+                    u'simLaunch': u'2018-04-06T02:57:15.217442',
+                    u'simID': u'virlutils_default_XzmcAm',
+                    u'NodeName': u'router2',
+                    u'simStatus': u'ACTIVE',
+                    u'simExpires': None,
+                    u'managementIP': u'172.16.30.122',
+                    u'managementProtocol': u'telnet',
+                    u'SimulationHost': u'10.10.10.170',
+                    u'NodeSubtype': u'mgmt-lxc',
+                    u'PortMonitor': 17030,
+                    u'Reachable': True,
+                    u'SerialPorts': 2,
+                    u'managementProxy': u'jumphost',
+                    u'VncConsole': False,
+                    u'PortConsole': 17027,
+                    u'Annotation': u'REACHABLE'
+                },
+
+            u'guest|TEST_ENV|virl|xr2': {
+                u'Status': u'ACTIVE',
+                u'simLaunch': u'2018-04-06T02:57:15.217442',
+                u'simID': u'virlutils_default_XzmcAm',
+                u'NodeName': u'router2',
+                u'simStatus': u'ACTIVE',
+                u'simExpires': None,
+                u'managementIP': u'172.16.30.122',
+                u'managementProtocol': u'telnet',
+                u'SimulationHost': u'10.10.10.170',
+                u'NodeSubtype': u'XR',
+                u'PortMonitor': 17030,
+                u'Reachable': True,
+                u'SerialPorts': 2,
+                u'managementProxy': u'jumphost',
+                u'VncConsole': False,
+                u'PortConsole': 17027,
+                u'Annotation': u'REACHABLE'
+            },
+            u'guest|TEST_ENV|virl|nxos': {
+                u'Status': u'ACTIVE',
+                u'simLaunch': u'2018-04-06T02:57:15.217442',
+                u'simID': u'virlutils_default_XzmcAm',
+                u'NodeName': u'router2',
+                u'simStatus': u'ACTIVE',
+                u'simExpires': None,
+                u'managementIP': u'172.16.30.122',
+                u'managementProtocol': u'telnet',
+                u'SimulationHost': u'10.10.10.170',
+                u'NodeSubtype': u'NXOS',
+                u'PortMonitor': 17030,
+                u'Reachable': True,
+                u'SerialPorts': 2,
+                u'managementProxy': u'jumphost',
+                u'VncConsole': False,
+                u'PortConsole': 17027,
+                u'Annotation': u'REACHABLE'
+            },
+            u'guest|TEST_ENV|virl|badtype': {
+                u'Status': u'ACTIVE',
+                u'simLaunch': u'2018-04-06T02:57:15.217442',
+                u'simID': u'virlutils_default_XzmcAm',
+                u'NodeName': u'router2',
+                u'simStatus': u'ACTIVE',
+                u'simExpires': None,
+                u'managementIP': u'172.16.30.122',
+                u'managementProtocol': u'telnet',
+                u'SimulationHost': u'10.10.10.170',
+                u'NodeSubtype': u'badsubtype',
+                u'PortMonitor': 17030,
+                u'Reachable': True,
+                u'SerialPorts': 2,
+                u'managementProxy': u'jumphost',
+                u'VncConsole': False,
+                u'PortConsole': 17027,
+                u'Annotation': u'REACHABLE'
+            },
+            u'guest|TEST_ENV|virl|baddata': {
+                u'Status': u'ACTIVE',
                 u'PortMonitor': 17030,
                 u'Reachable': True,
                 u'SerialPorts': 2,
@@ -55,6 +142,9 @@ class MockVIRLServer:
                 u'PortConsole': 17027,
                 u'Annotation': u'REACHABLE'
             }
+
+
+
         }
         return response
 
@@ -121,3 +211,31 @@ class MockVIRLServer:
         with open('tests/static/test_virl_data', 'r') as fh:
             virl_data = fh.read()
         return virl_data
+
+    @classmethod
+    def list_simulations(cls):
+        response = {
+            'simulations': {
+                'sim1': {
+                    'status': 'ACTIVE',
+                    'expires': None,
+                    'launched': '2017-12-08T23:39:07.721310',
+                },
+                'sim3': {
+                    'status': 'BUILDING',
+                    'expires': None,
+                    'launched': '2017-12-08T18:48:34.174486',
+                },
+                'sim4': {
+                    'status': 'ABSENT',
+                    'expires': None,
+                    'launched': '2017-12-08T18:48:34.174486',
+                },
+                'sim2': {
+                    'status': 'ACTIVE',
+                    'expires': None,
+                    'launched': '2017-12-08T18:48:34.174486',
+                },
+            }
+        }
+        return response

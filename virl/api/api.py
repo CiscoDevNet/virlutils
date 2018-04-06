@@ -75,10 +75,10 @@ class VIRLServer(object):
         r = self.get(u)
         return r
 
-    def get_nodes(self, simulation):
-        url = self.base_api + "/simengine/rest/nodes/{}".format(simulation)
-        r = requests.get(url, auth=(self.user, self.passwd))
-        return r.json()[simulation]
+    # def get_nodes(self, simulation):
+    #     url = self.base_api + "/simengine/rest/nodes/{}".format(simulation)
+    #     r = requests.get(url, auth=(self.user, self.passwd))
+    #     return r.json()[simulation]
 
     def export(self, simulation, ip=False):
         """

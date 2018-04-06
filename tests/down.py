@@ -27,8 +27,6 @@ class Tests(BaseTest):
             # Mock the request to return what we expect from the API.
             down_url = 'http://localhost:19399/simengine/rest/stop/FOO'
             m.get(down_url, json=self.mock_down_response())
-            import requests
-            print(requests.get(down_url).text)
             runner = CliRunner()
             result = runner.invoke(virl, ["down", "--sim-name", "FOO"])
             self.assertEqual(0, result.exit_code)

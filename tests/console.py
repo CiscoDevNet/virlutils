@@ -32,3 +32,13 @@ class Tests(BaseTest):
             call_mock.assert_called_once_with(['telnet',
                                                u'10.94.241.194',
                                                u'17001'])
+
+    @patch("virl.cli.console.commands.call", auto_spec=False)
+    def test_virl_console_connect_env(self, call_mock):
+
+        with requests_mock.mock() as m:
+            # Mock the request to return what we expect from the API.
+            m.get('http://localhost:19399/simengine/rest/serial_port/TEST_ENV',
+                  json=MockVIRLServer.get_node_console())
+            runner = CliRunner()
+            runner.invoke(virl, ["console", "TEST_ENV", "router1"])
