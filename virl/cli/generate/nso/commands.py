@@ -3,7 +3,7 @@ from virl.api import VIRLServer
 from virl.cli.views import sync_table
 from virl import helpers
 from virl.generators import nso_payload_generator
-from .helpers import update_devices, perform_sync_from
+from virl.api.nso import update_devices, perform_sync_from
 
 
 @click.command()

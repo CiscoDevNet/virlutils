@@ -1,9 +1,13 @@
 from . import BaseTest
+from .mocks.github import MockGitHub
 from click.testing import CliRunner
 import requests_mock
 from virl.cli.main import virl
 import os
-
+try:
+    from unittest.mock import patch
+except ImportError:
+    from mock import patch
 
 class Tests(BaseTest):
 
@@ -28,6 +32,28 @@ class Tests(BaseTest):
             result = runner.invoke(virl, ["up"])
             self.assertEqual(0, result.exit_code)
 
+    @patch("virl.cli.up.commands.call", auto_spec=False)
+    def test_virl_up_from_repo(self, call_mock):
+
+        try:
+            os.remove('./topology.virl')
+        except OSError:
+            pass
+
+        with requests_mock.mock() as m:
+            # Mock the request to return what we expect from the API.
+            up_url = 'http://localhost:19399/simengine/rest/launch'
+            m.post(up_url, json=self.mock_up_response())
+            net_url = 'http://localhost:19399/openstack/rest/networks'
+            m.get(net_url, json=self.mock_os_net_response())
+            topo_url = 'https://raw.githubusercontent.com/'
+            topo_url += 'foo/bar/master/topology.virl'
+            m.get(topo_url, json=MockGitHub.get_topology())
+            runner = CliRunner()
+            result = runner.invoke(virl, ["up", "foo/bar"])
+            call_mock.assert_called_with(['virl', 'up'])
+
+
     def mock_up_response(self):
         response = u'TEST_ENV'
         return response
@@ -37,14 +63,14 @@ class Tests(BaseTest):
             {u'Description': u'L3 SNAT External',
              u'ID': u'e565b39a-ee48-4d35-b22f-15ca13cca40d',
              u'DNS': [u'8.8.8.8', u'171.70.168.183'],
-             u'CIDR': u'10.94.241.208/28',
-             u'Gateway': u'10.94.241.209',
+             u'CIDR': u'10.10.241.208/28',
+             u'Gateway': u'10.10.241.209',
              u'Network Name': u'ext-net'},
             {u'Description': u'L2 FLAT',
              u'ID': u'426a32c0-4964-4288-ba74-7db1f1f0b848',
              u'DNS': [u'8.8.8.8', u'171.70.168.183'],
-             u'CIDR': u'10.94.241.224/27',
-             u'Gateway': u'10.94.241.225',
+             u'CIDR': u'10.10.241.224/27',
+             u'Gateway': u'10.10.241.225',
              u'Network Name': u'flat'},
             {u'Description': u'L2 FLAT',
              u'ID': u'bfa4c58b-e404-45af-905d-b50aa603df20',

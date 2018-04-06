@@ -38,18 +38,18 @@ def perform_sync_from():
     return response
 
 
-def perform_sync_to():
-    nso_host, nso_username, nso_password = get_credentials()
-    url = "http://{}:8080".format(nso_host)
-    url = url + "/api/running/devices/_operations/sync-to".format(nso_host)
-    headers = {'Content-Type': "application/vnd.yang.operation+json",
-               'Accept': "application/vnd.yang.operation+json"}
-
-    response = requests.request("POST",
-                                url,
-                                auth=(nso_username, nso_password),
-                                headers=headers)
-    return response
+# def perform_sync_to():
+#     nso_host, nso_username, nso_password = get_credentials()
+#     url = "http://{}:8080".format(nso_host)
+#     url = url + "/api/running/devices/_operations/sync-to".format(nso_host)
+#     headers = {'Content-Type': "application/vnd.yang.operation+json",
+#                'Accept': "application/vnd.yang.operation+json"}
+#
+#     response = requests.request("POST",
+#                                 url,
+#                                 auth=(nso_username, nso_password),
+#                                 headers=headers)
+#     return response
 
 
 def update_devices(xml_payload):

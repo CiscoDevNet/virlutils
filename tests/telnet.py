@@ -22,6 +22,34 @@ class TelnetTests(BaseTest):
             call_mock.assert_called_once_with(['telnet',
                                                u'1.1.1.1'])
 
+    @patch("virl.cli.telnet.commands.call",
+           auto_spec=False,
+           side_effect=KeyError)
+    def test_virl_telnet_raises_KeyError(self, call_mock):
+
+        with requests_mock.mock() as m:
+            # Mock the request to return what we expect from the API.
+            m.get('http://localhost:19399/roster/rest',
+                  json=self.mock_response())
+            runner = CliRunner()
+            runner.invoke(virl, ["telnet", "router1"])
+            call_mock.assert_called_once_with(['telnet',
+                                               u'1.1.1.1'])
+
+    @patch("virl.cli.telnet.commands.call",
+           auto_spec=False,
+           side_effect=AttributeError)
+    def test_virl_telnet_raises_AttributError(self, call_mock):
+
+        with requests_mock.mock() as m:
+            # Mock the request to return what we expect from the API.
+            m.get('http://localhost:19399/roster/rest',
+                  json=self.mock_response())
+            runner = CliRunner()
+            runner.invoke(virl, ["telnet", "router1"])
+            call_mock.assert_called_once_with(['telnet',
+                                               u'1.1.1.1'])
+
     # self.assertEqual(0, result.exit_code)
     def mock_response(self):
         sim_response = {

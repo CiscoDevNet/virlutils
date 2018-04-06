@@ -37,7 +37,7 @@ class NodesTest(BaseTest):
                 "SerialPorts": 2,
                 "SimulationHost": "5.5.5.5",
                 "NodeSubtype": "IOSv",
-                "simStatus": "ACTIVE",
+                "simStatus": "BUILDING",
                 "Reachable": True,
                 "PortMonitor": 17004,
                 "managementProtocol": "telnet",
