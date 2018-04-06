@@ -2,6 +2,8 @@ from . import BaseTest
 from click.testing import CliRunner
 import requests_mock
 from virl.cli.main import virl
+import os
+import filecmp
 
 
 class Tests(BaseTest):
@@ -11,13 +13,18 @@ class Tests(BaseTest):
             # Mock the request to return what we expect from the API.
             roster_url = 'http://localhost:19399/roster/rest'
             m.get(roster_url, json=self.mock_roster_response())
-            export_url = 'http://localhost:19399/simengine/rest/export'
-            m.get(export_url, content=self.mock_export_response())
-            interface_url = 'http://localhost:19399/simengine/rest/interfaces'
+            export_url = 'http://localhost:19399/simengine/rest/export/'
+            export_url += 'TEST_ENV?running-configs=config&updated=true'
+            m.get(export_url, text=self.mock_export_response())
+            interface_url = 'http://localhost:19399/simengine/rest/interfaces/'
+            interface_url += 'TEST_ENV'
             m.get(interface_url, json=self.mock_interface_response())
             runner = CliRunner()
             result = runner.invoke(virl, ["generate", "pyats"])
-            print("result is : ".format(result.output))
+            same = filecmp.cmp('default_testbed.yaml',
+                               'tests/static/pyats_testbed')
+            self.assertTrue(same)
+            self.assertEqual(0, result.exit_code)
 
     def mock_up_response(self):
         response = u'TEST_ENV'

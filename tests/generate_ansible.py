@@ -2,22 +2,48 @@ from . import BaseTest
 from click.testing import CliRunner
 import requests_mock
 from virl.cli.main import virl
+import os
+import filecmp
 
 
 class Tests(BaseTest):
 
-    def test_virl_generate_ansible(self):
+    def test_virl_generate_ansible_yaml(self):
         with requests_mock.mock() as m:
             # Mock the request to return what we expect from the API.
             roster_url = 'http://localhost:19399/roster/rest'
             m.get(roster_url, json=self.mock_roster_response())
-            export_url = 'http://localhost:19399/simengine/rest/export'
-            m.get(export_url, content=self.mock_export_response())
-            interface_url = 'http://localhost:19399/simengine/rest/interfaces'
+            export_url = 'http://localhost:19399/simengine/rest/export/'
+            export_url += 'TEST_ENV?running-configs=config&updated=true'
+            m.get(export_url, text=self.mock_export_response())
+            interface_url = 'http://localhost:19399/simengine/rest/interfaces/'
+            interface_url += 'TEST_ENV'
             m.get(interface_url, json=self.mock_interface_response())
             runner = CliRunner()
             result = runner.invoke(virl, ["generate", "ansible"])
-            print("result is : ".format(result))
+            same = filecmp.cmp('default_inventory.yaml',
+                               'tests/static/ansible_yaml_inventory')
+            self.assertTrue(same)
+            self.assertEqual(0, result.exit_code)
+
+    def test_virl_generate_ansible_yaml(self):
+        with requests_mock.mock() as m:
+            # Mock the request to return what we expect from the API.
+            roster_url = 'http://localhost:19399/roster/rest'
+            m.get(roster_url, json=self.mock_roster_response())
+            export_url = 'http://localhost:19399/simengine/rest/export/'
+            export_url += 'TEST_ENV?running-configs=config&updated=true'
+            m.get(export_url, text=self.mock_export_response())
+            interface_url = 'http://localhost:19399/simengine/rest/interfaces/'
+            interface_url += 'TEST_ENV'
+            m.get(interface_url, json=self.mock_interface_response())
+            runner = CliRunner()
+            result = runner.invoke(virl, ["generate", "ansible",
+                                          "--style", "ini"])
+            same = filecmp.cmp('default_inventory.ini',
+                               'tests/static/ansible_ini_inventory')
+            self.assertTrue(same)
+            self.assertEqual(0, result.exit_code)
 
     def mock_up_response(self):
         response = u'TEST_ENV'

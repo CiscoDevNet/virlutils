@@ -14,19 +14,6 @@
 #        <entry key="ansible_group" type="String">mygroup</entry>
 #    </extensions>
 # </node>
-
-all:
-  children:
-    all:
-      hosts:
-
-        router2:
-          ansible_host: 172.16.30.122
-          console_server: 10.10.10.170
-          console_port: 17027
-
-        router1:
-          ansible_host: 172.16.30.121
-          console_server: 10.10.10.170
-          console_port: 17028
-    
+[all]
+router2 ansible_host=172.16.30.122 console_server=10.10.10.170 console_port=17027
+router1 ansible_host=172.16.30.121 console_server=10.10.10.170 console_port=17028
