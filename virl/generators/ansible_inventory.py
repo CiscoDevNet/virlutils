@@ -81,7 +81,7 @@ def generate_inventory_dict(virl_xml, roster=None, interfaces=None):
 
         # determine device/os type
         try:
-            type = device['NodeSubType']
+            type = device['NodeSubtype']
             if 'NX' in type:
                 entry['device_type'] = 'nxos'
             elif 'XR' in type:

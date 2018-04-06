@@ -52,12 +52,12 @@ class VIRLServer(object):
                           data=data)
         return r
 
-    def put(self, url, data):
-        r = requests.put(url,
-                         auth=(self.user, self.passwd),
-                         headers=self._headers,
-                         data=data)
-        return r
+    # def put(self, url, data):
+    #     r = requests.put(url,
+    #                      auth=(self.user, self.passwd),
+    #                      headers=self._headers,
+    #                      data=data)
+    #     return r
 
     def list_simulations(self):
         url = self.base_api + "/simengine/rest/list"

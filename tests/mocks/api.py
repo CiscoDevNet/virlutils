@@ -131,7 +131,7 @@ class MockVIRLServer:
                 u'PortConsole': 17027,
                 u'Annotation': u'REACHABLE'
             },
-            u'guest|TEST_ENV|virl|baddata': {
+            u'guest|TEST_ENV|virl|keyerror': {
                 u'Status': u'ACTIVE',
                 u'PortMonitor': 17030,
                 u'Reachable': True,
@@ -141,9 +141,6 @@ class MockVIRLServer:
                 u'PortConsole': 17027,
                 u'Annotation': u'REACHABLE'
             }
-
-
-
         }
         return response
 
