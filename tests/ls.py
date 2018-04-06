@@ -25,5 +25,4 @@ class LsTest(BaseTest):
             })
             runner = CliRunner()
             result = runner.invoke(virl, ["ls", "--all"])
-            print(result.output)
             self.assertEqual(0, result.exit_code)

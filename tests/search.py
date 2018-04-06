@@ -12,7 +12,6 @@ class SearchTests(BaseTest):
               json=self.mock_response())
         runner = CliRunner()
         result = runner.invoke(virl, ["search"])
-        print(result.output)
         self.assertEqual(0, result.exit_code)
 
     @requests_mock.mock()
@@ -21,7 +20,6 @@ class SearchTests(BaseTest):
               json=self.mock_response())
         runner = CliRunner()
         result = runner.invoke(virl, ["search", "ios"])
-        print(result.output)
         self.assertEqual(0, result.exit_code)
 
     @requests_mock.mock()
@@ -31,7 +29,6 @@ class SearchTests(BaseTest):
               json=self.mock_response())
         runner = CliRunner()
         result = runner.invoke(virl, ["search", "hello"])
-        print(result.output)
         self.assertEqual(0, result.exit_code)
 
     def mock_response(self):

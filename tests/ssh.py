@@ -2,10 +2,26 @@ from . import BaseTest
 from click.testing import CliRunner
 import requests_mock
 from virl.cli.main import virl
+try:
+    from unittest.mock import patch
+except ImportError:
+    from mock import patch
 
 
-class NodesTest(BaseTest):
+class Tests(BaseTest):
 
+    @patch("virl.cli.ssh.commands.call", auto_spec=False)
+    def test_virl_ssh(self, call_mock):
+
+        with requests_mock.mock() as m:
+            # Mock the request to return what we expect from the API.
+            m.get('http://localhost:19399/roster/rest',
+                  json=self.mock_response())
+            runner = CliRunner()
+            runner.invoke(virl, ["ssh", "router1"])
+            call_mock.assert_called_once_with(['ssh', 'cisco@1.1.1.1'])
+
+    # self.assertEqual(0, result.exit_code)
     def mock_response(self):
         sim_response = {
             "guest|TEST_ENV|virl|router1": {
@@ -48,12 +64,3 @@ class NodesTest(BaseTest):
             }
         }
         return sim_response
-
-    def test_virl_nodes(self):
-        with requests_mock.mock() as m:
-            # Mock the request to return what we expect from the API.
-            m.get('http://localhost:19399/roster/rest',
-                  json=self.mock_response())
-            runner = CliRunner()
-            result = runner.invoke(virl, ["nodes"])
-            self.assertEqual(0, result.exit_code)

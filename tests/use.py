@@ -8,7 +8,6 @@ class UseTest(BaseTest):
     def test_virl_use(self):
         runner = CliRunner()
         result = runner.invoke(virl, ["use", "TEST_ENV"])
-        print(result.output)
         path = './.virl/default/id'
         file_exists = os.path.isfile(path)
         self.assertTrue(file_exists)
