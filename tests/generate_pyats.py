@@ -2,7 +2,6 @@ from . import BaseTest
 from click.testing import CliRunner
 import requests_mock
 from virl.cli.main import virl
-from . import debug_on
 
 
 class Tests(BaseTest):
