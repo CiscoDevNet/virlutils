@@ -23,7 +23,7 @@ class TelnetTests(BaseTest):
                                                u'1.1.1.1'])
 
     @patch("virl.cli.telnet.commands.call", auto_spec=False)
-    def test_virl_telnet(self, call_mock):
+    def test_virl_telnet_env(self, call_mock):
 
         with requests_mock.mock() as m:
             # Mock the request to return what we expect from the API.

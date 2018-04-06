@@ -28,8 +28,8 @@ class Tests(BaseTest):
             m.get('http://localhost:19399/roster/rest',
                   json=self.mock_response())
             runner = CliRunner()
-            result = runner.invoke(virl, ["ssh", "TEST_ENV", "router1"])
-            
+            runner.invoke(virl, ["ssh", "TEST_ENV", "router1"])
+
     # self.assertEqual(0, result.exit_code)
     def mock_response(self):
         sim_response = {
