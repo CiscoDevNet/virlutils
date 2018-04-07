@@ -30,14 +30,17 @@ def up(repo=None, **kwargs):
             subs = {
                 "{{ gateway }}": server.get_gateway_for_network('flat'),
                 "{{ flat1_gateway}}": server.get_gateway_for_network('flat1'),
-                "{{ dns_server }}": server.get_dns_server_for_network('flat')
+                "{{ dns_server }}": server.get_dns_server_for_network('flat'),
             }
+
+            # also can change some VIRL/ANK defaults
+            subs["rsa modulus 768"] = "rsa modulus 1024"
 
             for tag, value in subs.items():
                 if tag in data:
                     if value:
                         # split off the braces
-                        humanize = tag[3:-3]
+                        humanize = tag
                         click.secho("Localizing {} with: {}".format(humanize,
                                                                     value))
                         data = data.replace(tag, value)
