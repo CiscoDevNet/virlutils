@@ -38,13 +38,14 @@ def ssh(node):
 
                 if proxy == 'lxc':
                     lxc = get_mgmt_lxc_ip(details)
-                    click.secho("Attemping ssh connection"
-                                "to {} at {} via {}".format(node_name,
-                                                            ip, lxc))
-                    cmd = 'ssh -o "ProxyCommand ssh -W %h:%p {}@{}" {}@{}'
-                    cmd = cmd.format(server.user, lxc, 'cisco', ip)
+                    if lxc:
+                        click.secho("Attemping ssh connection"
+                                    "to {} at {} via {}".format(node_name,
+                                                                ip, lxc))
+                        cmd = 'ssh -o "ProxyCommand ssh -W %h:%p {}@{}" {}@{}'
+                        cmd = cmd.format(server.user, lxc, 'cisco', ip)
 
-                    exit(call(cmd, shell=True))
+                        exit(call(cmd, shell=True))
                 else:
                     # handle the "flat" networking case
                     click.secho("Attemping ssh connection"
