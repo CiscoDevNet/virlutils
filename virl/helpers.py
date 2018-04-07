@@ -65,3 +65,18 @@ def check_sim_running(env):
             return None
     except Exception:
         return None
+
+
+def get_mgmt_lxc_ip(sim_roster):
+    # grab mgmt-lxc info in case we need it later
+    for k, v in sim_roster.items():
+        if k.endswith('mgmt-lxc'):
+            lxc_ip = v.get('externalAddr', None)
+            print("lxc is at {}".format(lxc_ip))
+    return lxc_ip
+
+
+def get_node_from_roster(name, roster):
+    for k, v in roster.items():
+        if k.endswith(name):
+            return v
