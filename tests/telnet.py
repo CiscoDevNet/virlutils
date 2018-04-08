@@ -1,5 +1,5 @@
 from . import BaseTest
-from mocks.api import MockVIRLServer
+from .mocks.api import MockVIRLServer
 from click.testing import CliRunner
 import requests_mock
 from virl.cli.main import virl
