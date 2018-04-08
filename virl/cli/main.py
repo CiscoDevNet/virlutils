@@ -15,6 +15,7 @@ from .start.commands import start
 from .stop.commands import stop
 from .pull.commands import pull
 from .search.commands import search
+from .swagger.commands import swagger
 
 
 @click.group()
@@ -37,7 +38,7 @@ virl.add_command(start)
 virl.add_command(stop)
 virl.add_command(search)
 virl.add_command(pull)
-
+virl.add_command(swagger)
 
 if __name__ == '__main__':
     virl()  # pragma: no cover
