@@ -1,9 +1,6 @@
 from flask import Flask
 from flask import render_template
 import os
-import gunicorn.app.base
-from gunicorn.six import iteritems
-
 
 app = Flask(__name__)
 
