@@ -50,13 +50,13 @@ class SwaggerFlaskApp(BaseTest):
 
     def test_swagger_ui(self):
         resp = self.app.get('/')
-        expected_data = 'ui.preauthorizeBasic("basicAuth", "guest", "guest")'
+        expected_data = b'ui.preauthorizeBasic("basicAuth", "guest", "guest")'
         self.assertEqual(resp.status_code, 200)
         self.assertIn(expected_data, resp.data)
 
     def test_swagger_spec(self):
         resp = self.app.get('/swagger.json')
-        expected_data = '"host": "localhost:1234",'
+        expected_data = b'"host": "localhost:1234",'
         self.assertEqual(resp.status_code, 200)
         self.assertIn(expected_data, resp.data)
 
