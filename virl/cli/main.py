@@ -1,5 +1,4 @@
 import click
-
 from .console.commands import console
 from .nodes.commands import nodes
 from .logs.commands import logs
@@ -16,6 +15,8 @@ from .stop.commands import stop
 from .pull.commands import pull
 from .search.commands import search
 from .swagger.commands import swagger
+from .uwm.commands import uwm
+from .viz.commands import viz
 
 
 @click.group()
@@ -39,6 +40,8 @@ virl.add_command(stop)
 virl.add_command(search)
 virl.add_command(pull)
 virl.add_command(swagger)
+virl.add_command(uwm)
+virl.add_command(viz)
 
 if __name__ == '__main__':
     virl()  # pragma: no cover
