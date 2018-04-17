@@ -20,6 +20,14 @@ class VIRLServer(object):
         self._host = host
 
     @property
+    def port(self):
+        return self._port
+
+    @port.setter
+    def port(self, port):
+        self._port = port
+
+    @property
     def user(self):
         return self._user
 

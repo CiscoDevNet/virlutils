@@ -1,0 +1,5144 @@
+{
+  "basePath": "/",
+  "host": "{{ host }}:{{ port }}",
+  "info": {
+    "version": "0.10",
+    "title": "VIRL STD API"
+  },
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "securityDefinitions": {
+    "basicAuth": {
+      "type": "basic"
+    }
+  },
+  "security": [
+    {
+      "basicAuth": []
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "description": "The catalog request lists all call rules supported by the server. It may be used to verify that a version of STD is installed that supports a particular feature.",
+        "responses": {
+          "200": {
+            "description": "Returns supported rules",
+            "schema": {
+              "$ref": "#/definitions/noschema"
+            },
+            "examples": {
+              "application/json": {
+                "about": "VIRL Service Topology Director API.",
+                "services": {
+                  "autonetkit_process": {
+                    "methods": [
+                      "POST",
+                      "OPTIONS"
+                    ],
+                    "rule": "/ank/rest/process"
+                  }
+                },
+                "autonetkit_test": {
+                  "methods": [
+                    "HEAD",
+                    "OPTIONS",
+                    "GET"
+                  ],
+                  "rule": "/ank/rest/test"
+                },
+                "catalog": {
+                  "methods": [
+                    "HEAD",
+                    "OPTIONS",
+                    "GET"
+                  ],
+                  "rule": "/"
+                },
+                "virl-version": "0.10.10.1"
+              }
+            }
+          }
+        },
+        "summary": "List all supported URL rules and their associated methods",
+        "tags": [
+          "catalog"
+        ]
+      }
+    },
+    "/roster/rest/test": {
+      "get": {
+        "description": "The Roster area is meant as a single unified service to power the VMMaestro GUI’s simulation runtime functionality. The roster collects GUI-required information on all launched simulations of the requesting user.",
+        "responses": {
+          "200": {
+            "description": "Returns API and VIRL-CORE version",
+            "schema": {
+              "$ref": "#/definitions/noschema"
+            },
+            "examples": {
+              "application/json": {
+                "version": "1.3",
+                "virl-version": "0.10.20.5"
+              }
+            }
+          },
+          "401": {
+            "description": "Not authenticated",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_401"
+            }
+          }
+        },
+        "tags": [
+          "roster"
+        ],
+        "summary": "Verify the user is authenticated and return roster API version"
+      }
+    },
+    "/roster/rest/": {
+      "get": {
+        "description": "Get GUI-related information on all user’s simulations. Also returns an UUID marker for the roster (user endpoint) state; if an UUID parameter is provided by the client, the service shall wait until the internal value changes, or an internal timeout occurs to avoid blocking the server. The format is a JSON Object with keys being dot-separated hierarchical elements of a tree view of the simulations. The values are JSON Objects with arbitrary attributes, some of which are recognized by the GUI.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "uuid",
+            "type": "string",
+            "required": false,
+            "description": "UUID of the roster state"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return roster state",
+            "schema": {
+              "$ref": "#/definitions/noschema"
+            },
+            "examples": {
+              "application/json": {
+                "UUID": "e3a69766-f096-490d-be01-75c257741a2e",
+                "guest.My_Topologies@ubuntu_iosv-04N0YK.virl.Site-1.iosv-1": {
+                  "NodeName": "Site-1::iosv-1",
+                  "NodeSubtype": "IOSv",
+                  "Reachable": true,
+                  "SimulationHost": "10.195.90.17",
+                  "Status": "UNDEPLOYED",
+                  "externalAddr": "unassigned",
+                  "internalAddr": "unassigned",
+                  "simID": "My_Topologies@ubuntu_iosv-04N0YK",
+                  "simLaunch": "2014-11-10T15:41:03.158986",
+                  "simStatus": "ACTIVE"
+                },
+                "guest.My_Topologies@ubuntu_iosv-04N0YK.virl.Site-1.snat-1.External Address": {
+                  "Annotation": "unassigned",
+                  "SimulationHost": "10.195.90.17",
+                  "managementIP": "unassigned",
+                  "simID": "My_Topologies@ubuntu_iosv-04N0YK",
+                  "simLaunch": "2014-11-10T15:41:03.158986",
+                  "simStatus": "ACTIVE"
+                },
+                "guest.My_Topologies@ubuntu_iosv-04N0YK.virl.Site-1.snat-1.Internal Address": {
+                  "Annotation": "unassigned",
+                  "SimulationHost": "10.195.90.17",
+                  "managementIP": "unassigned",
+                  "simID": "My_Topologies@ubuntu_iosv-04N0YK",
+                  "simLaunch": "2014-11-10T15:41:03.158986",
+                  "simStatus": "ACTIVE"
+                },
+                "guest.My_Topologies@ubuntu_iosv-04N0YK.virl.Site-1.snat-1.Site-1::iosv-1": {
+                  "Annotation": "GigabitEthernet0/1",
+                  "NodeName": "Site-1::snat-1",
+                  "NodeSubtype": "SNAT",
+                  "SimulationHost": "10.195.90.17",
+                  "managementIP": "unassigned",
+                  "simID": "My_Topologies@ubuntu_iosv-04N0YK",
+                  "simLaunch": "2014-11-10T15:41:03.158986",
+                  "simStatus": "ACTIVE"
+                },
+                "guest.My_Topologies@ubuntu_iosv-04N0YK.virl.flat-1.External Address": {
+                  "Annotation": "172.16.1.61",
+                  "SimulationHost": "10.195.90.17",
+                  "managementIP": "172.16.1.61",
+                  "simID": "My_Topologies@ubuntu_iosv-04N0YK",
+                  "simLaunch": "2014-11-10T15:41:03.158986",
+                  "simStatus": "ACTIVE"
+                },
+                "guest.My_Topologies@ubuntu_iosv-04N0YK.virl.flat-1.server-1": {
+                  "Annotation": "eth1",
+                  "NodeName": "flat-1",
+                  "NodeSubtype": "FLAT",
+                  "SimulationHost": "10.195.90.17",
+                  "managementIP": "172.16.1.61",
+                  "simID": "My_Topologies@ubuntu_iosv-04N0YK",
+                  "simLaunch": "2014-11-10T15:41:03.158986",
+                  "simStatus": "ACTIVE"
+                },
+                "guest.My_Topologies@ubuntu_iosv-04N0YK.virl.server-1": {
+                  "NodeName": "server-1",
+                  "NodeSubtype": "server",
+                  "PortConsole": "17021",
+                  "SerialPorts": 1,
+                  "SimulationHost": "10.195.90.17",
+                  "Status": "ACTIVE",
+                  "VncConsole": true,
+                  "externalAddr": "172.16.1.61",
+                  "managementIP": "10.255.0.2",
+                  "simID": "My_Topologies@ubuntu_iosv-04N0YK",
+                  "simLaunch": "2014-11-10T15:41:03.158986",
+                  "simStatus": "ACTIVE"
+                },
+                "guest.My_Topologies@ubuntu_iosv-04N0YK.virl.~lxc-flat.External Address": {
+                  "Annotation": "172.16.1.60",
+                  "SimulationHost": "10.195.90.17",
+                  "managementIP": "172.16.1.60",
+                  "simID": "My_Topologies@ubuntu_iosv-04N0YK",
+                  "simLaunch": "2014-11-10T15:41:03.158986",
+                  "simStatus": "ACTIVE"
+                },
+                "guest.My_Topologies@ubuntu_iosv-04N0YK.virl.~lxc-flat.External Port": {
+                  "Annotation": "52147",
+                  "SimulationHost": "10.195.90.17",
+                  "managementIP": "52147",
+                  "simID": "My_Topologies@ubuntu_iosv-04N0YK",
+                  "simLaunch": "2014-11-10T15:41:03.158986",
+                  "simStatus": "ACTIVE"
+                },
+                "guest.My_Topologies@ubuntu_iosv-04N0YK.virl.~lxc-flat.~mgmt-lxc": {
+                  "Annotation": "eth0",
+                  "NodeName": "flat",
+                  "NodeSubtype": "LXC FLAT",
+                  "SimulationHost": "10.195.90.17",
+                  "managementIP": "172.16.1.60",
+                  "simID": "My_Topologies@ubuntu_iosv-04N0YK",
+                  "simLaunch": "2014-11-10T15:41:03.158986",
+                  "simStatus": "ACTIVE"
+                },
+                "guest.My_Topologies@ubuntu_iosv-04N0YK.virl.~mgmt-lxc": {
+                  "NodeName": "~mgmt-lxc",
+                  "NodeSubtype": "mgmt-lxc",
+                  "Reachable": true,
+                  "SerialPorts": 0,
+                  "SimulationHost": "10.195.90.17",
+                  "Status": "ACTIVE",
+                  "VncConsole": false,
+                  "externalAddr": "172.16.1.60",
+                  "externalPort": "52147",
+                  "managementIP": "10.255.0.1",
+                  "simID": "My_Topologies@ubuntu_iosv-04N0YK",
+                  "simLaunch": "2014-11-10T15:41:03.158986",
+                  "simStatus": "ACTIVE"
+                },
+                "guest.~jumphost.virl.jumphost": {
+                  "NodeName": "jumphost",
+                  "NodeSubtype": "jumphost",
+                  "Reachable": false,
+                  "PortConsole": "17022",
+                  "SerialPorts": 1,
+                  "SimulationHost": "10.195.90.17",
+                  "Status": "ACTIVE",
+                  "VncConsole": true,
+                  "externalAddr": "172.16.1.59",
+                  "managementIP": "10.18.0.20",
+                  "simID": "~jumphost",
+                  "simLaunch": "2014-11-10T15:41:03.731251",
+                  "simStatus": "ACTIVE",
+                  "sshPrivateKey": null,
+                  "sshUsername": "sshproxy"
+                },
+                "guest.~jumphost.virl.jumplink.External Address": {
+                  "Annotation": "172.16.1.59",
+                  "SimulationHost": "10.195.90.17",
+                  "managementIP": "172.16.1.59",
+                  "simID": "~jumphost",
+                  "simLaunch": "2014-11-10T15:41:03.731251",
+                  "simStatus": "ACTIVE"
+                },
+                "guest.~jumphost.virl.jumplink.jumphost": {
+                  "Annotation": "eth1",
+                  "NodeName": "jumplink",
+                  "NodeSubtype": "FLAT",
+                  "SimulationHost": "10.195.90.17",
+                  "managementIP": "172.16.1.59",
+                  "simID": "~jumphost",
+                  "simLaunch": "2014-11-10T15:41:03.731251",
+                  "simStatus": "ACTIVE"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authenticated",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_401"
+            }
+          }
+        },
+        "tags": [
+          "roster"
+        ],
+        "summary": "Get GUI-related information on all user’s simulations"
+      }
+    },
+    "/simengine/rest/shaping/{simulation_id}": {
+      "get": {
+        "description": "Get link-level traffic control settings",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "simulation_id",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Traffic control settings returned",
+            "schema": {
+              "$ref": "#/definitions/links_shaping"
+            },
+            "examples": {
+              "application/json": {
+                "Link_0": {
+                  "dst_iface": "0",
+                  "dst_node": "iosv-2",
+                  "src_iface": "0",
+                  "src_node": "iosv-1",
+                  "shaping": {
+                    "delay": {
+                      "ms": 10,
+                      "jitter": 20,
+                      "correlation": 30
+                    },
+                    "loss": {
+                      "percent": 1.5,
+                      "correlation": 3
+                    },
+                    "corrupt": {
+                      "percent": 1.5,
+                      "correlation": 3
+                    },
+                    "duplicate": {
+                      "percent": 1.5,
+                      "correlation": 3
+                    },
+                    "reorder": {
+                      "percent": 1.5,
+                      "correlation": 3,
+                      "gap": 5
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Simulation not found",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_404"
+            }
+          }
+        },
+        "summary": "List link-level traffic control settings",
+        "tags": [
+          "traffic control"
+        ]
+      },
+      "delete": {
+        "description": "Delete link-level traffic control settings for all links in simulation",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "simulation_id",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Traffic control settings deleted",
+            "schema": {
+              "$ref": "#/definitions/links_shaping"
+            },
+            "examples": {
+              "application/json": {
+                "Link_0": {
+                  "dst_iface": "0",
+                  "dst_node": "iosv-2",
+                  "shaping": null,
+                  "src_iface": "0",
+                  "src_node": "iosv-1"
+                },
+                "Link_1": {
+                  "dst_iface": "0",
+                  "dst_node": "iosv-3",
+                  "shaping": null,
+                  "src_iface": "1",
+                  "src_node": "iosv-2"
+                },
+                "Link_2": {
+                  "dst_iface": "1",
+                  "dst_node": "iosv-3",
+                  "shaping": null,
+                  "src_iface": "1",
+                  "src_node": "iosv-1"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Simulation not found",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_404"
+            }
+          }
+        },
+        "summary": "Delete link-level traffic control settings for all links in simulation",
+        "tags": [
+          "traffic control"
+        ]
+      }
+    },
+    "/simengine/rest/shaping/{simulation_id}/{link_id}": {
+      "get": {
+        "description": "Get link-level traffic control settings for a given link",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "simulation_id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "link_id",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Traffic control settings returned",
+            "schema": {
+              "$ref": "#/definitions/links_shaping"
+            },
+            "examples": {
+              "application/json": {
+                "Link_0": {
+                  "dst_iface": "0",
+                  "dst_node": "iosv-2",
+                  "src_iface": "0",
+                  "src_node": "iosv-1",
+                  "shaping": {
+                    "delay": {
+                      "ms": 10,
+                      "jitter": 20,
+                      "correlation": 30
+                    },
+                    "loss": {
+                      "percent": 1.5,
+                      "correlation": 3
+                    },
+                    "corrupt": {
+                      "percent": 1.5,
+                      "correlation": 3
+                    },
+                    "duplicate": {
+                      "percent": 1.5,
+                      "correlation": 3
+                    },
+                    "reorder": {
+                      "percent": 1.5,
+                      "correlation": 3,
+                      "gap": 5
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Failed to authenticate (invalid credentials)",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_401"
+            }
+          },
+          "404": {
+            "description": "Simulation / link not found",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_404"
+            }
+          }
+        },
+        "summary": "List link-level traffic control settings for a given link",
+        "tags": [
+          "traffic control"
+        ]
+      },
+      "put": {
+        "description": "Set link-level traffic control settings for a given link",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "simulation_id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "link_id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "shaping",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/shaping"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Traffic control settings set",
+            "schema": {
+              "$ref": "#/definitions/shaping"
+            },
+            "examples": {
+              "application/json": {
+                "delay": {
+                  "ms": 1,
+                  "jitter": 2,
+                  "correlation": 3
+                },
+                "loss": {
+                  "percent": 4,
+                  "correlation": 5
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid traffic control settings",
+            "schema": {
+              "$ref": "#/definitions/stack_trace"
+            }
+          },
+          "404": {
+            "description": "Simulation / link not found",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_404"
+            }
+          }
+        },
+        "summary": "Set link-level traffic control settings for particular link",
+        "tags": [
+          "traffic control"
+        ]
+      },
+      "delete": {
+        "description": "Delete link-level traffic control settings for a given link",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "simulation_id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "link_id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "shaping",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/shaping"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Traffic control settings deleted",
+            "schema": {
+              "$ref": "#/definitions/shaping"
+            },
+            "examples": {
+              "application/json": {
+                "delay": {
+                  "ms": 1,
+                  "jitter": 2,
+                  "correlation": 3
+                },
+                "loss": {
+                  "percent": 4,
+                  "correlation": 5
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid traffic control settings",
+            "schema": {
+              "$ref": "#/definitions/stack_trace"
+            }
+          },
+          "404": {
+            "description": "Simulation / link not found",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_404"
+            }
+          }
+        },
+        "summary": "Delete link-level traffic control settings for particular link",
+        "tags": [
+          "traffic control"
+        ]
+      }
+    },
+    "/simengine/rest/shaping-interfaces/{simulation_id}": {
+      "get": {
+        "description": "Get interface-level traffic control settings",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "simulation_id",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Traffic control settings returned",
+            "schema": {
+              "$ref": "#/definitions/interfaces_shaping"
+            },
+            "examples": {
+              "application/json": {}
+            }
+          },
+          "404": {
+            "description": "Simulation not found",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_404"
+            }
+          }
+        },
+        "summary": "List interface-level traffic control settings",
+        "tags": [
+          "traffic control"
+        ]
+      },
+      "delete": {
+        "description": "Delete interface-level traffic control settings for all interfaces in simulation",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "simulation_id",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Traffic control settings deleted",
+            "schema": {
+              "$ref": "#/definitions/interfaces_shaping"
+            },
+            "examples": {}
+          },
+          "404": {
+            "description": "Simulation not found",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_404"
+            }
+          }
+        },
+        "summary": "Delete interface-level traffic control settings for all links in simulation",
+        "tags": [
+          "traffic control"
+        ]
+      }
+    },
+    "/simengine/rest/shaping-interfaces/{simulation_id}/{node_id}": {
+      "get": {
+        "description": "Get interface-level traffic control settings for a given node in simulation.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "simulation_id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "node_id",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Traffic control settings returned",
+            "schema": {
+              "$ref": "#/definitions/interfaces_shaping"
+            },
+            "examples": {
+              "application/json": {}
+            }
+          },
+          "401": {
+            "description": "Failed to authenticate (invalid credentials)",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_401"
+            }
+          },
+          "404": {
+            "description": "Simulation / node not found",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_404"
+            }
+          }
+        },
+        "summary": "List interface-level traffic control settings for a given node in simulation",
+        "tags": [
+          "traffic control"
+        ]
+      }
+    },
+    "/simengine/rest/shaping-interfaces/{simulation_id}/{node_id}/{iface_id}": {
+      "get": {
+        "description": "Get interface-level traffic control setting for a given interface of node in simulation.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "simulation_id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "node_id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "iface_id",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Traffic control settings returned",
+            "schema": {
+              "$ref": "#/definitions/interface_shaping"
+            },
+            "examples": {
+              "application/json": {}
+            }
+          },
+          "401": {
+            "description": "Failed to authenticate (invalid credentials)",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_401"
+            }
+          },
+          "404": {
+            "description": "Simulation / node / interface not found",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_404"
+            }
+          }
+        },
+        "summary": "List interface-level traffic control setting for a given interface of node in simulation",
+        "tags": [
+          "traffic control"
+        ]
+      },
+      "put": {
+        "description": "Set interface-level traffic control settings for a given interface",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "simulation_id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "node_id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "iface_id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "shaping",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/shaping"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Traffic control settings set",
+            "schema": {
+              "$ref": "#/definitions/shaping"
+            },
+            "examples": {
+              "application/json": {
+                "delay": {
+                  "ms": 1,
+                  "jitter": 2,
+                  "correlation": 3
+                },
+                "loss": {
+                  "percent": 4,
+                  "correlation": 5
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid traffic control settings",
+            "schema": {
+              "$ref": "#/definitions/stack_trace"
+            }
+          },
+          "404": {
+            "description": "Simulation / node / interface not found",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_404"
+            }
+          }
+        },
+        "summary": "Set interface-level traffic control settings for particular interface",
+        "tags": [
+          "traffic control"
+        ]
+      }
+    },
+    "/simengine/rest/link/{simulation_id}": {
+      "get": {
+        "description": "Get link_identifiers for selected simulation",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "simulation_id",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Links returned",
+            "schema": {
+              "$ref": "#/definitions/links"
+            }
+          },
+          "404": {
+            "description": "Simulation not found",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_404"
+            }
+          }
+        },
+        "summary": "Get link_identifiers for selected simulation",
+        "tags": [
+          "links"
+        ]
+      }
+    },
+    "/simengine/rest/link/{simulation_id}/{node_id}/{link_id}": {
+      "get": {
+        "description": "Get info about a given link",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "simulation_id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "node_id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "link_id",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Link info",
+            "schema": {
+              "$ref": "#/definitions/links"
+            }
+          },
+          "404": {
+            "description": "Simulation, node or interface not found",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_404"
+            }
+          }
+        },
+        "summary": "Get info about a given link",
+        "tags": [
+          "links"
+        ]
+      }
+    },
+    "/simengine/rest/systemlogs": {
+      "get": {
+        "description": "Get a zip-file of all current logs, from STD, UWM and lmgrd. This call is mainly intended for assisting troubleshooting. An admin user is required to perform this call.",
+        "responses": {
+          "200": {
+            "description": "Returning the zip file"
+          },
+          "401": {
+            "description": "Not authenticated",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_401"
+            }
+          },
+          "403": {
+            "description": "Admin user required",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_403"
+            }
+          }
+        },
+        "summary": "Get a zip-file of all current logs",
+        "tags": [
+          "admin"
+        ]
+      }
+    },
+    "/simengine/rest/admin-stop/{user}/{simulation}": {
+      "put": {
+        "description": "Stop a particular simulation or all simulations of one / all users. This call is mainly intended for administrative cleanup of STD. An admin user is required to perform this call. `__all__` can be used instead of simulation_id or username.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user",
+            "type": "string",
+            "required": true,
+            "description": "username or keyword `__all__`"
+          },
+          {
+            "in": "path",
+            "name": "simulation",
+            "type": "string",
+            "required": true,
+            "description": "simulation_id or keyword `__all__`"
+          },
+          {
+            "in": "query",
+            "name": "wait",
+            "type": "string",
+            "required": true,
+            "description": "number of seconds to wait for session stop, default = `0`",
+            "default": "0"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Simulation[s] stopped",
+            "schema": {
+              "$ref": "#/definitions/noschema"
+            },
+            "examples": {
+              "application/json": {
+                "simulations": {
+                  "guest": {
+                    "My_Topologies@ubuntu_iosv-8l3GgQ": "done",
+                    "~jumphost": "processing"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authenticated",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_401"
+            }
+          },
+          "403": {
+            "description": "Admin user required",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_403"
+            }
+          },
+          "404": {
+            "description": "User or simulation not found",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_404"
+            }
+          }
+        },
+        "summary": "Stop a particular simulation or set of simulations",
+        "tags": [
+          "admin"
+        ]
+      }
+    },
+    "/simengine/rest/admin-list/{user}": {
+      "get": {
+        "description": "Get a list of all currently launched simulations, optionally filtered by `user`. This call is mainly intended for administrative monitoring of STD. An admin user is required to perform this call.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user",
+            "type": "string",
+            "required": true,
+            "description": "username or keyword `__all__`"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returned simulation list",
+            "schema": {
+              "$ref": "#/definitions/noschema"
+            },
+            "examples": {
+              "application/json": {
+                "simulations": {
+                  "guest": {
+                    "My_Topologies@ubuntu_iosv-8l3GgQ": {
+                      "expires": null,
+                      "status": "ACTIVE"
+                    },
+                    "~jumphost": {
+                      "expires": null,
+                      "status": "ACTIVE"
+                    }
+                  },
+                  "testing": {},
+                  "uwmadmin": null
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authenticated",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_401"
+            }
+          },
+          "403": {
+            "description": "Admin user required",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_403"
+            }
+          }
+        },
+        "summary": "Get a list of all currently launched simulations",
+        "tags": [
+          "admin"
+        ]
+      }
+    },
+    "/simengine/rest/admin-update/{simulation}/expiry": {
+      "put": {
+        "description": "Get a list of all currently launched simulations, optionally filtered by `user`. This call is mainly intended for administrative monitoring of STD. An admin user is required to perform this call.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "simulation",
+            "type": "string",
+            "required": true,
+            "description": "simulation_id"
+          },
+          {
+            "in": "query",
+            "name": "user",
+            "type": "string",
+            "required": true,
+            "description": "name of the user that launched the simulation"
+          },
+          {
+            "in": "query",
+            "name": "expires",
+            "type": "string",
+            "required": false,
+            "description": "number of minutes or datetime when the simulation will be automatically terminated. If not given, expiration will be reset"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Simulation expiry time set / reset",
+            "schema": {
+              "$ref": "#/definitions/noschema"
+            },
+            "examples": {
+              "application/json": {
+                "expires": "2014-11-10 17:05:40",
+                "session": "My_Topologies@ubuntu_iosv-Ij9vYI"
+              }
+            }
+          },
+          "401": {
+            "description": "Not authenticated",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_401"
+            }
+          },
+          "403": {
+            "description": "Admin user required",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_403"
+            }
+          },
+          "409": {
+            "description": "Session inactive - can't set expiration",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_409_session_cant_set_expiration"
+            }
+          }
+        },
+        "summary": "Update simulation expiration",
+        "tags": [
+          "admin"
+        ]
+      }
+    },
+    "/simengine/rest/test": {
+      "get": {
+        "description": "Verify the user is authenticated and return simengine API version. Also checks for client compatibility if provided against internal config. The client takes the form ClientName-ClientVersion (split on first dash). If the client is known to STD, returns a bool (true or false), if client info is not provided, or unknown, return null. Also displays supported features list.",
+        "responses": {
+          "200": {
+            "description": "Returns API version, features / compatibility",
+            "schema": {
+              "$ref": "#/definitions/noschema"
+            },
+            "examples": {
+              "application/json": {
+                "ces-usage-reporting": true,
+                "client-compatible": null,
+                "distro-version": "Ubuntu 14.04.1 LTS",
+                "endpoint-present": false,
+                "features": [
+                  "no jobs",
+                  "subtypes",
+                  "licensing",
+                  "systemlogs",
+                  "list",
+                  "status:nodes",
+                  "status:expires",
+                  "export",
+                  "export:updated-addresses",
+                  "export:updated-startup-configs",
+                  "export:running-configs",
+                  "export:startup-configs",
+                  "update:start",
+                  "update:stop",
+                  "launch:expires",
+                  "launch:partial",
+                  "admin:list",
+                  "admin:stop",
+                  "admin:update:expires",
+                  "vnc-console",
+                  "serial-port"
+                ],
+                "kernel-version": "3.13.0-39-generic x86_64",
+                "kvm-ok": "INFO: /dev/kvm exists\nKVM acceleration can be used",
+                "kvm-version": "QEMU emulator version 2.0.0 (Debian 2.0.0+dfsg-2ubuntu1.6), Copyright (c) 2003-2008 Fabrice Bellard",
+                "openstack-version": "2014.1.3",
+                "available-updates": [
+                  {
+                    "current-version": "0.7.16",
+                    "package-name": "virl-collection",
+                    "available-version": "0.8.12",
+                    "label": "Live Network Collection Engine"
+                  },
+                  {
+                    "current-version": "0.10.23.0",
+                    "package-name": "virl-core",
+                    "available-version": "0.10.23.0",
+                    "label": "VIRL-CORE"
+                  },
+                  {
+                    "current-version": null,
+                    "package-name": "vmm-local",
+                    "available-version": null,
+                    "label": "VM Maestro Local Client"
+                  },
+                  {
+                    "current-version": "0.20.7",
+                    "package-name": "ank",
+                    "available-version": "0.21.4",
+                    "label": "AutoNetkit"
+                  },
+                  {
+                    "current-version": "0.14.18",
+                    "package-name": "ank-cisco-webui",
+                    "available-version": "0.15.4",
+                    "label": "Topology Visualization Engine"
+                  },
+                  {
+                    "current-version": null,
+                    "package-name": "vmm-linux",
+                    "available-version": "1.2.5-388",
+                    "label": "VM Maestro Linux 64"
+                  },
+                  {
+                    "current-version": null,
+                    "package-name": "vmm-win64",
+                    "available-version": "1.2.5-388",
+                    "label": "VM Maestro Win64"
+                  },
+                  {
+                    "current-version": null,
+                    "package-name": "vmm-mac",
+                    "available-version": "1.2.5-388",
+                    "label": "VM Maestro Mac OSX"
+                  },
+                  {
+                    "current-version": null,
+                    "package-name": "vmm-win32",
+                    "available-version": "1.2.5-388",
+                    "label": "VM Maestro Win32"
+                  },
+                  {
+                    "current-version": "0.20.19",
+                    "package-name": "ank-cisco",
+                    "available-version": "0.21.6",
+                    "label": "AutoNetkit-Cisco"
+                  },
+                  {
+                    "current-version": null,
+                    "package-name": "asav",
+                    "available-version": "9.5.1-201",
+                    "label": "ASAv"
+                  },
+                  {
+                    "current-version": "15.2.4055",
+                    "package-name": "iosvl2",
+                    "available-version": "15.2.4055",
+                    "label": "IOSvL2"
+                  },
+                  {
+                    "current-version": null,
+                    "package-name": "nxosv9k",
+                    "available-version": "7.0.3.I3.0.100",
+                    "label": "NX-OSv 9000"
+                  },
+                  {
+                    "current-version": null,
+                    "package-name": "vpagent",
+                    "available-version": "15.4",
+                    "label": "vpagent"
+                  },
+                  {
+                    "current-version": null,
+                    "package-name": "iosxrv52",
+                    "available-version": "5.2.2",
+                    "label": "IOS XRv52"
+                  },
+                  {
+                    "current-version": null,
+                    "package-name": "nxosv",
+                    "available-version": "7.2.0.121",
+                    "label": "NX-OSv"
+                  },
+                  {
+                    "current-version": "",
+                    "package-name": "UbuntuServertrusty",
+                    "available-version": "14.04.2",
+                    "label": "server"
+                  },
+                  {
+                    "current-version": null,
+                    "package-name": "iosxrv9000",
+                    "available-version": "6.0.0",
+                    "label": "IOS XRv 9000"
+                  },
+                  {
+                    "current-version": null,
+                    "package-name": "iosxrv",
+                    "available-version": "6.0.0",
+                    "label": "IOS XRv"
+                  },
+                  {
+                    "current-version": null,
+                    "package-name": "csr1000v",
+                    "available-version": "3.17",
+                    "label": "CSR1000v"
+                  },
+                  {
+                    "current-version": null,
+                    "package-name": "vpp",
+                    "available-version": "7302015",
+                    "label": "vPP"
+                  },
+                  {
+                    "current-version": "2.1(8)",
+                    "package-name": "lxc_routem",
+                    "available-version": "2.1(8)",
+                    "label": "lxc_routem"
+                  },
+                  {
+                    "current-version": "14.04.2",
+                    "package-name": "lxc_server",
+                    "available-version": "14.04.2",
+                    "label": "lxc_server"
+                  },
+                  {
+                    "current-version": "2.0.2",
+                    "package-name": "lxc_iperf",
+                    "available-version": "2.0.2",
+                    "label": "lxc_iperf"
+                  },
+                  {
+                    "current-version": "0.7.1-2build1",
+                    "package-name": "lxc_ostinato",
+                    "available-version": "0.7.1-2build1",
+                    "label": "lxc_ostinato"
+                  },
+                  {
+                    "current-version": null,
+                    "package-name": "virl",
+                    "available-version": "1.0.26",
+                    "label": "VIRL"
+                  }
+                ],
+                "uwm-url": "http://10.195.90.17:19400",
+                "version": "1.2",
+                "virl-version": "0.10.10.3"
+              }
+            }
+          },
+          "401": {
+            "description": "Not authenticated",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_401"
+            }
+          }
+        },
+        "tags": [
+          "admin"
+        ],
+        "summary": "List simengine API version and features, compatibility check"
+      }
+    },
+    "/simengine/rest/subtypes": {
+      "get": {
+        "description": "Get information on all supported VM node subtypes. This call is mainly intended for the GUI at topology design time.",
+        "responses": {
+          "200": {
+            "description": "Returns supported VM subtypes",
+            "schema": {
+              "$ref": "#/definitions/noschema"
+            },
+            "examples": {
+              "application/json": [
+                {
+                  "name": "ASAv",
+                  "intfManagement": "Management0/0",
+                  "minIntfIndices": [
+                    0
+                  ],
+                  "visible": false,
+                  "intfSegmentSizes": [
+                    0
+                  ],
+                  "maxIntfIndices": [
+                    26
+                  ],
+                  "intfNameFormat": "GigabitEthernet0/{0}",
+                  "icon": "asav"
+                },
+                {
+                  "name": "CSR1000v",
+                  "intfManagement": "GigabitEthernet1",
+                  "minIntfIndices": [
+                    2
+                  ],
+                  "visible": true,
+                  "intfSegmentSizes": [
+                    0
+                  ],
+                  "maxIntfIndices": [
+                    15
+                  ],
+                  "intfNameFormat": "GigabitEthernet{0}",
+                  "icon": "csr1000v"
+                }
+              ]
+            }
+          },
+          "401": {
+            "description": "Not authenticated",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_401"
+            }
+          }
+        },
+        "tags": [
+          "subtypes"
+        ],
+        "summary": "List supported VM subtypes"
+      }
+    },
+    "/simengine/rest/licensing": {
+      "get": {
+        "description": "Get information on licensing. This call is mainly intended for the GUI at topology launch time.",
+        "responses": {
+          "200": {
+            "description": "Return licensing info",
+            "schema": {
+              "$ref": "#/definitions/noschema"
+            },
+            "examples": {
+              "application/json": {
+                "hostid": "adperes-vagrant.virl.qa",
+                "product-expires": 7,
+                "product-usage": 0,
+                "uwm-url": "http://10.195.90.17:19400/admin/salt/",
+                "product-license": [
+                  "10.195.90.120",
+                  "10.195.90.121"
+                ],
+                "product-capacity": 200,
+                "features": [
+                  "Cariden.MATE.import",
+                  "Cariden.MATE.export"
+                ]
+              }
+            }
+          },
+          "401": {
+            "description": "Not authenticated",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_401"
+            }
+          }
+        },
+        "tags": [
+          "admin"
+        ],
+        "summary": "Get information on licensing"
+      }
+    },
+    "/simengine/rest/jobs": {
+      "get": {
+        "description": "Get current job processing information. Stub implemented for compatibility with other VMMaestro backends. Returns an empty list",
+        "responses": {
+          "200": {
+            "description": "Returns empty list",
+            "schema": {
+              "$ref": "#/definitions/noschema"
+            },
+            "examples": {
+              "application/json": []
+            }
+          },
+          "401": {
+            "description": "Not authenticated",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_401"
+            }
+          }
+        },
+        "tags": [
+          "admin"
+        ],
+        "summary": "Get current job processing information"
+      }
+    },
+    "/simengine/rest/calculate-requirements": {
+      "post": {
+        "description": "Calculate hardware requirements for given topology.",
+        "consumes": [
+          "text/xml"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Hardware requirements"
+          },
+          "401": {
+            "description": "Not authenticated",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_401"
+            }
+          }
+        },
+        "tags": [
+          "simengine"
+        ],
+        "summary": "Calculate hardware requirements"
+      }
+    },
+    "/simengine/rest/launch": {
+      "post": {
+        "description": "Create a new simulation and schedule its start. By default, the response is sent as soon as it is determined that the session launch is likely to succeed, but before any VM nodes are deployed. The user may therefore follow status updates on startup progress. To wait for VM nodes to deploy, set the 'wait' parameter. It is possible to change/add three parameters 'mgmt_...' to the simulation.",
+        "consumes": [
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "session",
+            "type": "string",
+            "required": false,
+            "description": "force exact name for the simulation",
+            "default": null
+          },
+          {
+            "in": "query",
+            "name": "file",
+            "type": "string",
+            "required": false,
+            "description": "filename of the original .virl file - used as a base name",
+            "default": "session"
+          },
+          {
+            "in": "query",
+            "name": "mgmt_lxc",
+            "type": "boolean",
+            "required": false,
+            "description": "overrides .virl file's management LXC settings e.g. `True` - run with management LXC",
+            "default": null
+          },
+          {
+            "in": "query",
+            "name": "mgmt_network",
+            "type": "string",
+            "required": false,
+            "description": "override management network name",
+            "default": null
+          },
+          {
+            "in": "query",
+            "name": "mgmt_lxc_tcp_port",
+            "type": "integer",
+            "required": false,
+            "description": "override management LXC management port number",
+            "default": null
+          },
+          {
+            "in": "query",
+            "name": "version",
+            "type": "string",
+            "required": false,
+            "description": "forces fail if versions mismatch",
+            "default": null
+          },
+          {
+            "in": "query",
+            "name": "wait",
+            "type": "string",
+            "required": false,
+            "description": "delay simulation start - time in minutes or datetime",
+            "default": 0
+          },
+          {
+            "in": "query",
+            "name": "expires",
+            "type": "string",
+            "required": false,
+            "description": "simulation expiration - time in minutes or datetime",
+            "default": null
+          },
+          {
+            "in": "query",
+            "name": "mgmt_lxc_static_ip",
+            "type": "string",
+            "required": false,
+            "description": "override management LXC's static IP",
+            "default": null
+          },
+          {
+            "in": "query",
+            "name": "static_serial_port_offset",
+            "type": "integer",
+            "required": false,
+            "description": "override offset for static port mapping",
+            "default": null
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Simulation started",
+            "schema": {
+              "$ref": "#/definitions/noschema"
+            },
+            "examples": {
+              "application/json": {
+                "session-7PW7U3": "done"
+              },
+              "text/html": "session-kv3R5W"
+            }
+          },
+          "400": {
+            "description": "could not start simulation - user has no endpoint / invalid topology file / simengine version mismatch / invalid session name",
+            "schema": {
+              "$ref": "#/definitions/stack_trace"
+            }
+          },
+          "401": {
+            "description": "Not authenticated",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_401"
+            }
+          },
+          "403": {
+            "description": "Launch rejected due to failure to license simulation",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_403"
+            }
+          },
+          "409": {
+            "description": "Launch rejected due to duplicate simulation names",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_409_same_simulation_name"
+            }
+          },
+          "503": {
+            "description": "Launch rejected due to insufficient hardware resources",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_503_insufficient_resources"
+            }
+          }
+        },
+        "tags": [
+          "simengine"
+        ],
+        "summary": "Create a new simulation"
+      }
+    },
+    "/simengine/rest/stop/{simulation}": {
+      "get": {
+        "description": "Schedule complete stop of a launched simulation. By default, the response is sent as soon as it is determined that the session stop is likely to succeed, but before any VM nodes are destroyed. The user may therefore follow status updates on teardown progress. To wait for the complete stop of the session, set the `wait` parameter.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "wait",
+            "type": "integer",
+            "required": false,
+            "default": 0,
+            "description": "number of seconds to wait for stopping the session"
+          },
+          {
+            "in": "path",
+            "name": "simulation",
+            "type": "string",
+            "required": true,
+            "description": "simulation_id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/noschema"
+            },
+            "examples": {
+              "application/json": {
+                "session-K2dmmJ": "done"
+              }
+            }
+          },
+          "400": {
+            "description": "Cannot remove jumphost simulation",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_400_jumphost_stop"
+            }
+          },
+          "401": {
+            "description": "Not authenticated",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_401"
+            }
+          },
+          "404": {
+            "description": "Simulation not found",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_404"
+            }
+          }
+        },
+        "tags": [
+          "simengine"
+        ],
+        "summary": "Schedule complete stop of a launched simulation"
+      }
+    },
+    "/simengine/rest/status/{simulation}": {
+      "get": {
+        "description": "Return the status of a launched simulation and user-visible messages. The response includes a statusID marker for the simulation. If the request includes a sinceID, the response waits until a status change occurs, or an internal timeout is exceeded to avoid blocking the server. If the simulation cannot be found (it was presumably deleted), a status is returned nonetheless, with the simulation status field being equal to `DONE`.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "sinceID",
+            "type": "string",
+            "required": false,
+            "description": "wait until simulation statusID changes from this value",
+            "default": null
+          },
+          {
+            "in": "query",
+            "name": "node_states",
+            "type": "string",
+            "required": false,
+            "description": "also return state nodes under the key `nodes` if the session exists and was not stopped (is not in state `DONE`)",
+            "default": 0
+          },
+          {
+            "in": "path",
+            "name": "simulation",
+            "type": "string",
+            "required": true,
+            "description": "simulation_id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns status",
+            "schema": {
+              "$ref": "#/definitions/noschema"
+            },
+            "examples": {
+              "application/json": {
+                "expires": null,
+                "messages": [
+                  "(INFO) [Nov/10/2014 10:48:23] Node \"Site-1::iosv-1\" is excluded from automatic start",
+                  "(INFO) [Nov/10/2014 10:48:23] Node \"Site-1::iosv-2\" is excluded from automatic start",
+                  "(INFO) [Nov/10/2014 10:48:23] Session \"session-RxwlaM\": nodes can start",
+                  "(INFO) [Nov/10/2014 10:48:26] Starting node \"iosxrv-1\"",
+                  "(INFO) [Nov/10/2014 10:48:32] Node \"iosxrv-1\" state changed from UNDEPLOYED to BUILD with message: spawning",
+                  "(INFO) [Nov/10/2014 10:48:48] Node \"iosxrv-1\" state changed from BUILD to ACTIVE",
+                  "(INFO) [Nov/10/2014 10:50:53] Stopping node \"iosxrv-1\"",
+                  "(INFO) [Nov/10/2014 10:50:56] Node \"iosxrv-1\" state changed from ACTIVE to DELETED",
+                  "(INFO) [Nov/10/2014 10:51:10] Starting node \"iosxrv-1\"",
+                  "(INFO) [Nov/10/2014 10:51:12] Node \"iosxrv-1\" state changed from DELETED to BUILD with message: spawning",
+                  "(INFO) [Nov/10/2014 10:51:28] Node \"iosxrv-1\" state changed from BUILD to ACTIVE"
+                ],
+                "nodes": {
+                  "Site-1::iosv-1": [
+                    "UNDEPLOYED",
+                    ""
+                  ],
+                  "Site-1::iosv-2": [
+                    "UNDEPLOYED",
+                    ""
+                  ],
+                  "iosxrv-1": [
+                    "ACTIVE",
+                    ""
+                  ]
+                },
+                "state": "ACTIVE",
+                "status": "INFO",
+                "statusID": 144
+              }
+            }
+          },
+          "401": {
+            "description": "Not authenticated",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_401"
+            }
+          }
+        },
+        "tags": [
+          "simengine"
+        ],
+        "summary": "Return the status of a launched simulation"
+      }
+    },
+    "/simengine/rest/events/{simulation}": {
+      "get": {
+        "description": "Return a list of recent events recorded for a simulation. The response is a list of event dicts. If the request includes a sinceID, the response only contains events whose identifier is larger than the one set. It is safe to set sinceID = -1 if all events shall be retrieved. The current implementation returns exactly the same information as the `messages` key in the simengine-status response, albeit in a different format.",
+        "parameters": [
+          {
+            "in": "query",
+            "type": "string",
+            "name": "sinceID",
+            "description": "wait until simulation statusID changes from this value",
+            "default": null
+          },
+          {
+            "in": "path",
+            "name": "simulation",
+            "type": "string",
+            "required": true,
+            "description": "simulation_id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/noschema"
+            },
+            "examples": {
+              "application/json": {
+                "events": [
+                  {
+                    "name": "unspecified",
+                    "level": "INFO",
+                    "session": "My_Topologies@csr1000vs-a9NrSj",
+                    "user": "guest",
+                    "time": "Sep/09/201508:58:27",
+                    "message": "Node \"csr1000v-3\" state changed from ACTIVE to SHUTOFF",
+                    "id": 216
+                  },
+                  {
+                    "name": "unspecified",
+                    "level": "INFO",
+                    "session": "My_Topologies@csr1000vs-a9NrSj",
+                    "user": "guest",
+                    "time": "Sep/09/201508:58:27",
+                    "message": "Node \"csr1000v-4\" state changed from ACTIVE to SHUTOFF",
+                    "id": 217
+                  }
+                ]
+              }
+            }
+          },
+          "401": {
+            "description": "Not authenticated",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_401"
+            }
+          },
+          "404": {
+            "description": "Not authenticated",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_404"
+            }
+          }
+        },
+        "tags": [
+          "simengine"
+        ],
+        "summary": "Return a list of recent events recorded for a simulation"
+      }
+    },
+    "/simengine/rest/tracking": {
+      "post": {
+        "description": "Authorize a new simulation tracking channel",
+        "parameters": [
+          {
+            "in": "query",
+            "type": "string",
+            "required": false,
+            "name": "session_id",
+            "description": "filter future tracking messages by session ID",
+            "default": null
+          },
+          {
+            "in": "query",
+            "name": "topics",
+            "type": "string",
+            "required": false,
+            "description": "filter future tracking messages by their topics"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/noschema"
+            },
+            "examples": {
+              "application/json": {
+                "tracking": {
+                  "created": "2016-05-23 13:15:49",
+                  "id": "1c62feb0-7a69-49ab-a860-9ff746b17794",
+                  "session_id": "My_Topologies@csr1000vs-a9NrSj",
+                  "topics": "events,nodes",
+                  "token": "685389fe-52df-446b-8a9f-0e1d9a92d822",
+                  "url": "ws://192.168.79.137:19396/tracking/c5f73e47-d599-4ea8-8467-d59516d00d1c",
+                  "user": "guest"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authenticated",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_401"
+            }
+          },
+          "404": {
+            "description": "Not authenticated",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_404"
+            }
+          }
+        },
+        "tags": [
+          "simengine"
+        ],
+        "summary": "Authorize a new simulation tracking channel"
+      }
+    },
+    "/simengine/rest/serial_port/{simulation}": {
+      "get": {
+        "description": "Return links to VM node serial ports.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "simulation",
+            "type": "string",
+            "required": true,
+            "description": "simulation_id"
+          },
+          {
+            "in": "query",
+            "name": "nodes",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi",
+            "default": null,
+            "required": false,
+            "description": "select nodes to return by name or XPath expression - defaults to all nodes"
+          },
+          {
+            "in": "query",
+            "name": "mode",
+            "type": "string",
+            "default": "websocket",
+            "required": false,
+            "enum": [
+              "websocket",
+              "webpage",
+              "telnet"
+            ],
+            "description": "serial port connection type"
+          },
+          {
+            "in": "query",
+            "name": "port",
+            "type": "integer",
+            "default": 0,
+            "required": false,
+            "enum": [
+              0,
+              1,
+              2
+            ],
+            "description": "serial port name or number (0 - console, 1 - monitor, 2 - aux) defaults to console"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns VM serial port links",
+            "schema": {
+              "$ref": "#/definitions/noschema"
+            },
+            "examples": {
+              "application/json": {
+                "server-1": "ws://10.195.90.17:32683/websockify?token=8d5d78f5-9cc6-4b37-8ec9-2199044c8ea5",
+                "iosv-1": "ws://10.195.90.17:32683/websockify?token=1d76084b-72de-484b-82de-99420354fd84"
+              }
+            }
+          },
+          "401": {
+            "description": "Not authenticated",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_401"
+            }
+          },
+          "404": {
+            "description": "Simulation not found",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_404"
+            }
+          }
+        },
+        "tags": [
+          "simengine"
+        ],
+        "summary": "Return links to VM node serial ports."
+      }
+    },
+    "/simengine/rest/vnc_console/{simulation}": {
+      "get": {
+        "description": "Return links to VM node VNC consoles. While each VM Node supports a VNC console, the reference platform routers cannot interact over this connection.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "simulation",
+            "type": "string",
+            "required": true,
+            "description": "simulation_id"
+          },
+          {
+            "in": "query",
+            "name": "node",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi",
+            "default": null,
+            "required": false,
+            "description": "select nodes to return by name or XPath expression - defaults to all nodes"
+          },
+          {
+            "in": "query",
+            "name": "mode",
+            "type": "string",
+            "default": "websocket",
+            "required": false,
+            "enum": [
+              "websocket",
+              "webpage"
+            ],
+            "description": "serial port connection type"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return links to VM node VNC consoles",
+            "schema": {
+              "$ref": "#/definitions/noschema"
+            },
+            "examples": {
+              "application/json": {
+                "server-1": "ws://10.195.90.17:32680/websockify?token=070a2da0-81d2-413a-972d-116187c4326f",
+                "iosv-1": "ws://10.195.90.17:32680/websockify?token=d69f12d5-9f93-487e-a446-9fbbf87a1b0b"
+              }
+            }
+          },
+          "401": {
+            "description": "Not authenticated",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_401"
+            }
+          },
+          "404": {
+            "description": "Simulation not found",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_404"
+            }
+          }
+        },
+        "tags": [
+          "simengine"
+        ],
+        "summary": "Return links to VM node VNC consoles"
+      }
+    },
+    "/simengine/rest/export/{simulation}": {
+      "get": {
+        "description": "Returns the original VIRL XML Topology file (or an equivalent serialization of it). Optionally, the dynamically-assigned IP addresses and prefixes are put into the file node and interface attributes and extension entries. Optionally, the running, startup, or startup-updated (by copying running config into startup config) configurations are retrieved over the serial ports of selected nodes that support it (i.e. all reference platforms). The downloaded configurations are put into extension entries which are the value of the options enabling the download; all three types are permitted for download at once, provided they end up in different extension entries. Downloads are only attempted on ACTIVE nodes if the subtype supports it. If some, but not all downloads fail, a 206 Partial Content is returned to indicate this condition. If all attempted downloads fail, a 500 response is generated.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "simulation",
+            "type": "string",
+            "required": true,
+            "description": "simulation_id"
+          },
+          {
+            "in": "query",
+            "name": "updated",
+            "type": "boolean",
+            "required": false,
+            "default": null,
+            "description": "push information on dynamic IP addresses"
+          },
+          {
+            "in": "query",
+            "name": "startup-updated-configs",
+            "type": "string",
+            "required": false,
+            "default": null,
+            "description": "extension name for startup-updated config"
+          },
+          {
+            "in": "query",
+            "name": "download-configs",
+            "type": "string",
+            "required": false,
+            "default": null,
+            "description": "alias of startup-updated-configs (backwards compatibility)"
+          },
+          {
+            "in": "query",
+            "name": "running-configs",
+            "type": "string",
+            "required": false,
+            "default": null,
+            "description": "extension name for running config"
+          },
+          {
+            "in": "query",
+            "name": "startup-configs",
+            "type": "string",
+            "required": false,
+            "default": null,
+            "description": "extension name for startup config"
+          },
+          {
+            "in": "query",
+            "name": "nodes",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi",
+            "default": null,
+            "required": false,
+            "description": "select nodes to return by name or XPath expression - defaults to all nodes"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns VIRL file with all configurations",
+            "examples": {
+              "text/virl+xml": "virl"
+            }
+          },
+          "206": {
+            "description": "Could not extract config from all nodes, returning successfuly extracted ones",
+            "examples": {
+              "text/virl+xml": "<VIRL file>"
+            }
+          },
+          "401": {
+            "description": "Not authenticated",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_401"
+            }
+          },
+          "404": {
+            "description": "Simulation not found",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_404"
+            }
+          },
+          "409": {
+            "description": "Session inactive",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_409_export_session_inactive"
+            }
+          },
+          "500": {
+            "description": "Export failed for all nodes",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_500_export_all_failed"
+            }
+          }
+        },
+        "tags": [
+          "simengine"
+        ],
+        "summary": "Retrieve original VIRL XML Topology file"
+      }
+    },
+    "/simengine/rest/updates": {
+      "get": {
+        "description": "Get information about current versions and available updates.",
+        "responses": {
+          "200": {
+            "description": "Returns current version and available updates.",
+            "schema": {
+              "$ref": "#/definitions/noschema"
+            },
+            "examples": {
+              "application/json": {
+                "available-updates": [
+                  {
+                    "available-version": "0.9.5",
+                    "current-version": "0.7.21",
+                    "label": "Live Network Collection Engine",
+                    "package-name": "virl-collection"
+                  },
+                  {
+                    "available-version": "0.10.24.7",
+                    "current-version": "0.10.25.4",
+                    "label": "VIRL-CORE",
+                    "package-name": "virl-core"
+                  }
+                ]
+              }
+            }
+          },
+          "401": {
+            "description": "Not authenticated",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_401"
+            }
+          }
+        },
+        "tags": [
+          "simengine"
+        ],
+        "summary": "Get a list of all simulations of this user, and the status of each simulation."
+      }
+    },
+    "/simengine/rest/update/{simulation}/stop": {
+      "put": {
+        "description": "Stop simulation nodes without tearing down the simulation. Returns list of nodes which needed to stop, as soon as all node destroy calls are made. The call does not wait until the nodes are torn down.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "simulation",
+            "type": "string",
+            "required": true,
+            "description": "simulation_id"
+          },
+          {
+            "in": "query",
+            "name": "nodes",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi",
+            "default": null,
+            "required": false,
+            "description": "select nodes to stop by name or XPath expression - defaults to all nodes"
+          },
+          {
+            "in": "query",
+            "name": "wait",
+            "type": "integer",
+            "default": 0,
+            "required": false,
+            "description": "number of seconds to wait for nodes stop"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Node stop requested",
+            "schema": {
+              "$ref": "#/definitions/noschema"
+            },
+            "examples": {
+              "application/json": {
+                "stopped": "server-1"
+              }
+            }
+          },
+          "401": {
+            "description": "Not authenticated",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_401"
+            }
+          },
+          "404": {
+            "description": "Simulation not found",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_404"
+            }
+          },
+          "409": {
+            "description": "Simulation inactive",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_409_update_session_inactive"
+            }
+          }
+        },
+        "tags": [
+          "simengine"
+        ],
+        "summary": "Stop simulation nodes without tearing down the simulation"
+      }
+    },
+    "/simengine/rest/update/{simulation}/start": {
+      "get": {
+        "description": "Start simulation nodes previously stopped by simengine-update-stop. Returns list of nodes which needed to start, as soon as all node deploy calls are made. The call does not wait until the nodes are deployed.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "simulation",
+            "type": "string",
+            "required": true,
+            "description": "simulation_id"
+          },
+          {
+            "in": "query",
+            "name": "nodes",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi",
+            "default": null,
+            "required": false,
+            "description": "select nodes to start by name or XPath expression - defaults to all nodes"
+          },
+          {
+            "in": "query",
+            "name": "wait",
+            "type": "integer",
+            "default": 0,
+            "required": false,
+            "description": "number of seconds to wait for nodes stop"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Node start requested",
+            "schema": {
+              "$ref": "#/definitions/noschema"
+            },
+            "examples": {
+              "application/json": {
+                "started": "server-1"
+              }
+            }
+          },
+          "401": {
+            "description": "Not authenticated",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_401"
+            }
+          },
+          "404": {
+            "description": "Simulation not found",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_404"
+            }
+          },
+          "409": {
+            "description": "Simulation inactive",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_409_update_session_inactive"
+            }
+          }
+        },
+        "tags": [
+          "simengine"
+        ],
+        "summary": "Start simulation nodes previously stopped by simengine-update-stop"
+      }
+    },
+    "/simengine/rest/snapshot/{simulation}/{node}": {
+      "post": {
+        "description": "Create snapshot of a node. The snapshot will be a private image (visible only inside the same project) named as project-subtype-imagename.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "simulation",
+            "type": "string",
+            "required": true,
+            "description": "simulation_id"
+          },
+          {
+            "in": "path",
+            "name": "node",
+            "type": "string",
+            "required": true,
+            "description": "Node name"
+          },
+          {
+            "in": "query",
+            "name": "name",
+            "type": "string",
+            "required": false,
+            "default": null,
+            "description": "last part of the created image name"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Snapshot created",
+            "schema": {
+              "$ref": "#/definitions/noschema"
+            },
+            "examples": {
+              "application/json": {
+                "snapshot": {
+                  "OS-EXT-IMG-SIZE:size": 0,
+                  "created": "2014-11-10T15:15:21Z",
+                  "id": "21180355-5700-4f9c-91d9-4c793274c913",
+                  "links": [
+                    {
+                      "href": "http://127.0.1.1:8774/v2/4136d632294044f69b9e093cf3f1e84a/images/21180355-5700-4f9c-91d9-4c793274c913",
+                      "rel": "self"
+                    },
+                    {
+                      "href": "http://127.0.1.1:8774/4136d632294044f69b9e093cf3f1e84a/images/21180355-5700-4f9c-91d9-4c793274c913",
+                      "rel": "bookmark"
+                    },
+                    {
+                      "href": "http://127.0.0.1:9292/4136d632294044f69b9e093cf3f1e84a/images/21180355-5700-4f9c-91d9-4c793274c913",
+                      "rel": "alternate",
+                      "type": "application/vnd.openstack.image"
+                    }
+                  ],
+                  "metadata": {
+                    "base_image_ref": "e8825141-c2f8-4c30-b242-389b9794eb45",
+                    "hw_disk_bus": "virtio",
+                    "image_type": "snapshot",
+                    "instance_type_ephemeral_gb": "0",
+                    "instance_type_flavorid": "7acdc557-31a4-4b51-a0f7-360e7d970e2e",
+                    "instance_type_id": "10",
+                    "instance_type_memory_mb": "512",
+                    "instance_type_name": "server",
+                    "instance_type_root_gb": "0",
+                    "instance_type_rxtx_factor": "1.0",
+                    "instance_type_swap": "0",
+                    "instance_type_vcpus": "1",
+                    "instance_uuid": "ce633db7-cd24-4ab3-a3d5-bb93e5f02ab3",
+                    "network_allocated": true,
+                    "release": "ubuntu.trusty64",
+                    "serial": "1",
+                    "source_node_name": "server-1",
+                    "source_simulation_id": "My_Topologies@ubuntu_iosv-Ij9vYI",
+                    "subtype": "server",
+                    "user_id": "06bdbb8568b7448c86961c9afd3fb3b6"
+                  },
+                  "minDisk": 0,
+                  "minRam": 0,
+                  "name": "guest-server-server-1",
+                  "progress": 25,
+                  "server": {
+                    "id": "ce633db7-cd24-4ab3-a3d5-bb93e5f02ab3",
+                    "links": [
+                      {
+                        "href": "http://127.0.1.1:8774/v2/4136d632294044f69b9e093cf3f1e84a/servers/ce633db7-cd24-4ab3-a3d5-bb93e5f02ab3",
+                        "rel": "self"
+                      },
+                      {
+                        "href": "http://127.0.1.1:8774/4136d632294044f69b9e093cf3f1e84a/servers/ce633db7-cd24-4ab3-a3d5-bb93e5f02ab3",
+                        "rel": "bookmark"
+                      }
+                    ]
+                  },
+                  "status": "SAVING",
+                  "updated": "2014-11-10T15:15:21Z"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authenticated",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_401"
+            }
+          },
+          "404": {
+            "description": "Simulation not found",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_404"
+            }
+          },
+          "409": {
+            "description": "Node inactive",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_409_update_session_inactive"
+            }
+          }
+        },
+        "tags": [
+          "snapshot"
+        ],
+        "summary": "Create snapshot of a node"
+      }
+    },
+    "/simengine/rest/list": {
+      "get": {
+        "description": "Get a list of all simulations of this user, and the status of each simulation.",
+        "responses": {
+          "200": {
+            "description": "Returns simulation list",
+            "schema": {
+              "$ref": "#/definitions/noschema"
+            },
+            "examples": {
+              "application/json": {
+                "simulations": {
+                  "My_Topologies@ubuntu_iosv-8l3GgQ": {
+                    "expires": null,
+                    "status": "ACTIVE",
+                    "launched": "2015-09-03T16:18:08.847810"
+                  },
+                  "~jumphost": {
+                    "expires": null,
+                    "status": "ACTIVE",
+                    "launched": "2015-09-06T16:23:08.542950"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authenticated",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_401"
+            }
+          }
+        },
+        "tags": [
+          "simengine"
+        ],
+        "summary": "Get a list of all simulations of this user, and the status of each simulation."
+      }
+    },
+    "/simengine/rest/{simulation}/{node}/attach/{volume}": {
+      "get": {
+        "description": "Attach volume to a running node.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "node",
+            "type": "string",
+            "required": true,
+            "description": "Node to attach the volume to"
+          },
+          {
+            "in": "path",
+            "name": "simulation",
+            "type": "string",
+            "required": true,
+            "description": "simulation_id"
+          },
+          {
+            "in": "path",
+            "name": "volume",
+            "type": "string",
+            "required": true,
+            "description": "name of the volume to attach"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Volume attached",
+            "schema": {
+              "$ref": "#/definitions/noschema"
+            },
+            "examples": {
+              "application/json": {}
+            }
+          },
+          "401": {
+            "description": "Not authenticated",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_401"
+            }
+          },
+          "404": {
+            "description": "Simulation / node / volume not found",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_404"
+            }
+          },
+          "409": {
+            "description": "Simulation inactive",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_409_update_session_inactive"
+            }
+          }
+        },
+        "tags": [
+          "volume"
+        ],
+        "summary": "Attach volume to a running node."
+      }
+    },
+    "/simengine/rest/{simulation}/{node}/detach/{volume}": {
+      "get": {
+        "description": "Detach volume from a running node.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "node",
+            "type": "string",
+            "required": true,
+            "description": "Node to detach the volume from"
+          },
+          {
+            "in": "path",
+            "name": "simulation",
+            "type": "string",
+            "required": true,
+            "description": "simulation_id"
+          },
+          {
+            "in": "path",
+            "name": "volume",
+            "type": "string",
+            "required": true,
+            "description": "name of the volume to detach"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/noschema"
+            },
+            "examples": {
+              "application/json": {}
+            }
+          },
+          "401": {
+            "description": "Not authenticated",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_401"
+            }
+          },
+          "404": {
+            "description": "Simulation / node / volume not found",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_404"
+            }
+          },
+          "409": {
+            "description": "Simulation inactive",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_409_update_session_inactive"
+            }
+          }
+        },
+        "tags": [
+          "volume"
+        ],
+        "summary": "Detach volume from a running node."
+      }
+    },
+    "/simengine/rest/nodes/{simulation}": {
+      "get": {
+        "description": "List simulation nodes.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "simulation",
+            "type": "string",
+            "required": true,
+            "description": "simulation_id"
+          },
+          {
+            "in": "query",
+            "name": "nodes",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi",
+            "required": false,
+            "default": null,
+            "description": "select nodes for return by name or XPath, defaults to all nodes"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/noschema"
+            },
+            "examples": {
+              "application/json": {
+                "My_Topologies@topology-BK1nZx": {
+                  "iosv-1": {
+                    "vnc-console": false,
+                    "subtype": "IOSv",
+                    "state": "ACTIVE",
+                    "management-protocol": "telnet",
+                    "management-proxy": "lxc",
+                    "reachable": true,
+                    "serial-ports": 2
+                  },
+                  "server-1": {
+                    "vnc-console": true,
+                    "subtype": "server",
+                    "state": "ACTIVE",
+                    "management-protocol": "ssh",
+                    "management-proxy": "lxc",
+                    "reachable": true,
+                    "serial-ports": 1
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authenticated",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_401"
+            }
+          },
+          "404": {
+            "description": "Simulation not found",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_404"
+            }
+          },
+          "503": {
+            "description": "Proxy SSH client is unavailable",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_503_ssh_unavailable"
+            }
+          }
+        },
+        "tags": [
+          "simengine"
+        ],
+        "summary": "List simulation nodes."
+      }
+    },
+    "/simengine/rest/interfaces/{simulation}": {
+      "get": {
+        "description": "List simulation interfaces.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "simulation",
+            "type": "string",
+            "required": true,
+            "description": "simulation_id"
+          },
+          {
+            "in": "query",
+            "name": "nodes",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi",
+            "required": false,
+            "default": null,
+            "description": "select nodes for return by name or XPath, defaults to all nodes"
+          },
+          {
+            "in": "query",
+            "name": "networks",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi",
+            "required": false,
+            "default": null,
+            "description": "select networks for return by name or XPath, defaults to all networks"
+          },
+          {
+            "in": "query",
+            "name": "interfaces",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi",
+            "required": false,
+            "default": null,
+            "description": "select interfaces for return by name or XPath, defaults to all interfaces"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/noschema"
+            },
+            "examples": {
+              "application/json": {}
+            }
+          },
+          "401": {
+            "description": "Not authenticated",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_401"
+            }
+          },
+          "404": {
+            "description": "Simulation / network / interface not found",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_404"
+            }
+          }
+        },
+        "tags": [
+          "interfaces"
+        ],
+        "summary": "List simulation interfaces."
+      }
+    },
+    "/simengine/rest/update/interfaces/{simulation}": {
+      "put": {
+        "description": "Update simulation nodes interfaces admin_state.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "simulation",
+            "type": "string",
+            "required": true,
+            "description": "simulation_id"
+          },
+          {
+            "in": "query",
+            "name": "nodes",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi",
+            "required": false,
+            "default": null,
+            "description": "select nodes for return by name or XPath, defaults to all nodes"
+          },
+          {
+            "in": "query",
+            "name": "networks",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi",
+            "required": false,
+            "default": null,
+            "description": "select networks for return by name or XPath, defaults to all networks"
+          },
+          {
+            "in": "query",
+            "name": "interfaces",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi",
+            "required": false,
+            "default": null,
+            "description": "select interfaces for return by name or XPath, defaults to all interfaces"
+          },
+          {
+            "in": "query",
+            "name": "link-state",
+            "type": "integer",
+            "required": true,
+            "enum": [
+              0,
+              1
+            ],
+            "description": "Interface admin_state (0 = down, 1 = up)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/noschema"
+            },
+            "examples": {
+              "application/json": {}
+            }
+          },
+          "401": {
+            "description": "Not authenticated",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_401"
+            }
+          },
+          "404": {
+            "description": "Simulation / network / interface not found",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_404"
+            }
+          }
+        },
+        "tags": [
+          "interfaces"
+        ],
+        "summary": "Update simulation nodes interfaces admin_state."
+      }
+    },
+    "/simengine/rest/capture/{simulation}": {
+      "post": {
+        "description": "Create a new traffic capture process attached to a running node interface. A traffic capture is either offline, collected to a file on the VIRL server, or live, exposing a TCP port on the VIRL server where the data can be collected. The capture process is subject to limits on the amounts of traffic that can be captures. If the client does not set these limits, the maximum allowed by server config is used.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "simulation",
+            "type": "string",
+            "required": true,
+            "description": "simulation_id"
+          },
+          {
+            "in": "query",
+            "name": "node",
+            "type": "string",
+            "required": true,
+            "description": "select node where the traffic is captured by name"
+          },
+          {
+            "in": "query",
+            "name": "interface",
+            "type": "string",
+            "required": true,
+            "description": "select interface by ID or `management` keyword"
+          },
+          {
+            "in": "query",
+            "name": "live-port",
+            "type": "integer",
+            "required": false,
+            "default": null,
+            "description": "Expose live capture on this port, 0 = automatic"
+          },
+          {
+            "in": "query",
+            "name": "pcap-filter",
+            "type": "string",
+            "required": false,
+            "default": null,
+            "description": "filter captured traffic using a PCAP filter"
+          },
+          {
+            "in": "query",
+            "name": "count",
+            "type": "integer",
+            "required": false,
+            "default": null,
+            "description": "capture max `count` packets"
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "type": "integer",
+            "required": false,
+            "default": null,
+            "description": "capture max `size` MB of traffic"
+          },
+          {
+            "in": "query",
+            "name": "time",
+            "type": "integer",
+            "required": false,
+            "default": null,
+            "description": "capture max `time` seconds of traffic"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/noschema"
+            },
+            "examples": {
+              "application/json": {
+                "c4c49288-531e-4ba1-be2a-37c7ad96fd42": {
+                  "count": 1000000,
+                  "node": "iosxrv-1",
+                  "interface-name": "GigabitEthernet0/0/0/2",
+                  "simulation": "My_Topologies@blanks-Z7mKQY",
+                  "pcap-filter": "icmp or arp",
+                  "running": true,
+                  "live-port": null,
+                  "time": 120,
+                  "interface": 2,
+                  "size": 10
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters / pcap-filter, or maximum concurrent capture limit reached",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_400_capture_invalid"
+            }
+          },
+          "401": {
+            "description": "Not authenticated",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_401"
+            }
+          },
+          "404": {
+            "description": "Simulation / node / interface not found",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_404"
+            }
+          }
+        },
+        "tags": [
+          "traffic capture"
+        ],
+        "summary": "Create a new traffic capture"
+      },
+      "get": {
+        "description": "List available traffic captures, or fetch captured data. Only offline captures can fetch their stored data, and can do so repeatedly, even if the traffic capture isn't running anymore.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "simulation",
+            "type": "string",
+            "required": true,
+            "description": "simulation_id"
+          },
+          {
+            "in": "query",
+            "name": "capture",
+            "type": "string",
+            "required": false,
+            "default": null,
+            "description": "select a specific capture"
+          },
+          {
+            "in": "header",
+            "name": "Accept",
+            "type": "string",
+            "required": false,
+            "default": null,
+            "enum": [
+              "application/json",
+              "application/vnd.tcpdump.pcap"
+            ],
+            "description": "`application/vnd.tcpdump.pcap` download capture data"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return list of captures, optionally download",
+            "schema": {
+              "$ref": "#/definitions/noschema"
+            },
+            "examples": {
+              "application/json": {
+                "c4c49288-531e-4ba1-be2a-37c7ad96fd42": {
+                  "count": 1000000,
+                  "node": "iosxrv-1",
+                  "interface-name": "GigabitEthernet0/0/0/2",
+                  "simulation": "My_Topologies@blanks-Z7mKQY",
+                  "pcap-filter": "icmp or arp",
+                  "running": true,
+                  "live-port": null,
+                  "time": 120,
+                  "interface": 2,
+                  "size": 10
+                },
+                "3badf963-8976-44f4-af8d-8ffb31919cba": {
+                  "count": 120,
+                  "node": "iosvl2-1",
+                  "interface-name": "Vlan1",
+                  "simulation": "My_Topologies@blanks-Z7mKQY",
+                  "pcap-filter": "",
+                  "running": true,
+                  "live-port": 45300,
+                  "time": 86400,
+                  "interface": -1,
+                  "size": 10
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameters / pcap-filter, or maximum concurrent capture limit reached",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_400_capture_invalid"
+            }
+          },
+          "401": {
+            "description": "Not authenticated",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_401"
+            }
+          },
+          "404": {
+            "description": "Simulation / traffic capture not found",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_404"
+            }
+          }
+        },
+        "tags": [
+          "traffic capture"
+        ],
+        "summary": "List available traffic captures, or fetch captured data."
+      },
+      "delete": {
+        "description": "Delete a traffic capture. Traffic captures will remain defined as long as the simulation exists, unless they are removed by this call, even if they are no longer, running due to reaching their limits, or if an error occurred. The captured data in offline captures is deleted as well.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "simulation",
+            "type": "string",
+            "required": true,
+            "description": "simulation_id"
+          },
+          {
+            "in": "query",
+            "name": "capture",
+            "type": "string",
+            "required": true,
+            "description": "select a specific capture"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/noschema"
+            },
+            "examples": {
+              "application/json": {
+                "3badf963-8976-44f4-af8d-8ffb31919cba": {
+                  "count": 120,
+                  "node": "iosvl2-1",
+                  "interface-name": "Vlan1",
+                  "simulation": "My_Topologies@blanks-Z7mKQY",
+                  "pcap-filter": "",
+                  "running": false,
+                  "live-port": 45300,
+                  "time": 86400,
+                  "interface": -10,
+                  "size": 10
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "Capture not found"
+          },
+          "401": {
+            "description": "Not authenticated",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_401"
+            }
+          },
+          "404": {
+            "description": "Simulation not found",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_404"
+            }
+          }
+        },
+        "tags": [
+          "traffic capture"
+        ],
+        "summary": "Delete a traffic capture."
+      }
+    },
+    "/simengine/rest/health": {
+      "put": {
+        "description": "Schedule a system and services health check.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/noschema"
+            },
+            "examples": {
+              "application/json": {
+                "phases": [
+                  {
+                    "message": null,
+                    "state": "scheduled",
+                    "tests": [
+                      {
+                        "result": null,
+                        "message": null,
+                        "state": "scheduled",
+                        "description": "OpenStack authentication test",
+                        "details": []
+                      },
+                      {
+                        "result": null,
+                        "message": null,
+                        "state": "scheduled",
+                        "description": "OpenStack compute service test",
+                        "details": []
+                      },
+                      {
+                        "result": null,
+                        "message": null,
+                        "state": "scheduled",
+                        "description": "OpenStack identity service test",
+                        "details": []
+                      },
+                      {
+                        "result": null,
+                        "message": null,
+                        "state": "scheduled",
+                        "description": "OpenStack image service test",
+                        "details": []
+                      },
+                      {
+                        "result": null,
+                        "message": null,
+                        "state": "scheduled",
+                        "description": "OpenStack network service test",
+                        "details": []
+                      },
+                      {
+                        "result": null,
+                        "message": null,
+                        "state": "scheduled",
+                        "description": "OpenStack volume service test",
+                        "details": []
+                      },
+                      {
+                        "result": null,
+                        "message": null,
+                        "state": "scheduled",
+                        "description": "Docker Registry test",
+                        "details": []
+                      }
+                    ],
+                    "description": "Service tests",
+                    "result": null
+                  },
+                  {
+                    "message": null,
+                    "state": "scheduled",
+                    "tests": [
+                      {
+                        "result": null,
+                        "message": null,
+                        "state": "scheduled",
+                        "description": "VIRL STD API test",
+                        "details": []
+                      },
+                      {
+                        "result": null,
+                        "message": null,
+                        "state": "scheduled",
+                        "description": "VIRL UWM API test",
+                        "details": []
+                      }
+                    ],
+                    "description": "VIRL API service tests",
+                    "result": null
+                  },
+                  {
+                    "message": null,
+                    "state": "scheduled",
+                    "tests": [
+                      {
+                        "result": null,
+                        "message": null,
+                        "state": "scheduled",
+                        "description": "Project creation",
+                        "details": []
+                      },
+                      {
+                        "result": null,
+                        "message": null,
+                        "state": "scheduled",
+                        "description": "Simulation launch",
+                        "details": []
+                      },
+                      {
+                        "result": null,
+                        "message": null,
+                        "state": "scheduled",
+                        "description": "Simulation test",
+                        "details": []
+                      },
+                      {
+                        "result": null,
+                        "message": null,
+                        "state": "scheduled",
+                        "description": "Simulation cleanup",
+                        "details": []
+                      },
+                      {
+                        "result": null,
+                        "message": null,
+                        "state": "scheduled",
+                        "description": "Cluster test",
+                        "details": []
+                      },
+                      {
+                        "result": null,
+                        "message": null,
+                        "state": "scheduled",
+                        "description": "Project cleanup",
+                        "details": []
+                      }
+                    ],
+                    "description": "Simulation tests",
+                    "result": null
+                  }
+                ],
+                "result": null,
+                "state": "scheduled"
+              }
+            }
+          },
+          "401": {
+            "description": "Not authenticated",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_401"
+            }
+          },
+          "403": {
+            "description": "Admin user required",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_403"
+            }
+          },
+          "409": {
+            "description": "Health check was already scheduled or is running",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_409_health_check_scheduling_failed"
+            }
+          }
+        },
+        "tags": [
+          "health check"
+        ],
+        "summary": "Run health check"
+      },
+      "get": {
+        "description": "Retrieve current health check results and status",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Return current health check report",
+            "schema": {
+              "$ref": "#/definitions/noschema"
+            },
+            "examples": {
+              "application/json": {
+                "phases": [
+                  {
+                    "message": null,
+                    "state": "finished",
+                    "tests": [
+                      {
+                        "result": "pass",
+                        "message": null,
+                        "state": "finished",
+                        "description": "OpenStack authentication test",
+                        "details": [
+                          {
+                            "text": "Executing test",
+                            "type": "info",
+                            "time": "2016-01-13 09:03:26"
+                          },
+                          {
+                            "text": "Authenticating to OpenStack",
+                            "type": "info",
+                            "time": "2016-01-13 09:03:26"
+                          }
+                        ]
+                      },
+                      {
+                        "result": "pass",
+                        "message": null,
+                        "state": "finished",
+                        "description": "OpenStack compute service test",
+                        "details": [
+                          {
+                            "text": "Executing test",
+                            "type": "info",
+                            "time": "2016-01-13 09:03:26"
+                          },
+                          {
+                            "text": "Authenticating to OpenStack",
+                            "type": "info",
+                            "time": "2016-01-13 09:03:26"
+                          },
+                          {
+                            "text": "Retrieving network list",
+                            "type": "info",
+                            "time": "2016-01-13 09:03:26"
+                          },
+                          {
+                            "text": "Retrieving image list",
+                            "type": "info",
+                            "time": "2016-01-13 09:03:26"
+                          },
+                          {
+                            "text": "Retrieving service list",
+                            "type": "info",
+                            "time": "2016-01-13 09:03:26"
+                          }
+                        ]
+                      },
+                      {
+                        "result": "pass",
+                        "message": null,
+                        "state": "finished",
+                        "description": "OpenStack identity service test",
+                        "details": [
+                          {
+                            "text": "Executing test",
+                            "type": "info",
+                            "time": "2016-01-13 09:03:27"
+                          },
+                          {
+                            "text": "Authenticating to OpenStack",
+                            "type": "info",
+                            "time": "2016-01-13 09:03:27"
+                          },
+                          {
+                            "text": "Retrieving user list",
+                            "type": "info",
+                            "time": "2016-01-13 09:03:27"
+                          },
+                          {
+                            "text": "Testing user uwmadmin (OpenStack user uwmadmin)",
+                            "type": "info",
+                            "time": "2016-01-13 09:03:27"
+                          },
+                          {
+                            "text": "Testing user guest (OpenStack user guest)",
+                            "type": "info",
+                            "time": "2016-01-13 09:03:27"
+                          },
+                          {
+                            "text": "Looking for admin user",
+                            "type": "info",
+                            "time": "2016-01-13 09:03:27"
+                          }
+                        ]
+                      },
+                      {
+                        "result": "pass",
+                        "message": null,
+                        "state": "finished",
+                        "description": "OpenStack image service test",
+                        "details": [
+                          {
+                            "text": "Executing test",
+                            "type": "info",
+                            "time": "2016-01-13 09:03:27"
+                          },
+                          {
+                            "text": "Authenticating to OpenStack",
+                            "type": "info",
+                            "time": "2016-01-13 09:03:27"
+                          },
+                          {
+                            "text": "Retrieving image list",
+                            "type": "info",
+                            "time": "2016-01-13 09:03:27"
+                          },
+                          {
+                            "text": "Retrieving IOSv details",
+                            "type": "info",
+                            "time": "2016-01-13 09:03:27"
+                          }
+                        ]
+                      },
+                      {
+                        "result": "pass",
+                        "message": null,
+                        "state": "finished",
+                        "description": "OpenStack network service test",
+                        "details": [
+                          {
+                            "text": "Executing test",
+                            "type": "info",
+                            "time": "2016-01-13 09:03:28"
+                          },
+                          {
+                            "text": "Authenticating to OpenStack",
+                            "type": "info",
+                            "time": "2016-01-13 09:03:28"
+                          },
+                          {
+                            "text": "Retrieving network list",
+                            "type": "info",
+                            "time": "2016-01-13 09:03:28"
+                          },
+                          {
+                            "text": "Retrieving subnet list",
+                            "type": "info",
+                            "time": "2016-01-13 09:03:28"
+                          },
+                          {
+                            "text": "Testing shared networks",
+                            "type": "info",
+                            "time": "2016-01-13 09:03:28"
+                          },
+                          {
+                            "text": "Testing \"guest\" project",
+                            "type": "info",
+                            "time": "2016-01-13 09:03:28"
+                          },
+                          {
+                            "text": "Retrieving agent list",
+                            "type": "info",
+                            "time": "2016-01-13 09:03:28"
+                          }
+                        ]
+                      },
+                      {
+                        "result": "skip",
+                        "message": "Volume service feature is disabled",
+                        "state": "finished",
+                        "description": "OpenStack volume service test",
+                        "details": [
+                          {
+                            "text": "Volume service feature is disabled",
+                            "type": "skip",
+                            "time": "2016-01-13 09:03:28"
+                          }
+                        ]
+                      },
+                      {
+                        "result": "pass",
+                        "message": null,
+                        "state": "finished",
+                        "description": "Docker Registry test",
+                        "details": [
+                          {
+                            "text": "Executing test",
+                            "type": "info",
+                            "time": "2016-01-13 09:03:28"
+                          },
+                          {
+                            "text": "Connecting to Docker",
+                            "type": "info",
+                            "time": "2016-01-13 09:03:28"
+                          }
+                        ]
+                      }
+                    ],
+                    "description": "Service tests",
+                    "result": "pass"
+                  },
+                  {
+                    "message": null,
+                    "state": "finished",
+                    "tests": [
+                      {
+                        "result": "pass",
+                        "message": "Status: STD server on url http://localhost:19399 is listening, server version 0.10.21.9",
+                        "state": "finished",
+                        "description": "VIRL STD API test",
+                        "details": [
+                          {
+                            "text": "Executing test",
+                            "type": "info",
+                            "time": "2016-01-13 09:03:28"
+                          },
+                          {
+                            "text": "Status: STD server on url http://localhost:19399 is listening, server version 0.10.21.9",
+                            "type": "pass",
+                            "time": "2016-01-13 09:03:28"
+                          }
+                        ]
+                      },
+                      {
+                        "result": "pass",
+                        "message": "Status: UWM server on url http://localhost:19400 is listening, server version 0.10.21.10",
+                        "state": "finished",
+                        "description": "VIRL UWM API test",
+                        "details": [
+                          {
+                            "text": "Executing test",
+                            "type": "info",
+                            "time": "2016-01-13 09:03:28"
+                          },
+                          {
+                            "text": "Status: UWM server on url http://localhost:19400 is listening, server version 0.10.21.10",
+                            "type": "pass",
+                            "time": "2016-01-13 09:03:28"
+                          }
+                        ]
+                      }
+                    ],
+                    "description": "VIRL API service tests",
+                    "result": "pass"
+                  },
+                  {
+                    "message": null,
+                    "state": "finished",
+                    "tests": [
+                      {
+                        "result": "pass",
+                        "message": null,
+                        "state": "finished",
+                        "description": "Project creation",
+                        "details": [
+                          {
+                            "text": "Executing test",
+                            "type": "info",
+                            "time": "2016-01-13 09:03:28"
+                          },
+                          {
+                            "text": "Creating project \"system-test\"",
+                            "type": "info",
+                            "time": "2016-01-13 09:03:29"
+                          },
+                          {
+                            "text": "system-test password: aKvE9O",
+                            "type": "info",
+                            "time": "2016-01-13 09:03:32"
+                          },
+                          {
+                            "text": "Attempting cleanup",
+                            "type": "info",
+                            "time": "2016-01-13 09:05:56"
+                          },
+                          {
+                            "text": "No suitable user found",
+                            "type": "info",
+                            "time": "2016-01-13 09:05:56"
+                          }
+                        ]
+                      },
+                      {
+                        "result": "pass",
+                        "message": "Node \"iosvl2-1\" booted in 55s",
+                        "state": "finished",
+                        "description": "Simulation launch",
+                        "details": [
+                          {
+                            "text": "Executing test",
+                            "type": "info",
+                            "time": "2016-01-13 09:03:32"
+                          },
+                          {
+                            "text": "Creating VIRL clients",
+                            "type": "info",
+                            "time": "2016-01-13 09:03:32"
+                          },
+                          {
+                            "text": "Launching topology",
+                            "type": "info",
+                            "time": "2016-01-13 09:03:33"
+                          },
+                          {
+                            "text": "Waiting for nodes",
+                            "type": "info",
+                            "time": "2016-01-13 09:03:36"
+                          },
+                          {
+                            "text": "Node \"~mgmt-lxc\" started booting in 8s",
+                            "type": "info",
+                            "time": "2016-01-13 09:03:44"
+                          },
+                          {
+                            "text": "Node \"~mgmt-lxc\" booted in 0s",
+                            "type": "pass",
+                            "time": "2016-01-13 09:03:44"
+                          },
+                          {
+                            "text": "Node \"lxc-iperf-1\" started booting in 10s",
+                            "type": "info",
+                            "time": "2016-01-13 09:03:46"
+                          },
+                          {
+                            "text": "Node \"lxc-iperf-1\" booted in 0s",
+                            "type": "pass",
+                            "time": "2016-01-13 09:03:46"
+                          },
+                          {
+                            "text": "Node \"lxc-iperf-2\" started booting in 11s",
+                            "type": "info",
+                            "time": "2016-01-13 09:03:47"
+                          },
+                          {
+                            "text": "Node \"lxc-iperf-2\" booted in 0s",
+                            "type": "pass",
+                            "time": "2016-01-13 09:03:48"
+                          },
+                          {
+                            "text": "Node \"iosvl2-1\" started booting in 32s",
+                            "type": "info",
+                            "time": "2016-01-13 09:04:08"
+                          },
+                          {
+                            "text": "Node \"iosvl2-2\" started booting in 35s",
+                            "type": "info",
+                            "time": "2016-01-13 09:04:11"
+                          },
+                          {
+                            "text": "Node \"iosvl2-2\" booted in 50s",
+                            "type": "pass",
+                            "time": "2016-01-13 09:05:02"
+                          },
+                          {
+                            "text": "Node \"iosvl2-1\" booted in 55s",
+                            "type": "pass",
+                            "time": "2016-01-13 09:05:04"
+                          }
+                        ]
+                      },
+                      {
+                        "result": "pass",
+                        "message": "Ping test: LXC switched path (L2 patch)",
+                        "state": "finished",
+                        "description": "Simulation test",
+                        "details": [
+                          {
+                            "text": "Executing test",
+                            "type": "info",
+                            "time": "2016-01-13 09:05:04"
+                          },
+                          {
+                            "text": "Ping test: LXC direct path (LXC to LXC networking)",
+                            "type": "pass",
+                            "time": "2016-01-13 09:05:04"
+                          },
+                          {
+                            "text": "Ping test: LXC switched path (L2 patch) (remaining retries: 9)",
+                            "type": "info",
+                            "time": "2016-01-13 09:05:12"
+                          },
+                          {
+                            "text": "Ping test: LXC switched path (L2 patch) (remaining retries: 8)",
+                            "type": "info",
+                            "time": "2016-01-13 09:05:19"
+                          },
+                          {
+                            "text": "Ping test: LXC switched path (L2 patch) (remaining retries: 7)",
+                            "type": "info",
+                            "time": "2016-01-13 09:05:25"
+                          },
+                          {
+                            "text": "Ping test: LXC switched path (L2 patch) (remaining retries: 6)",
+                            "type": "info",
+                            "time": "2016-01-13 09:05:31"
+                          },
+                          {
+                            "text": "Ping test: LXC switched path (L2 patch)",
+                            "type": "pass",
+                            "time": "2016-01-13 09:05:36"
+                          },
+                          {
+                            "text": "Attempting cleanup",
+                            "type": "info",
+                            "time": "2016-01-13 09:05:56"
+                          },
+                          {
+                            "text": "No suitable user found",
+                            "type": "info",
+                            "time": "2016-01-13 09:05:56"
+                          }
+                        ]
+                      },
+                      {
+                        "result": "pass",
+                        "message": null,
+                        "state": "finished",
+                        "description": "Simulation cleanup",
+                        "details": [
+                          {
+                            "text": "Executing test",
+                            "type": "info",
+                            "time": "2016-01-13 09:05:36"
+                          },
+                          {
+                            "text": "Creating VIRL clients",
+                            "type": "info",
+                            "time": "2016-01-13 09:05:36"
+                          },
+                          {
+                            "text": "Stopping simulation \"session-mrAjVs\"",
+                            "type": "info",
+                            "time": "2016-01-13 09:05:36"
+                          },
+                          {
+                            "text": "Simulation \"session-mrAjVs\" stopped",
+                            "type": "info",
+                            "time": "2016-01-13 09:05:52"
+                          }
+                        ]
+                      },
+                      {
+                        "result": "skip",
+                        "message": "Cluster is not enabled",
+                        "state": "finished",
+                        "description": "Cluster test",
+                        "details": [
+                          {
+                            "text": "Cluster is not enabled",
+                            "type": "skip",
+                            "time": "2016-01-13 09:05:52"
+                          }
+                        ]
+                      },
+                      {
+                        "result": "pass",
+                        "message": null,
+                        "state": "finished",
+                        "description": "Project cleanup",
+                        "details": [
+                          {
+                            "text": "Executing test",
+                            "type": "info",
+                            "time": "2016-01-13 09:05:52"
+                          },
+                          {
+                            "text": "Creating VIRL clients",
+                            "type": "info",
+                            "time": "2016-01-13 09:05:52"
+                          },
+                          {
+                            "text": "Deleting project \"system-test\"",
+                            "type": "info",
+                            "time": "2016-01-13 09:05:53"
+                          }
+                        ]
+                      }
+                    ],
+                    "description": "Simulation tests",
+                    "result": "pass"
+                  }
+                ],
+                "result": "pass",
+                "state": "finished"
+              }
+            }
+          },
+          "401": {
+            "description": "Not authenticated",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_401"
+            }
+          },
+          "403": {
+            "description": "Admin user required",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_403"
+            }
+          }
+        },
+        "tags": [
+          "health check"
+        ],
+        "summary": "Retrieve current health check status and results."
+      },
+      "delete": {
+        "description": "Cancel running health check",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/noschema"
+            },
+            "examples": {
+              "application/json": {
+                "cancelled": true,
+                "phases": [
+                  {
+                    "message": null,
+                    "state": "finished",
+                    "tests": [
+                      {
+                        "result": "pass",
+                        "message": null,
+                        "state": "finished",
+                        "description": "OpenStack authentication test",
+                        "details": [
+                          {
+                            "text": "Executing test",
+                            "type": "info",
+                            "time": "2016-01-13 09:17:30"
+                          },
+                          {
+                            "text": "Authenticating to OpenStack",
+                            "type": "info",
+                            "time": "2016-01-13 09:17:30"
+                          }
+                        ]
+                      },
+                      {
+                        "result": "pass",
+                        "message": null,
+                        "state": "finished",
+                        "description": "OpenStack compute service test",
+                        "details": [
+                          {
+                            "text": "Executing test",
+                            "type": "info",
+                            "time": "2016-01-13 09:17:30"
+                          },
+                          {
+                            "text": "Authenticating to OpenStack",
+                            "type": "info",
+                            "time": "2016-01-13 09:17:30"
+                          },
+                          {
+                            "text": "Retrieving network list",
+                            "type": "info",
+                            "time": "2016-01-13 09:17:30"
+                          },
+                          {
+                            "text": "Retrieving image list",
+                            "type": "info",
+                            "time": "2016-01-13 09:17:30"
+                          },
+                          {
+                            "text": "Retrieving service list",
+                            "type": "info",
+                            "time": "2016-01-13 09:17:31"
+                          }
+                        ]
+                      },
+                      {
+                        "result": "pass",
+                        "message": null,
+                        "state": "finished",
+                        "description": "OpenStack identity service test",
+                        "details": [
+                          {
+                            "text": "Executing test",
+                            "type": "info",
+                            "time": "2016-01-13 09:17:31"
+                          },
+                          {
+                            "text": "Authenticating to OpenStack",
+                            "type": "info",
+                            "time": "2016-01-13 09:17:31"
+                          },
+                          {
+                            "text": "Retrieving user list",
+                            "type": "info",
+                            "time": "2016-01-13 09:17:31"
+                          },
+                          {
+                            "text": "Testing user uwmadmin (OpenStack user uwmadmin)",
+                            "type": "info",
+                            "time": "2016-01-13 09:17:31"
+                          },
+                          {
+                            "text": "Testing user guest (OpenStack user guest)",
+                            "type": "info",
+                            "time": "2016-01-13 09:17:31"
+                          },
+                          {
+                            "text": "Testing user system-test (OpenStack user system-test)",
+                            "type": "info",
+                            "time": "2016-01-13 09:17:31"
+                          },
+                          {
+                            "text": "Looking for admin user",
+                            "type": "info",
+                            "time": "2016-01-13 09:17:31"
+                          }
+                        ]
+                      },
+                      {
+                        "result": "pass",
+                        "message": null,
+                        "state": "finished",
+                        "description": "OpenStack image service test",
+                        "details": [
+                          {
+                            "text": "Executing test",
+                            "type": "info",
+                            "time": "2016-01-13 09:17:31"
+                          },
+                          {
+                            "text": "Authenticating to OpenStack",
+                            "type": "info",
+                            "time": "2016-01-13 09:17:31"
+                          },
+                          {
+                            "text": "Retrieving image list",
+                            "type": "info",
+                            "time": "2016-01-13 09:17:31"
+                          },
+                          {
+                            "text": "Retrieving IOSv details",
+                            "type": "info",
+                            "time": "2016-01-13 09:17:31"
+                          }
+                        ]
+                      },
+                      {
+                        "result": "pass",
+                        "message": null,
+                        "state": "finished",
+                        "description": "OpenStack network service test",
+                        "details": [
+                          {
+                            "text": "Executing test",
+                            "type": "info",
+                            "time": "2016-01-13 09:17:32"
+                          },
+                          {
+                            "text": "Authenticating to OpenStack",
+                            "type": "info",
+                            "time": "2016-01-13 09:17:32"
+                          },
+                          {
+                            "text": "Retrieving network list",
+                            "type": "info",
+                            "time": "2016-01-13 09:17:32"
+                          },
+                          {
+                            "text": "Retrieving subnet list",
+                            "type": "info",
+                            "time": "2016-01-13 09:17:32"
+                          },
+                          {
+                            "text": "Testing shared networks",
+                            "type": "info",
+                            "time": "2016-01-13 09:17:32"
+                          },
+                          {
+                            "text": "Testing \"system-test\" project",
+                            "type": "info",
+                            "time": "2016-01-13 09:17:32"
+                          },
+                          {
+                            "text": "Testing \"guest\" project",
+                            "type": "info",
+                            "time": "2016-01-13 09:17:32"
+                          },
+                          {
+                            "text": "Retrieving agent list",
+                            "type": "info",
+                            "time": "2016-01-13 09:17:32"
+                          }
+                        ]
+                      },
+                      {
+                        "result": "skip",
+                        "message": "Volume service feature is disabled",
+                        "state": "finished",
+                        "description": "OpenStack volume service test",
+                        "details": [
+                          {
+                            "text": "Volume service feature is disabled",
+                            "type": "skip",
+                            "time": "2016-01-13 09:17:32"
+                          }
+                        ]
+                      },
+                      {
+                        "result": "pass",
+                        "message": null,
+                        "state": "finished",
+                        "description": "Docker Registry test",
+                        "details": [
+                          {
+                            "text": "Executing test",
+                            "type": "info",
+                            "time": "2016-01-13 09:17:32"
+                          },
+                          {
+                            "text": "Connecting to Docker",
+                            "type": "info",
+                            "time": "2016-01-13 09:17:32"
+                          }
+                        ]
+                      }
+                    ],
+                    "description": "Service tests",
+                    "result": "pass"
+                  },
+                  {
+                    "message": null,
+                    "state": "finished",
+                    "tests": [
+                      {
+                        "result": "pass",
+                        "message": "Status: STD server on url http://localhost:19399 is listening, server version 0.10.21.9",
+                        "state": "finished",
+                        "description": "VIRL STD API test",
+                        "details": [
+                          {
+                            "text": "Executing test",
+                            "type": "info",
+                            "time": "2016-01-13 09:17:32"
+                          },
+                          {
+                            "text": "Status: STD server on url http://localhost:19399 is listening, server version 0.10.21.9",
+                            "type": "pass",
+                            "time": "2016-01-13 09:17:32"
+                          }
+                        ]
+                      },
+                      {
+                        "result": "pass",
+                        "message": "Status: UWM server on url http://localhost:19400 is listening, server version 0.10.21.10",
+                        "state": "finished",
+                        "description": "VIRL UWM API test",
+                        "details": [
+                          {
+                            "text": "Executing test",
+                            "type": "info",
+                            "time": "2016-01-13 09:17:32"
+                          },
+                          {
+                            "text": "Status: UWM server on url http://localhost:19400 is listening, server version 0.10.21.10",
+                            "type": "pass",
+                            "time": "2016-01-13 09:17:33"
+                          }
+                        ]
+                      }
+                    ],
+                    "description": "VIRL API service tests",
+                    "result": "pass"
+                  },
+                  {
+                    "message": null,
+                    "state": "running",
+                    "tests": [
+                      {
+                        "result": null,
+                        "message": null,
+                        "state": "running",
+                        "description": "Project creation",
+                        "details": [
+                          {
+                            "text": "Executing test",
+                            "type": "info",
+                            "time": "2016-01-13 09:17:33"
+                          },
+                          {
+                            "text": "Deleting project \"system-test\"",
+                            "type": "info",
+                            "time": "2016-01-13 09:17:33"
+                          }
+                        ]
+                      },
+                      {
+                        "result": null,
+                        "message": null,
+                        "state": "scheduled",
+                        "description": "Simulation launch",
+                        "details": []
+                      },
+                      {
+                        "result": null,
+                        "message": null,
+                        "state": "scheduled",
+                        "description": "Simulation test",
+                        "details": []
+                      },
+                      {
+                        "result": null,
+                        "message": null,
+                        "state": "scheduled",
+                        "description": "Simulation cleanup",
+                        "details": []
+                      },
+                      {
+                        "result": null,
+                        "message": null,
+                        "state": "scheduled",
+                        "description": "Cluster test",
+                        "details": []
+                      },
+                      {
+                        "result": null,
+                        "message": null,
+                        "state": "scheduled",
+                        "description": "Project cleanup",
+                        "details": []
+                      }
+                    ],
+                    "description": "Simulation tests",
+                    "result": null
+                  }
+                ],
+                "result": "pass",
+                "state": "running"
+              }
+            }
+          },
+          "401": {
+            "description": "Not authenticated",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_401"
+            }
+          },
+          "403": {
+            "description": "Admin user required",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_403"
+            }
+          }
+        },
+        "tags": [
+          "health check"
+        ],
+        "summary": "Cancel running health check."
+      }
+    },
+    "/simengine/rest/counters/{simulation_id}": {
+      "get": {
+        "description": "List traffic on particular interfaces.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "simulation_id",
+            "type": "string",
+            "required": true,
+            "description": "simulation_id"
+          },
+          {
+            "in": "query",
+            "name": "nodes",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi",
+            "required": false,
+            "description": "filter reported statistics by node (optional, defaults to all)"
+          },
+          {
+            "in": "query",
+            "name": "networks",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi",
+            "required": false,
+            "description": "filter reported statistics by network (optional, defaults to all)"
+          },
+          {
+            "in": "query",
+            "name": "interfaces",
+            "type": "array",
+            "required": false,
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi",
+            "description": "filter reported statistics by interface (optional, defaults to all)"
+          },
+          {
+            "in": "query",
+            "name": "type",
+            "type": "string",
+            "required": false,
+            "description": "can be one of 'total' / 'rate' / 'avg' - type of report to generate (optional, defaults to 'total')"
+          },
+          {
+            "in": "query",
+            "name": "step",
+            "type": "integer",
+            "required": false,
+            "description": "group values into groups of <step> (optional, defaults to 1)"
+          },
+          {
+            "in": "query",
+            "name": "count",
+            "type": "integer",
+            "required": false,
+            "description": "number of values to return / consider in generating the stats. (optional, defaults to 1)"
+          },
+          {
+            "in": "query",
+            "name": "datetype",
+            "type": "string",
+            "required": false,
+            "description": "ending point for the timeframe, in iso8601 format, e.g. 2016-04-15T12:47:00.000Z"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/noschema"
+            },
+            "examples": {
+              "application/json": {
+                "3_node_test-ryyTsB": {
+                  "iosv-1": {
+                    "1": {
+                      "rx_bytes": [
+                        60
+                      ],
+                      "rx_packets": [
+                        1
+                      ],
+                      "tx_bytes": [
+                        0
+                      ],
+                      "tx_packets": [
+                        0
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "If the simulation / node / interface is not present",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_400_capture_invalid"
+            }
+          },
+          "404": {
+            "description": "Invalid parameters",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_401"
+            }
+          },
+          "503": {
+            "description": "Redis server is down",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_404"
+            }
+          }
+        },
+        "tags": [
+          "traffic counters"
+        ],
+        "summary": "List traffic on particular interfaces."
+      }
+    },
+    "/openstack/rest/test": {
+      "get": {
+        "description": "Verify the user is authenticated and return openstack API version.",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/noschema"
+            },
+            "examples": {
+              "application/json": {
+                "version": "1.3",
+                "virl-version": "0.10.10.1"
+              }
+            }
+          },
+          "401": {
+            "description": "Not authenticated",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_401"
+            }
+          }
+        },
+        "tags": [
+          "node resources"
+        ],
+        "summary": "Verify the user is authenticated and return openstack API version."
+      }
+    },
+    "/openstack/rest/images": {
+      "get": {
+        "description": "Return information about currently installed OpenStack VM images. This information is mainly for use in the topology design phase in GUI.",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/noschema"
+            },
+            "examples": {
+              "application/json": [
+                {
+                  "Status": "active",
+                  "Updated": "2014-11-05T08:17:29",
+                  "Created": "2014-11-05T08:17:22",
+                  "Image": "server",
+                  "Release": "ubuntu.trusty64",
+                  "ID": "7cd29e83-ea7c-4296-aa40-1ff9b57aec00",
+                  "Metadata": "{u'release': u'ubuntu.trusty64', u'subtype': u'server', u'serial': u'1', u'hw_disk_bus': u'virtio'}"
+                }
+              ]
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/stack_trace"
+            }
+          },
+          "401": {
+            "description": "Not authenticated",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_401"
+            }
+          }
+        },
+        "tags": [
+          "node resources"
+        ],
+        "summary": "Return information about currently installed OpenStack VM images. This information is mainly for use in the topology design phase in GUI."
+      }
+    },
+    "/openstack/rest/flavors": {
+      "get": {
+        "description": "Return information about currently installed OpenStack VM flavors. This information is mainly for use in the topology design phase in GUI.",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/noschema"
+            },
+            "examples": {
+              "application/json": [
+                {
+                  "Flavor": "server",
+                  "VCPUS": "1",
+                  "ID": "42298d8d-bfd5-47a1-9ab0-7ce50c24d13d",
+                  "Root Disk": "0",
+                  "Memory": "512"
+                }
+              ]
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/stack_trace"
+            }
+          },
+          "401": {
+            "description": "Not authenticated",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_401"
+            }
+          }
+        },
+        "tags": [
+          "node resources"
+        ],
+        "summary": "Return information about currently installed OpenStack VM flavors. This information is mainly for use in the topology design phase in GUI."
+      }
+    },
+    "/openstack/rest/volumes": {
+      "get": {
+        "description": "Return information about VM volumes present in OpenStack. Volume snapshots are not listed here. This information is mainly for use in the topology design phase in GUI.",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/noschema"
+            },
+            "examples": {
+              "application/json": [
+                {
+                  "Status": "error",
+                  "Created": "2014-11-07T13:03:16.000000",
+                  "Bootable": "false",
+                  "Volume": "guest-vol1",
+                  "ID": "4754fb89-51ee-47b5-945b-1bf107ff0305",
+                  "Tenant ID": "4136d632294044f69b9e093cf3f1e84a",
+                  "Size": 1
+                }
+              ]
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/stack_trace"
+            }
+          },
+          "401": {
+            "description": "Not authenticated",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_401"
+            }
+          }
+        },
+        "tags": [
+          "node resources"
+        ],
+        "summary": "Return information about VM volumes present in OpenStack. Volume snapshots are not listed here. This information is mainly for use in the topology design phase in GUI."
+      }
+    },
+    "/openstack/rest/networks": {
+      "get": {
+        "description": "Return information about OpenStack networks.",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/noschema"
+            },
+            "examples": {
+              "application/json": [
+                {
+                  "Description": "L3 SNAT External",
+                  "ID": "ed1245e7-6bb8-4b2b-b505-c429826f29db",
+                  "DNS": [
+                    "8.8.4.4",
+                    "8.8.8.8"
+                  ],
+                  "CIDR": "172.16.3.0/24",
+                  "Gateway": "172.16.3.1",
+                  "Network Name": "ext-net"
+                }
+              ]
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/stack_trace"
+            }
+          },
+          "401": {
+            "description": "Not authenticated",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_401"
+            }
+          }
+        },
+        "tags": [
+          "node resources"
+        ],
+        "summary": "Return information about OpenStack networks."
+      }
+    },
+    "/openstack/rest/ports/{network_name}": {
+      "get": {
+        "description": "Return information about the ports of an OpenStack network.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "network_name",
+            "type": "string",
+            "required": true,
+            "description": "Name of an OpenStack network."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/noschema"
+            },
+            "examples": {
+              "application/json": [
+                {
+                  "Attached": true,
+                  "externalAddr": "10.18.0.123",
+                  "internalAddr": "10.18.0.123",
+                  "Port Name": "</guest/endpoint>-<My_Topologies@_ubuntu-U3aD9r>-<server>-<guest>"
+                },
+                {
+                  "Attached": true,
+                  "externalAddr": "10.18.0.122",
+                  "internalAddr": "10.18.0.122",
+                  "Port Name": "guest-jumphost"
+                },
+                {
+                  "Attached": true,
+                  "externalAddr": "10.18.0.2",
+                  "internalAddr": "10.18.0.2",
+                  "Port Name": "network:dhcp"
+                },
+                {
+                  "Attached": true,
+                  "externalAddr": "10.18.0.1",
+                  "internalAddr": "10.18.0.1",
+                  "Port Name": "network:router_interface"
+                }
+              ]
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/stack_trace"
+            }
+          },
+          "401": {
+            "description": "Not authenticated",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_401"
+            }
+          }
+        },
+        "tags": [
+          "node resources"
+        ],
+        "summary": "Return information about the ports of an OpenStack network."
+      }
+    },
+    "/openstack/rest/create-port": {
+      "post": {
+        "description": "Create a port on an OpenStack network",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "network_name",
+            "type": "string",
+            "required": true,
+            "description": "name of the network on which the port should be created"
+          },
+          {
+            "in": "query",
+            "name": "port_name",
+            "type": "string",
+            "required": true,
+            "description": "name of the new port"
+          },
+          {
+            "in": "query",
+            "name": "tenant_name",
+            "type": "string",
+            "required": false,
+            "description": "port owner; if not specified, the current user's project will be used",
+            "default": null
+          },
+          {
+            "in": "query",
+            "name": "fixed_ip",
+            "type": "string",
+            "required": false,
+            "description": "custom fixed IP of the new port",
+            "default": null
+          },
+          {
+            "in": "query",
+            "name": "floating_ip",
+            "type": "string",
+            "required": false,
+            "description": "custom floating IP of the new port",
+            "default": null
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Port created",
+            "schema": {
+              "$ref": "#/definitions/noschema"
+            },
+            "examples": {
+              "application/json": {
+                "port": {
+                  "status": "DOWN",
+                  "binding:host_id": "",
+                  "name": "guest-testport",
+                  "admin_state_up": true,
+                  "network_id": "82e44b05-25a7-4943-b67f-a39bf5b7e4a2",
+                  "tenant_id": "839879b325b34acf931280df1048316e",
+                  "binding:vif_details": {},
+                  "binding:vnic_type": "normal",
+                  "binding:vif_type": "unbound",
+                  "device_owner": "",
+                  "mac_address": "fa:16:3e:89:e1:b7",
+                  "binding:profile": {},
+                  "fixed_ips": [
+                    {
+                      "subnet_id": "67cae20c-22d9-4e1f-9438-c82eedb40e3f",
+                      "ip_address": "10.18.0.124"
+                    }
+                  ],
+                  "id": "eb864d42-ba7e-45d4-a966-f244a72944d2",
+                  "device_id": ""
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authenticated",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_401"
+            }
+          },
+          "403": {
+            "description": "Admin user required",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_403"
+            }
+          },
+          "404": {
+            "description": "Network not found",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_404"
+            }
+          },
+          "409": {
+            "description": "Networks with same name",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_409_same_network"
+            }
+          }
+        },
+        "summary": "Create a port on an OpenStack network",
+        "tags": [
+          "node resources"
+        ]
+      }
+    },
+    "/ank/rest/test": {
+      "get": {
+        "description": "Verify the user is authenticated and return autonetkit API version. Also displays installed AutoNetkit version",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/noschema"
+            },
+            "examples": {
+              "autonetkit-cisco-version": "VIRL Configuration Engine 0.10.7",
+              "autonetkit-version": "autonetkit 0.10.6",
+              "version": "1.0",
+              "virl-version": "0.10.10.3"
+            }
+          },
+          "401": {
+            "description": "Not authenticated",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_401"
+            }
+          }
+        },
+        "tags": [
+          "autonetkit"
+        ],
+        "summary": "Verify the user is authenticated and return autonetkit API version. Also displays installed AutoNetkit version"
+      }
+    },
+    "/ank/rest/process": {
+      "post": {
+        "description": "This call processes a VIRL XML Topology file with AutoNetkit and assign initial configuration into each node’s config extension entry, based on parameters included in other extension entries throughout the file. In case the AutoNetkit subprocess returns with an error, the response will contain the log of the AutoNetkit process. Since AutoNetkit’s logs may be vital even in case of a successful configuration, the logs may be requested to be returned in a MIME multipart response. This behaviour can be turned on via the Accept HTTP header",
+        "consumes": [
+          "text/xml",
+          "multipart/mixed"
+        ],
+        "produces": [
+          "text/xml",
+          "multipart/mixed"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "debug",
+            "type": "string",
+            "required": false,
+            "default": "None",
+            "description": "Enable debug logging"
+          },
+          {
+            "in": "query",
+            "name": "uuid",
+            "type": "string",
+            "required": false,
+            "default": "None",
+            "description": "Identifier for AutoNetkit Visualization Web UI"
+          },
+          {
+            "in": "query",
+            "name": "session",
+            "type": "string",
+            "required": false,
+            "description": "DEPRECATED, the same as uuid",
+            "default": "None"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The AutoNetkit-processed VIRL XML Topology file. (if the topology is processed successfully and no mulipart response was requested)",
+            "schema": {
+              "type": "object"
+            },
+            "examples": {
+              "multipart/mixed": {
+                "text/xml": "The AutoNetkit-processed VIRL XML Topology file",
+                "text/log": "AutoNetkit logs"
+              },
+              "text/xml": "The AutoNetkit-processed VIRL XML Topology file"
+            }
+          },
+          "400": {
+            "description": "Topology is not valid",
+            "schema": {
+              "$ref": "#/definitions/stack_trace"
+            }
+          },
+          "401": {
+            "description": "Not authenticated",
+            "schema": {
+              "$ref": "#/definitions/stack_trace_401"
+            }
+          },
+          "500": {
+            "description": "AutoNetkit process fails",
+            "schema": {
+              "$ref": "#/definitions/stack_trace"
+            }
+          }
+        },
+        "tags": [
+          "autonetkit"
+        ],
+        "summary": "Process a VIRL XML Topology"
+      }
+    }
+  },
+  "swagger": "2.0",
+  "definitions": {
+    "shaping": {
+      "properties": {
+        "delay": {
+          "$ref": "#/definitions/delay"
+        },
+        "loss": {
+          "$ref": "#/definitions/loss"
+        },
+        "corrupt": {
+          "$ref": "#/definitions/corrupt"
+        },
+        "duplicate": {
+          "$ref": "#/definitions/duplicate"
+        },
+        "reorder": {
+          "$ref": "#/definitions/reorder"
+        }
+      }
+    },
+    "delay": {
+      "properties": {
+        "ms": {
+          "type": "number"
+        },
+        "jitter": {
+          "type": "number"
+        },
+        "correlation": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "ms"
+      ],
+      "example": {
+        "ms": 10,
+        "jitter": 20,
+        "correlation": 30
+      }
+    },
+    "reorder": {
+      "properties": {
+        "percent": {
+          "type": "number"
+        },
+        "correlation": {
+          "type": "number"
+        },
+        "gap": {
+          "type": "integer"
+        }
+      },
+      "example": {
+        "percent": 1.5,
+        "correlation": 3,
+        "gap": 5
+      }
+    },
+    "loss": {
+      "properties": {
+        "percent": {
+          "type": "number"
+        },
+        "correlation": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "percent"
+      ],
+      "example": {
+        "percent": 1.5,
+        "correlation": 3
+      }
+    },
+    "corrupt": {
+      "properties": {
+        "percent": {
+          "type": "number"
+        },
+        "correlation": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "percent"
+      ],
+      "example": {
+        "percent": 1.5,
+        "correlation": 3
+      }
+    },
+    "duplicate": {
+      "properties": {
+        "percent": {
+          "type": "number"
+        },
+        "correlation": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "percent"
+      ],
+      "example": {
+        "percent": 1.5,
+        "correlation": 3
+      }
+    },
+    "link_info": {
+      "properties": {
+        "dst_iface": {
+          "type": "string"
+        },
+        "dst_node": {
+          "type": "string"
+        },
+        "src_iface": {
+          "type": "string"
+        },
+        "src_node": {
+          "type": "string"
+        }
+      }
+    },
+    "interface_shaping": {
+      "properties": {
+        "node": {
+          "type": "string"
+        },
+        "iface": {
+          "type": "string"
+        },
+        "shaping": {
+          "$ref": "#/definitions/shaping"
+        }
+      }
+    },
+    "link_shaping": {
+      "properties": {
+        "dst_iface": {
+          "type": "string"
+        },
+        "dst_node": {
+          "type": "string"
+        },
+        "src_iface": {
+          "type": "string"
+        },
+        "src_node": {
+          "type": "string"
+        },
+        "shaping": {
+          "$ref": "#/definitions/shaping"
+        }
+      }
+    },
+    "links": {
+      "properties": {
+        "Link_id": {
+          "$ref": "#/definitions/link_info"
+        }
+      }
+    },
+    "links_shaping": {
+      "properties": {
+        "Link_id": {
+          "$ref": "#/definitions/link_shaping"
+        }
+      }
+    },
+    "interfaces_shaping": {
+      "properties": {
+        "interface_id": {
+          "$ref": "#/definitions/interface_shaping"
+        }
+      }
+    },
+    "stack_trace": {
+      "properties": {
+        "cause": {
+          "type": "string"
+        },
+        "details": {
+          "type": "string"
+        },
+        "http": {
+          "$ref": "#/definitions/stack_trace_http_generic"
+        },
+        "traceback": {
+          "type": "string"
+        }
+      }
+    },
+    "stack_trace_http_generic": {
+      "properties": {
+        "status": {
+          "type": "integer"
+        }
+      }
+    },
+    "stack_trace_401": {
+      "$ref": "#/definitions/stack_trace",
+      "example": {
+        "cause": "Failed to authenticate - can't perform request {URL}.\nMissing authorization header.",
+        "details": "None",
+        "http": {
+          "status": 401
+        },
+        "traceback": "..."
+      }
+    },
+    "stack_trace_403": {
+      "$ref": "#/definitions/stack_trace",
+      "example": {
+        "cause": "Failed to authenticate - administrator user required for operation.",
+        "details": "None",
+        "http": {
+          "status": 403
+        },
+        "traceback": "..."
+      }
+    },
+    "stack_trace_404": {
+      "$ref": "#/definitions/stack_trace",
+      "example": {
+        "cause": "404: Not Found",
+        "details": "None",
+        "http": {
+          "status": 404
+        },
+        "traceback": "..."
+      }
+    },
+    "stack_trace_409_same_network": {
+      "$ref": "#/definitions/stack_trace",
+      "example": {
+        "cause": "Got {count} networks with same name {network_name}",
+        "details": "None",
+        "http": {
+          "status": 409
+        },
+        "traceback": "..."
+      }
+    },
+    "stack_trace_409_session_cant_set_expiration": {
+      "$ref": "#/definitions/stack_trace",
+      "example": {
+        "cause": "Cannot set expiration for simulation {simulation} marked as {status}",
+        "details": "None",
+        "http": {
+          "status": 409
+        },
+        "traceback": "..."
+      }
+    },
+    "stack_trace_409_same_simulation_name": {
+      "$ref": "#/definitions/stack_trace",
+      "example": {
+        "cause": "STD simulation with requested ID: {id} already exists",
+        "details": "None",
+        "http": {
+          "status": 409
+        },
+        "traceback": "..."
+      }
+    },
+    "stack_trace_409_export_session_inactive": {
+      "$ref": "#/definitions/stack_trace",
+      "example": {
+        "cause": "Export operation not available for simulation {session} in state {state}",
+        "details": "None",
+        "http": {
+          "status": 409
+        },
+        "traceback": "..."
+      }
+    },
+    "stack_trace_409_update_session_inactive": {
+      "$ref": "#/definitions/stack_trace",
+      "example": {
+        "cause": "Cannot {operation} nodes in simulation {session} marked as {status}.",
+        "details": "None",
+        "http": {
+          "status": 409
+        },
+        "traceback": "..."
+      }
+    },
+    "stack_trace_409_health_check_scheduling_failed": {
+      "$ref": "#/definitions/stack_trace",
+      "example": {
+        "cause": "Couldn't start health check: \"{error}\"",
+        "details": "None",
+        "http": {
+          "status": 409
+        },
+        "traceback": "..."
+      }
+    },
+    "stack_trace_500_export_all_failed": {
+      "$ref": "#/definitions/stack_trace",
+      "example": {
+        "cause": "Export operation failed for all nodes in simulation {session}.",
+        "details": "None",
+        "http": {
+          "status": 500
+        },
+        "traceback": "..."
+      }
+    },
+    "stack_trace_503_insufficient_resources": {
+      "$ref": "#/definitions/stack_trace",
+      "example": {
+        "cause": "Failed to launch simulation: {message}",
+        "details": "None",
+        "http": {
+          "status": 503
+        },
+        "traceback": "..."
+      }
+    },
+    "stack_trace_503_ssh_unavailable": {
+      "$ref": "#/definitions/stack_trace",
+      "example": {
+        "cause": "Proxy SSH client is unavailable. Can't check reachability.",
+        "details": "None",
+        "http": {
+          "status": 503
+        },
+        "traceback": "..."
+      }
+    },
+    "stack_trace_400_jumphost_stop": {
+      "$ref": "#/definitions/stack_trace",
+      "example": {
+        "cause": "Cannot explicitly remove jumphost simulation",
+        "details": "None",
+        "http": {
+          "status": 400
+        },
+        "traceback": "..."
+      }
+    },
+    "stack_trace_400_capture_invalid": {
+      "$ref": "#/definitions/stack_trace",
+      "example": {
+        "cause": "Capture argument {name}: invalid {bad} of {value}",
+        "details": "None",
+        "http": {
+          "status": 400
+        },
+        "traceback": "..."
+      }
+    },
+    "stack_trace_400_capture_limit": {
+      "$ref": "#/definitions/stack_trace",
+      "example": {
+        "cause": "Capture count exceeding permitted maximum {value}",
+        "details": "None",
+        "http": {
+          "status": 400
+        },
+        "traceback": "..."
+      }
+    },
+    "noschema": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}
