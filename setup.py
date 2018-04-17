@@ -2,7 +2,7 @@
 from setuptools import setup, find_packages  # noqa: H301
 
 NAME = "virlutils"
-VERSION = "0.6"
+VERSION = "0.6.2"
 # To install the library, run the following
 #
 # python setup.py install
@@ -12,6 +12,7 @@ VERSION = "0.6"
 
 REQUIRES = [
     "click",
+    "gunicorn",
     "requests",
     "urllib3 >= 1.15",
     "six >= 1.10",
