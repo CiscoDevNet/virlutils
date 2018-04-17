@@ -2,6 +2,7 @@ import click
 from virl.api import VIRLServer
 from subprocess import call
 from virl import helpers
+from virl.helpers import get_mgmt_lxc_ip, get_node_from_roster
 
 
 @click.command()
@@ -21,7 +22,7 @@ def telnet(node):
         running = helpers.check_sim_running(env)
         node = node[0]
     else:
-        exit(call(['virl', 'ssh', '--help']))
+        exit(call(['virl', 'telnet', '--help']))
 
     if running:
         sim_name = running
@@ -30,16 +31,26 @@ def telnet(node):
 
         if node:
             try:
-                for k, v in details.items():
-                    if k.endswith(node):
-                        ip = details[k]['managementIP']
-                        for node_dict in details.values():
-                            node_name = node_dict.get("NodeName")
-                            if node_name == node:
-                                click.secho("Attemping telnet connection to "
-                                            "{} at {}".format(node_name, ip))
+                node_dict = get_node_from_roster(node, details)
+                node_name = node_dict.get("NodeName")
+                ip = node_dict['managementIP']
+                proxy = node_dict.get("managementProxy")
 
-                        exit(call(['telnet', ip]))
+                if proxy == 'lxc':
+                    lxc = get_mgmt_lxc_ip(details)
+                    click.secho("Attemping telnet connection"
+                                "to {} at {} via ssh {}".format(node_name,
+                                                                ip, lxc))
+                    cmd = 'ssh -t {}@{} "telnet {}"'
+                    cmd = cmd.format(server.user, lxc, ip)
+
+                    exit(call(cmd, shell=True))
+                else:
+                    # handle the "flat" networking case
+                    click.secho("Attemping telnet connection"
+                                "to {} at {}".format(node_name,
+                                                     ip))
+                    exit(call(['telnet', ip]))
 
             except AttributeError:
                 click.secho("Could not find management info "
