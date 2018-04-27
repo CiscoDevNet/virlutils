@@ -2,7 +2,7 @@
 from setuptools import setup, find_packages  # noqa: H301
 
 NAME = "virlutils"
-VERSION = "0.6.2"
+VERSION = "0.6.5"
 # To install the library, run the following
 #
 # python setup.py install
@@ -30,6 +30,12 @@ test_requirements = [
     "requests_mock",
 ]
 
+
+def readme():
+    with open('README.rst') as f:
+        return f.read()
+
+
 setup(
     name=NAME,
     version=VERSION,
@@ -46,7 +52,7 @@ setup(
                            'swagger/templates/*',
                            'swagger/static/*']},
     include_package_data=True,
-    long_description="VIRL Command Line Utilities",
+    long_description=readme(),
     test_suite='tests',
     tests_require=test_requirements,
     zip_safe=False
