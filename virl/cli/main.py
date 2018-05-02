@@ -19,7 +19,20 @@ from .uwm.commands import uwm
 from .viz.commands import viz
 
 
-@click.group()
+class CatchAllExceptions(click.Group):
+
+    def __call__(self, *args, **kwargs):
+        try:
+            return self.main(*args, **kwargs)
+        except Exception as exc:
+            click.secho('Exception raised while running your command',
+                        fg="red")
+            click.secho("Please open an issue and provide this info:",
+                        fg="red")
+            click.secho("%s" % exc, fg="red")
+
+
+@click.group(cls=CatchAllExceptions)
 def virl():
     pass
 
