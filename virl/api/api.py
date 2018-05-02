@@ -1,6 +1,5 @@
 import requests
 from .credentials import get_credentials
-# TODO catch errors at VIRLServer().get() and VIRLServer().post()
 
 
 class VIRLServer(object):
