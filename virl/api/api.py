@@ -1,6 +1,5 @@
 import requests
 from .credentials import get_credentials
-# TODO catch errors at VIRLServer().get() and VIRLServer().post()
 
 
 class VIRLServer(object):
@@ -51,6 +50,7 @@ class VIRLServer(object):
         r = requests.get(url,
                          auth=(self.user, self.passwd),
                          headers=self._headers)
+        r.raise_for_status()
         return r
 
     def post(self, url, data):
@@ -58,6 +58,7 @@ class VIRLServer(object):
                           auth=(self.user, self.passwd),
                           headers=self._headers,
                           data=data)
+        r.raise_for_status()
         return r
 
     def put(self, url, data):
@@ -65,11 +66,12 @@ class VIRLServer(object):
                          auth=(self.user, self.passwd),
                          headers=self._headers,
                          data=data)
+        r.raise_for_status()
         return r
 
     def list_simulations(self):
         url = self.base_api + "/simengine/rest/list"
-        r = requests.get(url, auth=(self.user, self.passwd))
+        r = self.get(url)
         return r.json()["simulations"]
 
     def launch_simulation(self, simulation_name, simulation_data):
@@ -96,7 +98,7 @@ class VIRLServer(object):
         url += "?running-configs=config"
         if ip:
             url += "&updated=true"
-        r = requests.get(url, auth=(self.user, self.passwd))
+        r = self.get(url)
         return r
 
     def get_node_console(self, simulation, node=None, mode='telnet', port='0'):
