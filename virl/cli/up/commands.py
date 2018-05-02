@@ -9,7 +9,9 @@ import os
 @click.argument('repo', default='default')
 @click.option('-e', default='default', help="environment name", required=False)
 @click.option('-f', default='topology.virl', help='filename', required=False)
-def up(repo=None, **kwargs):
+@click.option('--provision/--no-provision', default=False, help=" \
+Blocks execution until all nodes are reachable.")
+def up(repo=None, provision=False, **kwargs):
     """
     start a virl simulation
     """
@@ -52,6 +54,19 @@ def up(repo=None, **kwargs):
             sim_name = "{}_{}_{}".format(foldername, env, generate_sim_id())
             resp = server.launch_simulation(sim_name, data)
             store_sim_info(resp.text, env=env)  # 'topology-2lkx2'
+            import time
+
+            if provision:
+                nodes = server.get_node_list(sim_name)
+                click.secho("Waiting for nodes to come online....")
+                with click.progressbar(nodes) as bar:
+                    for node in bar:
+                        node_online = False
+                        while not node_online:
+                            time.sleep(20)
+                            node_online = server.check_node_reachable(sim_name,
+                                                                      node)
+
         else:
             click.secho('Sim {} already running'.format(running))
     else:
