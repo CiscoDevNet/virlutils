@@ -3,20 +3,23 @@ from subprocess import call
 from virl.api import VIRLServer
 from virl.helpers import generate_sim_id, check_sim_running, store_sim_info
 import os
+import time
 
 
 @click.command()
 @click.argument('repo', default='default')
 @click.option('-e', default='default', help="environment name", required=False)
 @click.option('-f', default='topology.virl', help='filename', required=False)
-@click.option('--provision/--no-provision', default=False, help=" \
-Blocks execution until all nodes are reachable.")
-def up(repo=None, provision=False, **kwargs):
+@click.option('--provision', default=1, help=" \
+Blocks execution until all nodes are reachable.", required=False)
+def up(repo=None, provision=1, **kwargs):
     """
     start a virl simulation
     """
     fname = kwargs['f']
     env = kwargs['e']
+
+    print(kwargs)
 
     if os.path.exists(fname):
         running = check_sim_running(env)
@@ -54,18 +57,23 @@ def up(repo=None, provision=False, **kwargs):
             sim_name = "{}_{}_{}".format(foldername, env, generate_sim_id())
             resp = server.launch_simulation(sim_name, data)
             store_sim_info(resp.text, env=env)  # 'topology-2lkx2'
-            import time
 
             if provision:
                 nodes = server.get_node_list(sim_name)
                 click.secho("Waiting for nodes to come online....")
-                with click.progressbar(nodes) as bar:
-                    for node in bar:
+                maxtime = time.time() + 60 * provision
+                with click.progressbar(nodes) as all_nodes:
+                    for node in all_nodes:
                         node_online = False
                         while not node_online:
+                            if time.time() > maxtime:
+                                print("max time expired")
+                                break
                             time.sleep(20)
                             node_online = server.check_node_reachable(sim_name,
                                                                       node)
+            else:
+                print('provision flag not set')
 
         else:
             click.secho('Sim {} already running'.format(running))
