@@ -10,15 +10,14 @@ import time
 @click.argument('repo', default='default')
 @click.option('-e', default='default', help="environment name", required=False)
 @click.option('-f', default='topology.virl', help='filename', required=False)
-@click.option('--provision', default=1, help=" \
+@click.option('--provision', default=False, show_default=True, help=" \
 Blocks execution until all nodes are reachable.", required=False)
-def up(repo=None, provision=1, **kwargs):
+def up(repo=None, provision=False, **kwargs):
     """
     start a virl simulation
     """
     fname = kwargs['f']
     env = kwargs['e']
-
     print(kwargs)
 
     if os.path.exists(fname):
@@ -60,8 +59,10 @@ def up(repo=None, provision=1, **kwargs):
 
             if provision:
                 nodes = server.get_node_list(sim_name)
-                click.secho("Waiting for nodes to come online....")
-                maxtime = time.time() + 60 * provision
+                msg = "Waiting {} minutes for nodes to come online...."
+                msg = msg.format(provision)
+                click.secho(msg)
+                maxtime = time.time() + 60 * int(provision)
                 with click.progressbar(nodes) as all_nodes:
                     for node in all_nodes:
                         node_online = False
@@ -72,6 +73,7 @@ def up(repo=None, provision=1, **kwargs):
                             time.sleep(20)
                             node_online = server.check_node_reachable(sim_name,
                                                                       node)
+            # remove this
             else:
                 print('provision flag not set')
 
