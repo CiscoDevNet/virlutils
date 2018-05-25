@@ -252,6 +252,12 @@ class MockVIRLServer:
                     'expires': None,
                     'launched': '2017-12-08T18:48:34.174486',
                 },
+                'virlutils-id': {
+                    'status': 'ACTIVE',
+                    'expires': None,
+                    'launched': '2017-12-08T18:48:34.174486',
+                },
+
             }
         }
         return response
