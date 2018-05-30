@@ -20,4 +20,4 @@ def id():
     # can only accurately determine sim id if there is
     # only one sim running with our project name
     if len(sim_dict) == 1:
-        click.echo(sim_dict.keys()[0])
+        click.echo(list(sim_dict)[0])
