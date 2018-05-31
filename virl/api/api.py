@@ -85,10 +85,25 @@ class VIRLServer(object):
         r = self.get(u)
         return r
 
-    # def get_nodes(self, simulation):
-    #     url = self.base_api + "/simengine/rest/nodes/{}".format(simulation)
-    #     r = requests.get(url, auth=(self.user, self.passwd))
-    #     return r.json()[simulation]
+    def get_node_summary(self, simulation):
+        url = self.base_api + "/simengine/rest/nodes/{}".format(simulation)
+        r = requests.get(url, auth=(self.user, self.passwd))
+        nodes = r.json()[simulation]
+        return nodes
+
+    def get_node_list(self, simulation):
+        """
+        returns a list of node,status tuples
+        """
+        nodes = self.get_node_summary(simulation)
+        return nodes.keys()
+
+    def check_node_reachable(self, simulation, node_name):
+        """
+        returns a list of node,status tuples
+        """
+        nodes = self.get_node_summary(simulation)
+        return nodes[node_name]['reachable']
 
     def export(self, simulation, ip=False):
         """
