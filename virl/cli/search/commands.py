@@ -7,7 +7,7 @@ from virl.cli.views.search import repo_table
 @click.argument('query', required=False)
 def search(query=None, **kwargs):
     """
-    lists running simulations in the current project
+    lists virl topologies available via github
     """
 
     repos = get_repos(query=query)
