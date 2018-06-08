@@ -77,24 +77,35 @@ def pyats_testbed_generator(env,
         device_name = str(props.get("NodeName", None))
         console_port = str(props.get("PortConsole", None))
 
+        # map node types to known abstraction
+        os = None
+        if 'NX' in device_type:
+            os = 'nxos'
+        elif 'XR' in device_type:
+            os = 'iosxr'
+        elif 'CSR' in device_type:
+            os = 'iosxe'
+        elif 'IOS' in device_type:
+            os = 'ios'
+
         # we prefer external addr
         external_ip = str(props.get("externalAddr", ""))
         mgmt_ip = str(props.get("managementIP", ""))
         if len(external_ip) > 6:
             address = external_ip
-
         elif len(mgmt_ip) > 6:
             address = mgmt_ip
 
-        # add mgmt-lxc devices to testbed->server section
-        if device_type == 'mgmt-lxc':
+        # add server devices to testbed->server section
+        if device_type in ['mgmt-lxc', 'server']:
             servers[device_name] = dict()
             servers[device_name]['server'] = device_name
             servers[device_name]['address'] = address
             servers[device_name]['path'] = ""
+            continue
 
         # some devices can't conform
-        if device_type in ['LXC FLAT']:
+        elif device_type in ['LXC FLAT']:
             continue
         # all other devices
         else:
@@ -102,6 +113,8 @@ def pyats_testbed_generator(env,
                 continue
             devices[device_name] = dict()
             devices[device_name]['alias'] = device_name
+            if os:
+                devices[device_name]['os'] = os
             devices[device_name]['type'] = device_type
             devices[device_name]['tacacs'] = {
                 "username": dev_username
