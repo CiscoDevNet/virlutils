@@ -2,6 +2,13 @@ testbed:
 
   name: {{ name }}
 
+  tacacs:
+      username: "%ENV{PYATS_USERNAME}"
+  passwords:
+      tacacs: "%ENV{PYATS_PASSWORD}"
+      enable: "%ENV{PYATS_AUTH_PASS}"
+      line: "%ENV{PYATS_PASSWORD}"
+
   {%- if servers.items() %}
   servers:
     {% for srv_name, props in servers.items() %}
