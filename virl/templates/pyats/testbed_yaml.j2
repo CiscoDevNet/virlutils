@@ -2,6 +2,7 @@ testbed:
 
   name: {{ name }}
 
+  {%- if servers.items() %}
   servers:
     {% for srv_name, props in servers.items() %}
     {{ srv_name }}:
@@ -9,12 +10,16 @@ testbed:
       server: {{ props.server|default("''", true) }}
 
     {% endfor %}
+  {%-endif %}
 
 devices:
   {%- for dev_name, props in devices.items() %}
 
   {{ dev_name }}:
     alias: {{ props.alias|default("''", true) }}
+    {%- if props.os %}
+    os: {{ props.os }}
+    {%- endif %}
     type: {{ props.type|default("''", true) }}
     connections:
 
@@ -30,11 +35,14 @@ devices:
 
         {%- endfor %}
       {%- endfor %}
-
+    custom:
+      abstraction:
+        order: [os, type]
   {%- endfor %}
 
 topology:
   {%- for dev, dev_ints in topology.items() %}
+  {%- if dev in devices %}
   {{dev}}:
     interfaces:
       {%- for id, interface in dev_ints.items() %}
@@ -50,6 +58,7 @@ topology:
         {%- else %}
         type: ethernet
         {%- endif %}
-      
+
       {%- endfor %}
+  {%- endif %}
   {%- endfor %}
