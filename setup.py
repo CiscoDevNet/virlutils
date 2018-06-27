@@ -42,7 +42,7 @@ setup(
     description="A collection of utilities for interacting with Cisco VIRL",
     author="Kevin Corbin",
     author_email="kecorbin@cisco.com",
-    url="https://github.com/kecorbin/virlutils",
+    url="https://github.com/CiscoDevNet/virlutils",
     install_requires=REQUIRES,
     entry_points={"console_scripts": [
         "virl=virl.cli.main:virl",
