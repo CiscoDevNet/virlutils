@@ -56,7 +56,7 @@ Installation
 
 ::
 
-    git clone https://github.com/kecorbin/virlutils
+    git clone https://github.com/CiscoDevNet/virlutils
 
 2. Install
 
@@ -72,7 +72,7 @@ Clone & Install
 
 ::
 
-    git clone https://github.com/kecorbin/virlutils
+    git clone https://github.com/CiscoDevNet/virlutils
     cd virlutils
     virtualenv venv && source venv/bin/activate
     python setup.py install
@@ -430,7 +430,7 @@ Tab Completions
 ::
 
     ➜  test git:(test) virl l<tab>
-    logs  ls  
+    logs  ls
 
 You can activate VIRL autocompletions by executing the following command
 
@@ -454,7 +454,7 @@ following..
 
 ::
 
-    git clone https://github.com/kecorbin/virlutils
+    git clone https://github.com/CiscoDevNet/virlutils
     cd virlutils
     python setup.py develop
 
@@ -478,9 +478,9 @@ update the appropriate files in the ``tests`` folder.
 To run the tests in the ``tests`` folder, you can simply run
 ``make test`` from the project root.
 
-.. |Build Status| image:: https://travis-ci.org/kecorbin/virlutils.svg?branch=master
-   :target: https://travis-ci.org/kecorbin/virlutils
-.. |Coverage Status| image:: https://coveralls.io/repos/github/kecorbin/virlutils/badge.svg?branch=master
-   :target: https://coveralls.io/github/kecorbin/virlutils?branch=master
+.. |Build Status| image:: https://travis-ci.org/CiscoDevNet/virlutils.svg?branch=master
+   :target: https://travis-ci.org/CiscoDevNet/virlutils
+.. |Coverage Status| image:: https://coveralls.io/repos/github/CiscoDevNet/virlutils/badge.svg?branch=master
+   :target: https://coveralls.io/github/CiscoDevNet/virlutils?branch=master
 .. |PyPI version| image:: https://badge.fury.io/py/virlutils.svg
    :target: https://badge.fury.io/py/virlutils

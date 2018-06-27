@@ -2,7 +2,7 @@
 from setuptools import setup, find_packages  # noqa: H301
 
 NAME = "virlutils"
-VERSION = "0.8.1"
+VERSION = "0.8.2"
 # To install the library, run the following
 #
 # python setup.py install
@@ -42,7 +42,7 @@ setup(
     description="A collection of utilities for interacting with Cisco VIRL",
     author="Kevin Corbin",
     author_email="kecorbin@cisco.com",
-    url="https://github.com/kecorbin/virlutils",
+    url="https://github.com/CiscoDevNet/virlutils",
     install_requires=REQUIRES,
     entry_points={"console_scripts": [
         "virl=virl.cli.main:virl",

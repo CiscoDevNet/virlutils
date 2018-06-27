@@ -1,7 +1,7 @@
 # virlutils
 
-[![Build Status](https://travis-ci.org/kecorbin/virlutils.svg?branch=master)](https://travis-ci.org/kecorbin/virlutils)
-[![Coverage Status](https://coveralls.io/repos/github/kecorbin/virlutils/badge.svg?branch=master)](https://coveralls.io/github/kecorbin/virlutils?branch=master)
+[![Build Status](https://travis-ci.org/CiscoDevNet/virlutils.svg?branch=master)](https://travis-ci.org/CiscoDevNet/virlutils)
+[![Coverage Status](https://coveralls.io/repos/github/CiscoDevNet/virlutils/badge.svg?branch=master)](https://coveralls.io/github/CiscoDevNet/virlutils?branch=master)
 [![PyPI version](https://badge.fury.io/py/virlutils.svg)](https://badge.fury.io/py/virlutils)
 
 A collection of utilities for interacting with [Cisco VIRL](https://learningnetworkstore.cisco.com/virlfaq/aboutVirl)
@@ -52,7 +52,7 @@ Commands:
 1. Clone this repo
 
 ```
-git clone https://github.com/kecorbin/virlutils
+git clone https://github.com/CiscoDevNet/virlutils
 ```
 
 2. Install
@@ -65,7 +65,7 @@ pip install virlutils
 
 ### Clone & Install
 ```
-git clone https://github.com/kecorbin/virlutils
+git clone https://github.com/CiscoDevNet/virlutils
 cd virlutils
 virtualenv venv && source venv/bin/activate
 python setup.py install
@@ -430,7 +430,7 @@ bashcompinit
 If you have an idea for a feature you would like to see, we gladly accept pull requests.  To get started developing, simply run the following..
 
 ```
-git clone https://github.com/kecorbin/virlutils
+git clone https://github.com/CiscoDevNet/virlutils
 cd virlutils
 python setup.py develop
 ```
