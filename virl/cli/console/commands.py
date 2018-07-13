@@ -3,6 +3,7 @@ from virl.api import VIRLServer
 from subprocess import call
 from virl import helpers
 from virl.cli.views.console import console_table
+import platform
 
 
 @click.command()
@@ -45,7 +46,11 @@ def console(node, display, **kwargs):
                         "of {}".format(node))
             try:
                 ip, port = resp.json()[node].split(':')
-                exit(call(['telnet', ip, port]))
+                if platform.system() == "Windows":
+                    with helpers.disable_file_system_redirection():
+                        exit(call(['telnet', ip, port]))
+                else:
+                    exit(call(['telnet', ip, port]))
             except AttributeError:
                 click.secho("Could not find console info for "
                             "{}:{}".format(env, node), fg="red")
