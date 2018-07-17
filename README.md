@@ -110,6 +110,44 @@ VIRL_USERNAME=netadmins
 VIRL_PASSWORD=cancodetoo!
 ```
 
+### Other configuration options
+
+In addition to basic credentials, the following configuration options are supported
+using any of the methods mentioned previously
+
+* `VIRL_TELNET_COMMAND` - allows the user to customize the telnet command that is called.
+  This command will be passed the host/ip information from the running simulation
+
+   Example:
+   ```
+   export VIRL_TELNET_COMMAND="mytelnet {host}"
+   ```
+
+* `VIRL_CONSOLE_COMMAND` - allows the user to customize the telnet command that is called
+ this command will be passed the host/ip and port information information from the running simulation
+
+  Example:
+  ```
+  export VIRL_TELNET_COMMAND="mytelnet {host} {port}"
+  ```
+
+* `VIRL_SSH_USERNAME` - the username by which SSH connections to the nodes running in
+  the simulation will be initiated with
+
+  Example:
+  ```
+  export VIRL_SSH_USERNAME=netadmin
+  ```
+
+
+* `VIRL_SSH_COMMAND` - allows the user to customize the ssh command that is called.
+  This command will be passed the host/ip as well as the username from the running simulation
+
+  Example:
+  ```
+  export VIRL_SSH_COMMAND="myssh {username}@{host}"
+  ```
+
 
 ### Why so many choices??!?!
 
