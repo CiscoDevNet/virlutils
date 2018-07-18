@@ -50,13 +50,25 @@ def get_env_sim_name(env):
 
     return sim_name
 
+def find_virl():
+    pwd = os.getcwd().split(os.sep)
+    root = os.path.abspath(os.sep)
+    while pwd != root:
+        lookin = os.path.join(os.sep, *pwd)
+        if ".virl" in os.listdir(lookin):
+            return lookin
+        try:
+            pwd.pop()
+        except IndexError:
+            return None
 
 def check_sim_running(env):
     """
     determines if a sim is already running for a given environment
     """
     try:
-        fname = './.virl/{}/id'.format(env)
+        virl_root = find_virl()
+        fname = virl_root + '/.virl/{}/id'.format(env)
         with open(fname, 'r') as f:
             sim_name = f.read()
         if sim_name:
