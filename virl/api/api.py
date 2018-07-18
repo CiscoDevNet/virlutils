@@ -187,5 +187,8 @@ class VIRLServer(object):
         r = self.get(u)
         for net in r.json():
             if net.get("Network Name") == network:
-                return net["DNS"][0]
+                try:
+                    return net["DNS"][0]
+                except IndexError:
+                    return None
         return None
