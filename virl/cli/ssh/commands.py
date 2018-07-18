@@ -29,12 +29,21 @@ def ssh(node):
         server = VIRLServer()
         details = server.get_sim_roster(sim_name)
 
+        # default ssh username can be overriden
+        username = server.config.get('VIRL_SSH_USERNAME', 'cisco')
+
         if node:
             try:
                 node_dict = get_node_from_roster(node, details)
                 node_name = node_dict.get("NodeName")
                 ip = node_dict['managementIP']
                 proxy = node_dict.get("managementProxy")
+
+                if 'VIRL_SSH_COMMAND' in server.config:
+                    cmd = server.config['VIRL_SSH_COMMAND']
+                    cmd = cmd.format(host=ip, username=username)
+                    print("Calling user specified command: {}".format(cmd))
+                    exit(call(cmd.split()))
 
                 if proxy == 'lxc':
                     lxc = get_mgmt_lxc_ip(details)
@@ -43,7 +52,7 @@ def ssh(node):
                                     "to {} at {} via {}".format(node_name,
                                                                 ip, lxc))
                         cmd = 'ssh -o "ProxyCommand ssh -W %h:%p {}@{}" {}@{}'
-                        cmd = cmd.format(server.user, lxc, 'cisco', ip)
+                        cmd = cmd.format(server.user, lxc, username, ip)
 
                         exit(call(cmd, shell=True))
                 else:
@@ -52,11 +61,11 @@ def ssh(node):
                                 "to {} at {}".format(node_name,
                                                      ip))
 
-                    exit(call(['ssh', 'cisco@{}'.format(ip)]))
+                    exit(call(['ssh', '{}@{}'.format(username, ip)]))
 
             except AttributeError:
                 click.secho("Could not find management info"
-                            "for {}:{}".format(env, node), fg="red")
+                            " for {}:{}".format(env, node), fg="red")
 
             except KeyError:
                 click.secho("Unknown node {}:{}".format(env, node), fg="red")

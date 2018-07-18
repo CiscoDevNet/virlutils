@@ -35,7 +35,10 @@ def _get_from_file(virlrc, prop_name):
 
         for line in config:
             if line.startswith(prop_name):
+                print('got prop')
                 prop = line.split('=')[1].strip()
+                if prop.startswith('"') and prop.endswith('"'):
+                    prop = prop[1:-1]
                 return prop
 
 
@@ -92,10 +95,20 @@ def get_credentials(rcfile='~/.virlrc'):
     host = None
     username = None
     password = None
+    config = dict()
 
     host = get_prop('VIRL_HOST')
     username = get_prop('VIRL_USERNAME')
     password = get_prop('VIRL_PASSWORD')
+
+    # some additional configuration that can be set / overriden
+    configurable_props = ['VIRL_TELNET_COMMAND', 'VIRL_CONSOLE_COMMAND',
+                          'VIRL_SSH_COMMAND', 'VIRL_SSH_USERNAME']
+
+    for p in configurable_props:
+        if get_prop(p):
+            config[p] = get_prop(p)
+
     if not host:  # pragma: no cover
         prompt = 'Please enter the IP / hostname of your virl server: '
         host = _get_from_user(prompt)
@@ -110,4 +123,4 @@ def get_credentials(rcfile='~/.virlrc'):
         prompt = "Unable to determine VIRL credentials, please see docs"
         sys.exit(prompt)
     else:
-        return (host, username, password)
+        return (host, username, password, config)

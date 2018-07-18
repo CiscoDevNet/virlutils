@@ -5,6 +5,24 @@ import os
 import shutil
 import errno
 import platform
+import ctypes
+import platform
+
+
+# http://code.activestate.com/recipes/578035-disable-file-system-redirector/
+# https://github.com/CiscoDevNet/virlutils/issues/45
+class disable_file_system_redirection:
+    if platform.system() == "Windows":
+        _disable = ctypes.windll.kernel32.Wow64DisableWow64FsRedirection
+        _revert = ctypes.windll.kernel32.Wow64RevertWow64FsRedirection
+
+    def __enter__(self):
+        self.old_value = ctypes.c_long()
+        self.success = self._disable(ctypes.byref(self.old_value))
+
+    def __exit__(self, type, value, traceback):
+        if self.success:
+            self._revert(self.old_value)
 
 
 # Taken from https://stackoverflow.com/a/600612/119527

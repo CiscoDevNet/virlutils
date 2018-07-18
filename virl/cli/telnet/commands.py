@@ -36,11 +36,18 @@ def telnet(node):
                 ip = node_dict['managementIP']
                 proxy = node_dict.get("managementProxy")
 
+                # use user specified telnet command
+                if 'VIRL_TELNET_COMMAND' in server.config:
+                    cmd = server.config['VIRL_TELNET_COMMAND']
+                    cmd = cmd.format(host=ip)
+                    print("Calling user specified command: {}".format(cmd))
+                    exit(call(cmd.split()))
+
                 if proxy == 'lxc':
                     lxc = get_mgmt_lxc_ip(details)
                     click.secho("Attemping telnet connection"
-                                "to {} at {} via ssh {}".format(node_name,
-                                                                ip, lxc))
+                                " to {} at {} via ssh {}".format(node_name,
+                                                                 ip, lxc))
                     cmd = 'ssh -t {}@{} "telnet {}"'
                     cmd = cmd.format(server.user, lxc, ip)
 
@@ -48,8 +55,8 @@ def telnet(node):
                 else:
                     # handle the "flat" networking case
                     click.secho("Attemping telnet connection"
-                                "to {} at {}".format(node_name,
-                                                     ip))
+                                " to {} at {}".format(node_name,
+                                                      ip))
                     exit(call(['telnet', ip]))
 
             except AttributeError:
