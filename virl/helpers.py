@@ -4,7 +4,7 @@ import string
 import os
 import shutil
 import errno
-
+import platform
 
 # Taken from https://stackoverflow.com/a/600612/119527
 def mkdir_p(path):
@@ -54,7 +54,10 @@ def find_virl():
     pwd = os.getcwd().split(os.sep)
     root = os.path.abspath(os.sep)
     while pwd != root:
-        lookin = os.path.join(os.sep, *pwd)
+        if platform.system() == "Windows":
+            lookin = "\\".join(pwd)
+        else:
+            lookin = os.path.join(os.sep, *pwd)
         if ".virl" in os.listdir(lookin):
             return lookin
         try:
