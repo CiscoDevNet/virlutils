@@ -3,6 +3,7 @@ from virl.api import VIRLServer
 from subprocess import call
 from virl import helpers
 from virl.cli.views.console import console_table
+import platform
 
 
 @click.command()
@@ -35,6 +36,7 @@ def console(node, display, **kwargs):
     else:
         # node was not specified, display usage
         exit(call(['virl', 'console', '--help']))
+
     if running:
 
         sim_name = running
@@ -45,7 +47,22 @@ def console(node, display, **kwargs):
                         "of {}".format(node))
             try:
                 ip, port = resp.json()[node].split(':')
-                exit(call(['telnet', ip, port]))
+
+                # use user specified telnet command
+                if 'VIRL_CONSOLE_COMMAND' in server.config:
+                    cmd = server.config['VIRL_CONSOLE_COMMAND']
+                    cmd = cmd.format(host=ip, port=port)
+                    print("Calling user specified command: {}".format(cmd))
+                    exit(call(cmd.split()))
+
+                # someone still uses windows
+                elif platform.system() == "Windows":
+                    with helpers.disable_file_system_redirection():
+                        exit(call(['telnet', ip, port]))
+
+                # why is shit so complicated?
+                else:
+                    exit(call(['telnet', ip, port]))
             except AttributeError:
                 click.secho("Could not find console info for "
                             "{}:{}".format(env, node), fg="red")

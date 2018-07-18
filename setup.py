@@ -1,5 +1,6 @@
 # coding: utf-8
 from setuptools import setup, find_packages  # noqa: H301
+import io
 
 NAME = "virlutils"
 VERSION = "0.8.2"
@@ -32,7 +33,7 @@ test_requirements = [
 
 
 def readme():
-    with open('README.rst') as f:
+    with io.open('README.rst', encoding='utf-8') as f:
         return f.read()
 
 
