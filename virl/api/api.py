@@ -6,7 +6,7 @@ class VIRLServer(object):
 
     def __init__(self, host=None, user=None, passwd=None, port=19399):
 
-        self._host, self._user, self._passwd = get_credentials()
+        self._host, self._user, self._passwd, self._config = get_credentials()
         self._port = port
         self.base_api = "http://{}:{}".format(self.host, self._port)
 
@@ -45,6 +45,10 @@ class VIRLServer(object):
     @property
     def _headers(self):
         return {"Content-Type": "text/xml;charset=UTF-8"}
+
+    @property
+    def config(self):
+        return self._config
 
     def get(self, url):
         r = requests.get(url,
