@@ -6,6 +6,7 @@ import shutil
 import errno
 import platform
 
+
 # Taken from https://stackoverflow.com/a/600612/119527
 def mkdir_p(path):
     try:
@@ -50,6 +51,7 @@ def get_env_sim_name(env):
 
     return sim_name
 
+
 def find_virl():
     pwd = os.getcwd().split(os.sep)
     root = os.path.abspath(os.sep)
@@ -64,6 +66,7 @@ def find_virl():
             pwd.pop()
         except IndexError:
             return None
+
 
 def check_sim_running(env):
     """
