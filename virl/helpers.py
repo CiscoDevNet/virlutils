@@ -6,7 +6,6 @@ import shutil
 import errno
 import platform
 import ctypes
-import platform
 
 
 # http://code.activestate.com/recipes/578035-disable-file-system-redirector/
