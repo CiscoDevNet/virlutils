@@ -36,7 +36,6 @@ def _get_from_file(virlrc, prop_name):
 
         for line in config:
             if line.startswith(prop_name):
-                print('got prop')
                 prop = line.split('=')[1].strip()
                 if prop.startswith('"') and prop.endswith('"'):
                     prop = prop[1:-1]
