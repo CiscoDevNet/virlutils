@@ -18,6 +18,7 @@ from .swagger.commands import swagger
 from .uwm.commands import uwm
 from .viz.commands import viz
 from .id.commands import id
+from .version.commands import version
 
 
 class CatchAllExceptions(click.Group):
@@ -57,6 +58,7 @@ virl.add_command(swagger)
 virl.add_command(uwm)
 virl.add_command(viz)
 virl.add_command(id)
+virl.add_command(version)
 
 
 if __name__ == '__main__':

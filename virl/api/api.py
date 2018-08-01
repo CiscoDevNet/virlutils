@@ -57,6 +57,11 @@ class VIRLServer(object):
         r.raise_for_status()
         return r
 
+    def get_version(self):
+        url = self.base_api + "/roster/rest/test"
+        r = self.get(url)
+        return r.json()
+
     def post(self, url, data):
         r = requests.post(url,
                           auth=(self.user, self.passwd),
