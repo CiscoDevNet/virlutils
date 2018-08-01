@@ -1,1 +1,1 @@
-from about import __version__  # noqa
+from .about import __version__  # noqa
