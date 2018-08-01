@@ -143,7 +143,7 @@ class VIRLServer(object):
         return a roster entry for given sim
         """
         sim_key = "{}|{}|".format(self.user, simulation)
-        u = self.base_api + "/roster/rest"
+        u = self.base_api + "/roster/rest/"
         r = self.get(u)
         roster = r.json()
         ret = dict()
