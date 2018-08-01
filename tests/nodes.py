@@ -92,7 +92,7 @@ class NodesTest(BaseTest):
     def test_virl_nodes(self):
         with requests_mock.mock() as m:
             # Mock the request to return what we expect from the API.
-            m.get('http://localhost:19399/roster/rest',
+            m.get('http://localhost:19399/roster/rest/',
                   json=self.mock_response())
             runner = CliRunner()
             result = runner.invoke(virl, ["nodes"])
@@ -101,7 +101,7 @@ class NodesTest(BaseTest):
     def test_virl_nodes_in_env(self):
         with requests_mock.mock() as m:
             # Mock the request to return what we expect from the API.
-            m.get('http://localhost:19399/roster/rest',
+            m.get('http://localhost:19399/roster/rest/',
                   json=self.mock_response())
             runner = CliRunner()
             result = runner.invoke(virl, ["nodes", "foo"])
