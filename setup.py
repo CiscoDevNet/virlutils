@@ -1,9 +1,10 @@
 # coding: utf-8
 from setuptools import setup, find_packages  # noqa: H301
 import io
+from virl import __version__
 
 NAME = "virlutils"
-VERSION = "0.8.2"
+VERSION = __version__
 # To install the library, run the following
 #
 # python setup.py install

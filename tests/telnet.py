@@ -16,7 +16,7 @@ class TelnetTests(BaseTest):
 
         with requests_mock.mock() as m:
             # Mock the request to return what we expect from the API.
-            m.get('http://localhost:19399/roster/rest',
+            m.get('http://localhost:19399/roster/rest/',
                   json=MockVIRLServer.get_sim_roster())
             runner = CliRunner()
             runner.invoke(virl, ["telnet", "router1"])
@@ -28,7 +28,7 @@ class TelnetTests(BaseTest):
 
         with requests_mock.mock() as m:
             # Mock the request to return what we expect from the API.
-            m.get('http://localhost:19399/roster/rest',
+            m.get('http://localhost:19399/roster/rest/',
                   json=MockVIRLServer.get_sim_roster())
             runner = CliRunner()
             runner.invoke(virl, ["telnet", "via-lxc"])
@@ -40,7 +40,7 @@ class TelnetTests(BaseTest):
 
         with requests_mock.mock() as m:
             # Mock the request to return what we expect from the API.
-            m.get('http://localhost:19399/roster/rest',
+            m.get('http://localhost:19399/roster/rest/',
                   json=MockVIRLServer.get_sim_roster())
             runner = CliRunner()
             runner.invoke(virl, ["telnet", "TEST_ENV", "router1"])
@@ -52,7 +52,7 @@ class TelnetTests(BaseTest):
 
         with requests_mock.mock() as m:
             # Mock the request to return what we expect from the API.
-            m.get('http://localhost:19399/roster/rest',
+            m.get('http://localhost:19399/roster/rest/',
                   json=MockVIRLServer.get_sim_roster())
             runner = CliRunner()
             runner.invoke(virl, ["telnet", "router1"])
@@ -66,7 +66,7 @@ class TelnetTests(BaseTest):
 
         with requests_mock.mock() as m:
             # Mock the request to return what we expect from the API.
-            m.get('http://localhost:19399/roster/rest',
+            m.get('http://localhost:19399/roster/rest/',
                   json=MockVIRLServer.get_sim_roster())
             runner = CliRunner()
             runner.invoke(virl, ["telnet", "router1"])

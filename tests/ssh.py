@@ -16,7 +16,7 @@ class Tests(BaseTest):
 
         with requests_mock.mock() as m:
             # Mock the request to return what we expect from the API.
-            m.get('http://localhost:19399/roster/rest',
+            m.get('http://localhost:19399/roster/rest/',
                   json=MockVIRLServer.get_sim_roster())
             runner = CliRunner()
             runner.invoke(virl, ["ssh", "router1"])
@@ -27,7 +27,7 @@ class Tests(BaseTest):
 
         with requests_mock.mock() as m:
             # Mock the request to return what we expect from the API.
-            m.get('http://localhost:19399/roster/rest',
+            m.get('http://localhost:19399/roster/rest/',
                   json=MockVIRLServer.get_sim_roster())
             runner = CliRunner()
             runner.invoke(virl, ["ssh", "via-lxc"])
@@ -39,7 +39,7 @@ class Tests(BaseTest):
     def test_virl_ssh_env(self, call_mock):
         with requests_mock.mock() as m:
             # Mock the request to return what we expect from the API.
-            m.get('http://localhost:19399/roster/rest',
+            m.get('http://localhost:19399/roster/rest/',
                   json=MockVIRLServer.get_sim_roster())
             runner = CliRunner()
             runner.invoke(virl, ["ssh", "TEST_ENV", "router1"])
