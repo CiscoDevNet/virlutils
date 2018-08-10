@@ -21,22 +21,22 @@ def sim_info(virl_xml, roster=None, interfaces=None, protocol="telnet"):
         name = device['NodeName']
         entry['name'] = name
         entry['ned'] = 'unknown'
-        entry['ns']  = 'unkown'
+        entry['ns'] = 'unkown'
         # map node types to known NED's
         try:
             type = device['NodeSubtype']
             if 'NX' in type:
                 entry['prefix'] = 'cisco-nx-id'
                 entry['ned'] = 'cisco-nx'
-                entry['ns']  = 'http://tail-f.com/ned/cisco-nx-id'
+                entry['ns'] = 'http://tail-f.com/ned/cisco-nx-id'
             elif 'XR' in type:
                 entry['prefix'] = 'cisco-ios-xr-id'
                 entry['ned'] = 'cisco-ios-xr'
-                entry['ns']  = 'http://tail-f.com/ned/cisco-ios-xr-id'
+                entry['ns'] = 'http://tail-f.com/ned/cisco-ios-xr-id'
             elif 'CSR' in type or 'IOS' in type:
                 entry['prefix'] = 'ios-id'
                 entry['ned'] = 'cisco-ios'
-                entry['ns']  = 'urn:ios-id'
+                entry['ns'] = 'urn:ios-id'
         except KeyError:
             pass
 
