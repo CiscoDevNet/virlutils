@@ -20,21 +20,25 @@ def sim_info(virl_xml, roster=None, interfaces=None, protocol="telnet"):
 
         name = device['NodeName']
         entry['name'] = name
+        entry['ned'] = 'unknown'
+        entry['ns']  = 'unkown'
         # map node types to known NED's
         try:
             type = device['NodeSubtype']
             if 'NX' in type:
+                entry['prefix'] = 'cisco-nx-id'
                 entry['ned'] = 'cisco-nx'
+                entry['ns']  = 'http://tail-f.com/ned/cisco-nx-id'
             elif 'XR' in type:
+                entry['prefix'] = 'cisco-ios-xr-id'
                 entry['ned'] = 'cisco-ios-xr'
-            elif 'CSR' in type:
+                entry['ns']  = 'http://tail-f.com/ned/cisco-ios-xr-id'
+            elif 'CSR' in type or 'IOS' in type:
+                entry['prefix'] = 'ios-id'
                 entry['ned'] = 'cisco-ios'
-            elif 'IOS' in type:
-                entry['ned'] = 'cisco-ios'
-            else:
-                entry['ned'] = 'unknown'
+                entry['ns']  = 'urn:ios-id'
         except KeyError:
-            entry['ned'] = 'unknown'
+            pass
 
         if entry.get('ned', None) not in ['unknown', None]:
             inventory.append(entry)
