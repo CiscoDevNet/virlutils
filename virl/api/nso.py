@@ -5,10 +5,14 @@ import getpass
 
 def get_input(prompt):  # pragma: no cover
     try:
-        input = raw_input
+        inp = raw_input
     except NameError:
         pass
-    return input(prompt)
+    try:
+        inp = input
+    except NameError:
+        pass
+    return inp(prompt)
 
 
 def get_credentials():  # pragma: no cover
