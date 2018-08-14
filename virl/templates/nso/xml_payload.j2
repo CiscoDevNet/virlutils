@@ -1,4 +1,4 @@
-<devices>
+<devices xmlns="http://tail-f.com/ns/ncs">
   <authgroups>
     <group>
       <name>virl</name>
@@ -23,7 +23,7 @@
     <authgroup>virl</authgroup>
     <device-type>
       <cli>
-        <ned-id>{{ node.ned }}</ned-id>
+        <ned-id xmlns:{{ node.prefix }}="{{ node.ns }}">{{ node.prefix}}:{{ node.ned }}</ned-id>
         <protocol>{{ node.protocol }}</protocol>
       </cli>
     </device-type>
