@@ -38,7 +38,7 @@ def up(repo=None, provision=False, **kwargs):
             # <dirty hack>
             subs = {
                 "{{ gateway }}": server.get_gateway_for_network('flat'),
-                "{{ flat1_gateway}}": server.get_gateway_for_network('flat1'),
+                "{{ flat1_gateway }}": server.get_gateway_for_network('flat1'),
                 "{{ dns_server }}": server.get_dns_server_for_network('flat'),
             }
 
