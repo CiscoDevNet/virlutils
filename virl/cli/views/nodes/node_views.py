@@ -33,8 +33,21 @@ def node_list_table(node_dict):
             else:
                 state = 'UNKNOWN'
                 color = 'red'
+
+            reachable = props.get('Annotation', "N/A")
+            if reachable:
+                if reachable in ['UNREACHABLE']:
+                    r_color = 'red'
+                elif reachable in ['REACHABLE']:
+                    r_color = 'green'
+                else:
+                    r_color = 'red'
+            else:
+                state = 'UNKNOWN'
+                r_color = 'red'
+
             tr.append(click.style(state, fg=color))
-            tr.append(props.get('Annotation', "N/A"))
+            tr.append(click.style(reachable, fg=r_color))
             tr.append(props.get('managementProtocol', "N/A"))
             tr.append(props.get('managementIP', "N/A"))
             tr.append(props.get("externalAddr", "N/A"))
