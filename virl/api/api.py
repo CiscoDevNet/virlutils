@@ -78,6 +78,22 @@ class VIRLServer(object):
         r.raise_for_status()
         return r
 
+    def post_with_params(self, url, data, params):
+        r = requests.post(url,
+                          auth=(self.user, self.passwd),
+                          headers=self._headers,
+                          params=params,
+                          data=data)
+        r.raise_for_status()
+        return r
+
+    def delete(self, url):
+        r = requests.delete(url,
+                            auth=(self.user, self.passwd),
+                            headers=self._headers)
+        r.raise_for_status()
+        return r
+
     def list_simulations(self):
         url = self.base_api + "/simengine/rest/list"
         r = self.get(url)
@@ -197,3 +213,40 @@ class VIRLServer(object):
                 except IndexError:
                     return None
         return None
+
+    def get_flavor_id(self, flavor):
+        r = self.get_flavors()
+
+        for f in list(r):
+            if f['name'] == flavor:
+                return f['id']
+
+        raise IndexError('Flavor {} not found'.format(flavor))
+
+    def get_flavors(self, flavor_id=None):
+        u = self.base_api + "/rest/flavors"
+    
+        if flavor_id != None:
+            u = u + "/{}".format(flavor_id)
+        r = self.get(u)
+
+        if flavor_id:
+            return r.json()['flavor']
+        return r.json()['flavors']
+
+    def add_flavor(self, flavor=None, memory=None, vcpus=None):
+        u = self.base_api + "/rest/flavors"
+        data = {
+            'name': flavor,
+            'ram' : memory,
+            'vcpus' : vcpus,
+        }
+        r = self.post_with_params(u, None, data)
+        return r.json()['flavor']
+
+    def delete_flavor(self, flavor):
+        f = self.get_flavor_id(flavor)
+        u = self.base_api + "/rest/flavors/{}"
+        u = u.format(f)
+        r = self.delete(u)
+        return r.json()['flavor']
