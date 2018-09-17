@@ -221,12 +221,12 @@ class VIRLServer(object):
             if f['name'] == flavor:
                 return f['id']
 
-        raise IndexError('Flavor {} not found\n{}\n{}'.format(flavor,self.base_api,r))
+        raise IndexError('Flavor {} not found'.format(flavor))
 
     def get_flavors(self, flavor_id=None):
         u = self.base_api + "/rest/flavors"
-    
-        if flavor_id != None:
+
+        if flavor_id is not None:
             u = u + "/{}".format(flavor_id)
         r = self.get(u)
 
@@ -238,8 +238,8 @@ class VIRLServer(object):
         u = self.base_api + "/rest/flavors"
         data = {
             'name': flavor,
-            'ram' : memory,
-            'vcpus' : vcpus,
+            'ram': memory,
+            'vcpus': vcpus,
         }
         r = self.post_with_params(u, None, data)
         return r.json()['flavor']

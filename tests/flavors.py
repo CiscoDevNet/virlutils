@@ -74,72 +74,82 @@ class FlavorsTest(BaseTest):
 
         return response
 
-    def return_flavor(self, name=None):    
-      if name == None:
-        raise IndexException("No such index {}".format(name))
+    def return_flavor(self, name=None):
+        if name is None:
+            raise IndexError("No such index {}".format(name))
 
-      r = self.get_flavors()
-      if name == 'mockTest':
-        return { "flavor": r['flavors'][3] }
-      
-      if name == 'mockTest2':
-        return { "flavor": r['flavors'][4] }
+        r = self.get_flavors()
+        if name == 'mockTest':
+            return {"flavor": r['flavors'][3]}
+
+        if name == 'mockTest2':
+            return {"flavor": r['flavors'][4]}
 
     def test_virl_flavors_00_ls(self):
-      m = requests_mock.mock()
-      # Mock the request to return what we expect from the API.
-      m.get('http://localhost:19399/rest/flavors',
-            json=self.get_flavors())
+        m = requests_mock.mock()
+        # Mock the request to return what we expect from the API.
+        m.get('http://localhost:19399/rest/flavors',
+              json=self.get_flavors())
 
-      runner = CliRunner()
-      result = runner.invoke(virl, ["flavors", "ls"])
-      self.assertEqual(0, result.exit_code)
+        runner = CliRunner()
+        result = runner.invoke(virl, ["flavors", "ls"])
+        self.assertEqual(0, result.exit_code)
 
     def test_virl_flavors_01_add(self):
-      m = requests_mock.mock()
-      # Mock the request to return what we expect from the API.
-      m.post('http://localhost:19399/rest/flavors',
-            json=self.return_flavor('mockTest'))
+        m = requests_mock.mock()
+        # Mock the request to return what we expect from the API.
+        m.post('http://localhost:19399/rest/flavors',
+               json=self.return_flavor('mockTest'))
 
-      runner = CliRunner()
-      result = runner.invoke(virl, ["flavors", "add", "mockTest"])
-      self.assertEqual(0, result.exit_code)
+        runner = CliRunner()
+        result = runner.invoke(virl, ["flavors", "add", "mockTest"])
+        self.assertEqual(0, result.exit_code)
 
-      result = runner.invoke(virl, ["flavors", "add", "mockTest2", 
-                                    "--vcpus", "2",
-                                    "--memory", "4096"
-                                    ])
-      self.assertEqual(0, result.exit_code)
+        args = [
+            "flavors", "add", "mockTest2",
+            "--vcpus", "2",
+            "--memory", "4096"
+        ]
+        result = runner.invoke(virl, args)
+        self.assertEqual(0, result.exit_code)
 
     def test_virl_flavors_02_update(self):
-      m = requests_mock.mock()
-      # Mock the request to return what we expect from the API.
-      m.get('http://localhost:19399/rest/flavors',
-            json=self.get_flavors())
-      m.get('http://localhost:19399/rest/flavors/a484b396-c0fd-4949-80fb-7a0ac4efffff',
-            json=self.return_flavor('mockTest'))
-      m.post('http://localhost:19399/rest/flavors',
-            json=self.return_flavor('mockTest'))
+        m = requests_mock.mock()
+        # Mock the request to return what we expect from the API.
+        m.get('http://localhost:19399/rest/flavors',
+              json=self.get_flavors())
+        m.post('http://localhost:19399/rest/flavors',
+               json=self.return_flavor('mockTest'))
 
-      runner = CliRunner()
-      result = runner.invoke(virl, ["flavors", "update", "mockTest",
-                                    "--vcpus", "2"
-                                    ])
-      self.assertEqual(0, result.exit_code)
+        u = 'http://localhost:19399/rest/flavors/{}'
+        u = u.format('a484b396-c0fd-4949-80fb-7a0ac4efffff')
+        m.get(u, json=self.return_flavor('mockTest'))
+
+        runner = CliRunner()
+        args = [
+            "flavors", "update", "mockTest",
+            "--vcpus", "2",
+        ]
+        result = runner.invoke(virl, args)
+        self.assertEqual(0, result.exit_code)
 
     def test_virl_flavors_03_delete(self):
-      m = requests_mock.mock()
-      # Mock the request to return what we expect from the API.
-      m.get('http://localhost:19399/rest/flavors',
-            json=self.get_flavors())
-      m.delete('http://localhost:19399/rest/flavors/a484b396-c0fd-4949-80fb-7a0ac4efffff',
-            json=self.return_flavor('mockTest'))
-      m.delete('http://localhost:19399/rest/flavors/a484b396-c0fd-4949-80fb-7a0ac4eeeeee',
-            json=self.return_flavor('mockTest2'))
+        m = requests_mock.mock()
+        # Mock the request to return what we expect from the API.
+        m.get('http://localhost:19399/rest/flavors',
+              json=self.get_flavors())
 
-      runner = CliRunner()
-      result = runner.invoke(virl, ["flavors", "delete", "mockTest"])
-      self.assertEqual(0, result.exit_code)
+        u = 'http://localhost:19399/rest/flavors/{}'
+        u = u.format('a484b396-c0fd-4949-80fb-7a0ac4efffff')
+        m.delete(u, json=self.return_flavor('mockTest'))
 
-      result = runner.invoke(virl, ["flavors", "delete", "mockTest2"])
-      self.assertEqual(0, result.exit_code)
+        u = 'http://localhost:19399/rest/flavors/{}'
+        u = u.format('a484b396-c0fd-4949-80fb-7a0ac4eeeeee')
+        m.delete(u, json=self.return_flavor('mockTest2'))
+
+        runner = CliRunner()
+        result = runner.invoke(virl, ["flavors", "delete", "mockTest"])
+        self.assertEqual(0, result.exit_code)
+
+        result = runner.invoke(virl, ["flavors", "delete", "mockTest2"])
+        self.assertEqual(0, result.exit_code)

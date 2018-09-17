@@ -19,10 +19,8 @@ def add(**kwargs):
 
     # Attempt to delete the flavor
     try:
-        r = server.add_flavor(flavor=flavor,
-                               memory=memory,
-                               vcpus=vcpus)
-        print("Flavor '{}' ({}) added.".format(flavor,r['id']))
+        r = server.add_flavor(flavor=flavor, memory=memory, vcpus=vcpus)
+        print("Flavor '{}' ({}) added.".format(flavor, r['id']))
 
     except HTTPError as err:
         print("\nFailed to create flavor '{}':".format(flavor))

@@ -21,7 +21,7 @@ def ls(**kwargs):
     if flavor:
         for f in list(r):
             if f['name'] == flavor:
-                flavor_list_table( [ f ] )
+                flavor_list_table([f])
                 break
     else:
         flavor_list_table(r)

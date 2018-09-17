@@ -1,7 +1,6 @@
 import click
 from virl.api import VIRLServer
 from requests.exceptions import HTTPError
-import sys
 
 
 @click.command()
@@ -33,7 +32,7 @@ def update(**kwargs):
 
     if not memory:
         memory = f['ram']
-    
+
     if not vcpus:
         vcpus = f['vcpus']
 

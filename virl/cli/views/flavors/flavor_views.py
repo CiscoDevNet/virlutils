@@ -1,9 +1,10 @@
 import click
 import tabulate
 
+
 def flavor_list_table(flavors_list):
 
-    headers = [ 'Name', 'Memory', 'vCPUs' ]
+    headers = ['Name', 'Memory', 'vCPUs']
     table = list()
 
     for f in list(flavors_list):
