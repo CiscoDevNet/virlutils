@@ -89,7 +89,7 @@ class FlavorsTest(BaseTest):
         with requests_mock.mock() as m:
             # Mock the request to return what we expect from the API.
             m.get('http://localhost:80/rest/flavors',
-                json=self.get_flavors())
+                  json=self.get_flavors())
 
             runner = CliRunner()
             result = runner.invoke(virl, ["flavors", "ls"])
@@ -99,7 +99,7 @@ class FlavorsTest(BaseTest):
         with requests_mock.mock() as m:
             # Mock the request to return what we expect from the API.
             m.post('http://localhost:80/rest/flavors',
-                json=self.return_flavor('mockTest'))
+                   json=self.return_flavor('mockTest'))
 
             runner = CliRunner()
             result = runner.invoke(virl, ["flavors", "add", "mockTest"])
@@ -117,9 +117,9 @@ class FlavorsTest(BaseTest):
         with requests_mock.mock() as m:
             # Mock the request to return what we expect from the API.
             m.get('http://localhost:80/rest/flavors',
-                json=self.get_flavors())
+                  json=self.get_flavors())
             m.post('http://localhost:80/rest/flavors',
-                json=self.return_flavor('mockTest'))
+                   json=self.return_flavor('mockTest'))
 
             u = 'http://localhost:80/rest/flavors/{}'
             u = u.format('a484b396-c0fd-4949-80fb-7a0ac4efffff')
@@ -138,7 +138,7 @@ class FlavorsTest(BaseTest):
         with requests_mock.mock() as m:
             # Mock the request to return what we expect from the API.
             m.get('http://localhost:80/rest/flavors',
-                json=self.get_flavors())
+                  json=self.get_flavors())
 
             u = 'http://localhost:80/rest/flavors/{}'
             u = u.format('a484b396-c0fd-4949-80fb-7a0ac4efffff')
