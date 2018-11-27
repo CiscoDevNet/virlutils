@@ -8,7 +8,7 @@ from virl.cli.flavors.update.commands import update
 @click.group()
 def flavors():
     """
-    Manage VIRL Flavors
+    Manage VIRL Flavors Attributes
     """
     pass
 
