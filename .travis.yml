@@ -9,5 +9,6 @@ install: "pip install -r test-requirements.txt"
 script:
   - make lint
   - make coverage
+  - pip freeze
 after_success:
   - coveralls
