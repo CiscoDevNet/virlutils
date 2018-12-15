@@ -19,6 +19,8 @@ class Tests(BaseTest):
 
         try:
             os.remove('.virl/default/id')
+            os.remove('./topology.virl')
+
         except OSError:
             pass
 
@@ -37,6 +39,7 @@ class Tests(BaseTest):
     def test_virl_up_from_repo(self, call_mock):
 
         try:
+            os.remove('.virl/default/id')
             os.remove('./topology.virl')
         except OSError:
             pass
