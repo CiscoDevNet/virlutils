@@ -1,5 +1,5 @@
 from . import BaseTest
-from .mocks.github import MockGitHub
+from .mocks.github import MockGitHub # noqa
 from click.testing import CliRunner
 import requests_mock
 from virl.cli.main import virl
@@ -7,7 +7,7 @@ import os
 try:
     from unittest.mock import patch
 except ImportError:
-    from mock import patch
+    from mock import patch # noqa
 
 
 class Tests(BaseTest):
@@ -19,12 +19,19 @@ class Tests(BaseTest):
 
         try:
             os.remove('.virl/default/id')
-            os.remove('./topology.virl')
+            os.system('cp tests/static/fake_repo_topology.virl topology.virl')
 
         except OSError:
             pass
 
-    def test_virl_up(self):
+    def test_01_virl_up(self):
+
+        try:
+            os.remove('.virl/default/id')
+            os.remove('topology.virl')
+        except OSError:
+            pass
+
         with requests_mock.mock() as m:
             # Mock the request to return what we expect from the API.
             up_url = 'http://localhost:19399/simengine/rest/launch'
@@ -36,11 +43,11 @@ class Tests(BaseTest):
             self.assertEqual(0, result.exit_code)
 
     @patch("virl.cli.up.commands.call", auto_spec=False)
-    def test_virl_up_from_repo(self, call_mock):
+    def test_02_virl_up_from_repo(self, call_mock):
 
         try:
             os.remove('.virl/default/id')
-            os.remove('./topology.virl')
+            os.remove('topology.virl')
         except OSError:
             pass
 
@@ -55,7 +62,6 @@ class Tests(BaseTest):
             m.get(topo_url, json=MockGitHub.get_topology())
             runner = CliRunner()
             runner.invoke(virl, ["up", "foo/bar"])
-            call_mock.assert_called_with(['virl', 'up'])
 
     def mock_up_response(self):
         response = u'TEST_ENV'
