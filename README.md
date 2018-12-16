@@ -20,20 +20,25 @@ Options:
 Commands:
   console   console for node
   down      stop a virl simulation
+  flavors   Manage VIRL Flavors Attributes
   generate  generate inv file for various tools
+  id        gets sim id for local environment
   logs      Retrieves log information for the provided...
   ls        lists running simulations in the current...
   nodes     get nodes for sim_name
   pull      pull topology.virl from repo
   save      save simulation to local virl file
-  search    lists running simulations in the current...
+  search    lists virl topologies available via github
   ssh       ssh to a node
   start     start a node
   stop      stop a node
+  swagger   manage local swagger ui server
   telnet    telnet to a node
   up        start a virl simulation
   use       use virl simulation launched elsewhere
-
+  uwm       opens UWM for the sim
+  version   version information
+  viz       opens live visualization for the sim
 
 ```
 
