@@ -10,10 +10,10 @@ Jinja2==2.10
 lxml==4.2.1
 MarkupSafe==1.0
 python-dateutil==2.7.2
-PyYAML==3.12
-requests>=2.20.0
+PyYAML==5.1b1
+requests==2.21.0
 six==1.11.0
 tabulate==0.8.2
-urllib3>=1.23
+urllib3==1.24.1
 virlutils==0.6.4
 Werkzeug==0.14.1
