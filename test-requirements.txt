@@ -18,7 +18,7 @@ pycodestyle==2.4.0
 pyflakes==2.0.0
 pytest==3.3.0
 python-coveralls==2.9.1
-PyYAML==5.1b1s
+PyYAML==5.1b1
 requests==2.20.0
 requests-mock==1.5.2
 six==1.11.0
