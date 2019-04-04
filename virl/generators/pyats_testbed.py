@@ -87,6 +87,10 @@ def pyats_testbed_generator(env,
             os = 'iosxe'
         elif 'IOS' in device_type:
             os = 'ios'
+        elif 'IOS' in device_type:
+            os = 'ios'
+        elif 'ASAv' in device_type:
+            os = 'asa'
 
         # we prefer external addr
         external_ip = str(props.get("externalAddr", ""))
