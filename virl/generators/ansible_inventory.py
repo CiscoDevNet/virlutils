@@ -136,7 +136,6 @@ def render_yaml_inventory(virl_xml, roster=None, interfaces=None):
                                         roster=roster,
                                         interfaces=interfaces)
     template = j2_env.get_template('ansible/inventory_template.j2')
-    print(inventory)
     return template.render(inventory=inventory)
 
 
