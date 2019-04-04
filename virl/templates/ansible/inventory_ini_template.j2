@@ -18,4 +18,4 @@
 {%- for group, devices in inventory.all.children.items() %}
 [{{group}}]
 {%- for name, device in devices.items() %}
-{{ name }} ansible_host={{ device.ansible_host }}{%- if device.console_server %}{%- if device.console_port %} console_server={{ device.console_server }} console_port={{ device.console_port }}{%- endif %}{%- endif %}{%- endfor %}{% endfor %}
+{{ name }} ansible_host={{ device.ansible_host }}{%- if device.console_server %}{%- if device.console_port %} console_server={{ device.console_server }} console_port={{ device.console_port }}{%- endif %}{%- if device.device_type %} ansible_network_os={{ device.device_type }}{%- endif %}{%- endif %}{%- endfor %}{% endfor %}

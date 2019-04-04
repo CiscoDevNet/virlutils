@@ -30,6 +30,10 @@ all:
           console_server: {{ device.console_server }}
           console_port: {{ device.console_port }}
           {%- endif %}
+          {%- if device.device_type %}
+          ansible_network_os: {{ device.device_type }}
+          {%- endif %}
+
           {%- endif %}
 
         {%- endfor %}

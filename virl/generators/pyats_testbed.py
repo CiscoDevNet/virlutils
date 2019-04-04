@@ -97,7 +97,7 @@ def pyats_testbed_generator(env,
             address = mgmt_ip
 
         # add server devices to testbed->server section
-        if device_type in ['mgmt-lxc', 'server']:
+        if device_type in ['mgmt-lxc', 'server', 'lxc']:
             servers[device_name] = dict()
             servers[device_name]['server'] = device_name
             servers[device_name]['address'] = address
@@ -115,7 +115,9 @@ def pyats_testbed_generator(env,
             devices[device_name]['alias'] = device_name
             if os:
                 devices[device_name]['os'] = os
+
             devices[device_name]['type'] = device_type
+            devices[device_name]['platform'] = device_type
             devices[device_name]['tacacs'] = {
                 "username": dev_username
             }
