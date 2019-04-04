@@ -3,20 +3,19 @@ testbed:
   name: {{ name }}
 
   tacacs:
-      username: "%ENV{PYATS_USERNAME}"
+    username: "%ENV{PYATS_USERNAME}"
   passwords:
-      tacacs: "%ENV{PYATS_PASSWORD}"
-      enable: "%ENV{PYATS_AUTH_PASS}"
-      line: "%ENV{PYATS_PASSWORD}"
+    tacacs: "%ENV{PYATS_PASSWORD}"
+    enable: "%ENV{PYATS_AUTH_PASS}"
+    line: "%ENV{PYATS_PASSWORD}"
 
   {%- if servers.items() %}
   servers:
-    {% for srv_name, props in servers.items() %}
+    {%- for srv_name, props in servers.items() %}
     {{ srv_name }}:
       address: {{ props.address|default("''", true) }}
       server: {{ props.server|default("''", true) }}
-
-    {% endfor %}
+    {%- endfor %}
   {%-endif %}
 
 devices:
@@ -28,6 +27,8 @@ devices:
     os: {{ props.os }}
     {%- endif %}
     type: {{ props.type|default("''", true) }}
+    platform: {{ props.type|default("unknown", true) }}
+
     connections:
 
       defaults:
