@@ -5,6 +5,7 @@ configuration easier.
 import getpass
 import os
 import sys
+from virl.helpers import find_virl
 
 
 def _get_from_user(prompt):  # pragma: no cover
@@ -47,6 +48,8 @@ def get_prop(prop_name):
 
     * Check for .virlrc in current directory
 
+    * recurse up directory tree for .virlrc
+
     * Check environment variables
 
     * Check ~/.virlrc
@@ -57,6 +60,14 @@ def get_prop(prop_name):
     # check for .virlrc in current directory
     cwd = os.getcwd()
     virlrc = os.path.join(cwd, ".virlrc")
+    prop = _get_from_file(virlrc, prop_name)
+
+    if prop:
+        return prop
+
+    # search up directory tree for a .virlrc
+    virl_dir = find_virl()
+    virlrc = os.path.join(virl_dir, ".virlrc")
     prop = _get_from_file(virlrc, prop_name)
 
     if prop:
