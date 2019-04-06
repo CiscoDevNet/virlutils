@@ -2,7 +2,7 @@ import click
 from virl.api import VIRLServer
 from subprocess import call
 from virl import helpers
-from virl.helpers import get_mgmt_lxc_ip, get_node_from_roster
+from virl.helpers import get_node_from_roster, get_mgmt_lxc_external_port
 
 
 @click.command()
@@ -46,13 +46,13 @@ def ssh(node):
                     exit(call(cmd.split()))
 
                 if proxy == 'lxc':
-                    lxc = get_mgmt_lxc_ip(details)
-                    if lxc:
+                    lxc_external_port = get_mgmt_lxc_external_port(details)
+                    if lxc_external_port:
                         click.secho("Attemping ssh connection"
-                                    "to {} at {} via {}".format(node_name,
-                                                                ip, lxc))
-                        cmd = 'ssh -o "ProxyCommand ssh -W %h:%p {}@{}" {}@{}'
-                        cmd = cmd.format(server.user, lxc, username, ip)
+                                    "to {} at {} via {}:{}".format(node_name,
+                                                                ip, server.host, lxc_external_port))
+                        cmd = 'ssh -o "ProxyCommand ssh -W %h:%p {}@{} -p {}" {}@{}'
+                        cmd = cmd.format(server.user, server.host, lxc_external_port, username, ip)
 
                         exit(call(cmd, shell=True))
                 else:

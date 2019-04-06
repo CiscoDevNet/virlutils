@@ -111,6 +111,15 @@ def get_mgmt_lxc_ip(sim_roster):
     return lxc_ip
 
 
+def get_mgmt_lxc_external_port(sim_roster):
+    # grab mgmt-lxc info in case we need it later
+    for k, v in sim_roster.items():
+        if k.endswith('mgmt-lxc'):
+            lxc_external_port = v.get('externalPort', None)
+            print("lxc simulation external port is {}".format(lxc_external_port))
+    return lxc_external_port
+
+
 def get_node_from_roster(name, roster):
     for k, v in roster.items():
         if k.endswith(name):
