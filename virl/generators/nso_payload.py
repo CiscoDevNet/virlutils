@@ -37,6 +37,11 @@ def sim_info(virl_xml, roster=None, interfaces=None, protocol="telnet"):
                 entry['prefix'] = 'ios-id'
                 entry['ned'] = 'cisco-ios'
                 entry['ns'] = 'urn:ios-id'
+            elif 'ASA' in type:
+                entry['prefix'] = 'asa-id'
+                entry['ned'] = 'cisco-asa'
+                entry['ns'] = 'http://cisco.com/ned/asa-id'
+                entry['protocol'] = 'ssh'
         except KeyError:
             pass
 
