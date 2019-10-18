@@ -16,4 +16,4 @@ six==1.11.0
 tabulate==0.8.2
 urllib3==1.24.1
 virlutils==0.6.4
-Werkzeug==0.14.1
+Werkzeug==0.15.3
