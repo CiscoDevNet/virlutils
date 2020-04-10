@@ -67,19 +67,19 @@ cd virlutils
 
 2. Either (2a) use pip, or (2b) use setup.py
 
-2a. Use pip
+   2a. Use pip
 
-```
-pip install virlutils
-```
+   ```
+   pip install virlutils
+   ```
 
-2b. Use virtual environment
+   2b. Use virtual environment
 
-```
-python3 -m venv venv
-source venv/bin/activate
-python setup.py install
-```
+   ```
+   python3 -m venv venv
+   source venv/bin/activate
+   python setup.py install
+   ```
 
 ## Configuration
 
