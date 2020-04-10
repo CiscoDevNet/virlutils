@@ -56,6 +56,10 @@ Commands:
 
    <!-- /TOC -->
 
+Prequisites
+-----------
+Python 3 (tested with Python 3.7.7)
+
 Installation
 ------------
 
@@ -64,25 +68,23 @@ Installation
 ::
 
     git clone https://github.com/CiscoDevNet/virlutils
-
-2. Install
-
-With Pip
-~~~~~~~~
-
-::
-
-    pip install virlutils
-
-Clone & Install
-~~~~~~~~~~~~~~~
-
-::
-
-    git clone https://github.com/CiscoDevNet/virlutils
     cd virlutils
-    virtualenv venv && source venv/bin/activate
-    python setup.py install
+
+2. Either (2a) use pip, or (2b) use setup.py
+
+   2a. Use pip
+
+   ::
+
+      pip install virlutils
+
+   2b. Use setup.py
+
+   ::
+
+      python3 -m venv venv
+      source venv/bin/activate
+      python setup.py install
 
 Configuration
 -------------

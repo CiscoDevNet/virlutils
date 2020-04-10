@@ -73,7 +73,7 @@ cd virlutils
    pip install virlutils
    ```
 
-   2b. Use virtual environment
+   2b. Use setup.py
 
    ```
    python3 -m venv venv
