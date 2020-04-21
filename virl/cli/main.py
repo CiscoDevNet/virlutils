@@ -51,12 +51,11 @@ def __get_server_ver():
     Returns:
         string: Either '1' for VIRL/CML 1.x or the empty string for CML 2+
     """
-
-    print("IN HERE!!!")
-
     res = ""
     try:
         server = VIRLServer()
+        r = requests.get("https://{}/".format(server.host), verify=False)
+        r.raise_for_status()
         client = ClientLibrary(server.host, server.user, server.passwd, ssl_verify=False)
     except requests.HTTPError as he:
         if he.response.status_code == 403:
@@ -64,7 +63,7 @@ def __get_server_ver():
             pass
         else:
             res = "1"
-    except Exception as e:
+    except:
         res = "1"
 
     return res
