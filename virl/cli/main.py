@@ -53,6 +53,7 @@ def __get_server_ver():
     """
     res = ""
     try:
+        # TODO: Add support for TLS cert validation
         server = VIRLServer()
         r = requests.get("https://{}/".format(server.host), verify=False)
         r.raise_for_status()
