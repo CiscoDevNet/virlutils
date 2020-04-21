@@ -3,10 +3,14 @@ from virl.api import VIRLServer
 from subprocess import call
 from virl import helpers
 
-
 @click.command()
 @click.argument('node', nargs=-1)
 def stop(node):
+    pass
+
+@click.command()
+@click.argument('node', nargs=-1)
+def stop1(node):
     """
     stop a node
     """

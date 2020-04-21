@@ -4,11 +4,16 @@ from virl.api import VIRLServer
 from virl.cli.views import sim_list_table
 from virl.helpers import find_virl
 
-
 @click.command()
 @click.option('--all/--local', default=False, help=" \
 Display all simulations or only ones from the current project (default)")
 def ls(all, **kwargs):
+    pass
+
+@click.command()
+@click.option('--all/--local', default=False, help=" \
+Display all simulations or only ones from the current project (default)")
+def ls1(all, **kwargs):
     """
     lists running simulations in the current project
     """

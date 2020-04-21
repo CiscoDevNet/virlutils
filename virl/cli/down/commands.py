@@ -2,11 +2,16 @@ import click
 from virl.api import VIRLServer
 from virl.helpers import check_sim_running, remove_sim_info
 
-
 @click.command()
 @click.argument('env', default='default')
 @click.option('--sim-name', required=False)
 def down(sim_name=None, env='default', **kwargs):
+    pass
+
+@click.command()
+@click.argument('env', default='default')
+@click.option('--sim-name', required=False)
+def down1(sim_name=None, env='default', **kwargs):
     """
     stop a virl simulation
     """

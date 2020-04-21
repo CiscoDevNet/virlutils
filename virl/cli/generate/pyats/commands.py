@@ -3,11 +3,16 @@ from virl.api import VIRLServer
 from virl import helpers
 from virl.generators import pyats_testbed_generator
 
-
 @click.command()
 @click.argument('env', default='default')
 @click.option('--output', '-o', help="output File name ")
 def pyats(env, **kwargs):
+    pass
+
+@click.command()
+@click.argument('env', default='default')
+@click.option('--output', '-o', help="output File name ")
+def pyats1(env, **kwargs):
     """
     Generates a pyats testbed config for an environment
     """

@@ -2,7 +2,6 @@ import click
 from virl.api import VIRLServer
 from virl.helpers import get_env_sim_name
 
-
 @click.command()
 @click.argument('env', default='default')
 @click.option('--ip/--no-ip',
@@ -14,6 +13,19 @@ from virl.helpers import get_env_sim_name
               metavar='<filename>',
               help="filename to save to, defaults to topology.virl")
 def save(env, ip, filename, **kwargs):
+    pass
+
+@click.command()
+@click.argument('env', default='default')
+@click.option('--ip/--no-ip',
+              default=False,
+              help="include dynamically assigned addresses")
+@click.option('-f', '--filename',
+              required=False,
+              default='topology.virl',
+              metavar='<filename>',
+              help="filename to save to, defaults to topology.virl")
+def save1(env, ip, filename, **kwargs):
     """
     save simulation to local virl file
     """

@@ -4,10 +4,14 @@ from virl.api import VIRLServer
 from virl.cli.views import node_list_table
 from virl import helpers
 
-
 @click.command()
 @click.argument('env', default='default')
 def nodes(env, **kwargs):
+    pass
+
+@click.command()
+@click.argument('env', default='default')
+def nodes1(env, **kwargs):
     """
     get nodes for sim_name
     """

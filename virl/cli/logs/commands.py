@@ -7,7 +7,7 @@ from virl import helpers
 
 @click.command()
 @click.argument('env', default='default')
-def logs(env, **kwargs):
+def logs1(env, **kwargs):
     """
     Retrieves log information for the provided simulation
     """

@@ -2,9 +2,12 @@ import os
 import click
 from virl.api import VIRLServer
 
-
 @click.command()
 def id():
+    pass
+
+@click.command()
+def id1():
     """
     gets sim id for local environment
     """

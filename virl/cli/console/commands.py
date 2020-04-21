@@ -5,13 +5,20 @@ from virl import helpers
 from virl.cli.views.console import console_table
 import platform
 
-
 @click.command()
 @click.argument('node', nargs=-1)
 @click.option('--display/--none',
               default='False',
               help='Display Console information')
 def console(node, display, **kwargs):
+    pass
+
+@click.command()
+@click.argument('node', nargs=-1)
+@click.option('--display/--none',
+              default='False',
+              help='Display Console information')
+def console1(node, display, **kwargs):
     """
     console for node
     """

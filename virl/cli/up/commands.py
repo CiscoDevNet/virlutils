@@ -5,6 +5,23 @@ from virl.helpers import generate_sim_id, check_sim_running, store_sim_info
 import os
 import time
 
+@click.command()
+@click.argument('repo', default='default')
+@click.option('-e', default='default', help="environment name", required=False)
+@click.option('-f', default='topology.yaml', help=' \
+CML file to launch, defaults to topology.yaml', required=False)
+@click.option('--provision/--noprovision', show_default=False, default=False,
+              help=" \
+Blocks execution until all nodes are reachable.", required=False)
+@click.option('--wait-time', default=10,
+              help="max time (in minutes) to wait for nodes to come online",
+              show_default=True)
+def up(repo=None, provision=False, **kwargs):
+    """
+    start a virl simulation
+    """
+    print("This is a stub CML 2.x command")
+
 
 @click.command()
 @click.argument('repo', default='default')
@@ -17,7 +34,7 @@ Blocks execution until all nodes are reachable.", required=False)
 @click.option('--wait-time', default=10,
               help="max time (in minutes) to wait for nodes to come online",
               show_default=True)
-def up(repo=None, provision=False, **kwargs):
+def up1(repo=None, provision=False, **kwargs):
     """
     start a virl simulation
     """

@@ -1,25 +1,30 @@
 import click
-from .console.commands import console
-from .nodes.commands import nodes
-from .logs.commands import logs
-from .up.commands import up
-from .use.commands import use
-from .down.commands import down
-from .ls.commands import ls
-from .save.commands import save
-from .telnet.commands import telnet
-from .ssh.commands import ssh
-from .generate import generate
-from .start.commands import start
-from .stop.commands import stop
-from .pull.commands import pull
-from .search.commands import search
-from .swagger.commands import swagger
-from .uwm.commands import uwm
-from .viz.commands import viz
-from .id.commands import id
-from .version.commands import version
-from .flavors import flavors
+from virl2_client import ClientLibrary
+from virl.api import VIRLServer
+import requests
+from .console.commands import console, console1
+from .nodes.commands import nodes, nodes1
+from .logs.commands import logs1
+from .up.commands import up, up1
+from .use.commands import use, use1
+from .down.commands import down, down1
+from .ls.commands import ls, ls1
+from .save.commands import save, save1
+from .telnet.commands import telnet, telnet1
+from .ssh.commands import ssh, ssh1
+from .generate import generate, generate1
+from .start.commands import start, start1
+from .stop.commands import stop, stop1
+from .pull.commands import pull, pull1
+from .search.commands import search, search1
+from .swagger.commands import swagger, swagger1
+from .uwm.commands import uwm1
+from .viz.commands import viz, viz1
+from .id.commands import id, id1
+from .version.commands import version, version1
+from .flavors import flavors1
+from .images import images
+from .cockpit.commands import cockpit
 
 
 class CatchAllExceptions(click.Group):
@@ -39,28 +44,64 @@ class CatchAllExceptions(click.Group):
 def virl():
     pass
 
+def __get_server_ver():
+    """
+    Taste a VIRL/CML server and try and determine its version.
 
-virl.add_command(console)
-virl.add_command(nodes)
-virl.add_command(logs)
-virl.add_command(up)
-virl.add_command(down)
-virl.add_command(ls)
-virl.add_command(use)
-virl.add_command(save)
-virl.add_command(telnet)
-virl.add_command(ssh)
-virl.add_command(generate)
-virl.add_command(start)
-virl.add_command(stop)
-virl.add_command(search)
-virl.add_command(pull)
-virl.add_command(swagger)
-virl.add_command(uwm)
-virl.add_command(viz)
-virl.add_command(id)
-virl.add_command(version)
-virl.add_command(flavors)
+    Returns:
+        string: Either '1' for VIRL/CML 1.x or the empty string for CML 2+
+    """
+
+    print("IN HERE!!!")
+
+    res = ""
+    try:
+        server = VIRLServer()
+        client = ClientLibrary(server.host, server.user, server.passwd, ssl_verify=False)
+    except requests.HTTPError as he:
+        if he.response.status_code == 403:
+            # The user provided bad credentials, but the URL was valid, return empty
+            pass
+        else:
+            res = "1"
+    except Exception as e:
+        res = "1"
+
+    return res
+
+__server_ver = __get_server_ver()
+
+if __server_ver == "1":
+    virl.add_command(uwm1, name="uwm")
+    virl.add_command(flavors1, name="flavors")
+    virl.add_command(logs1, name="logs")
+else:
+    virl.add_command(cockpit)
+    virl.add_command(images)
+
+__sub_commands = [
+  "console",
+  "nodes",
+  "up",
+  "down",
+  "ls",
+  "use",
+  "save",
+  "telnet",
+  "ssh",
+  "generate",
+  "start",
+  "stop",
+  "search",
+  "pull",
+  "swagger",
+  "viz",
+  "id",
+  "version",
+]
+
+for cmd in __sub_commands:
+    virl.add_command(globals()[cmd + __server_ver], name=cmd)
 
 
 if __name__ == '__main__':
