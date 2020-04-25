@@ -132,7 +132,7 @@ Set of commands for checking health of CML2.0 server and labs
 
 > Many options for future commands to go here to help wtih checking health of server and lab.  Consider it the "show tech" for virlutils 
 
-### `virl save'
+### `virl save`
 Download the `topology.yaml` file for running simulation. 
 
 * Default behavior will use lab name as file name 
