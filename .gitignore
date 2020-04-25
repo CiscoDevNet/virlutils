@@ -1,3 +1,7 @@
+# dev stuff
+*.code-workspace 
+scratch*
+
 # virl stuff 
 .virl/
 
