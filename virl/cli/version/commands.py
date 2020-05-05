@@ -2,6 +2,8 @@ import click
 from virl.api import VIRLServer
 from virl2_client import ClientLibrary
 from virl import __version__
+from virl.helpers import get_cml_client
+
 
 @click.command()
 def version():
@@ -9,7 +11,7 @@ def version():
     version information
     """
     server = VIRLServer()
-    client = ClientLibrary(server.host, server.user, server.passwd, ssl_verify=False)
+    client = get_cml_client(server)
     server_version = "Unknown"
     try:
         response = client.session.get(client._base_url + "system_information")
@@ -29,6 +31,6 @@ def version1():
     """
     server = VIRLServer()
     virlutils_version = __version__
-    server_version = server.get_version().get('virl-version')
+    server_version = server.get_version().get("virl-version")
     click.secho("virlutils Version: {}".format(virlutils_version))
     click.echo("VIRL Core Version: {}".format(server_version))

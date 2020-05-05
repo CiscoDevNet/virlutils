@@ -1,5 +1,7 @@
 # virl stuff 
 .virl/
+topology.yaml
+topology.virl
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
