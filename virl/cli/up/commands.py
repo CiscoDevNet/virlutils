@@ -11,6 +11,7 @@ from virl.helpers import (
     cache_lab,
     get_lab_id,
     check_lab_active,
+    set_current_lab,
 )
 import os
 import time
@@ -86,6 +87,10 @@ def up(repo=None, provision=False, **kwargs):
         msg = cache_lab(lab)
         if msg:
             click.secho("Failed to cache lab: " + msg, fg="yellow")
+        else:
+            msg = set_current_lab(lab)
+            if msg:
+                click.secho("Failed to set current lab: " + msg, fg="yellow")
     else:
         click.secho("Could not find a lab to start.  Maybe try -f", fg="red")
 

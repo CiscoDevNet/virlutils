@@ -191,6 +191,53 @@ def cache_lab(lab):
     return None
 
 
+def set_current_lab(lab):
+    """
+    creates a link to the cached lab to say it's current
+    """
+
+    try:
+        virl_root = find_virl()
+        fname = virl_root + "/.virl/cached_cml_labs/{}".format(lab.id)
+        if not os.path.exists(fname):
+            return "Failed to find cached lab for ID {}".format(lab.id)
+
+        os.symlink(fname, virl_root + "/.virl/current_cml_lab")
+    except Exception as e:
+        return str(e)
+
+    return None
+
+
+def get_current_lab():
+    """
+    gets the current lab on which we're operating
+    """
+
+    virl_root = find_virl()
+    lname = virl_root + "/.virl/current_cml_lab"
+    if os.path.exists(lname):
+        return os.path.basename(os.readlink(lname))
+
+    return None
+
+
+def clear_current_lab(lab):
+    """
+    unsets the current lab
+    """
+    try:
+        virl_root = find_virl()
+        lname = virl_root + "/.virl/current_cml_lab"
+        if os.path.exists(lname):
+            if lab.id == get_current_lab():
+                os.remove(lname)
+    except Exception as e:
+        return str(e)
+
+    return None
+
+
 def get_cml_client(server):
     """
     Helper function to get a consistent CML client library object

@@ -1,6 +1,15 @@
 import click
 from virl.api import VIRLServer
-from virl.helpers import check_sim_running, remove_sim_info, get_cml_client, check_lab_active, get_lab_id, check_lab_server
+from virl.helpers import (
+    check_sim_running,
+    remove_sim_info,
+    get_cml_client,
+    check_lab_active,
+    get_lab_id,
+    check_lab_server,
+    clear_current_lab,
+    get_current_lab,
+)
 
 
 @click.command()
@@ -15,23 +24,31 @@ def down(id=None, lab_name=None, **kwargs):
 
     lab = None
 
-    if not id and not lab_name:
-        click.secho("Either one of --id or --lab-name is required", fg="red")
-        return
-
     if id:
-        existing = check_lab_server(id, client)
-        if existing:
+        if check_lab_server(id, client):
             lab = client.join_existing_lab(id)
 
     if not lab and lab_name:
         lab = get_lab_id(lab_name, client)
 
+    if not lab:
+        try:
+            lab_id = get_current_lab()
+            if lab_id:
+                if check_lab_server(lab_id, client):
+                    lab = client.join_existing_lab(lab_id)
+        except Exception as e:
+            click.secho("Failed to read current lab: {}".format(e), fg="red")
+
     if lab:
         if check_lab_active(lab):
             lab.stop()
+            msg = clear_current_lab(lab)
+            if msg:
+                click.secho("Failed to clear current lab: {}".format(msg), fg="yellow")
         else:
             click.secho("Lab with ID {} and title {} is already stopped".format(lab.id, lab.title))
+
     else:
         click.secho("Failed to find lab on server", fg="red")
 
