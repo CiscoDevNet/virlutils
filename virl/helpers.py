@@ -124,6 +124,22 @@ CML helper functions
 """
 
 
+def get_cache_root():
+    """
+    get the path to the directory to store cached labs
+    """
+    virl_root = find_virl()
+    return virl_root + "/.virl/cached_cml_labs"
+
+
+def get_current_lab_link():
+    """
+    get the path to the symlink representing the current lab
+    """
+    virl_root = find_virl()
+    return virl_root + "/.virl/current_cml_lab"
+
+
 def check_lab_server(lab_id, client):
     """
     determines if a lab ID exists on a CML server
@@ -159,8 +175,8 @@ def check_lab_cache(lab_id):
     determines if a given lab ID is in the local topology cache
     """
     try:
-        virl_root = find_virl()
-        fname = virl_root + "/.virl/cached_cml_labs/{}".format(lab_id)
+        cache_root = get_cache_root()
+        fname = "{}/{}".format(cache_root, lab_id)
         if os.path.exists(fname):
             return fname
     except:
@@ -180,8 +196,8 @@ def cache_lab(lab):
         return "Failed to download topology: {}".format(e)
 
     try:
-        virl_root = find_virl()
-        fname = virl_root + "/.virl/cached_cml_labs/{}".format(lab.id)
+        cache_root = get_cache_root()
+        fname = "{}/{}".format(cache_root, lab.id)
         if not os.path.exists(fname):
             with safe_open_w(fname) as fd:
                 fd.write(topo)
@@ -197,12 +213,14 @@ def set_current_lab(lab):
     """
 
     try:
-        virl_root = find_virl()
-        fname = virl_root + "/.virl/cached_cml_labs/{}".format(lab.id)
+        cache_root = get_cache_root()
+        fname = "{}/{}".format(cache_root, lab.id)
         if not os.path.exists(fname):
             return "Failed to find cached lab for ID {}".format(lab.id)
 
-        os.symlink(fname, virl_root + "/.virl/current_cml_lab")
+        # This is supported on Windows and Unix as of Python 3.2
+        # provided a new enough version of Windows.
+        os.symlink(fname, get_current_lab_link())
     except Exception as e:
         return str(e)
 
@@ -214,8 +232,7 @@ def get_current_lab():
     gets the current lab on which we're operating
     """
 
-    virl_root = find_virl()
-    lname = virl_root + "/.virl/current_cml_lab"
+    lname = get_current_lab_link()
     if os.path.exists(lname):
         return os.path.basename(os.readlink(lname))
 
@@ -227,8 +244,7 @@ def clear_current_lab(lab):
     unsets the current lab
     """
     try:
-        virl_root = find_virl()
-        lname = virl_root + "/.virl/current_cml_lab"
+        lname = get_current_lab_link()
         if os.path.exists(lname):
             if lab.id == get_current_lab():
                 os.remove(lname)
