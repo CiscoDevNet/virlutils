@@ -5,7 +5,7 @@ from virl.helpers import (
     remove_sim_info,
     get_cml_client,
     check_lab_active,
-    get_lab_id,
+    get_lab_by_title,
     check_lab_server,
     clear_current_lab,
     get_current_lab,
@@ -29,7 +29,7 @@ def down(id=None, lab_name=None, **kwargs):
             lab = client.join_existing_lab(id)
 
     if not lab and lab_name:
-        lab = get_lab_id(lab_name, client)
+        lab = get_lab_by_title(lab_name, client)
 
     if not lab:
         try:

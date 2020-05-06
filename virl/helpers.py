@@ -147,7 +147,7 @@ def check_lab_server(lab_id, client):
     return lab_id in client.get_lab_list()
 
 
-def get_lab_id(lab_name, client):
+def get_lab_by_title(lab_name, client):
     """
     gets a lab ID using its name/title
 
@@ -220,7 +220,9 @@ def set_current_lab(lab):
 
         # This is supported on Windows and Unix as of Python 3.2
         # provided a new enough version of Windows.
-        os.symlink(fname, get_current_lab_link())
+        target = get_current_lab_link()
+        os.remove(target)
+        os.symlink(fname, target)
     except Exception as e:
         return str(e)
 

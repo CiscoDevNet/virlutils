@@ -9,7 +9,7 @@ from virl.helpers import (
     check_lab_server,
     check_lab_cache,
     cache_lab,
-    get_lab_id,
+    get_lab_by_title,
     check_lab_active,
     set_current_lab,
 )
@@ -64,9 +64,7 @@ def up(repo=None, provision=False, **kwargs):
             lab = client.join_existing_lab(id)
 
     if lab_name:
-        lab_id = get_lab_id(lab_name, client)
-        if lab_id:
-            lab = client.join_existing_lab(lab_id)
+        lab = get_lab_by_title(lab_name, client)
 
     if not lab and os.path.exists(fname):
         lab = client.import_lab_from_path(fname)
