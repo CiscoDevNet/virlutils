@@ -7,7 +7,7 @@ from virl.cli.images.update.commands import update
 @click.group()
 def images():
     """
-    Manage VIRL Flavors Attributes
+    manage CML image definitions (unimplemented)
     """
     pass
 
