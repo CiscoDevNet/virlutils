@@ -27,6 +27,7 @@ from .version.commands import version, version1
 from .flavors import flavors1
 from .images import images
 from .cockpit.commands import cockpit
+from .wipe.commands import wipe
 
 
 class CatchAllExceptions(click.Group):
@@ -84,6 +85,7 @@ if __server_ver == "1":
 else:
     virl.add_command(cockpit)
     virl.add_command(images)
+    virl.add_command(wipe)
 
 __sub_commands = [
     "console",
