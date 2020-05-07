@@ -30,21 +30,19 @@ from .cockpit.commands import cockpit
 
 
 class CatchAllExceptions(click.Group):
-
     def __call__(self, *args, **kwargs):
         try:
             return self.main(*args, **kwargs)
         except Exception as exc:
-            click.secho('Exception raised while running your command',
-                        fg="red")
-            click.secho("Please open an issue and provide this info:",
-                        fg="red")
+            click.secho("Exception raised while running your command", fg="red")
+            click.secho("Please open an issue and provide this info:", fg="red")
             click.secho("%s" % exc, fg="red")
 
 
 @click.group(cls=CatchAllExceptions)
 def virl():
     pass
+
 
 def __get_server_ver():
     """
@@ -74,40 +72,41 @@ def __get_server_ver():
 
     return res
 
+
 __server_ver = __get_server_ver()
 
 if __server_ver == "1":
     virl.add_command(uwm1, name="uwm")
     virl.add_command(flavors1, name="flavors")
     virl.add_command(logs1, name="logs")
+    virl.add_command(swagger1, name="swagger")
+    virl.add_command(viz1, name="viz")
 else:
     virl.add_command(cockpit)
     virl.add_command(images)
 
 __sub_commands = [
-  "console",
-  "nodes",
-  "up",
-  "down",
-  "ls",
-  "use",
-  "save",
-  "telnet",
-  "ssh",
-  "generate",
-  "start",
-  "stop",
-  "search",
-  "pull",
-  "swagger",
-  "viz",
-  "id",
-  "version",
+    "console",
+    "nodes",
+    "up",
+    "down",
+    "ls",
+    "use",
+    "save",
+    "telnet",
+    "ssh",
+    "generate",
+    "start",
+    "stop",
+    "search",
+    "pull",
+    "id",
+    "version",
 ]
 
 for cmd in __sub_commands:
     virl.add_command(globals()[cmd + __server_ver], name=cmd)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     virl()  # pragma: no cover
