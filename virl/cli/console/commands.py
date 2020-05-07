@@ -16,10 +16,7 @@ def console(node, display, **kwargs):
     """
     server = VIRLServer()
     client = get_cml_client(server)
-
-    if not node:
-        exit(call(["virl", "console", "--help"]))
-
+    
     current_lab = get_current_lab()
     if current_lab:
         lab = safe_join_existing_lab(current_lab, client)
