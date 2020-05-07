@@ -12,7 +12,7 @@ import platform
 @click.option("--display/--none", default="False", help="Display Console information")
 def console(node, display, **kwargs):
     """
-    console for node (XXX: currently broken)
+    console for node
     """
     server = VIRLServer()
     client = get_cml_client(server)
@@ -41,12 +41,12 @@ def console(node, display, **kwargs):
                     # someone still uses windows
                     elif platform.system() == "Windows":
                         with helpers.disable_file_system_redirection():
-                            cmd = "ssh {}@{} open {}".format(server.user, server.host, console)
+                            cmd = "ssh -t {}@{} open {}".format(server.user, server.host, console)
                             exit(call(cmd.split()))
 
                     # why is shit so complicated?
                     else:
-                        cmd = "ssh {}@{} open {}".format(server.user, server.host, console)
+                        cmd = "ssh -t {}@{} open {}".format(server.user, server.host, console)
                         exit(call(cmd.split()))
             else:
                 click.secho("Node {} is not active".format(node), fg="red")
