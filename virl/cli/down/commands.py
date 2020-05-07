@@ -5,8 +5,8 @@ from virl.helpers import (
     remove_sim_info,
     get_cml_client,
     check_lab_active,
-    get_lab_by_title,
-    check_lab_server,
+    safe_join_existing_lab_by_title,
+    safe_join_existing_lab,
     clear_current_lab,
     get_current_lab,
 )
@@ -15,7 +15,7 @@ from virl.helpers import (
 @click.command()
 @click.option("--id", required=False, help="An existing CML lab ID to stop (lab-name is ignored)")
 @click.option("--lab-name", "-n", "--sim-name", required=False, help="An existing CML lab name to stop")
-def down(id=None, lab_name=None, **kwargs):
+def down(id=None, lab_name=None):
     """
     stop a CML lab
     """
@@ -25,27 +25,20 @@ def down(id=None, lab_name=None, **kwargs):
     lab = None
 
     if id:
-        if check_lab_server(id, client):
-            lab = client.join_existing_lab(id)
+        lab = safe_join_existing_lab(id, client)
 
     if not lab and lab_name:
-        lab = get_lab_by_title(lab_name, client)
+        lab = safe_join_existing_lab_by_title(lab_name, client)
 
     if not lab:
-        try:
-            lab_id = get_current_lab()
-            if lab_id:
-                if check_lab_server(lab_id, client):
-                    lab = client.join_existing_lab(lab_id)
-        except Exception as e:
-            click.secho("Failed to read current lab: {}".format(e), fg="red")
+        lab_id = get_current_lab()
+        if lab_id:
+            lab = safe_join_existing_lab(lab_id, client)
 
     if lab:
         if check_lab_active(lab):
             lab.stop()
-            msg = clear_current_lab(lab)
-            if msg:
-                click.secho("Failed to clear current lab: {}".format(msg), fg="yellow")
+            clear_current_lab(lab.id)
         else:
             click.secho("Lab with ID {} and title {} is already stopped".format(lab.id, lab.title))
 

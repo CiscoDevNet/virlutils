@@ -140,14 +140,17 @@ def get_current_lab_link():
     return virl_root + "/.virl/current_cml_lab"
 
 
-def check_lab_server(lab_id, client):
+def safe_join_existing_lab(lab_id, client):
     """
-    determines if a lab ID exists on a CML server
+    gets a lab by its ID only if it exists on the server
     """
-    return lab_id in client.get_lab_list()
+    if lab_id in client.get_lab_list():
+        return client.join_existing_lab(lab_id)
+
+    return None
 
 
-def get_lab_by_title(lab_name, client):
+def safe_join_existing_lab_by_title(lab_name, client):
     """
     gets a lab ID using its name/title
 
@@ -187,46 +190,33 @@ def check_lab_cache(lab_id):
 
 def cache_lab(lab):
     """
-    cache a topology YAML file into a local cache
+    save a topology YAML file into a local cache
     """
     topo = None
-    try:
-        topo = lab.download()
-    except Exception as e:
-        return "Failed to download topology: {}".format(e)
+    topo = lab.download()
 
-    try:
-        cache_root = get_cache_root()
-        fname = "{}/{}".format(cache_root, lab.id)
-        if not os.path.exists(fname):
-            with safe_open_w(fname) as fd:
-                fd.write(topo)
-    except Exception as e:
-        return "Failed to write topology to cache: {}".format(e)
-
-    return None
+    cache_root = get_cache_root()
+    fname = "{}/{}".format(cache_root, lab.id)
+    if not os.path.exists(fname):
+        with safe_open_w(fname) as fd:
+            fd.write(topo)
 
 
-def set_current_lab(lab):
+def set_current_lab(lab_id):
     """
     creates a link to the cached lab to say it's current
     """
 
-    try:
-        cache_root = get_cache_root()
-        fname = "{}/{}".format(cache_root, lab.id)
-        if not os.path.exists(fname):
-            return "Failed to find cached lab for ID {}".format(lab.id)
+    cache_root = get_cache_root()
+    fname = "{}/{}".format(cache_root, lab_id)
+    if not os.path.exists(fname):
+        raise FileNotFoundError("Failed to find cached lab for ID {}".format(lab_id))
 
-        # This is supported on Windows and Unix as of Python 3.2
-        # provided a new enough version of Windows.
-        target = get_current_lab_link()
-        os.remove(target)
-        os.symlink(fname, target)
-    except Exception as e:
-        return str(e)
-
-    return None
+    # This is supported on Windows and Unix as of Python 3.2
+    # provided a new enough version of Windows.
+    target = get_current_lab_link()
+    os.remove(target)
+    os.symlink(fname, target)
 
 
 def get_current_lab():
@@ -241,19 +231,14 @@ def get_current_lab():
     return None
 
 
-def clear_current_lab(lab):
+def clear_current_lab(lab_id):
     """
     unsets the current lab
     """
-    try:
-        lname = get_current_lab_link()
-        if os.path.exists(lname):
-            if lab.id == get_current_lab():
-                os.remove(lname)
-    except Exception as e:
-        return str(e)
-
-    return None
+    lname = get_current_lab_link()
+    if os.path.exists(lname):
+        if lab_id == get_current_lab():
+            os.remove(lname)
 
 
 def get_cml_client(server):

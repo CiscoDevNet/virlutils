@@ -6,10 +6,10 @@ from virl.helpers import (
     check_sim_running,
     store_sim_info,
     get_cml_client,
-    check_lab_server,
+    safe_join_existing_lab,
+    safe_join_existing_lab_by_title,
     check_lab_cache,
     cache_lab,
-    get_lab_by_title,
     check_lab_active,
     set_current_lab,
 )
@@ -54,17 +54,15 @@ def up(repo=None, provision=False, **kwargs):
         fname = alt_fname
 
     if id:
-        existing = check_lab_server(id, client)
-        if not existing:
+        lab = safe_join_existing_lab(id, client)
+        if not lab:
             # Check the cache
             existing = check_lab_cache(id)
             if existing:
                 fname = existing
-        else:
-            lab = client.join_existing_lab(id)
 
     if lab_name:
-        lab = get_lab_by_title(lab_name, client)
+        lab = safe_join_existing_lab_by_title(lab_name, client)
 
     if not lab and os.path.exists(fname):
         lab = client.import_lab_from_path(fname)
@@ -82,13 +80,8 @@ def up(repo=None, provision=False, **kwargs):
             lab.wait_for_convergence = False
             lab.start(wait=provision)
 
-        msg = cache_lab(lab)
-        if msg:
-            click.secho("Failed to cache lab: " + msg, fg="yellow")
-        else:
-            msg = set_current_lab(lab)
-            if msg:
-                click.secho("Failed to set current lab: " + msg, fg="yellow")
+        cache_lab(lab)
+        set_current_lab(lab.id)
     else:
         click.secho("Could not find a lab to start.  Maybe try -f", fg="red")
 
