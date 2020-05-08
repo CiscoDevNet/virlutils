@@ -70,7 +70,7 @@ def up(repo=None, provision=False, **kwargs):
         # try to pull from virlfiles
         if repo:
             call(["virl", "pull", repo])
-            call(["virl", "up"])
+            exit(call(["virl", "up"]))
 
     if lab:
         # if lab.is_active():
