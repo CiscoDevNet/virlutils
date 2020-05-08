@@ -16,7 +16,7 @@ def console(node, display, **kwargs):
     """
     server = VIRLServer()
     client = get_cml_client(server)
-    skip_types = ["external_connectivity", "unmanaged_switch"]
+    skip_types = ["external_connector", "unmanaged_switch"]
 
     current_lab = get_current_lab()
     if current_lab:
