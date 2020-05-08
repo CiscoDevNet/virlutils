@@ -19,9 +19,9 @@ from .start.commands import start, start1
 from .stop.commands import stop, stop1
 from .pull.commands import pull, pull1
 from .search.commands import search, search1
-from .swagger.commands import swagger, swagger1
+from .swagger.commands import swagger1
 from .uwm.commands import uwm1
-from .viz.commands import viz, viz1
+from .viz.commands import viz1
 from .id.commands import id, id1
 from .version.commands import version, version1
 from .flavors import flavors1
