@@ -16,6 +16,7 @@ def console(node, display, **kwargs):
     """
     server = VIRLServer()
     client = get_cml_client(server)
+    skip_types = ["external_connectivity", "unmanaged_switch"]
 
     current_lab = get_current_lab()
     if current_lab:
@@ -24,33 +25,35 @@ def console(node, display, **kwargs):
             node_obj = lab.get_node_by_label(node)
 
             if node_obj:
-
-                if node_obj.is_active():
-                    console = "/{}/{}/0".format(lab.id, node_obj.id)
-                    if display:
-                        console_table([{"node": node, "console": console}])
-                    else:
-                        # use user specified ssh command
-                        if "CML_CONSOLE_COMMAND" in server.config:
-                            cmd = server.config["CML_CONSOLE_COMMAND"]
-                            cmd = cmd.format(host=server.host, user=server.user, console="open " + console)
-                            print("Calling user specified command: {}".format(cmd))
-                            exit(call(cmd.split()))
-
-                        # someone still uses windows
-                        elif platform.system() == "Windows":
-                            with helpers.disable_file_system_redirection():
-                                cmd = "ssh -t {}@{} open {}".format(server.user, server.host, console)
+                if node_obj.node_definition not in skip_types:
+                    if node_obj.is_active():
+                        console = "/{}/{}/0".format(lab.id, node_obj.id)
+                        if display:
+                            console_table([{"node": node, "console": console}])
+                        else:
+                            # use user specified ssh command
+                            if "CML_CONSOLE_COMMAND" in server.config:
+                                cmd = server.config["CML_CONSOLE_COMMAND"]
+                                cmd = cmd.format(host=server.host, user=server.user, console="open " + console)
+                                print("Calling user specified command: {}".format(cmd))
                                 exit(call(cmd.split()))
 
-                        # why is shit so complicated?
-                        else:
-                            cmd = "ssh -t {}@{} open {}".format(server.user, server.host, console)
-                            exit(call(cmd.split()))
+                            # someone still uses windows
+                            elif platform.system() == "Windows":
+                                with helpers.disable_file_system_redirection():
+                                    cmd = "ssh -t {}@{} open {}".format(server.user, server.host, console)
+                                    exit(call(cmd.split()))
+
+                            # why is shit so complicated?
+                            else:
+                                cmd = "ssh -t {}@{} open {}".format(server.user, server.host, console)
+                                exit(call(cmd.split()))
+                    else:
+                        click.secho("Node {} is not active".format(node), fg="red")
                 else:
-                    click.secho("Node {} is not active".format(node), fg="red")
+                    click.secho("Node {} was not found in lab {}".format(node, current_lab), fg="red")
             else:
-                click.secho("Node {} was not found in lab {}".format(node, current_lab), fg="red")
+                click.secho("Node type {} does not support console connectivity".format(node_obj.node_definition), fg="yellow")
         else:
             click.secho("Unable to find lab {}".format(current_lab), fg="red")
     else:
