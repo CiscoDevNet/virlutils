@@ -182,7 +182,7 @@ def check_lab_cache(lab_id):
         fname = "{}/{}".format(cache_root, lab_id)
         if os.path.exists(fname):
             return fname
-    except:
+    except Exception:
         return None
 
     return None

@@ -1,5 +1,4 @@
 import click
-import os
 from subprocess import call
 from virl.api import VIRLServer
 from virl.helpers import (
@@ -11,6 +10,7 @@ from virl.helpers import (
     cache_lab,
     set_current_lab,
 )
+
 
 # This may need to become a helper
 def check_lab_cache_server(lab_id, client):

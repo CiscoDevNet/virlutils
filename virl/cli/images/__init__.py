@@ -4,6 +4,7 @@ from virl.cli.images.add.commands import add
 from virl.cli.images.delete.commands import delete
 from virl.cli.images.update.commands import update
 
+
 @click.group()
 def images():
     """

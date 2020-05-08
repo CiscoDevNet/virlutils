@@ -3,6 +3,7 @@ import click
 from virl.api import VIRLServer
 from virl.cli.views import node_list_table1, node_list_table
 from virl.helpers import get_cml_client, get_current_lab, safe_join_existing_lab
+from virl import helpers
 
 
 @click.command()

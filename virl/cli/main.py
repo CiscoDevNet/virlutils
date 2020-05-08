@@ -61,14 +61,14 @@ def __get_server_ver():
         r = requests.get("https://{}/".format(server.host), verify=False)
         warnings.simplefilter("default", InsecureRequestWarning)
         r.raise_for_status()
-        client = get_cml_client(server)
+        get_cml_client(server)
     except requests.HTTPError as he:
         if he.response.status_code == 403:
             # The user provided bad credentials, but the URL was valid, return empty
             pass
         else:
             res = "1"
-    except:
+    except Exception:
         res = "1"
 
     return res
