@@ -7,4 +7,7 @@ import subprocess
 @click.command()
 @click.argument('env', default='default')
 def cockpit(env):
+    """
+    unimplemented
+    """
     pass

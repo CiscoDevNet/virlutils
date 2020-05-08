@@ -13,6 +13,9 @@ from virl.helpers import get_env_sim_name
               metavar='<filename>',
               help="filename to save to, defaults to topology.virl")
 def save(env, ip, filename, **kwargs):
+    """
+    unimplemented
+    """
     pass
 
 @click.command()

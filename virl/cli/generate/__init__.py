@@ -5,6 +5,9 @@ from virl.cli.generate.nso.commands import nso, nso1
 
 @click.group()
 def generate():
+    """
+    unimplemented
+    """
     pass
 
 @click.group()

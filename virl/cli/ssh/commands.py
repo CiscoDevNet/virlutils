@@ -7,6 +7,9 @@ from virl.helpers import get_mgmt_lxc_ip, get_node_from_roster
 @click.command()
 @click.argument('node', nargs=-1)
 def ssh(node):
+    """
+    unimplemented
+    """
     pass
 
 @click.command()

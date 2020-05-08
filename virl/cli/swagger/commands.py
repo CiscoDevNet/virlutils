@@ -7,10 +7,6 @@ import subprocess
 PIDFILE = '/tmp/virl_swagger.pid'
 
 @click.group()
-def swagger():
-    pass
-
-@click.group()
 def swagger1():
     """
     manage local swagger ui server

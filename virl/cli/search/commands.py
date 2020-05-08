@@ -5,6 +5,9 @@ from virl.cli.views.search import repo_table
 @click.command()
 @click.argument('query', required=False)
 def search(query=None, **kwargs):
+    """
+    unimplemented
+    """
     pass
 
 @click.command()

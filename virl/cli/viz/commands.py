@@ -5,11 +5,6 @@ import subprocess
 
 @click.command()
 @click.argument('env', default='default')
-def viz(env):
-    pass
-
-@click.command()
-@click.argument('env', default='default')
 def viz1(env):
     """
     opens live visualization for the sim
