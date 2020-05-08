@@ -6,7 +6,7 @@ def node_list_table(nodes):
     click.secho("Here is a list of the running nodes")
     table = list()
     headers = ["ID", "Label", "Type", "State", "L3 Address"]
-    skip_types = ["external_connector"]
+    skip_types = []
     for node in nodes:
         tr = list()
         if node.node_definition in skip_types:
