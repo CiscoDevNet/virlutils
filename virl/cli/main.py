@@ -55,13 +55,17 @@ def __get_server_ver():
     res = ""
     try:
         server = VIRLServer()
-        # We don't care about cert validation here.  If this is a CML server,
-        # we'll fail validation later anyway.
-        requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
-        r = requests.get("https://{}/".format(server.host), verify=False)
-        warnings.simplefilter("default", InsecureRequestWarning)
-        r.raise_for_status()
-        get_cml_client(server)
+        if "CML2_PLUS" not in server.config:
+            # If the user hasn't explicitly said they are on the CML 2+, then
+            # attempt to guess the server version.
+
+            # We don't care about cert validation here.  If this is a CML server,
+            # we'll fail validation later anyway.
+            requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+            r = requests.get("https://{}/".format(server.host), verify=False)
+            warnings.simplefilter("default", InsecureRequestWarning)
+            r.raise_for_status()
+            get_cml_client(server)
     except requests.HTTPError as he:
         if he.response.status_code == 403:
             # The user provided bad credentials, but the URL was valid, return empty
