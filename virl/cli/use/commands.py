@@ -44,8 +44,7 @@ def use(lab, id, lab_name):
     lab_id = None
 
     if not lab and not id and not lab_name:
-        call(["virl", "use", "--help"])
-        return
+        exit(call(["virl", "use", "--help"]))
 
     if id:
         lab_id = check_lab_cache_server(id, client)

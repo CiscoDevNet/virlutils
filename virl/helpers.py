@@ -215,7 +215,10 @@ def set_current_lab(lab_id):
     # This is supported on Windows and Unix as of Python 3.2
     # provided a new enough version of Windows.
     target = get_current_lab_link()
-    os.remove(target)
+    try:
+        os.remove(target)
+    except Exception:
+        pass
     os.symlink(fname, target)
 
 
