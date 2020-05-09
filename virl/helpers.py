@@ -215,8 +215,7 @@ def set_current_lab(lab_id):
     # This is supported on Windows and Unix as of Python 3.2
     # provided a new enough version of Windows.
     target = get_current_lab_link()
-    if os.path.exists(target):
-        os.remove(target)
+    clear_current_lab()
     os.symlink(fname, target)
 
 
@@ -232,13 +231,13 @@ def get_current_lab():
     return None
 
 
-def clear_current_lab(lab_id):
+def clear_current_lab(lab_id=None):
     """
     unsets the current lab
     """
     lname = get_current_lab_link()
     if os.path.exists(lname):
-        if lab_id == get_current_lab():
+        if lab_id is None or lab_id == get_current_lab():
             os.remove(lname)
 
 
