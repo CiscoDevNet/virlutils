@@ -214,6 +214,14 @@ This command will be passed the host/ip and port information information from th
   export CML_SSH_COMMAND="myssh {user}@{host} {console}"
   ```
 
+- `CML2_PLUS` - If set in the config or in the environment then virlutils will assume the server is a CML 2+ server and not try and automatically guess its version.  If omitted, then virutils will attempt to automatically determine the CML/VIRL server version
+
+  Example:
+
+  ```sh
+  export CML2_PLUS="yes"
+  ```
+
   
 
 ### Why so many choices??!?!
