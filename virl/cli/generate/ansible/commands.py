@@ -3,7 +3,6 @@ from virl.api import VIRLServer
 from virl import helpers
 from virl.generators import ansible_inventory_generator
 
-
 @click.command()
 @click.argument('env', default='default')
 @click.option('--output', '-o', help="output File name ")
@@ -11,6 +10,16 @@ from virl.generators import ansible_inventory_generator
               help="output format (default is yaml)",
               type=click.Choice(['ini', 'yaml']))
 def ansible(env, **kwargs):
+    pass
+
+
+@click.command()
+@click.argument('env', default='default')
+@click.option('--output', '-o', help="output File name ")
+@click.option('--style',
+              help="output format (default is yaml)",
+              type=click.Choice(['ini', 'yaml']))
+def ansible1(env, **kwargs):
     """
     generate ansible inventory
     """

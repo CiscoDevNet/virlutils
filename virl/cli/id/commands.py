@@ -1,10 +1,21 @@
 import os
 import click
 from virl.api import VIRLServer
+from virl.helpers import get_current_lab
 
 
 @click.command()
 def id():
+    """
+    get the current lab ID
+    """
+    current_lab = get_current_lab()
+    if current_lab:
+        click.echo(current_lab)
+
+
+@click.command()
+def id1():
     """
     gets sim id for local environment
     """

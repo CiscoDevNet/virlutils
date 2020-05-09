@@ -2,11 +2,47 @@ import tabulate
 import click
 
 
-def node_list_table(node_dict):
+def node_list_table(nodes):
+    click.secho("Here is a list of the running nodes")
+    table = list()
+    headers = ["ID", "Label", "Type", "State", "L3 Address"]
+    skip_types = []
+    for node in nodes:
+        tr = list()
+        if node.node_definition in skip_types:
+            continue
+
+        tr.append(node.id)
+        tr.append(node.label)
+        tr.append(node.node_definition)
+
+        color = "red"
+        if node.is_booted():
+            color = "green"
+        elif node.is_active():
+            color = "yellow"
+
+        tr.append(click.style(node.state, fg=color))
+        intfs = []
+        for i in node.interfaces():
+            if i.discovered_ipv4:
+                intfs += i.discovered_ipv4
+            if i.discovered_ipv6:
+                intfs += i.discovered_ipv6
+        tr.append(",".join(intfs))
+        table.append(tr)
+    # wrap the output in this try/except block as some terminals
+    # may have problem with the 'fancy_grid'
+    try:
+        click.echo(tabulate.tabulate(table, headers, tablefmt="fancy_grid"))
+    except UnicodeEncodeError:
+        click.echo(tabulate.tabulate(table, headers, tablefmt="grid"))
+
+
+def node_list_table1(node_dict):
     click.secho("Here is a list of all the running nodes")
     table = list()
-    headers = ["Node", "Type", "State", "Reachable",
-               "Protocol", "Management Address", "External Address"]
+    headers = ["Node", "Type", "State", "Reachable", "Protocol", "Management Address", "External Address"]
     skip_subtypes = ["LXC FLAT"]
     for key, props in node_dict.items():
         tr = list()
@@ -15,41 +51,41 @@ def node_list_table(node_dict):
             node = props.get("NodeName", "unknown")
             tr.append(node)
 
-            subtype = props.get('NodeSubtype')
+            subtype = props.get("NodeSubtype")
 
             if subtype in skip_subtypes:
                 continue
             tr.append(subtype)
 
-            state = props.get('Status', None)
+            state = props.get("Status", None)
 
             if state:
-                if state in ['ACTIVE']:
-                    color = 'green'
-                elif state in ['BUILDING']:
-                    color = 'yellow'
+                if state in ["ACTIVE"]:
+                    color = "green"
+                elif state in ["BUILDING"]:
+                    color = "yellow"
                 else:
-                    color = 'red'
+                    color = "red"
             else:
-                state = 'UNKNOWN'
-                color = 'red'
+                state = "UNKNOWN"
+                color = "red"
 
-            reachable = props.get('Annotation', "N/A")
+            reachable = props.get("Annotation", "N/A")
             if reachable:
-                if reachable in ['UNREACHABLE']:
-                    r_color = 'red'
-                elif reachable in ['REACHABLE']:
-                    r_color = 'green'
+                if reachable in ["UNREACHABLE"]:
+                    r_color = "red"
+                elif reachable in ["REACHABLE"]:
+                    r_color = "green"
                 else:
-                    r_color = 'red'
+                    r_color = "red"
             else:
-                state = 'UNKNOWN'
-                r_color = 'red'
+                state = "UNKNOWN"
+                r_color = "red"
 
             tr.append(click.style(state, fg=color))
             tr.append(click.style(reachable, fg=r_color))
-            tr.append(props.get('managementProtocol', "N/A"))
-            tr.append(props.get('managementIP', "N/A"))
+            tr.append(props.get("managementProtocol", "N/A"))
+            tr.append(props.get("managementIP", "N/A"))
             tr.append(props.get("externalAddr", "N/A"))
 
             table.append(tr)

@@ -6,9 +6,8 @@ import subprocess
 
 PIDFILE = '/tmp/virl_swagger.pid'
 
-
 @click.group()
-def swagger():
+def swagger1():
     """
     manage local swagger ui server
     """
@@ -17,7 +16,7 @@ def swagger():
 
 @click.command()
 @click.argument('port', default=5000)
-def start(port):
+def start1(port):
     """
     starts swagger ui for virl (mac only)
     """
@@ -41,7 +40,7 @@ def start(port):
 
 @click.command()
 @click.argument('port', default=5000)
-def stop(port):
+def stop1(port):
     """
     stops swagger ui for virl (mac only)
     """
@@ -57,7 +56,7 @@ def stop(port):
 
 @click.command()
 @click.argument('port', default=5000)
-def status(port):
+def status1(port):
     """
     show status of swagger ui for virl
     """
@@ -77,6 +76,6 @@ def status(port):
         print('not running')
 
 
-swagger.add_command(start)
-swagger.add_command(stop)
-swagger.add_command(status)
+swagger1.add_command(start1)
+swagger1.add_command(stop1)
+swagger1.add_command(status1)

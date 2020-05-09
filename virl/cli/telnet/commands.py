@@ -4,10 +4,17 @@ from subprocess import call
 from virl import helpers
 from virl.helpers import get_mgmt_lxc_ip, get_node_from_roster
 
-
 @click.command()
 @click.argument('node', nargs=-1)
 def telnet(node):
+    """
+    unimplemented
+    """
+    pass
+
+@click.command()
+@click.argument('node', nargs=-1)
+def telnet1(node):
     """
     telnet to a node
     """

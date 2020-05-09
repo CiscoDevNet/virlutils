@@ -4,14 +4,15 @@
 [![Coverage Status](https://coveralls.io/repos/github/CiscoDevNet/virlutils/badge.svg?branch=master)](https://coveralls.io/github/CiscoDevNet/virlutils?branch=master)
 [![PyPI version](https://badge.fury.io/py/virlutils.svg)](https://badge.fury.io/py/virlutils)
 
-A collection of utilities for interacting with [Cisco VIRL](https://learningnetworkstore.cisco.com/virlfaq/aboutVirl)
+A collection of utilities for interacting with [Cisco VIRL](https://learningnetworkstore.cisco.com/virlfaq/aboutVirl) 1.x or Cisco Modeling Labs (CML) 2+.
 
 ### virl up
 
+`virl` (or `cml`) is a devops style cli which supports the most common VIRL/CML operations.  Adding new ones is easy...
 
-`virl` is a devops style cli which supports the most common VIRL operations.  Adding new ones is easy...
+Below is the output when using VIRL 1.x or CML 1.x.
 
-```
+```sh
 Usage: virl [OPTIONS] COMMAND [ARGS]...
 
 Options:
@@ -42,6 +43,38 @@ Commands:
 
 ```
 
+When using connecting to a CML 2+ server...
+
+```sh
+Usage: cml [OPTIONS] COMMAND [ARGS]...
+
+Options:
+  --help  Show this message and exit.
+
+Commands:
+  cockpit   unimplemented
+  console   console for node
+  down      stop a CML lab
+  generate  unimplemented
+  id        get the current lab ID
+  images    manage CML image definitions (unimplemented)
+  ls        lists running labs and optionally those in the cache
+  nodes     get node list for a running lab
+  pull      pull topology.yaml from repo
+  save      unimplemented
+  search    unimplemented
+  ssh       unimplemented
+  start     start a node
+  stop      stop a node
+  telnet    unimplemented
+  up        start a CML lab
+  use       use CML lab launched elsewhere
+  version   version information
+  wipe      wipe a node
+```
+
+
+
 <!-- TOC depthFrom:2 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
 - [Installation](#installation)
@@ -56,7 +89,7 @@ Commands:
 
 1. Clone this repo
 
-```
+```sh
 git clone https://github.com/CiscoDevNet/virlutils
 ```
 
@@ -64,11 +97,20 @@ git clone https://github.com/CiscoDevNet/virlutils
 
 ### With Pip
 
-```
+```sh
 pip install virlutils
 ```
 
+Or
+
+```sh
+pip install cmlutils
+```
+
+
+
 ### Clone & Install
+
 ```
 git clone https://github.com/CiscoDevNet/virlutils
 cd virlutils
@@ -78,7 +120,7 @@ python setup.py install
 
 ## Configuration
 
-There really isn't much to configure, just set your VIRL credentials up.  
+There really isn't much to configure, just set your VIRL/CML credentials up.  
 There are a few different ways to accomplish this, pick whichever one works best for you,
 the options listed below are in the `preferred` order.  
 
@@ -100,8 +142,8 @@ VIRL_HOST=specialvirlserver.foo.com
 You can also add them as environment variables. This is useful if you want to override
 the global VIRL settings.
 
-```
-export VIRL_HOST=1.1.1.1
+```sh
+export VIRL_HOST=192.0.2.100
 export VIRL_USERNAME=guest
 export VIRL_PASSWORD=guest
 ```
@@ -124,23 +166,24 @@ using any of the methods mentioned previously
   This command will be passed the host/ip information from the running simulation
 
    Example:
-   ```
+   ```sh
    export VIRL_TELNET_COMMAND="mytelnet {host}"
    ```
 
-* `VIRL_CONSOLE_COMMAND` - allows the user to customize the telnet command that is called
- this command will be passed the host/ip and port information information from the running simulation
-
+* `VIRL_CONSOLE_COMMAND` - (*VIRL or CML 1.x only*) allows the user to customize the telnet command that is called.
+ 
+This command will be passed the host/ip and port information information from the running simulation
+  
   Example:
-  ```
+  ```sh
   export VIRL_TELNET_COMMAND="mytelnet {host} {port}"
-  ```
-
+```
+ 
 * `VIRL_SSH_USERNAME` - the username by which SSH connections to the nodes running in
   the simulation will be initiated with
 
   Example:
-  ```
+  ```sh
   export VIRL_SSH_USERNAME=netadmin
   ```
 
@@ -149,10 +192,37 @@ using any of the methods mentioned previously
   This command will be passed the host/ip as well as the username from the running simulation
 
   Example:
-  ```
+  ```sh
   export VIRL_SSH_COMMAND="myssh {username}@{host}"
   ```
 
+- `VIRL_VERIFY_CERT` - (*CML 2+ only*) The path to a PEM-encoded certificate file to use to verify the CML controller VM's SSL certificate.  If you do not wish to verify the certificate, set this to "False"
+
+  Example:
+
+  ```sh
+  export VIRL_VERIFY_CERT=/etc/certs/ca_bundle.pem
+  ```
+
+- `CML_CONSOLE_COMMAND` - (*CML 2+ only*) allows the user to customize the SSH command that is called.
+
+  This command will be passed the CML controller VM IP, the console path of the node, and the CML controller username (note: you may have to force a TTY allocation in your SSH command)
+
+  Example:
+
+  ```sh
+  export CML_SSH_COMMAND="myssh {user}@{host} {console}"
+  ```
+
+- `CML2_PLUS` - If set in the config or in the environment then virlutils will assume the server is a CML 2+ server and not try and automatically guess its version.  If omitted, then virutils will attempt to automatically determine the CML/VIRL server version
+
+  Example:
+
+  ```sh
+  export CML2_PLUS="yes"
+  ```
+
+  
 
 ### Why so many choices??!?!
 
@@ -181,7 +251,7 @@ This allows three major benefits.
 this most useful in the context of out-of-band management networks/gateways and such.
 3. you have a badass workflow..
 
-```
+```sh
 (netdevops-demo) ➜  dev git:(test) ✗ virl ls  
 Running Simulations
 ╒══════════════╤══════════╤════════════╤═══════════╕
@@ -212,7 +282,7 @@ Running Simulations
 
 ### Find and import VIRL files
 
-A collection of topologies is being maintained at https://github.com/virlfiles
+A collection of VIRL/CML 1.x topologies is being maintained at https://github.com/virlfiles
 
 These repos can be searched from the command line.
 
@@ -239,6 +309,8 @@ launch the topology directly using `virl up`
 ```
 virl up virlfiles/2-ios-router
 ```
+
+***NOTE:*** for CML 2+, you can import VIRL/CML 1.x files, but some nodes may not be present in CML 2+.
 
 ### Basic Workflow
 

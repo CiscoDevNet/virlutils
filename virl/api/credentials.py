@@ -36,7 +36,7 @@ def _get_from_file(virlrc, prop_name):
 
         for line in config:
             if line.startswith(prop_name):
-                prop = line.split('=')[1].strip()
+                prop = line.split("=")[1].strip()
                 if prop.startswith('"') and prop.endswith('"'):
                     prop = prop[1:-1]
                 return prop
@@ -86,7 +86,7 @@ def get_prop(prop_name):
     return prop or None
 
 
-def get_credentials(rcfile='~/.virlrc'):
+def get_credentials(rcfile="~/.virlrc"):
     """
     Used to get the VIRL credentials
 
@@ -107,20 +107,26 @@ def get_credentials(rcfile='~/.virlrc'):
     password = None
     config = dict()
 
-    host = get_prop('VIRL_HOST')
-    username = get_prop('VIRL_USERNAME')
-    password = get_prop('VIRL_PASSWORD')
+    host = get_prop("VIRL_HOST")
+    username = get_prop("VIRL_USERNAME")
+    password = get_prop("VIRL_PASSWORD")
 
     # some additional configuration that can be set / overriden
-    configurable_props = ['VIRL_TELNET_COMMAND', 'VIRL_CONSOLE_COMMAND',
-                          'VIRL_SSH_COMMAND', 'VIRL_SSH_USERNAME']
+    configurable_props = [
+        "VIRL_TELNET_COMMAND",
+        "VIRL_CONSOLE_COMMAND",
+        "VIRL_SSH_COMMAND",
+        "VIRL_SSH_USERNAME",
+        "CML_CONSOLE_COMMAND",
+        "CML2_PLUS",
+    ]
 
     for p in configurable_props:
         if get_prop(p):
             config[p] = get_prop(p)
 
     if not host:  # pragma: no cover
-        prompt = 'Please enter the IP / hostname of your virl server: '
+        prompt = "Please enter the IP / hostname of your virl server: "
         host = _get_from_user(prompt)
 
     if not username:

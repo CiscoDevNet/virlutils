@@ -1,5 +1,7 @@
 # virl stuff 
 .virl/
+topology.yaml
+topology.virl
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -89,6 +91,7 @@ celerybeat-schedule
 .venv
 venv/
 ENV/
+cmlutils/
 
 # Spyder project settings
 .spyderproject

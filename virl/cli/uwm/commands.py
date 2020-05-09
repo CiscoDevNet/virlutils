@@ -6,7 +6,7 @@ import subprocess
 
 @click.command()
 @click.argument('env', default='default')
-def uwm(env):
+def uwm1(env):
     """
     opens UWM for the sim
     """

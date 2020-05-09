@@ -1,34 +1,133 @@
 import click
 from subprocess import call
 from virl.api import VIRLServer
-from virl.helpers import generate_sim_id, check_sim_running, store_sim_info
+from virl.helpers import (
+    generate_sim_id,
+    check_sim_running,
+    store_sim_info,
+    get_cml_client,
+    safe_join_existing_lab,
+    safe_join_existing_lab_by_title,
+    check_lab_cache,
+    cache_lab,
+    check_lab_active,
+    set_current_lab,
+)
 import os
 import time
 
 
 @click.command()
-@click.argument('repo', default='default')
-@click.option('-e', default='default', help="environment name", required=False)
-@click.option('-f', default='topology.virl', help=' \
-VIRL file to launch, defaults to topology.virl', required=False)
-@click.option('--provision/--noprovision', show_default=False, default=False,
-              help=" \
-Blocks execution until all nodes are reachable.", required=False)
-@click.option('--wait-time', default=10,
-              help="max time (in minutes) to wait for nodes to come online",
-              show_default=True)
+@click.argument("repo", default="default")
+@click.option(
+    "-f",
+    default="topology.yaml",
+    help=" \
+CML file to launch, defaults to topology.yaml (or topology.virl if topology.yaml is not found)",
+    required=False,
+)
+@click.option(
+    "--provision/--noprovision",
+    show_default=False,
+    default=False,
+    help=" \
+Blocks execution until all nodes are reachable.",
+    required=False,
+)
+@click.option("--id", required=False, help="An existing CML lab ID to start (topology file is ignored, lab-name is ignored)")
+@click.option("--lab-name", "-n", required=False, help="An existing CML lab name to start (topology file is ignored)")
 def up(repo=None, provision=False, **kwargs):
+    """
+    start a CML lab
+    """
+    def_fname = kwargs["f"]
+    alt_fname = "topology.virl"
+    fname = def_fname
+    id = kwargs["id"]
+    lab_name = kwargs["lab_name"]
+    lab = None
+
+    server = VIRLServer()
+    client = get_cml_client(server)
+
+    if not os.path.exists(def_fname) and os.path.exists(alt_fname):
+        fname = alt_fname
+
+    if id:
+        lab = safe_join_existing_lab(id, client)
+        if not lab:
+            # Check the cache
+            existing = check_lab_cache(id)
+            if existing:
+                fname = existing
+
+    if lab_name:
+        lab = safe_join_existing_lab_by_title(lab_name, client)
+
+    if not lab and os.path.exists(fname):
+        lab = client.import_lab_from_path(fname)
+    elif not lab:
+        # try to pull from virlfiles
+        if repo:
+            call(["virl", "pull", repo])
+            exit(call(["virl", "up"]))
+
+    if lab:
+        # if lab.is_active():
+        if check_lab_active(lab):
+            click.secho("Lab is already running (ID: {}, Title: {})".format(lab.id, lab.title))
+        else:
+            lab.wait_for_convergence = False
+            lab.start()
+            cache_lab(lab)
+            set_current_lab(lab.id)
+            if provision:
+                # Technically we need to block until all nodes are "reachable".
+                # In the CML 2+ case, this means BOOTED.
+                ready = False
+                while not ready:
+                    for n in lab.nodes():
+                        if not n.is_booted():
+                            ready = False
+                            break
+                        ready = True
+                    time.sleep(1)
+
+    else:
+        click.secho("Could not find a lab to start.  Maybe try -f", fg="red")
+
+
+@click.command()
+@click.argument("repo", default="default")
+@click.option("-e", default="default", help="environment name", required=False)
+@click.option(
+    "-f",
+    default="topology.virl",
+    help=" \
+VIRL file to launch, defaults to topology.virl",
+    required=False,
+)
+@click.option(
+    "--provision/--noprovision",
+    show_default=False,
+    default=False,
+    help=" \
+Blocks execution until all nodes are reachable.",
+    required=False,
+)
+@click.option("--wait-time", default=10, help="max time (in minutes) to wait for nodes to come online", show_default=True)
+def up1(repo=None, provision=False, **kwargs):
     """
     start a virl simulation
     """
-    fname = kwargs['f']
-    env = kwargs['e']
-    wait_time = kwargs['wait_time']
+    fname = kwargs["f"]
+    env = kwargs["e"]
+    wait_time = kwargs["wait_time"]
 
     if os.path.exists(fname):
         running = check_sim_running(env)
         if not running:
-            click.secho('Creating {} environment from {}'.format(env, fname))
+            click.secho("Creating {} environment from {}".format(env, fname))
             with open(fname) as fh:
                 data = fh.read()
             server = VIRLServer()
@@ -37,9 +136,9 @@ def up(repo=None, provision=False, **kwargs):
             # anything that may differ usually related to networking....
             # <dirty hack>
             subs = {
-                "{{ gateway }}": server.get_gateway_for_network('flat'),
-                "{{ flat1_gateway }}": server.get_gateway_for_network('flat1'),
-                "{{ dns_server }}": server.get_dns_server_for_network('flat'),
+                "{{ gateway }}": server.get_gateway_for_network("flat"),
+                "{{ flat1_gateway }}": server.get_gateway_for_network("flat1"),
+                "{{ dns_server }}": server.get_dns_server_for_network("flat"),
             }
 
             # also can change some VIRL/ANK defaults
@@ -50,8 +149,7 @@ def up(repo=None, provision=False, **kwargs):
                     if value:
                         # split off the braces
                         humanize = tag
-                        click.secho("Localizing {} with: {}".format(humanize,
-                                                                    value))
+                        click.secho("Localizing {} with: {}".format(humanize, value))
                         data = data.replace(tag, value)
 
             # </dirty hack>
@@ -73,22 +171,20 @@ def up(repo=None, provision=False, **kwargs):
                         if time.time() > maxtime:
                             click.secho("")
                             click.secho("Max time expired", fg="red")
-                            click.secho("All nodes may not be online",
-                                        fg="red")
+                            click.secho("All nodes may not be online", fg="red")
                             break
                         node_online = False
                         while not node_online:
                             if time.time() > maxtime:
                                 break
                             time.sleep(20)
-                            node_online = server.check_node_reachable(sim_name,
-                                                                      node)
+                            node_online = server.check_node_reachable(sim_name, node)
         else:
-            click.secho('Sim {} already running'.format(running))
+            click.secho("Sim {} already running".format(running))
     else:
         # try to pull from virlfiles
         if repo:
-            call(['virl', 'pull', repo])
-            call(['virl', 'up'])
+            call(["virl", "pull", repo])
+            call(["virl", "up"])
         else:
-            click.secho('Could not find topology.virl. Maybe try -f', fg="red")
+            click.secho("Could not find topology.virl. Maybe try -f", fg="red")

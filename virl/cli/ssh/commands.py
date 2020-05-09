@@ -4,10 +4,17 @@ from subprocess import call
 from virl import helpers
 from virl.helpers import get_mgmt_lxc_ip, get_node_from_roster
 
-
 @click.command()
 @click.argument('node', nargs=-1)
 def ssh(node):
+    """
+    unimplemented
+    """
+    pass
+
+@click.command()
+@click.argument('node', nargs=-1)
+def ssh1(node):
     """
     ssh to a node
     """

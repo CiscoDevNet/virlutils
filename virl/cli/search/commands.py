@@ -2,10 +2,17 @@ import click
 from virl.api.github import get_repos
 from virl.cli.views.search import repo_table
 
-
 @click.command()
 @click.argument('query', required=False)
 def search(query=None, **kwargs):
+    """
+    unimplemented
+    """
+    pass
+
+@click.command()
+@click.argument('query', required=False)
+def search1(query=None, **kwargs):
     """
     lists virl topologies available via github
     """

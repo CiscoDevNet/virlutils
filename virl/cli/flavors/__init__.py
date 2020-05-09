@@ -4,16 +4,15 @@ from virl.cli.flavors.add.commands import add
 from virl.cli.flavors.delete.commands import delete
 from virl.cli.flavors.update.commands import update
 
-
 @click.group()
-def flavors():
+def flavors1():
     """
     Manage VIRL Flavors Attributes
     """
     pass
 
 
-flavors.add_command(ls)
-flavors.add_command(add)
-flavors.add_command(delete)
-flavors.add_command(update)
+flavors1.add_command(ls)
+flavors1.add_command(add)
+flavors1.add_command(delete)
+flavors1.add_command(update)

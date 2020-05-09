@@ -25,7 +25,8 @@ REQUIRES = [
     "tabulate",
     "pyyaml",
     "jinja2",
-    "lxml"
+    "lxml",
+    "virl2_client"
 ]
 
 test_requirements = [
@@ -48,6 +49,7 @@ setup(
     install_requires=REQUIRES,
     entry_points={"console_scripts": [
         "virl=virl.cli.main:virl",
+        "cml=virl.cli.main:virl"
     ]},
     packages=find_packages(),
     package_data={'virl': ['templates/**/*.j2',
