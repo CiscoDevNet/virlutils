@@ -78,10 +78,21 @@ def up(repo=None, provision=False, **kwargs):
             click.secho("Lab is already running (ID: {}, Title: {})".format(lab.id, lab.title))
         else:
             lab.wait_for_convergence = False
-            lab.start(wait=provision)
+            lab.start()
+            cache_lab(lab)
+            set_current_lab(lab.id)
+            if provision:
+                # Technically we need to block until all nodes are "reachable".
+                # In the CML 2+ case, this means BOOTED.
+                ready = False
+                while not ready:
+                    for n in lab.nodes():
+                        if not n.is_booted():
+                            ready = False
+                            break
+                        ready = True
+                    time.sleep(1)
 
-        cache_lab(lab)
-        set_current_lab(lab.id)
     else:
         click.secho("Could not find a lab to start.  Maybe try -f", fg="red")
 
