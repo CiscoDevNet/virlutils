@@ -6,6 +6,7 @@ import shutil
 import errno
 import platform
 import ctypes
+import logging
 from virl2_client import ClientLibrary
 
 
@@ -241,19 +242,28 @@ def clear_current_lab(lab_id=None):
             os.remove(lname)
 
 
-def get_cml_client(server):
+def get_cml_client(server, ignore=False):
     """
     Helper function to get a consistent CML client library object
     """
 
-    ssl_verify = True
+    ssl_verify = not ignore
+    logger = logging.getLogger("virl2_client.virl2_client")
+    level = logger.getEffectiveLevel()
+    logger.setLevel(logging.ERROR)
 
-    if "VIRL_VERIFY_CERT" in os.environ:
-        if os.environ["VIRL_VERIFY_CERT"].lower() == "false":
+    if not ignore and "VIRL_VERIFY_CERT" in server.config:
+        if server.config["VIRL_VERIFY_CERT"].lower() == "false":
             ssl_verify = False
         else:
-            ssl_verify = os.environ["VIRL_VERIFY_CERT"]
-    elif "CA_BUNDLE" in os.environ:
-        ssl_verify = os.environ["CA_BUNDLE"]
+            ssl_verify = server.config["VIRL_VERIFY_CERT"]
 
-    return ClientLibrary(server.host, server.user, server.passwd, ssl_verify=ssl_verify)
+    # Remove the VIRL2_USER and VIRL2_PASS envvars if they exist.  These would conflict with
+    # the virlutils config.
+    os.environ.pop("VIRL2_USER", None)
+    os.environ.pop("VIRL2_PASS", None)
+
+    client = ClientLibrary(server.host, server.user, server.passwd, raise_for_auth_failure=True, ssl_verify=ssl_verify)
+    logger.setLevel(level)
+
+    return client

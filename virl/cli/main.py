@@ -3,6 +3,7 @@ from virl.api import VIRLServer
 import requests
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 import warnings
+import virl2_client
 from virl.helpers import get_cml_client
 from .console.commands import console, console1
 from .nodes.commands import nodes, nodes1
@@ -61,17 +62,18 @@ def __get_server_ver():
 
             # We don't care about cert validation here.  If this is a CML server,
             # we'll fail validation later anyway.
+            #
+            # Because of that, pass obviously bogus credentials.
             requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
             r = requests.get("https://{}/".format(server.host), verify=False)
             warnings.simplefilter("default", InsecureRequestWarning)
             r.raise_for_status()
-            get_cml_client(server)
-    except requests.HTTPError as he:
-        if he.response.status_code == 403:
-            # The user provided bad credentials, but the URL was valid, return empty
-            pass
-        else:
-            res = "1"
+            server.user = "12345678"
+            server.passwd = "12345678"
+            get_cml_client(server, ignore=True)
+    except virl2_client.InitializationError:
+        # The client library will raise this error if it encounters an authorization failure.
+        pass
     except Exception:
         res = "1"
 
