@@ -248,6 +248,9 @@ def get_cml_client(server, ignore=False):
     """
 
     ssl_verify = not ignore
+    # The virl2_client library warns about some stuff which can be confusing.
+    # This eliminates the warnings, but the level is reset back to the current level
+    # Before returning.
     logger = logging.getLogger("virl2_client.virl2_client")
     level = logger.getEffectiveLevel()
     logger.setLevel(logging.ERROR)

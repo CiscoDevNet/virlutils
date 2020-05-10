@@ -1,6 +1,7 @@
 import click
 from virl.api import VIRLServer
 from subprocess import call
+import sys
 from virl import helpers
 from virl.helpers import get_cml_client, safe_join_existing_lab, get_current_lab
 
@@ -51,7 +52,7 @@ def start1(node):
         running = helpers.check_sim_running(env)
         node = node[0]
     else:
-        exit(call(["virl", "start", "--help"]))
+        exit(call([sys.argv[0], "start", "--help"]))
 
     if running:
         sim_name = running

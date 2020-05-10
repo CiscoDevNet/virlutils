@@ -15,6 +15,7 @@ from virl.helpers import (
 )
 import os
 import time
+import sys
 
 
 @click.command()
@@ -69,8 +70,8 @@ def up(repo=None, provision=False, **kwargs):
     elif not lab:
         # try to pull from virlfiles
         if repo:
-            call(["virl", "pull", repo])
-            exit(call(["virl", "up"]))
+            call([sys.argv[0], "pull", repo])
+            exit(call([sys.argv[0], "up"]))
 
     if lab:
         # if lab.is_active():
@@ -184,7 +185,7 @@ def up1(repo=None, provision=False, **kwargs):
     else:
         # try to pull from virlfiles
         if repo:
-            call(["virl", "pull", repo])
-            call(["virl", "up"])
+            call([sys.argv[0], "pull", repo])
+            call([sys.argv[0], "up"])
         else:
             click.secho("Could not find topology.virl. Maybe try -f", fg="red")
