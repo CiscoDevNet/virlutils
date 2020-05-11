@@ -51,7 +51,7 @@ def render_testbed_template(name,
                            topology=topology)
 
 
-def pyats_testbed_generator(env,
+def pyats_testbed_generator1(env,
                             virl_data,
                             roster,
                             interfaces,
@@ -146,3 +146,6 @@ def pyats_testbed_generator(env,
                                             conn_class=conn_class)
 
     return topology_yaml
+
+def pyats_testbed_generator(lab):
+    return lab.get_pyats_testbed()
