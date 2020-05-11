@@ -57,6 +57,7 @@ def virl(**kwargs):
     if kwargs.get("debug"):
         debug = True
 
+    # We need to pull this out or subcommands fail.
     kwargs.pop("debug", None)
 
 
