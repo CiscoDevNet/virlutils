@@ -1,4 +1,5 @@
 from jinja2 import Environment, PackageLoader
+import ipaddress
 
 
 def sim_info(virl_xml, roster=None, interfaces=None, protocol="telnet"):
