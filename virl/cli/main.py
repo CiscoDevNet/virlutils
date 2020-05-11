@@ -4,6 +4,7 @@ import requests
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 import warnings
 import virl2_client
+import traceback
 from virl.helpers import get_cml_client
 from .console.commands import console, console1
 from .nodes.commands import nodes, nodes1
@@ -30,6 +31,9 @@ from .images import images
 from .cockpit.commands import cockpit
 from .wipe.commands import wipe
 
+# Shall we print any debugging output?
+debug = False
+
 
 class CatchAllExceptions(click.Group):
     def __call__(self, *args, **kwargs):
@@ -39,11 +43,21 @@ class CatchAllExceptions(click.Group):
             click.secho("Exception raised while running your command", fg="red")
             click.secho("Please open an issue and provide this info:", fg="red")
             click.secho("%s" % exc, fg="red")
+            if debug:
+                click.secho(traceback.format_exc(), fg="red")
 
 
 @click.group(cls=CatchAllExceptions)
-def virl():
-    pass
+@click.option(
+    "--debug/--no-debug", default=False, help="Print any debugging output.", required=False,
+)
+def virl(**kwargs):
+    global debug
+
+    if kwargs.get("debug"):
+        debug = True
+
+    kwargs.pop("debug", None)
 
 
 def __get_server_ver():
