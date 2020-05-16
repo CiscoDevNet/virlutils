@@ -2,6 +2,7 @@ import click
 from virl.cli.generate.ansible.commands import ansible, ansible1
 from virl.cli.generate.pyats.commands import pyats, pyats1
 from virl.cli.generate.nso.commands import nso, nso1
+from virl.cli.generate.export.commands import export
 
 
 @click.group()
@@ -27,3 +28,4 @@ generate1.add_command(nso1, name="nso")
 generate.add_command(ansible)
 generate.add_command(pyats)
 generate.add_command(nso)
+generate.add_command(export)

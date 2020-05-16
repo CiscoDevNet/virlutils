@@ -196,11 +196,18 @@ def cache_lab(lab):
     topo = None
     topo = lab.download()
 
+    cache_lab_data(lab.id, topo)
+
+
+def cache_lab_data(lab_id, lab_data):
+    """
+    save lab topology data into a local cache
+    """
     cache_root = get_cache_root()
     fname = "{}/{}".format(cache_root, lab.id)
     if not os.path.exists(fname):
         with safe_open_w(fname) as fd:
-            fd.write(topo)
+            fd.write(lab_data)
 
 
 def set_current_lab(lab_id):
