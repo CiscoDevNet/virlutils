@@ -1,7 +1,7 @@
 import click
 import logging
 from virl.api import VIRLServer
-from virl.helpers import get_env_sim_name, get_cml_client, safe_join_existing_lab, get_current_lab
+from virl.helpers import get_env_sim_name, get_cml_client, safe_join_existing_lab, get_current_lab, extract_configurations
 
 
 @click.command()
@@ -21,23 +21,7 @@ def save(extract, filename, **kwargs):
         lab = safe_join_existing_lab(current_lab, client)
         if lab:
             if extract:
-                click.secho("Extracting configurations...")
-                # The client library prints "API Error" warnings when a node doesn't support extraction.  Quiet these.
-                logger = logging.getLogger("virl2_client.models.authentication")
-                level = logger.getEffectiveLevel()
-                logger.setLevel(logging.CRITICAL)
-                for node in lab.nodes():
-                    if node.is_booted():
-                        try:
-                            node.extract_configuration()
-                        except HTTPError as he:
-                            if he.response.status_code != 400:
-                                # Ignore 400 as that typically means the node doesn't support config extraction.
-                                click.secho("WARNING: Failed to extract configuration from node {}: {}".format(node.label, he), fg="yellow")
-                        except Exception as e:
-                            click.secho("WARNING: Failed to extract configuration from node {}: {}".format(node.label, e), fg="yellow")
-
-                logger.setLevel(level)
+                extract_configurations(lab)
 
             lab_export = lab.download()
 

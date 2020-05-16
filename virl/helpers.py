@@ -7,6 +7,7 @@ import errno
 import platform
 import ctypes
 import logging
+from requests.exceptions import HTTPError
 from virl2_client import ClientLibrary
 
 
@@ -247,6 +248,25 @@ def clear_current_lab(lab_id=None):
     if os.path.exists(lname):
         if lab_id is None or lab_id == get_current_lab():
             os.remove(lname)
+
+def extract_configurations(lab):
+    click.secho("Extracting configurations...")
+    # The client library prints "API Error" warnings when a node doesn't support extraction.  Quiet these.
+    logger = logging.getLogger("virl2_client.models.authentication")
+    level = logger.getEffectiveLevel()
+    logger.setLevel(logging.CRITICAL)
+    for node in lab.nodes():
+        if node.is_booted():
+            try:
+                node.extract_configuration()
+            except HTTPError as he:
+                if he.response.status_code != 400:
+                    # Ignore 400 as that typically means the node doesn't support config extraction.
+                    click.secho("WARNING: Failed to extract configuration from node {}: {}".format(node.label, he), fg="yellow")
+            except Exception as e:
+                click.secho("WARNING: Failed to extract configuration from node {}: {}".format(node.label, e), fg="yellow")
+
+    logger.setLevel(level)
 
 
 def get_cml_client(server, ignore=False):
