@@ -62,7 +62,7 @@ def up(repo=None, provision=False, **kwargs):
             if existing:
                 fname = existing
 
-    if lab_name:
+    if not lab and lab_name:
         lab = safe_join_existing_lab_by_title(lab_name, client)
 
     if not lab and os.path.exists(fname):
@@ -76,6 +76,8 @@ def up(repo=None, provision=False, **kwargs):
     if lab:
         # if lab.is_active():
         if check_lab_active(lab):
+            cache_lab(lab)
+            set_current_lab(lab.id)
             click.secho("Lab is already running (ID: {}, Title: {})".format(lab.id, lab.title))
         else:
             lab.wait_for_convergence = False
@@ -93,7 +95,6 @@ def up(repo=None, provision=False, **kwargs):
                             break
                         ready = True
                     time.sleep(1)
-
     else:
         click.secho("Could not find a lab to start.  Maybe try -f", fg="red")
 
