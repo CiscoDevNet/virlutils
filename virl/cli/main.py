@@ -30,6 +30,7 @@ from .flavors import flavors1
 from .images import images
 from .cockpit.commands import cockpit
 from .wipe.commands import wipe
+from .extract.commands import extract
 
 # Shall we print any debugging output?
 debug = False
@@ -107,6 +108,7 @@ else:
     virl.add_command(cockpit)
     virl.add_command(images)
     virl.add_command(wipe)
+    virl.add_command(extract)
 
 __sub_commands = [
     "console",

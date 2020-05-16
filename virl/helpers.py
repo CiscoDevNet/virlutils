@@ -190,23 +190,23 @@ def check_lab_cache(lab_id):
     return None
 
 
-def cache_lab(lab):
+def cache_lab(lab, force=False):
     """
     save a topology YAML file into a local cache
     """
     topo = None
     topo = lab.download()
 
-    cache_lab_data(lab.id, topo)
+    cache_lab_data(lab.id, topo, force)
 
 
-def cache_lab_data(lab_id, lab_data):
+def cache_lab_data(lab_id, lab_data, force=False):
     """
     save lab topology data into a local cache
     """
     cache_root = get_cache_root()
-    fname = "{}/{}".format(cache_root, lab.id)
-    if not os.path.exists(fname):
+    fname = "{}/{}".format(cache_root, lab_id)
+    if force or not os.path.exists(fname):
         with safe_open_w(fname) as fd:
             fd.write(lab_data)
 
@@ -250,7 +250,6 @@ def clear_current_lab(lab_id=None):
             os.remove(lname)
 
 def extract_configurations(lab):
-    click.secho("Extracting configurations...")
     # The client library prints "API Error" warnings when a node doesn't support extraction.  Quiet these.
     logger = logging.getLogger("virl2_client.models.authentication")
     level = logger.getEffectiveLevel()

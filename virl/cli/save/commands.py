@@ -1,5 +1,4 @@
 import click
-import logging
 from virl.api import VIRLServer
 from virl.helpers import get_env_sim_name, get_cml_client, safe_join_existing_lab, get_current_lab, extract_configurations
 
@@ -21,6 +20,7 @@ def save(extract, filename, **kwargs):
         lab = safe_join_existing_lab(current_lab, client)
         if lab:
             if extract:
+                click.secho("Extracting configurations...")
                 extract_configurations(lab)
 
             lab_export = lab.download()
