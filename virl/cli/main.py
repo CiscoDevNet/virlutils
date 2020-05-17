@@ -32,6 +32,7 @@ from .cockpit.commands import cockpit
 from .wipe.commands import wipe
 from .extract.commands import extract
 from .clear.commands import clear
+from .ui.commands import ui
 
 # Shall we print any debugging output?
 debug = False
@@ -111,6 +112,7 @@ else:
     virl.add_command(wipe)
     virl.add_command(extract)
     virl.add_command(clear)
+    virl.add_command(ui)
 
 __sub_commands = [
     "console",
