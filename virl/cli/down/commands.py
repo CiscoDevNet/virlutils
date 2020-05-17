@@ -17,7 +17,7 @@ from virl.helpers import (
 @click.option("--lab-name", "-n", "--sim-name", required=False, help="An existing CML lab name to stop")
 def down(id=None, lab_name=None):
     """
-    stop a CML lab
+    stop a lab
     """
     server = VIRLServer()
     client = get_cml_client(server)

@@ -8,7 +8,7 @@ from virl.cli.images.update.commands import update
 @click.group()
 def images():
     """
-    manage CML image definitions (unimplemented)
+    manage image definitions (unimplemented)
     """
     pass
 

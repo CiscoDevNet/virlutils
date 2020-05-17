@@ -38,7 +38,7 @@ def check_lab_cache_server(lab_id, client):
 @click.option("--lab-name", "-n", required=False, help="An existing CML lab name to start")
 def use(lab, id, lab_name):
     """
-    use CML lab launched elsewhere
+    use lab launched elsewhere
     """
     server = VIRLServer()
     client = get_cml_client(server)

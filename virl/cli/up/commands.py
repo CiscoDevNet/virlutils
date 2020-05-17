@@ -41,7 +41,7 @@ Blocks execution until all nodes are reachable.",
 @click.option("--lab-name", "-n", required=False, help="An existing CML lab name to start (topology file is ignored)")
 def up(repo=None, provision=False, **kwargs):
     """
-    start a CML lab
+    start a lab
     """
     def_fname = kwargs["f"]
     alt_fname = "topology.virl"
