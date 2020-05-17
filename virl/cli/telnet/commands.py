@@ -8,7 +8,7 @@ from virl.helpers import get_mgmt_lxc_ip, get_node_from_roster, get_cml_client, 
 
 @click.command()
 @click.argument("node", nargs=1)
-def ssh(node):
+def telnet(node):
     """
     telnet to a node
     """
