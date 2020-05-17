@@ -136,9 +136,9 @@ def generate_inventory_dict(lab, server):
         for i in node.interfaces():
             if i.discovered_ipv4 and len(i.discovered_ipv4) > 0:
                 mgmtip = i.discovered_ipv4[0]
-            elif i.discovered_ipv6 and len(i.discovered_ipv6) > 0:
-                if not ipaddress.ip_address(i.discovered_ipv6[0]).is_link_local:
-                    mgmtip = i.discovered_ipv6[0]
+            elif i.discovered_ipv6 and len(i.discovered_ipv6) > 0 and not ipaddress.ip_address(i.discovered_ipv6[0]).is_link_local:
+                mgmtip = i.discovered_ipv6[0]
+
             if mgmtip:
                 break
 
@@ -175,17 +175,16 @@ def generate_inventory_dict(lab, server):
         ansible_group = None
         for tag in node.tags():
             if tag.startswith("ansible_group="):
-                (tname, ansible_group) = tag.split("=")
+                ansible_group = tag.split("=")[1].strip()
                 break
 
         # try to map to ansible group
         if ansible_group:
-            group = ansible_group.strip()
-            print("Placing {} into ansible group {}".format(name, group))
-            if group not in inventory["all"]["children"]:
-                inventory["all"]["children"][group] = dict()
+            print("Placing {} into ansible group {}".format(name, ansible_group))
+            if ansible_group not in inventory["all"]["children"]:
+                inventory["all"]["children"][ansible_group] = dict()
             if name not in inventory["all"]["children"]:
-                inventory["all"]["children"][group][name] = entry
+                inventory["all"]["children"][ansible_group][name] = entry
         else:
             inventory["all"]["hosts"][name] = entry
 

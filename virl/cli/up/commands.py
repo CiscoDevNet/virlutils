@@ -49,12 +49,12 @@ def up(repo=None, provision=False, **kwargs):
     id = kwargs["id"]
     lab_name = kwargs["lab_name"]
     lab = None
+    clab = None
 
     server = VIRLServer()
     client = get_cml_client(server)
 
     current_lab = get_current_lab()
-    clab = None
     if current_lab:
         clab = safe_join_existing_lab(current_lab, client)
         if not clab:
@@ -85,7 +85,6 @@ def up(repo=None, provision=False, **kwargs):
                 exit(call([sys.argv[0], "up"]))
 
         if lab:
-            # if lab.is_active():
             if check_lab_active(lab):
                 cache_lab(lab)
                 set_current_lab(lab.id)

@@ -1,6 +1,6 @@
 import os
 import click
-from virl.api import VIRLServer
+from virl.api import VIRLServer, CachedLab
 from virl.helpers import get_current_lab, get_cml_client, safe_join_existing_lab, get_current_lab_link
 
 

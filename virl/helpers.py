@@ -249,6 +249,7 @@ def clear_current_lab(lab_id=None):
         if lab_id is None or lab_id == get_current_lab():
             os.remove(lname)
 
+
 def extract_configurations(lab):
     # The client library prints "API Error" warnings when a node doesn't support extraction.  Quiet these.
     logger = logging.getLogger("virl2_client.models.authentication")

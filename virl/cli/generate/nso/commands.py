@@ -81,7 +81,7 @@ def nso1(env, syncfrom, **kwargs):
         virl_data = server.export(sim_name, ip=True).content
         interfaces = server.get_interfaces(sim_name).json()
 
-        payload = nso_payload_generator(sim_name, virl_data, roster=roster, interfaces=interfaces)
+        payload = nso_payload_generator1(sim_name, virl_data, roster=roster, interfaces=interfaces)
 
         if file_name:  # pragma: no cover
             click.secho("Writing payload to {}".format(file_name))

@@ -25,7 +25,7 @@ def save(extract, filename, **kwargs):
 
             lab_export = lab.download()
 
-            click.secho("Writing {}".format(file_name))
+            click.secho("Writing {}".format(filename))
             with open(filename, "w") as fd:
                 fd.write(lab_export)
         else:

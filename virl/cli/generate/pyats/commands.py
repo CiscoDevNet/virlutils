@@ -61,7 +61,7 @@ def pyats1(env, **kwargs):
         # sim_name = "topology-fpyHFs"
         virl_data = server.export(sim_name, ip=True).content
         interfaces = server.get_interfaces(sim_name).json()
-        testbed_yaml = pyats_testbed_generator(sim_name, virl_data, roster=roster, interfaces=interfaces)
+        testbed_yaml = pyats_testbed_generator1(sim_name, virl_data, roster=roster, interfaces=interfaces)
 
         click.secho("Writing {}".format(file_name))
         with open(file_name, "w") as yaml_file:

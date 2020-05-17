@@ -12,19 +12,14 @@ def render_topl_template(devices):
 
 def setup_yaml():
     """ https://stackoverflow.com/a/8661021 """
-    represent_dict_order = lambda self, data: self.represent_mapping('tag:yaml.org,2002:map', data.items()) # noqa
+    represent_dict_order = lambda self, data: self.represent_mapping("tag:yaml.org,2002:map", data.items())  # noqa
     yaml.add_representer(OrderedDict, represent_dict_order)
 
 
 setup_yaml()
 
 
-def render_testbed_template(name,
-                            servers,
-                            devices,
-                            topo_devs,
-                            conn_class='unicon.Unicon'
-                            ):
+def render_testbed_template(name, servers, devices, topo_devs, conn_class="unicon.Unicon"):
     """
     we need to merge information from multiple sources to generate all
     the required parameters for the topology key in the testbed yaml config
@@ -39,32 +34,21 @@ def render_testbed_template(name,
     try:
         topology = topo_devs[sim_name]
     except KeyError:
-        raise Exception('something went wrong')
+        raise Exception("something went wrong")
 
-    j2_env = Environment(loader=PackageLoader('virl'),
-                         trim_blocks=False)
-    template = j2_env.get_template('pyats/testbed_yaml.j2')
-    return template.render(name=sim_name,
-                           conn_class=conn_class,
-                           servers=servers,
-                           devices=devices,
-                           topology=topology)
+    j2_env = Environment(loader=PackageLoader("virl"), trim_blocks=False)
+    template = j2_env.get_template("pyats/testbed_yaml.j2")
+    return template.render(name=sim_name, conn_class=conn_class, servers=servers, devices=devices, topology=topology)
 
 
-def pyats_testbed_generator1(env,
-                            virl_data,
-                            roster,
-                            interfaces,
-                            dev_username='cisco',
-                            dev_password='cisco',
-                            conn_class='unicon.Unicon'):
+def pyats_testbed_generator1(env, virl_data, roster, interfaces, dev_username="cisco", dev_password="cisco", conn_class="unicon.Unicon"):
     """
     given a sim roster produces a testbed file suitable for
     use with pyats
     """
 
     # generate a device dictionary for each device
-    name = env + '_testbed'
+    name = env + "_testbed"
 
     devices = dict()
     servers = dict()
@@ -79,18 +63,18 @@ def pyats_testbed_generator1(env,
 
         # map node types to known abstraction
         os = None
-        if 'NX' in device_type:
-            os = 'nxos'
-        elif 'XR' in device_type:
-            os = 'iosxr'
-        elif 'CSR' in device_type:
-            os = 'iosxe'
-        elif 'IOS' in device_type:
-            os = 'ios'
-        elif 'IOS' in device_type:
-            os = 'ios'
-        elif 'ASAv' in device_type:
-            os = 'asa'
+        if "NX" in device_type:
+            os = "nxos"
+        elif "XR" in device_type:
+            os = "iosxr"
+        elif "CSR" in device_type:
+            os = "iosxe"
+        elif "IOS" in device_type:
+            os = "ios"
+        elif "IOS" in device_type:
+            os = "ios"
+        elif "ASAv" in device_type:
+            os = "asa"
 
         # we prefer external addr
         external_ip = str(props.get("externalAddr", ""))
@@ -101,51 +85,39 @@ def pyats_testbed_generator1(env,
             address = mgmt_ip
 
         # add server devices to testbed->server section
-        if device_type in ['mgmt-lxc', 'server', 'lxc']:
+        if device_type in ["mgmt-lxc", "server", "lxc"]:
             servers[device_name] = dict()
-            servers[device_name]['server'] = device_name
-            servers[device_name]['address'] = address
-            servers[device_name]['path'] = ""
+            servers[device_name]["server"] = device_name
+            servers[device_name]["address"] = address
+            servers[device_name]["path"] = ""
             continue
 
         # some devices can't conform
-        elif device_type in ['LXC FLAT']:
+        elif device_type in ["LXC FLAT"]:
             continue
         # all other devices
         else:
-            if device_name == 'None':
+            if device_name == "None":
                 continue
             devices[device_name] = dict()
-            devices[device_name]['alias'] = device_name
+            devices[device_name]["alias"] = device_name
             if os:
-                devices[device_name]['os'] = os
+                devices[device_name]["os"] = os
 
-            devices[device_name]['type'] = device_type
-            devices[device_name]['platform'] = device_type
-            devices[device_name]['tacacs'] = {
-                "username": dev_username
-            }
-            devices[device_name]['passwords'] = {
-                "tacacs": dev_password,
-                "enable": dev_password,
-                "line": dev_password
-            }
-            devices[device_name]['connections'] = OrderedDict()
+            devices[device_name]["type"] = device_type
+            devices[device_name]["platform"] = device_type
+            devices[device_name]["tacacs"] = {"username": dev_username}
+            devices[device_name]["passwords"] = {"tacacs": dev_password, "enable": dev_password, "line": dev_password}
+            devices[device_name]["connections"] = OrderedDict()
 
-            devices[device_name]['connections']['console'] = OrderedDict()
-            console_info = {"protocol": "telnet",
-                            "ip": virl_server,
-                            "port": console_port
-                            }
-            devices[device_name]['connections']['console'] = console_info
+            devices[device_name]["connections"]["console"] = OrderedDict()
+            console_info = {"protocol": "telnet", "ip": virl_server, "port": console_port}
+            devices[device_name]["connections"]["console"] = console_info
 
-    topology_yaml = render_testbed_template(name,
-                                            servers,
-                                            devices,
-                                            topology,
-                                            conn_class=conn_class)
+    topology_yaml = render_testbed_template(name, servers, devices, topology, conn_class=conn_class)
 
     return topology_yaml
+
 
 def pyats_testbed_generator(lab):
     return lab.get_pyats_testbed()
