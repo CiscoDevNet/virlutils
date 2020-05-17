@@ -1,17 +1,25 @@
 import os
 import click
 from virl.api import VIRLServer
-from virl.helpers import get_current_lab
+from virl.helpers import get_current_lab, get_cml_client, safe_join_existing_lab, get_current_lab_link
 
 
 @click.command()
 def id():
     """
-    get the current lab ID
+    get the current lab title and ID
     """
+    server = VIRLServer()
+    client = get_cml_client(server)
     current_lab = get_current_lab()
     if current_lab:
-        click.echo(current_lab)
+        lab = safe_join_existing_lab(current_lab, client)
+        # The lab really should be on the server.
+        if not lab:
+            lab = CachedLab(current_lab, get_current_lab_link())
+
+        if lab:
+            click.echo("{} (ID: {})".format(lab.title, current_lab))
 
 
 @click.command()
