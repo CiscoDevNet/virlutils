@@ -8,7 +8,7 @@ from virl import helpers
 @click.command()
 def nodes():
     """
-    get node list for a running lab
+    get node list for the current lab
     """
     server = VIRLServer()
     client = get_cml_client(server)

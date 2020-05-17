@@ -5,7 +5,7 @@ import click
 def node_list_table(nodes):
     click.secho("Here is a list of the running nodes")
     table = list()
-    headers = ["ID", "Label", "Type", "State", "L3 Address"]
+    headers = ["ID", "Label", "Type", "State", "Wiped?", "L3 Address"]
     skip_types = []
     for node in nodes:
         tr = list()
@@ -23,6 +23,7 @@ def node_list_table(nodes):
             color = "yellow"
 
         tr.append(click.style(node.state, fg=color))
+        tr.append(node.state == "DEFINED_ON_CORE")
         intfs = []
         for i in node.interfaces():
             if i.discovered_ipv4:
