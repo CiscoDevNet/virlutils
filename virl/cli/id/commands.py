@@ -16,10 +16,15 @@ def id():
         lab = safe_join_existing_lab(current_lab, client)
         # The lab really should be on the server.
         if not lab:
-            lab = CachedLab(current_lab, get_current_lab_link())
+            try:
+                lab = CachedLab(current_lab, get_current_lab_link())
+            except Exception:
+                pass
 
         if lab:
             click.echo("{} (ID: {})".format(lab.title, current_lab))
+        else:
+            click.secho("Current lab is set to {}, but is not on server or in cache!".format(current_lab), fg="red")
 
 
 @click.command()
