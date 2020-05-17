@@ -12,6 +12,8 @@ from virl.helpers import (
     cache_lab,
     check_lab_active,
     set_current_lab,
+    get_current_lab,
+    clear_current_lab,
 )
 import os
 import time
@@ -51,52 +53,63 @@ def up(repo=None, provision=False, **kwargs):
     server = VIRLServer()
     client = get_cml_client(server)
 
-    if not os.path.exists(def_fname) and os.path.exists(alt_fname):
-        fname = alt_fname
+    current_lab = get_current_lab()
+    clab = None
+    if current_lab:
+        clab = safe_join_existing_lab(current_lab, client)
+        if not clab:
+            click.secho("Current lab is already set to {}, but that lab is not on server; clearing it.".format(current_lab), fg="yellow")
+            clear_current_lab()
 
-    if id:
-        lab = safe_join_existing_lab(id, client)
-        if not lab:
-            # Check the cache
-            existing = check_lab_cache(id)
-            if existing:
-                fname = existing
+    if not clab:
+        if not os.path.exists(def_fname) and os.path.exists(alt_fname):
+            fname = alt_fname
 
-    if not lab and lab_name:
-        lab = safe_join_existing_lab_by_title(lab_name, client)
+        if id:
+            lab = safe_join_existing_lab(id, client)
+            if not lab:
+                # Check the cache
+                existing = check_lab_cache(id)
+                if existing:
+                    fname = existing
 
-    if not lab and os.path.exists(fname):
-        lab = client.import_lab_from_path(fname)
-    elif not lab:
-        # try to pull from virlfiles
-        if repo:
-            call([sys.argv[0], "pull", repo])
-            exit(call([sys.argv[0], "up"]))
+        if not lab and lab_name:
+            lab = safe_join_existing_lab_by_title(lab_name, client)
 
-    if lab:
-        # if lab.is_active():
-        if check_lab_active(lab):
-            cache_lab(lab)
-            set_current_lab(lab.id)
-            click.secho("Lab is already running (ID: {}, Title: {})".format(lab.id, lab.title))
+        if not lab and os.path.exists(fname):
+            lab = client.import_lab_from_path(fname)
+        elif not lab:
+            # try to pull from virlfiles
+            if repo:
+                call([sys.argv[0], "pull", repo])
+                exit(call([sys.argv[0], "up"]))
+
+        if lab:
+            # if lab.is_active():
+            if check_lab_active(lab):
+                cache_lab(lab)
+                set_current_lab(lab.id)
+                click.secho("Lab is already running (ID: {}, Title: {})".format(lab.id, lab.title))
+            else:
+                lab.wait_for_convergence = False
+                lab.start()
+                cache_lab(lab)
+                set_current_lab(lab.id)
+                if provision:
+                    # Technically we need to block until all nodes are "reachable".
+                    # In the CML 2+ case, this means BOOTED.
+                    ready = False
+                    while not ready:
+                        for n in lab.nodes():
+                            if not n.is_booted():
+                                ready = False
+                                break
+                            ready = True
+                        time.sleep(1)
         else:
-            lab.wait_for_convergence = False
-            lab.start()
-            cache_lab(lab)
-            set_current_lab(lab.id)
-            if provision:
-                # Technically we need to block until all nodes are "reachable".
-                # In the CML 2+ case, this means BOOTED.
-                ready = False
-                while not ready:
-                    for n in lab.nodes():
-                        if not n.is_booted():
-                            ready = False
-                            break
-                        ready = True
-                    time.sleep(1)
+            click.secho("Could not find a lab to start.  Maybe try -f", fg="red")
     else:
-        click.secho("Could not find a lab to start.  Maybe try -f", fg="red")
+        click.secho("Lab {} (ID: {}) is already set as the current lab".format(clab.title, current_lab))
 
 
 @click.command()
