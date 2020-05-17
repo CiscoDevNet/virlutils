@@ -7,6 +7,7 @@ import errno
 import platform
 import ctypes
 import logging
+import ipaddress
 from requests.exceptions import HTTPError
 from virl2_client import ClientLibrary
 
@@ -251,6 +252,9 @@ def clear_current_lab(lab_id=None):
 
 
 def extract_configurations(lab):
+    """
+    extract each node's configuration to its day-0 config
+    """
     # The client library prints "API Error" warnings when a node doesn't support extraction.  Quiet these.
     logger = logging.getLogger("virl2_client.models.authentication")
     level = logger.getEffectiveLevel()
@@ -267,6 +271,24 @@ def extract_configurations(lab):
                 click.secho("WARNING: Failed to extract configuration from node {}: {}".format(node.label, e), fg="yellow")
 
     logger.setLevel(level)
+
+
+def get_node_mgmt_ip(node):
+    """
+    attempt to get the management (external) IP for a node
+    """
+    mgmtip = None
+
+    for i in node.interfaces():
+        if i.discovered_ipv4 and len(i.discovered_ipv4) > 0:
+            mgmtip = i.discovered_ipv4[0]
+        elif i.discovered_ipv6 and len(i.discovered_ipv6) > 0 and not ipaddress.ip_address(i.discovered_ipv6[0]).is_link_local:
+            mgmtip = i.discovered_ipv6[0]
+
+        if mgmtip:
+            break
+
+    return mgmtip
 
 
 def get_cml_client(server, ignore=False):
