@@ -11,12 +11,8 @@ from virl.helpers import find_virl
 def _get_from_user(prompt):  # pragma: no cover
     """
     Get the input from the user through interactive prompt.
-    Use raw_input or input based on the Python version.
     """
-    try:
-        resp = raw_input(prompt)
-    except NameError:
-        resp = input(prompt)
+    resp = input(prompt)
     return resp
 
 
