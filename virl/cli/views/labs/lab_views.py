@@ -4,7 +4,7 @@ import tabulate
 
 
 def lab_list_table(labs, cached_labs=None):
-    click.secho("Running Labs", fg="green")
+    click.secho("Labs on Server", fg="green")
     print_labs(labs)
     if cached_labs:
         click.secho("Cached Labs", fg="yellow")
