@@ -2,7 +2,6 @@ from collections import OrderedDict
 import yaml
 from jinja2 import Environment, PackageLoader
 from lxml import etree
-import ipaddress
 from virl.helpers import get_node_mgmt_ip
 
 
