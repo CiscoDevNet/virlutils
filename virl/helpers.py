@@ -127,11 +127,23 @@ CML helper functions
 """
 
 
+def find_virl_or_else():
+    """
+    if a .virl directory does exist in our path tree, use the current
+    working directory to store it
+    """
+    virl_root = find_virl()
+    if not virl_root:
+        return "."
+
+    return virl_root
+
+
 def get_cache_root():
     """
     get the path to the directory to store cached labs
     """
-    virl_root = find_virl()
+    virl_root = find_virl_or_else()
     return virl_root + "/.virl/cached_cml_labs"
 
 
@@ -139,7 +151,7 @@ def get_current_lab_link():
     """
     get the path to the symlink representing the current lab
     """
-    virl_root = find_virl()
+    virl_root = find_virl_or_else()
     return virl_root + "/.virl/current_cml_lab"
 
 
