@@ -56,7 +56,7 @@ def up(repo=None, provision=False, **kwargs):
             clear_current_lab()
 
     if not clab:
-        if not os.path.exists(def_fname) and os.path.exists(alt_fname):
+        if not os.path.isfile(def_fname) and os.path.isfile(alt_fname):
             fname = alt_fname
 
         if id:
@@ -70,7 +70,7 @@ def up(repo=None, provision=False, **kwargs):
         if not lab and lab_name:
             lab = safe_join_existing_lab_by_title(lab_name, client)
 
-        if not lab and os.path.exists(fname):
+        if not lab and os.path.isfile(fname):
             lab = client.import_lab_from_path(fname)
         elif not lab:
             # try to pull from virlfiles
@@ -91,6 +91,7 @@ def up(repo=None, provision=False, **kwargs):
                 if provision:
                     # Technically we need to block until all nodes are "reachable".
                     # In the CML 2+ case, this means BOOTED.
+                    click.secho("Waiting for all nodes to be online...")
                     ready = False
                     while not ready:
                         for n in lab.nodes():
