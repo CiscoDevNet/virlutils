@@ -3,6 +3,7 @@ import yaml
 from jinja2 import Environment, PackageLoader
 from lxml import etree
 import ipaddress
+from virl.helpers import get_node_mgmt_ip
 
 
 def setup_yaml():
@@ -132,15 +133,7 @@ def generate_inventory_dict(lab, server):
     inventory["all"]["hosts"] = dict()
 
     for node in lab.nodes():
-        mgmtip = None
-        for i in node.interfaces():
-            if i.discovered_ipv4 and len(i.discovered_ipv4) > 0:
-                mgmtip = i.discovered_ipv4[0]
-            elif i.discovered_ipv6 and len(i.discovered_ipv6) > 0 and not ipaddress.ip_address(i.discovered_ipv6[0]).is_link_local:
-                mgmtip = i.discovered_ipv6[0]
-
-            if mgmtip:
-                break
+        mgmtip = get_node_mgmt_ip(node)
 
         if not mgmtip:
             continue

@@ -1,5 +1,6 @@
 from jinja2 import Environment, PackageLoader
 import ipaddress
+from virl.helpers import get_node_mgmt_ip
 
 
 def sim_info(virl_xml, roster=None, interfaces=None, protocol="telnet"):
@@ -54,15 +55,7 @@ def lab_info(lab, server, protocol):
     inventory = list()
 
     for node in lab.nodes():
-        mgmtip = None
-        for i in node.interfaces():
-            if i.discovered_ipv4 and len(i.discovered_ipv4) > 0:
-                mgmtip = i.discovered_ipv4[0]
-            elif i.discovered_ipv6 and len(i.discovered_ipv6) > 0:
-                if not ipaddress.ip_address(i.discovered_ipv6[0]).is_link_local:
-                    mgmtip = i.discovered_ipv6[0]
-            if mgmtip:
-                break
+        mgmtip = get_node_mgmt_ip(node)
 
         if not mgmtip:
             continue
