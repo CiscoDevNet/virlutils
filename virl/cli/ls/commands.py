@@ -7,11 +7,7 @@ from virl.helpers import find_virl, get_cml_client, get_cache_root
 
 @click.command()
 @click.option(
-    "--all/--server",
-    default=False,
-    required=False,
-    help=" \
-Display cached labs in addition to those on the server (default: False)",
+    "--all/--server", default=False, required=False, help="Display cached labs in addition to those on the server (default: False)",
 )
 def ls(all, **kwargs):
     """
