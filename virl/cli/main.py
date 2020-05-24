@@ -5,6 +5,8 @@ from requests.packages.urllib3.exceptions import InsecureRequestWarning
 import warnings
 import virl2_client
 import traceback
+import sys
+import os
 from virl.helpers import get_cml_client
 from .console.commands import console, console1
 from .nodes.commands import nodes, nodes1
@@ -34,9 +36,6 @@ from .extract.commands import extract
 from .clear.commands import clear
 from .ui.commands import ui
 
-# Shall we print any debugging output?
-debug = False
-
 
 class CatchAllExceptions(click.Group):
     def __call__(self, *args, **kwargs):
@@ -44,9 +43,17 @@ class CatchAllExceptions(click.Group):
             return self.main(*args, **kwargs)
         except Exception as exc:
             click.secho("Exception raised while running your command", fg="red")
-            click.secho("Please open an issue and provide this info:", fg="red")
+            if not virl.debug:
+                click.secho(
+                    "Please re-run as '{} --debug ...' and collect the output before opening an issue".format(
+                        os.path.basename(sys.argv[0])
+                    ),
+                    fg="red",
+                )
+            else:
+                click.secho("Please open an issue and provide this output:", fg="red")
             click.secho("%s" % exc, fg="red")
-            if debug:
+            if virl.debug:
                 click.secho(traceback.format_exc(), fg="red")
 
 
@@ -55,13 +62,15 @@ class CatchAllExceptions(click.Group):
     "--debug/--no-debug", default=False, help="Print any debugging output.", required=False,
 )
 def virl(**kwargs):
-    global debug
-
     if kwargs.get("debug"):
-        debug = True
+        virl.debug = True
 
     # We need to pull this out or subcommands fail.
     kwargs.pop("debug", None)
+
+
+# Shall we print any debugging output?
+virl.debug = False
 
 
 def __get_server_ver():
