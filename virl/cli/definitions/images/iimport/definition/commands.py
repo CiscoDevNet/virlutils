@@ -15,8 +15,8 @@ def definition(image, filename):
     server = VIRLServer()
     client = get_cml_client(server)
 
-    if not os.path.exists(filename):
-        click.secho("Image definition file {} does not exist", fg="red")
+    if not os.path.isfile(filename):
+        click.secho("Image definition file {} does not exist or is not a file", fg="red")
     else:
         defs = client.definitions
         contents = None

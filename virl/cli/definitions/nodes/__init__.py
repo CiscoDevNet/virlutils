@@ -1,7 +1,7 @@
 import click
-# from virl.cli.definitions.images.ls.commands import ls
-# from virl.cli.definitions.images import iimport
-# from virl.cli.definitions.images.export.commands import export
+from virl.cli.definitions.nodes.ls.commands import ls
+from virl.cli.definitions.nodes.nimport.commands import nimport
+from virl.cli.definitions.nodes.export.commands import export
 
 
 @click.group()
@@ -12,6 +12,6 @@ def nodes():
     pass
 
 
-# images.add_command(ls)
-# images.add_command(export)
-# images.add_command(iimport, name="import")
+nodes.add_command(ls)
+nodes.add_command(export)
+nodes.add_command(nimport, name="import")

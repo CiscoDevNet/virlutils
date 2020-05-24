@@ -15,8 +15,8 @@ def image_file(filename, rename):
     server = VIRLServer()
     client = get_cml_client(server)
 
-    if not os.path.exists(filename):
-        click.secho("Image file {} does not exist", fg="red")
+    if not os.path.isfile(filename):
+        click.secho("Image file {} does not exist or is not a file", fg="red")
     else:
         defs = client.definitions
         try:
