@@ -1,5 +1,6 @@
 # virl stuff 
 .virl/
+.virlrc
 topology.yaml
 topology.virl
 
