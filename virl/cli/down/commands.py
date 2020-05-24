@@ -13,8 +13,8 @@ from virl.helpers import (
 
 
 @click.command()
-@click.option("--id", required=False, help="An existing CML lab ID to stop (lab-name is ignored)")
-@click.option("--lab-name", "-n", "--sim-name", required=False, help="An existing CML lab name to stop")
+@click.option("--id", required=False, help="An existing lab ID to stop (lab-name is ignored)")
+@click.option("--lab-name", "-n", "--sim-name", required=False, help="An existing lab name to stop")
 def down(id=None, lab_name=None):
     """
     stop a lab

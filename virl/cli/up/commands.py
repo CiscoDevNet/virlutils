@@ -25,14 +25,14 @@ import sys
 @click.option(
     "-f",
     default="topology.yaml",
-    help="CML file to launch, defaults to topology.yaml (or topology.virl if topology.yaml is not found)",
+    help="Lab file to launch, defaults to topology.yaml (or topology.virl if topology.yaml is not found)",
     required=False,
 )
 @click.option(
     "--provision/--noprovision", show_default=False, default=False, help="Blocks execution until all nodes are reachable.", required=False,
 )
-@click.option("--id", required=False, help="An existing CML lab ID to start (topology file is ignored, lab-name is ignored)")
-@click.option("--lab-name", "-n", "--sim-name", required=False, help="An existing CML lab name to start (topology file is ignored)")
+@click.option("--id", required=False, help="An existing lab ID to start (topology file is ignored, lab-name is ignored)")
+@click.option("--lab-name", "-n", "--sim-name", required=False, help="An existing lab name to start (topology file is ignored)")
 def up(repo=None, provision=False, **kwargs):
     """
     start a lab

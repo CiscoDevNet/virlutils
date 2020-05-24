@@ -34,8 +34,8 @@ def check_lab_cache_server(lab_id, client):
 
 @click.command()
 @click.argument("lab", required=False)
-@click.option("--id", required=False, help="An existing CML lab ID to start (lab-name is ignored)")
-@click.option("--lab-name", "-n", required=False, help="An existing CML lab name to start")
+@click.option("--id", required=False, help="An existing lab ID to start (lab-name is ignored)")
+@click.option("--lab-name", "-n", required=False, help="An existing lab name to start")
 def use(lab, id, lab_name):
     """
     use lab launched elsewhere
