@@ -35,7 +35,7 @@ def get_credentials():  # pragma: no cover
 def perform_sync_from():
     nso_host, nso_username, nso_password = get_credentials()
     url = "http://{}:8080".format(nso_host)
-    url = url + "/api/running/devices/_operations/sync-from".format(nso_host)
+    url = url + "/api/running/devices/_operations/sync-from"
     headers = {'Content-Type': "application/vnd.yang.operation+json",
                'Accept': "application/vnd.yang.operation+json"}
 
