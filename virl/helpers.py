@@ -289,18 +289,19 @@ def get_node_mgmt_ip(node):
     """
     attempt to get the management (external) IP for a node
     """
-    mgmtip = None
-
     for i in node.interfaces():
         if i.discovered_ipv4 and len(i.discovered_ipv4) > 0:
             mgmtip = i.discovered_ipv4[0]
-        elif i.discovered_ipv6 and len(i.discovered_ipv6) > 0 and not ipaddress.ip_address(i.discovered_ipv6[0]).is_link_local:
-            mgmtip = i.discovered_ipv6[0]
+        elif i.discovered_ipv6 and len(i.discovered_ipv6) > 0:
+            for i6 in i.discovered_ipv6:
+                if not ipaddress.ip_address(i6).is_link_local:
+                    mgmtip = i6
+                    break
 
         if mgmtip:
-            break
+            return mgmtip
 
-    return mgmtip
+    return None
 
 
 def get_cml_client(server, ignore=False):
