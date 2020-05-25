@@ -90,18 +90,22 @@ def __get_server_ver():
             # We don't care about cert validation here.  If this is a CML server,
             # we'll fail validation later anyway.
             #
-            # Because of that, pass obviously bogus credentials.
+            # Because of that, pass obviously bogus credentials.  The login will fail
+            # in a predictable way if this is a CML server.
             requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
             r = requests.get("https://{}/".format(server.host), verify=False)
             warnings.simplefilter("default", InsecureRequestWarning)
             r.raise_for_status()
-            server.user = "12345678"
-            server.passwd = "12345678"
+            # Technically, CML allows a username to be the following.  But the likelihood of
+            # someone creating one is small.
+            server.user = "!@#$%^&*"
+            server.passwd = "!@#$%^&*"
             get_cml_client(server, ignore=True)
     except virl2_client.InitializationError:
         # The client library will raise this error if it encounters an authorization failure.
         pass
     except Exception:
+        # Any other error likely means a VIRL/CML 1.x host.
         res = "1"
 
     return res
