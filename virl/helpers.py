@@ -318,11 +318,11 @@ def get_cml_client(server, ignore=False):
     level = logger.getEffectiveLevel()
     logger.setLevel(logging.ERROR)
 
-    if not ignore and "VIRL_VERIFY_CERT" in server.config:
-        if server.config["VIRL_VERIFY_CERT"].lower() == "false":
+    if not ignore and "CML_VERIFY_CERT" in server.config:
+        if server.config["CML_VERIFY_CERT"].lower() == "false":
             ssl_verify = False
         else:
-            ssl_verify = server.config["VIRL_VERIFY_CERT"]
+            ssl_verify = server.config["CML_VERIFY_CERT"]
 
     # Remove the VIRL2_USER and VIRL2_PASS envvars if they exist.  These would conflict with
     # the virlutils config.

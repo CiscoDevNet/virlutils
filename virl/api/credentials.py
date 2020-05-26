@@ -115,7 +115,7 @@ def get_credentials(rcfile="~/.virlrc"):
         "VIRL_SSH_USERNAME",
         "CML_CONSOLE_COMMAND",
         "CML2_PLUS",
-        "VIRL_VERIFY_CERT",
+        "CML_VERIFY_CERT",
     ]
 
     for p in configurable_props:

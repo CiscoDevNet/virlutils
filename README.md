@@ -171,14 +171,14 @@ using any of the methods mentioned previously
    ```
 
 * `VIRL_CONSOLE_COMMAND` - (*VIRL or CML 1.x only*) allows the user to customize the telnet command that is called.
- 
+
 This command will be passed the host/ip and port information information from the running simulation
-  
+
   Example:
   ```sh
   export VIRL_TELNET_COMMAND="mytelnet {host} {port}"
 ```
- 
+
 * `VIRL_SSH_USERNAME` - the username by which SSH connections to the nodes running in
   the simulation will be initiated with
 
@@ -196,12 +196,12 @@ This command will be passed the host/ip and port information information from th
   export VIRL_SSH_COMMAND="myssh {username}@{host}"
   ```
 
-- `VIRL_VERIFY_CERT` - (*CML 2+ only*) The path to a PEM-encoded certificate file to use to verify the CML controller VM's SSL certificate.  If you do not wish to verify the certificate, set this to "False"
+- `CML_VERIFY_CERT` - (*CML 2+ only*) The path to a PEM-encoded certificate file to use to verify the CML controller VM's SSL certificate.  If you do not wish to verify the certificate, set this to "False"
 
   Example:
 
   ```sh
-  export VIRL_VERIFY_CERT=/etc/certs/ca_bundle.pem
+  export CML_VERIFY_CERT=/etc/certs/ca_bundle.pem
   ```
 
 - `CML_CONSOLE_COMMAND` - (*CML 2+ only*) allows the user to customize the SSH command that is called.
@@ -222,7 +222,7 @@ This command will be passed the host/ip and port information information from th
   export CML2_PLUS="yes"
   ```
 
-  
+
 
 ### Why so many choices??!?!
 
