@@ -8,33 +8,33 @@ import traceback
 import sys
 import os
 from virl.helpers import get_cml_client
-from .console.commands import console, console1  # noqa
-from .nodes.commands import nodes, nodes1  # noqa
-from .logs.commands import logs1  # noqa
-from .up.commands import up, up1  # noqa
-from .use.commands import use, use1  # noqa
-from .down.commands import down, down1  # noqa
-from .ls.commands import ls, ls1  # noqa
-from .save.commands import save, save1  # noqa
-from .telnet.commands import telnet, telnet1  # noqa
-from .ssh.commands import ssh, ssh1  # noqa
-from .generate import generate, generate1  # noqa
-from .start.commands import start, start1  # noqa
-from .stop.commands import stop, stop1  # noqa
-from .pull.commands import pull, pull1  # noqa
-from .search.commands import search, search1  # noqa
-from .swagger.commands import swagger1  # noqa
-from .uwm.commands import uwm1  # noqa
-from .viz.commands import viz1  # noqa
-from .id.commands import id, id1  # noqa
-from .version.commands import version, version1  # noqa
-from .flavors import flavors1  # noqa
-from .definitions import definitions  # noqa
-from .cockpit.commands import cockpit  # noqa
-from .wipe.commands import wipe  # noqa
-from .extract.commands import extract  # noqa
-from .clear.commands import clear  # noqa
-from .ui.commands import ui  # noqa
+from .console.commands import console, console1  # noqa: F401
+from .nodes.commands import nodes, nodes1  # noqa: F401
+from .logs.commands import logs1  # noqa: F401
+from .up.commands import up, up1  # noqa: F401
+from .use.commands import use, use1  # noqa: F401
+from .down.commands import down, down1  # noqa: F401
+from .ls.commands import ls, ls1  # noqa: F401
+from .save.commands import save, save1  # noqa: F401
+from .telnet.commands import telnet, telnet1  # noqa: F401
+from .ssh.commands import ssh, ssh1  # noqa: F401
+from .generate import generate, generate1  # noqa: F401
+from .start.commands import start, start1  # noqa: F401
+from .stop.commands import stop, stop1  # noqa: F401
+from .pull.commands import pull, pull1  # noqa: F401
+from .search.commands import search, search1  # noqa: F401
+from .swagger.commands import swagger1  # noqa: F401
+from .uwm.commands import uwm1  # noqa: F401
+from .viz.commands import viz1  # noqa: F401
+from .id.commands import id, id1  # noqa: F401
+from .version.commands import version, version1  # noqa: F401
+from .flavors import flavors1  # noqa: F401
+from .definitions import definitions  # noqa: F401
+from .cockpit.commands import cockpit  # noqa: F401
+from .wipe.commands import wipe  # noqa: F401
+from .extract.commands import extract  # noqa: F401
+from .clear.commands import clear  # noqa: F401
+from .ui.commands import ui  # noqa: F401
 
 
 class CatchAllExceptions(click.Group):
