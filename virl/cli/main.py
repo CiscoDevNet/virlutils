@@ -8,33 +8,33 @@ import traceback
 import sys
 import os
 from virl.helpers import get_cml_client
-from .console.commands import console, console1
-from .nodes.commands import nodes, nodes1
-from .logs.commands import logs1
-from .up.commands import up, up1
-from .use.commands import use, use1
-from .down.commands import down, down1
-from .ls.commands import ls, ls1
-from .save.commands import save, save1
-from .telnet.commands import telnet, telnet1
-from .ssh.commands import ssh, ssh1
-from .generate import generate, generate1
-from .start.commands import start, start1
-from .stop.commands import stop, stop1
-from .pull.commands import pull, pull1
-from .search.commands import search, search1
-from .swagger.commands import swagger1
-from .uwm.commands import uwm1
-from .viz.commands import viz1
-from .id.commands import id, id1
-from .version.commands import version, version1
-from .flavors import flavors1
-from .definitions import definitions
-from .cockpit.commands import cockpit
-from .wipe.commands import wipe
-from .extract.commands import extract
-from .clear.commands import clear
-from .ui.commands import ui
+from .console.commands import console, console1  # noqa
+from .nodes.commands import nodes, nodes1  # noqa
+from .logs.commands import logs1  # noqa
+from .up.commands import up, up1  # noqa
+from .use.commands import use, use1  # noqa
+from .down.commands import down, down1  # noqa
+from .ls.commands import ls, ls1  # noqa
+from .save.commands import save, save1  # noqa
+from .telnet.commands import telnet, telnet1  # noqa
+from .ssh.commands import ssh, ssh1  # noqa
+from .generate import generate, generate1  # noqa
+from .start.commands import start, start1  # noqa
+from .stop.commands import stop, stop1  # noqa
+from .pull.commands import pull, pull1  # noqa
+from .search.commands import search, search1  # noqa
+from .swagger.commands import swagger1  # noqa
+from .uwm.commands import uwm1  # noqa
+from .viz.commands import viz1  # noqa
+from .id.commands import id, id1  # noqa
+from .version.commands import version, version1  # noqa
+from .flavors import flavors1  # noqa
+from .definitions import definitions  # noqa
+from .cockpit.commands import cockpit  # noqa
+from .wipe.commands import wipe  # noqa
+from .extract.commands import extract  # noqa
+from .clear.commands import clear  # noqa
+from .ui.commands import ui  # noqa
 
 
 class CatchAllExceptions(click.Group):
