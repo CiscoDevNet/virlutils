@@ -76,6 +76,10 @@ virl.debug = False
 def __get_server_ver():
     """
     Taste a VIRL/CML server and try and determine its version.
+    This tries the 2.x flow and assumes 1.x if that flow fails in an
+    unexpected way.  The reason for this is that compatibility with 1.x
+    is stressed, but the code has been factored in a way so that the 1.x
+    code can be removed when the time is right.
 
     Returns:
         string: Either '1' for VIRL/CML 1.x or the empty string for CML 2+
