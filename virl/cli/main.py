@@ -100,10 +100,10 @@ def __get_server_ver():
             r = requests.get("https://{}/".format(server.host), verify=False)
             warnings.simplefilter("default", InsecureRequestWarning)
             r.raise_for_status()
-            # Technically, CML allows a username to be the following.  But the likelihood of
-            # someone creating one is small.
-            server.user = "!@#$%^&*"
-            server.passwd = "!@#$%^&*"
+            # While one could have a user called virutils-test, the user must have a password.
+            # So if we send an empty password, that will fail with a known error.
+            server.user = "virutils-test"
+            server.passwd = ""
             get_cml_client(server, ignore=True)
     except virl2_client.InitializationError:
         # The client library will raise this error if it encounters an authorization failure.
