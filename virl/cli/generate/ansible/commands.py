@@ -40,10 +40,13 @@ def ansible(**kwargs):
                     fd.write(inv)
             else:
                 click.secho("Failed to get inventory data", fg="red")
+                exit(1)
         else:
             click.secho("Failed to find running lab {}".format(current_lab), fg="red")
+            exit(1)
     else:
         click.secho("Current lab is not set", fg="red")
+        exit(1)
 
 
 @click.command()

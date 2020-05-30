@@ -64,6 +64,7 @@ def use(lab, id, lab_name):
         set_current_lab(lab_id)
     else:
         click.secho("Unable to find lab in the cache or on the server", fg="red")
+        exit(1)
 
 
 @click.command()

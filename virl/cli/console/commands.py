@@ -51,14 +51,18 @@ def console(node, display, **kwargs):
                                 exit(call(cmd.split()))
                     else:
                         click.secho("Node {} is not active".format(node), fg="red")
+                        exit(1)
                 else:
                     click.secho("Node {} was not found in lab {}".format(node, current_lab), fg="red")
+                    exit(1)
             else:
                 click.secho("Node type {} does not support console connectivity".format(node_obj.node_definition), fg="yellow")
         else:
             click.secho("Unable to find lab {}".format(current_lab), fg="red")
+            exit(1)
     else:
         click.secho("No current lab set", fg="red")
+        exit(1)
 
 
 @click.command()

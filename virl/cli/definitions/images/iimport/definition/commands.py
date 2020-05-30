@@ -17,6 +17,7 @@ def definition(image, filename):
 
     if not os.path.isfile(filename):
         click.secho("Image definition file {} does not exist or is not a file", fg="red")
+        exit(1)
     else:
         defs = client.definitions
         contents = None
@@ -28,3 +29,4 @@ def definition(image, filename):
             defs.upload_image_definition(image, contents)
         except Exception as e:
             click.secho("Failed to import image definition for {}: {}".format(image, e), fg="red")
+            exit(1)

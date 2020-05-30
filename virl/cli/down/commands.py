@@ -44,6 +44,7 @@ def down(id=None, lab_name=None):
 
     else:
         click.secho("Failed to find lab on server", fg="red")
+        exit(1)
 
 
 @click.command()

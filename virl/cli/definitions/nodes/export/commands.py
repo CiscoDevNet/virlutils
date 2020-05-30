@@ -23,6 +23,7 @@ def export(node, filename):
         ndef = defs.download_node_definition(node)
     except Exception as e:
         click.secho("Failed to download node definition for {}: {}".format(node, e), fg="red")
+        exit(1)
     else:
         with open(filename, "w") as fd:
             fd.write(ndef)

@@ -29,10 +29,13 @@ def start(node):
                     click.secho("Node {} is already active".format(node_obj.label), fg="yellow")
             else:
                 click.secho("Node {} was not found in lab {}".format(node, current_lab), fg="red")
+                exit(1)
         else:
             click.secho("Unable to find lab {}".format(current_lab), fg="red")
+            exit(1)
     else:
         click.secho("No current lab set", fg="red")
+        exit(1)
 
 
 @click.command()

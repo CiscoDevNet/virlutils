@@ -56,6 +56,7 @@ class CatchAllExceptions(click.Group):
             click.secho("%s" % exc, fg="red")
             if virl.debug:
                 click.secho(traceback.format_exc(), fg="red")
+            exit(1)
 
 
 @click.group(cls=CatchAllExceptions)

@@ -23,6 +23,7 @@ def export(image, filename):
         idef = defs.download_image_definition(image)
     except Exception as e:
         click.secho("Failed to download image definition for {}: {}".format(image, e), fg="red")
+        exit(1)
     else:
         with open(filename, "w") as fd:
             fd.write(idef)

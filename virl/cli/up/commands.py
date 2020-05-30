@@ -102,6 +102,7 @@ def up(repo=None, provision=False, **kwargs):
                         time.sleep(1)
         else:
             click.secho("Could not find a lab to start.  Maybe try -f", fg="red")
+            exit(1)
     else:
         click.secho("Lab {} (ID: {}) is already set as the current lab".format(clab.title, current_lab))
 

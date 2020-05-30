@@ -17,6 +17,7 @@ def nimport(node, filename):
 
     if not os.path.isfile(filename):
         click.secho("Node definition file {} does not exist or is not a file", fg="red")
+        exit(1)
     else:
         defs = client.definitions
         contents = None
@@ -28,3 +29,4 @@ def nimport(node, filename):
             defs.upload_node_definition(node, contents)
         except Exception as e:
             click.secho("Failed to import node definition for {}: {}".format(node, e), fg="red")
+            exit(1)

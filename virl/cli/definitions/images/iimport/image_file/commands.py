@@ -17,9 +17,11 @@ def image_file(filename, rename):
 
     if not os.path.isfile(filename):
         click.secho("Image file {} does not exist or is not a file", fg="red")
+        exit(1)
     else:
         defs = client.definitions
         try:
             defs.upload_image_file(filename, rename)
         except Exception as e:
             click.secho("Failed to import image file {}: {}".format(filename, e), fg="red")
+            exit(1)

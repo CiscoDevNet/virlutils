@@ -22,5 +22,7 @@ def extract(update_cache, **kwargs):
                 cache_lab(lab, force=True)
         else:
             click.secho("Failed to find running lab {}".format(current_lab), fg="red")
+            exit(1)
     else:
         click.secho("Current lab is not set", fg="red")
+        exit(1)

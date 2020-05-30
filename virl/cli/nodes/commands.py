@@ -20,8 +20,10 @@ def nodes():
             node_list_table(lab.nodes())
         else:
             click.secho("Lab {} is not running".format(current_lab), fg="red")
+            exit(1)
     else:
         click.secho("No current lab selected", fg="red")
+        exit(1)
 
 
 @click.command()

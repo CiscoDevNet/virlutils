@@ -13,6 +13,7 @@ def do_pull(repo, fname):
         click.secho("Saved topology as {}".format(fname), fg="green")
     else:
         click.secho("Error pulling {} - repo not found".format(repo), fg="red")
+        exit(1)
 
 
 @click.command()

@@ -33,10 +33,13 @@ def pyats(**kwargs):
                     fd.write(testbed)
             else:
                 click.secho("Failed to get testbed data", fg="red")
+                exit(1)
         else:
             click.secho("Failed to find running lab {}".format(current_lab), fg="red")
+            exit(1)
     else:
         click.secho("Current lab is not set", fg="red")
+        exit(1)
 
 
 @click.command()

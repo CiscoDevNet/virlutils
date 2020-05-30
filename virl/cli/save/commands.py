@@ -30,8 +30,10 @@ def save(extract, filename, **kwargs):
                 fd.write(lab_export)
         else:
             click.secho("Failed to find running lab {}".format(current_lab), fg="red")
+            exit(1)
     else:
         click.secho("Current lab is not set", fg="red")
+        exit(1)
 
 
 @click.command()
