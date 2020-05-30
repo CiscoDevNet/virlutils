@@ -31,7 +31,7 @@ from .version.commands import version, version1  # noqa: F401
 from .flavors import flavors1  # noqa: F401
 from .definitions import definitions  # noqa: F401
 from .cockpit.commands import cockpit  # noqa: F401
-from .wipe.commands import wipe  # noqa: F401
+from .wipe import wipe  # noqa: F401
 from .extract.commands import extract  # noqa: F401
 from .clear.commands import clear  # noqa: F401
 from .ui.commands import ui  # noqa: F401

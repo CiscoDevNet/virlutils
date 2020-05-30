@@ -10,7 +10,7 @@ from virl.helpers import get_cml_client, safe_join_existing_lab, get_current_lab
     "--confirm/--no-confirm", show_default=False, default=True, help="Do not prompt for confirmation (default: prompt)", required=False,
 )
 @click.argument("node", nargs=1)
-def wipe(node, force, confirm):
+def node(node, force, confirm):
     """
     wipe a node
     """
@@ -40,9 +40,13 @@ def wipe(node, force, confirm):
                         click.secho("Not wiping node {}".format(node_obj.label))
                 else:
                     click.secho("Node {} is active; either stop it or use --force".format(node_obj.label), fg="red")
+                    exit(1)
             else:
                 click.secho("Node {} was not found in lab {}".format(node, current_lab), fg="red")
+                exit(1)
         else:
             click.secho("Unable to find lab {}".format(current_lab), fg="red")
+            exit(1)
     else:
         click.secho("No current lab set", fg="red")
+        exit(1)
