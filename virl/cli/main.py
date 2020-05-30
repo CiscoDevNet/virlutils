@@ -35,6 +35,7 @@ from .wipe.commands import wipe  # noqa: F401
 from .extract.commands import extract  # noqa: F401
 from .clear.commands import clear  # noqa: F401
 from .ui.commands import ui  # noqa: F401
+from .license import license  # noqa: F401
 
 
 class CatchAllExceptions(click.Group):
@@ -102,7 +103,7 @@ def __get_server_ver():
             r.raise_for_status()
             # While one could have a user called virutils-test, the user must have a password.
             # So if we send an empty password, that will fail with a known error.
-            server.user = "virutils-test"
+            server.user = "virlutils-test"
             server.passwd = ""
             get_cml_client(server, ignore=True)
     except virl2_client.InitializationError:
@@ -130,6 +131,7 @@ else:
     virl.add_command(extract)
     virl.add_command(clear)
     virl.add_command(ui)
+    virl.add_command(license)
 
 __sub_commands = [
     "console",
