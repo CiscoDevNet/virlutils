@@ -4,7 +4,7 @@ from virl.helpers import get_cml_client, safe_join_existing_lab, get_current_lab
 
 
 @click.command()
-@click.option("--force/--noforce", "-f", default=False, required=False, help="Stop a node (if its started) then wipe it (default: False)")
+@click.option("--force/--noforce", "-f", default=False, required=False, help="Stop a lab (if it's started) then wipe it (default: False)")
 @click.option(
     "--confirm/--no-confirm", show_default=False, default=True, help="Do not prompt for confirmation (default: prompt)", required=False,
 )
