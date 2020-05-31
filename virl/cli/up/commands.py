@@ -1,6 +1,6 @@
 import click
 from subprocess import call
-from virl.api import VIRLServer
+from virl.api import VIRLServer, CachedLab
 from virl.helpers import (
     generate_sim_id,
     check_sim_running,
@@ -79,15 +79,15 @@ def up(repo=None, provision=False, **kwargs):
                 # Load the lab YAML to try and extract its title
                 try:
                     lab_stub = CachedLab("bogusid", fname)
-                    title = lab_stub.title
                 except Exception:
                     click.secho(
-                        "File {} does not appear to be a YAML-formatted CML topology file.  If this is a CML/VIRL 1.x file, it must end with '.virl'".format(
-                            fname
-                        ),
+                        "File {} does not appear to be a YAML-formatted CML topology file."
+                        "If this is a CML/VIRL 1.x file, it must end with '.virl'".format(fname),
                         fg="red",
                     )
                     exit(1)
+                else:
+                    title = lab_stub.title
             lab = client.import_lab_from_path(fname, title=title)
         elif not lab:
             # try to pull from virlfiles
