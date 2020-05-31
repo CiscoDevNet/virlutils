@@ -71,7 +71,24 @@ def up(repo=None, provision=False, **kwargs):
             lab = safe_join_existing_lab_by_title(lab_name, client)
 
         if not lab and os.path.isfile(fname):
-            lab = client.import_lab_from_path(fname)
+            # We need this to preserve any .virl extension to to tell CML this
+            # is an older file.
+            title = os.path.basename(fname)
+            if not fname.lower().endswith(".virl"):
+                title = os.path.splitext(fname)[0]
+                # Load the lab YAML to try and extract its title
+                try:
+                    lab_stub = CachedLab("bogusid", fname)
+                    title = lab_stub.title
+                except Exception:
+                    click.secho(
+                        "File {} does not appear to be a YAML-formatted CML topology file.  If this is a CML/VIRL 1.x file, it must end with '.virl'".format(
+                            fname
+                        ),
+                        fg="red",
+                    )
+                    exit(1)
+            lab = client.import_lab_from_path(fname, title=title)
         elif not lab:
             # try to pull from virlfiles
             if repo:
