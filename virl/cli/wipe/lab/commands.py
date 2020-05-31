@@ -35,7 +35,7 @@ def lab(force, confirm):
                     click.secho("Not wiping lab {} (ID: {})".format(lab.title, current_lab))
 
             else:
-                click.secho("Lab {} (ID: {}) is active; either stop it or use --force".format(lab.title, current_lab), fg="red")
+                click.secho("Lab {} (ID: {}) is active; either down it or use --force".format(lab.title, current_lab), fg="red")
                 exit(1)
         else:
             click.secho("Unable to find lab {}".format(current_lab), fg="red")
