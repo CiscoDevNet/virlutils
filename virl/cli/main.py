@@ -36,6 +36,7 @@ from .extract.commands import extract  # noqa: F401
 from .clear.commands import clear  # noqa: F401
 from .ui.commands import ui  # noqa: F401
 from .license import license  # noqa: F401
+from .rm.commands import rm  # noqa: F401
 
 
 class CatchAllExceptions(click.Group):
@@ -133,6 +134,7 @@ else:
     virl.add_command(clear)
     virl.add_command(ui)
     virl.add_command(license)
+    virl.add_command(rm)
 
 __sub_commands = [
     "console",
