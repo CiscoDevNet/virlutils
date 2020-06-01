@@ -3,7 +3,7 @@ import click
 
 
 def node_list_table(nodes):
-    click.secho("Here is a list of the running nodes")
+    click.secho("Here is a list of nodes in this lab")
     table = list()
     headers = ["ID", "Label", "Type", "State", "Wiped?", "L3 Address"]
     skip_types = []
