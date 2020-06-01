@@ -20,6 +20,33 @@ import time
 import sys
 
 
+def get_lab_title(fname):
+    """
+    Try and obtain a sensible title for the lab based on the filename
+    and/or its contents.
+    """
+    # We need to do this to preserve any .virl extension to to tell CML this
+    # is an older file.
+    title = os.path.basename(fname)
+    if not fname.lower().endswith(".virl"):
+        title = os.path.splitext(fname)[0]
+        # Load the lab YAML to try and extract its title property
+        try:
+            lab_stub = CachedLab("bogusid", fname)
+        except Exception:
+            # Someone may be trying to load a 1.x file without the .virl extension.
+            click.secho(
+                "File {} does not appear to be a YAML-formatted CML topology file."
+                "If this is a CML/VIRL 1.x file, it must end with '.virl'".format(fname),
+                fg="red",
+            )
+            exit(1)
+        else:
+            title = lab_stub.title
+
+    return title
+
+
 @click.command()
 @click.argument("repo", default="default")
 @click.option(
@@ -71,24 +98,7 @@ def up(repo=None, provision=False, **kwargs):
             lab = safe_join_existing_lab_by_title(lab_name, client)
 
         if not lab and os.path.isfile(fname):
-            # We need this to preserve any .virl extension to to tell CML this
-            # is an older file.
-            title = os.path.basename(fname)
-            if not fname.lower().endswith(".virl"):
-                title = os.path.splitext(fname)[0]
-                # Load the lab YAML to try and extract its title
-                try:
-                    lab_stub = CachedLab("bogusid", fname)
-                except Exception:
-                    click.secho(
-                        "File {} does not appear to be a YAML-formatted CML topology file."
-                        "If this is a CML/VIRL 1.x file, it must end with '.virl'".format(fname),
-                        fg="red",
-                    )
-                    exit(1)
-                else:
-                    title = lab_stub.title
-            lab = client.import_lab_from_path(fname, title=title)
+            lab = client.import_lab_from_path(fname, title=get_lab_title(fname))
         elif not lab:
             # try to pull from virlfiles
             if repo:
