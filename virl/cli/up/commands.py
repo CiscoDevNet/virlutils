@@ -101,7 +101,7 @@ def up(repo=None, provision=False, **kwargs):
             lab = client.import_lab_from_path(fname, title=get_lab_title(fname))
         elif not lab:
             # try to pull from virlfiles
-            if repo:
+            if repo and os.path.basename(fname) == "topology.yaml":
                 call([sys.argv[0], "pull", repo])
                 exit(call([sys.argv[0], "up"]))
 
