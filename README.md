@@ -52,35 +52,39 @@ Commands:
 
 <!-- /TOC -->
 
+## Prerequisites 
+
+- Python 3 (tested with Python 3.7.7)
+
 ## Installation
 
 1. Clone this repo
 
 ```
 git clone https://github.com/CiscoDevNet/virlutils
-```
-
-2. Install
-
-### With Pip
-
-```
-pip install virlutils
-```
-
-### Clone & Install
-```
-git clone https://github.com/CiscoDevNet/virlutils
 cd virlutils
-virtualenv venv && source venv/bin/activate
-python setup.py install
 ```
+
+2. Either (2a) use pip, or (2b) use setup.py
+
+   2a. Use pip
+
+   ```
+   pip install virlutils
+   ```
+
+   2b. Use setup.py
+
+   ```
+   python3 -m venv venv
+   source venv/bin/activate
+   python setup.py install
+   ```
 
 ## Configuration
 
-There really isn't much to configure, just set your VIRL credentials up.  
-There are a few different ways to accomplish this, pick whichever one works best for you,
-the options listed below are in the `preferred` order.  
+There really isn't much to configure, just set your VIRL credentials.  
+There are a few different ways to accomplish this, pick whichever one works best for you. The options listed below are in the `preferred` order.  
 
 
 #### .virlrc in working directory

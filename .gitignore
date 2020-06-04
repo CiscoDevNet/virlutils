@@ -4,6 +4,8 @@ scratch*
 
 # virl stuff 
 .virl/
+.virlrc
+topology.virl
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
