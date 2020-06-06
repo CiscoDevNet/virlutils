@@ -213,7 +213,7 @@ This command will be passed the host/ip and port information information from th
 
 - `CML_CONSOLE_COMMAND` - (*CML 2+ only*) allows the user to customize the SSH command that is called.
 
-  This command will be passed the CML controller VM IP, the console path of the node, and the CML controller username (note: you may have to force a TTY allocation in your SSH command)
+  This command will be passed the CML controller VM IP, the console path of the node, and the CML controller username (**note:** you may have to force a TTY allocation in your SSH command)
 
   Example:
 
