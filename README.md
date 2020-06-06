@@ -16,7 +16,8 @@ Below is the output when using VIRL 1.x or CML 1.x.
 Usage: virl [OPTIONS] COMMAND [ARGS]...
 
 Options:
-  --help  Show this message and exit.
+  --debug / --no-debug  Print any debugging output.
+  --help                Show this message and exit.
 
 Commands:
   console   console for node
@@ -24,12 +25,12 @@ Commands:
   flavors   Manage VIRL Flavors Attributes
   generate  generate inv file for various tools
   id        gets sim id for local environment
-  logs      Retrieves log information for the provided...
-  ls        lists running simulations in the current...
+  logs      Retrieves log information for the provided simulation
+  ls        lists running simulations in the current project
   nodes     get nodes for sim_name
   pull      pull topology.virl from repo
   save      save simulation to local virl file
-  search    lists virl topologies available via github
+  search    list topologies available via github
   ssh       ssh to a node
   start     start a node
   stop      stop a node
@@ -40,7 +41,6 @@ Commands:
   uwm       opens UWM for the sim
   version   version information
   viz       opens live visualization for the sim
-
 ```
 
 When using connecting to a CML 2+ server...
@@ -49,80 +49,87 @@ When using connecting to a CML 2+ server...
 Usage: cml [OPTIONS] COMMAND [ARGS]...
 
 Options:
-  --help  Show this message and exit.
+  --debug / --no-debug  Print any debugging output.
+  --help                Show this message and exit.
 
 Commands:
-  cockpit   unimplemented
-  console   console for node
-  down      stop a CML lab
-  generate  unimplemented
-  id        get the current lab ID
-  images    manage CML image definitions (unimplemented)
-  ls        lists running labs and optionally those in the cache
-  nodes     get node list for a running lab
-  pull      pull topology.yaml from repo
-  save      unimplemented
-  search    unimplemented
-  ssh       unimplemented
-  start     start a node
-  stop      stop a node
-  telnet    unimplemented
-  up        start a CML lab
-  use       use CML lab launched elsewhere
-  version   version information
-  wipe      wipe a node
+  clear        clear the current lab ID
+  cockpit      opens the Cockpit UI
+  console      console for node
+  definitions  manage image and node definitions
+  down         stop a lab
+  extract      extract configurations from all nodes in a lab
+  generate     generate inv file for various tools
+  id           get the current lab title and ID
+  license      work with product licensing
+  ls           lists running labs and optionally those in the cache
+  nodes        get node list for the current lab
+  pull         pull topology.yaml from repo
+  rm           remove a lab
+  save         save lab to a local yaml file
+  search       list topologies available via github
+  ssh          ssh to a node
+  start        start a node
+  stop         stop a node
+  telnet       telnet to a node
+  ui           opens the Workbench for the current lab
+  up           start a lab
+  use          use lab launched elsewhere
+  version      version information
+  wipe         wipe a lab or nodes within a lab
 ```
 
 
 
 <!-- TOC depthFrom:2 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
+- [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [Usage / Workflows](#usage--workflows)
 - [Development](#local-development)
 
-
 <!-- /TOC -->
+
+## Prerequisites
+
+- Python 3.5+ (tested with Python 3.7.7)
 
 ## Installation
 
 1. Clone this repo
 
-```sh
-git clone https://github.com/CiscoDevNet/virlutils
-```
-
-2. Install
-
-### With Pip
-
-```sh
-pip install virlutils
-```
-
-Or
-
-```sh
-pip install cmlutils
-```
-
-
-
-### Clone & Install
-
 ```
 git clone https://github.com/CiscoDevNet/virlutils
 cd virlutils
-virtualenv venv && source venv/bin/activate
-python setup.py install
 ```
+
+2. Either (2a) use pip, or (2b) use setup.py
+
+   2a. Use pip
+
+   ```
+   pip install virlutils
+   ```
+
+   Or
+
+   ```sh
+   pip install cmlutils
+   ```
+
+   2b. Use setup.py
+
+   ```sh
+   python3 -m venv venv
+   source venv/bin/activate
+   python setup.py install
+   ```
 
 ## Configuration
 
-There really isn't much to configure, just set your VIRL/CML credentials up.  
-There are a few different ways to accomplish this, pick whichever one works best for you,
-the options listed below are in the `preferred` order.  
+There really isn't much to configure, just set your VIRL/CML credentials.  
+There are a few different ways to accomplish this, pick whichever one works best for you. The options listed below are in the `preferred` order.
 
 
 #### .virlrc in working directory
@@ -177,7 +184,7 @@ This command will be passed the host/ip and port information information from th
   Example:
   ```sh
   export VIRL_TELNET_COMMAND="mytelnet {host} {port}"
-```
+  ```
 
 * `VIRL_SSH_USERNAME` - the username by which SSH connections to the nodes running in
   the simulation will be initiated with
