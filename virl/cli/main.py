@@ -22,7 +22,7 @@ from .generate import generate, generate1  # noqa: F401
 from .start.commands import start, start1  # noqa: F401
 from .stop.commands import stop, stop1  # noqa: F401
 from .pull.commands import pull, pull1  # noqa: F401
-from .search.commands import search, search1  # noqa: F401
+from .search.commands import search  # noqa: F401
 from .swagger.commands import swagger1  # noqa: F401
 from .uwm.commands import uwm1  # noqa: F401
 from .viz.commands import viz1  # noqa: F401
@@ -136,6 +136,8 @@ else:
     virl.add_command(license)
     virl.add_command(rm)
 
+virl.add_command(search)
+
 __sub_commands = [
     "console",
     "nodes",
@@ -149,7 +151,6 @@ __sub_commands = [
     "generate",
     "start",
     "stop",
-    "search",
     "pull",
     "id",
     "version",
