@@ -47,6 +47,26 @@ def get_lab_title(fname):
     return title
 
 
+def start_lab(lab, provision=False):
+    click.secho("Starting lab {} (ID: {})".format(lab.title, lab.id))
+    lab.wait_for_convergence = False
+    lab.start()
+    cache_lab(lab)
+    set_current_lab(lab.id)
+    if provision:
+        # Technically we need to block until all nodes are "reachable".
+        # In the CML 2+ case, this means BOOTED.
+        click.secho("Waiting for all nodes to be online...")
+        ready = False
+        while not ready:
+            for n in lab.nodes():
+                if not n.is_booted():
+                    ready = False
+                    break
+                ready = True
+            time.sleep(1)
+
+
 @click.command()
 @click.argument("repo", default="default")
 @click.option(
@@ -113,28 +133,15 @@ def up(repo=None, provision=False, **kwargs):
                 set_current_lab(lab.id)
                 click.secho("Lab is already running (ID: {}, Title: {})".format(lab.id, lab.title))
             else:
-                click.secho("Starting lab {} (ID: {})".format(lab.title, lab.id))
-                lab.wait_for_convergence = False
-                lab.start()
-                cache_lab(lab)
-                set_current_lab(lab.id)
-                if provision:
-                    # Technically we need to block until all nodes are "reachable".
-                    # In the CML 2+ case, this means BOOTED.
-                    click.secho("Waiting for all nodes to be online...")
-                    ready = False
-                    while not ready:
-                        for n in lab.nodes():
-                            if not n.is_booted():
-                                ready = False
-                                break
-                            ready = True
-                        time.sleep(1)
+                start_lab(lab, provision)
+
         else:
             click.secho("Could not find a lab to start.  Maybe try -f", fg="red")
             exit(1)
     else:
         click.secho("Lab {} (ID: {}) is already set as the current lab".format(clab.title, current_lab))
+        if not check_lab_active(clab):
+            start_lab(clab, provision)
 
 
 @click.command()
