@@ -98,7 +98,9 @@ def up(repo=None, provision=False, **kwargs):
             lab = safe_join_existing_lab_by_title(lab_name, client)
 
         if not lab and os.path.isfile(fname):
-            lab = client.import_lab_from_path(fname, title=get_lab_title(fname))
+            lname = get_lab_title(fname)
+            click.secho("Importing lab {} from file {}".format(lname, fname))
+            lab = client.import_lab_from_path(fname, title=lname)
         elif not lab:
             # try to pull from virlfiles
             if repo and os.path.basename(fname) == "topology.yaml":
@@ -111,6 +113,7 @@ def up(repo=None, provision=False, **kwargs):
                 set_current_lab(lab.id)
                 click.secho("Lab is already running (ID: {}, Title: {})".format(lab.id, lab.title))
             else:
+                click.secho("Starting lab {} (ID: {})".format(lab.title, lab.id))
                 lab.wait_for_convergence = False
                 lab.start()
                 cache_lab(lab)
