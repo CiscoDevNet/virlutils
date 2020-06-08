@@ -5,7 +5,7 @@ from virl.cli.views.search import repo_table
 
 @click.command()
 @click.argument("query", required=False)
-@click.option("--org", default="virlfiles", help="GitHub organization to search (default: virlfiles)")
+@click.option("--org", default="virlfiles", required=False, help="GitHub organization to search (default: virlfiles)")
 def search(query=None, **kwargs):
     """
     list topologies available via github
