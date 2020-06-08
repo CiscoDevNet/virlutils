@@ -66,7 +66,7 @@ Commands:
 
 1. Clone this repo
 
-```sh
+```
 git clone https://github.com/CiscoDevNet/virlutils
 cd virlutils
 ```
@@ -75,7 +75,7 @@ cd virlutils
 
    2a. Use pip
 
-   ```sh
+   ```
    pip install virlutils
    ```
 
@@ -95,7 +95,8 @@ cd virlutils
 
 ## Configuration
 
-There really isn't much to configure, just set your CML credentials.  There are a few different ways to accomplish this, pick whichever one works best for you. The options listed below are in the `preferred` order.
+There really isn't much to configure, just set your VIRL/CML credentials.  
+There are a few different ways to accomplish this, pick whichever one works best for you. The options listed below are in the `preferred` order.
 
 
 #### .virlrc in working directory
@@ -106,7 +107,7 @@ directory.
 
 The contents would look something like this.
 
-```sh
+```
 VIRL_HOST=specialvirlserver.foo.com
 ```
 
@@ -125,7 +126,7 @@ export VIRL_PASSWORD=guest
 
 Configure VIRL credentials globally by putting them in ~/.virlrc the formatting
 
-```sh
+```
 VIRL_USERNAME=netadmins
 VIRL_PASSWORD=cancodetoo!
 ```
@@ -143,6 +144,22 @@ using any of the methods mentioned previously
    export VIRL_TELNET_COMMAND="mytelnet {host}"
    ```
 
+* `VIRL_CONSOLE_COMMAND` - (*VIRL or CML 1.x only*) allows the user to customize the telnet command that is called.
+
+This command will be passed the host/ip and port information information from the running simulation
+
+  Example:
+  ```sh
+  export VIRL_TELNET_COMMAND="mytelnet {host} {port}"
+  ```
+
+* `VIRL_SSH_USERNAME` - the username by which SSH connections to the nodes running in
+  the simulation will be initiated with
+
+  Example:
+  ```sh
+  export VIRL_SSH_USERNAME=netadmin
+  ```
 
 
 * `VIRL_SSH_COMMAND` - allows the user to customize the ssh command that is called.
@@ -153,7 +170,7 @@ using any of the methods mentioned previously
   export VIRL_SSH_COMMAND="myssh {username}@{host}"
   ```
 
-- `CML_VERIFY_CERT` - The path to a PEM-encoded certificate file to use to verify the CML controller VM's SSL certificate.  If you do not wish to verify the certificate, set this to "False"
+- `CML_VERIFY_CERT` - (*CML 2+ only*) The path to a PEM-encoded certificate file to use to verify the CML controller VM's SSL certificate.  If you do not wish to verify the certificate, set this to "False"
 
   Example:
 
@@ -161,7 +178,7 @@ using any of the methods mentioned previously
   export CML_VERIFY_CERT=/etc/certs/ca_bundle.pem
   ```
 
-- `CML_CONSOLE_COMMAND` - allows the user to customize the SSH command that is called.
+- `CML_CONSOLE_COMMAND` - (*CML 2+ only*) allows the user to customize the SSH command that is called.
 
   This command will be passed the CML controller VM IP, the console path of the node, and the CML controller username (**note:** you may have to force a TTY allocation in your SSH command)
 
@@ -191,51 +208,83 @@ Assume the following directory structure...
 .
 ├── dev
 │   ├── .virlrc
-│   └── topology.yaml
+│   └── topology.virl
 ├── prod
 │   ├── .virlrc
-│   └── topology.yaml
+│   └── topology.virl
 └── test
     ├── .virlrc
-    └── topology.yaml
+    └── topology.virl
 
 ```
 
 This allows three major benefits.  
 
 1. you can easily use different credentials/servers for various environments
-2. you can customize your lab .yaml files to include different tags, different node configurations, etc.
+2. you can specify environment specific details into your .virl files if you need to. we find
+this most useful in the context of out-of-band management networks/gateways and such.
 3. you have a badass workflow..
 
 ```sh
-$ cml ls  
-Labs on Server
-╒════════╤════════════════════════════════╤═════════════════════════╤═════════════════╤═════════╤═════════╤══════════════╕
-│ ID     │ Title                          │ Description             │ Status          │   Nodes │   Links │   Interfaces │
-╞════════╪════════════════════════════════╪═════════════════════════╪═════════════════╪═════════╪═════════╪══════════════╡
-|        |                                |                         |                 |         |         |              |
-╘════════╧════════════════════════════════╧═════════════════════════╧═════════════════╧═════════╧═════════╧══════════════╛
-$ cd ../test
-$ cml ls
-Labs on Server
-╒════════╤════════════════════════════════╤═════════════════════════╤═════════════════╤═════════╤═════════╤══════════════╕
-│ ID     │ Title                          │ Description             │ Status          │   Nodes │   Links │   Interfaces │
-╞════════╪════════════════════════════════╪═════════════════════════╪═════════════════╪═════════╪═════════╪══════════════╡
-│ 7c2cf3 │ Small Branch Test              │                         │ STARTED         │       9 │       8 │           23 │
-╘════════╧════════════════════════════════╧═════════════════════════╧═════════════════╧═════════╧═════════╧══════════════╛
-$ cd ../prod
-$ cml ls
+(netdevops-demo) ➜  dev git:(test) ✗ virl ls  
 Running Simulations
-╒════════╤════════════════════════════════╤═════════════════════════╤═════════════════╤═════════╤═════════╤══════════════╕
-│ ID     │ Title                          │ Description             │ Status          │   Nodes │   Links │   Interfaces │
-╞════════╪════════════════════════════════╪═════════════════════════╪═════════════════╪═════════╪═════════╪══════════════╡
-│ 7c2cf3 │ Small Branch Prod              │                         │ STARTED         │       9 │       8 │           23 │
-╘════════╧════════════════════════════════╧═════════════════════════╧═════════════════╧═════════╧═════════╧══════════════╛
+╒══════════════╤══════════╤════════════╤═══════════╕
+│ Simulation   │ Status   │ Launched   │ Expires   │
+╞══════════════╪══════════╪════════════╪═══════════╡
+╘══════════════╧══════════╧════════════╧═══════════╛
+(netdevops-demo) ➜  dev git:(test) ✗ cd ../test
+(netdevops-demo) ➜  test git:(test) ✗ virl ls
+Running Simulations
+╒═════════════════════╤══════════╤════════════════════════════╤═══════════╕
+│ Simulation          │ Status   │ Launched                   │ Expires   │
+╞═════════════════════╪══════════╪════════════════════════════╪═══════════╡
+│ test_default_hfMQHh │ ACTIVE   │ 2018-03-18T06:23:05.607199 │           │
+╘═════════════════════╧══════════╧════════════════════════════╧═══════════╛
+(netdevops-demo) ➜  test git:(test) ✗ cd ../prod
+(netdevops-demo) ➜  prod git:(test) ✗ virl ls
+Running Simulations
+╒═════════════════════╤══════════╤════════════════════════════╤═══════════╕
+│ Simulation          │ Status   │ Launched                   │ Expires   │
+╞═════════════════════╪══════════╪════════════════════════════╪═══════════╡
+│ prod_default_jbdKOW │ ACTIVE   │ 2018-03-18T06:18:04.635601 │           │
+╘═════════════════════╧══════════╧════════════════════════════╧═══════════╛
 ```
 
 
 
 ## Usage / Workflows
+
+### Find and import VIRL files
+
+A collection of VIRL/CML 1.x topologies is being maintained at https://github.com/virlfiles
+
+These repos can be searched from the command line.
+
+```
+$ virl search ios
+Displaying 1 Results For ios
+╒════════════════════════╤═════════╤═══════════════╕
+│ Name                   │   Stars │ Description   │
+╞════════════════════════╪═════════╪═══════════════╡
+│ virlfiles/2-ios-router │       0 │               │
+╘════════════════════════╧═════════╧═══════════════╛
+```
+
+Once you find an intersting topology, you can either `pull` the topology into your
+current environment or launch it directly
+
+pull topology to local directory (as topology.virl)
+```
+virl pull virlfiles/2-ios-router
+```
+
+launch the topology directly using `virl up`
+
+```
+virl up virlfiles/2-ios-router
+```
+
+***NOTE:*** for CML 2+, you can import VIRL/CML 1.x files, but some nodes may not be present in CML 2+.
 
 ### Basic Workflow
 
