@@ -1,7 +1,14 @@
+# dev stuff
+*.code-workspace 
+scratch*
+
 # virl stuff 
 .virl/
 .virlrc
+<<<<<<< HEAD
 topology.yaml
+=======
+>>>>>>> 27822fc5dce34f45694aab4fd3b72ddf0954c763
 topology.virl
 
 # Byte-compiled / optimized / DLL files
