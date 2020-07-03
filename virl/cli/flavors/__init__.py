@@ -4,6 +4,7 @@ from virl.cli.flavors.add.commands import add
 from virl.cli.flavors.delete.commands import delete
 from virl.cli.flavors.update.commands import update
 
+
 @click.group()
 def flavors1():
     """
