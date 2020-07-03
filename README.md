@@ -60,7 +60,7 @@ Commands:
 
 ## Prerequisites
 
-- Python 3.5+ (tested with Python 3.7)
+- Python 3.6.8+ (tested with Python 3.7)
 
 ## Installation
 
