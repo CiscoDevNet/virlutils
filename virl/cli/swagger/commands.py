@@ -74,6 +74,6 @@ def status1(port):
         print("not running")
 
 
-swagger1.add_command(start1)
-swagger1.add_command(stop1)
-swagger1.add_command(status1)
+swagger1.add_command(start1, name="start")
+swagger1.add_command(stop1, name="stop")
+swagger1.add_command(status1, name="status")
