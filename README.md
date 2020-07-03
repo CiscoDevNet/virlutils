@@ -58,15 +58,9 @@ Commands:
 
 <!-- /TOC -->
 
-<<<<<<< HEAD
 ## Prerequisites
 
 - Python 3.6.8+ (tested with Python 3.7)
-=======
-## Prerequisites 
-
-- Python 3 (tested with Python 3.7.7)
->>>>>>> 27822fc5dce34f45694aab4fd3b72ddf0954c763
 
 ## Installation
 
@@ -81,7 +75,6 @@ cd virlutils
 
    2a. Use pip
 
-<<<<<<< HEAD
    ```sh
    pip install virlutils
    ```
@@ -95,15 +88,6 @@ cd virlutils
    2b. Use setup.py
 
    ```sh
-=======
-   ```
-   pip install virlutils
-   ```
-
-   2b. Use setup.py
-
-   ```
->>>>>>> 27822fc5dce34f45694aab4fd3b72ddf0954c763
    python3 -m venv venv
    source venv/bin/activate
    python setup.py install
@@ -111,12 +95,7 @@ cd virlutils
 
 ## Configuration
 
-<<<<<<< HEAD
 There really isn't much to configure, just set your CML credentials.  There are a few different ways to accomplish this, pick whichever one works best for you. The options listed below are in the `preferred` order.
-=======
-There really isn't much to configure, just set your VIRL credentials.  
-There are a few different ways to accomplish this, pick whichever one works best for you. The options listed below are in the `preferred` order.  
->>>>>>> 27822fc5dce34f45694aab4fd3b72ddf0954c763
 
 
 #### .virlrc in working directory
