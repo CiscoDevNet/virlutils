@@ -8,6 +8,7 @@ import platform
 import ctypes
 import logging
 import ipaddress
+import sys
 from requests.exceptions import HTTPError
 from virl2_client import ClientLibrary
 

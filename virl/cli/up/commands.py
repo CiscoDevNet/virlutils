@@ -18,7 +18,6 @@ from virl.helpers import (
 )
 import os
 import time
-import sys
 
 
 def get_lab_title(fname):

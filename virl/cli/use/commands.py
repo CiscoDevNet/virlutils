@@ -1,6 +1,5 @@
 import click
 from subprocess import call
-import sys
 from virl.api import VIRLServer
 from virl.helpers import (
     store_sim_info,

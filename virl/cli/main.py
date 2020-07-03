@@ -5,8 +5,6 @@ from requests.packages.urllib3.exceptions import InsecureRequestWarning
 import warnings
 import virl2_client
 import traceback
-import sys
-import os
 from virl.helpers import get_cml_client, get_command
 from .console.commands import console, console1  # noqa: F401
 from .nodes.commands import nodes, nodes1  # noqa: F401

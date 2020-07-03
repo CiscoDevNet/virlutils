@@ -1,7 +1,6 @@
 import click
 from virl.api import VIRLServer
 from subprocess import call
-import sys
 from virl import helpers
 from virl.helpers import get_cml_client, safe_join_existing_lab, get_current_lab, get_command
 

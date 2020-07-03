@@ -5,7 +5,6 @@ from virl import helpers
 from virl.helpers import get_cml_client, get_current_lab, safe_join_existing_lab, get_command
 from virl.cli.views.console import console_table, console_table1
 import platform
-import sys
 
 
 @click.command()
