@@ -2,7 +2,7 @@ import click
 from virl.api import VIRLServer
 from subprocess import call
 from virl import helpers
-from virl.helpers import get_cml_client, get_current_lab, safe_join_existing_lab
+from virl.helpers import get_cml_client, get_current_lab, safe_join_existing_lab, get_command
 from virl.cli.views.console import console_table, console_table1
 import platform
 import sys
@@ -92,7 +92,7 @@ def console1(node, display, **kwargs):
         node = node[0]
     else:
         # node was not specified, display usage
-        exit(call([sys.argv[0], "console", "--help"]))
+        exit(call([get_command(), "console", "--help"]))
 
     if running:
 

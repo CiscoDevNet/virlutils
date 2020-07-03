@@ -14,6 +14,7 @@ from virl.helpers import (
     set_current_lab,
     get_current_lab,
     clear_current_lab,
+    get_command,
 )
 import os
 import time
@@ -124,8 +125,8 @@ def up(repo=None, provision=False, **kwargs):
         elif not lab:
             # try to pull from virlfiles
             if repo and os.path.basename(fname) == "topology.yaml":
-                call([sys.argv[0], "pull", repo])
-                exit(call([sys.argv[0], "up"]))
+                call([get_command(), "pull", repo])
+                exit(call([get_command(), "up"]))
 
         if lab:
             if check_lab_active(lab):
@@ -231,7 +232,7 @@ def up1(repo=None, provision=False, **kwargs):
     else:
         # try to pull from virlfiles
         if repo:
-            call([sys.argv[0], "pull", repo])
-            call([sys.argv[0], "up"])
+            call([get_command(), "pull", repo])
+            call([get_command(), "up"])
         else:
             click.secho("Could not find topology.virl. Maybe try -f", fg="red")

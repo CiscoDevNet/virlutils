@@ -3,7 +3,15 @@ from virl.api import VIRLServer
 from subprocess import call
 import sys
 from virl import helpers
-from virl.helpers import get_mgmt_lxc_ip, get_node_from_roster, get_cml_client, get_current_lab, safe_join_existing_lab, get_node_mgmt_ip
+from virl.helpers import (
+    get_mgmt_lxc_ip,
+    get_node_from_roster,
+    get_cml_client,
+    get_current_lab,
+    safe_join_existing_lab,
+    get_node_mgmt_ip,
+    get_command,
+)
 
 
 @click.command()
@@ -66,7 +74,7 @@ def telnet1(node):
         running = helpers.check_sim_running(env)
         node = node[0]
     else:
-        exit(call([sys.argv[0], "telnet", "--help"]))
+        exit(call([get_command(), "telnet", "--help"]))
 
     if running:
         sim_name = running

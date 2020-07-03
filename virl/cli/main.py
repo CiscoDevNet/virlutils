@@ -7,7 +7,7 @@ import virl2_client
 import traceback
 import sys
 import os
-from virl.helpers import get_cml_client
+from virl.helpers import get_cml_client, get_command
 from .console.commands import console, console1  # noqa: F401
 from .nodes.commands import nodes, nodes1  # noqa: F401
 from .logs.commands import logs1  # noqa: F401
@@ -47,10 +47,7 @@ class CatchAllExceptions(click.Group):
             click.secho("Exception raised while running your command", fg="red")
             if not virl.debug:
                 click.secho(
-                    "Please re-run as '{} --debug ...' and collect the output before opening an issue".format(
-                        os.path.basename(sys.argv[0])
-                    ),
-                    fg="red",
+                    "Please re-run as '{} --debug ...' and collect the output before opening an issue".format(get_command()), fg="red",
                 )
             else:
                 click.secho("Please open an issue and provide this output:", fg="red")

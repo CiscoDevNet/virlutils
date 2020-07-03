@@ -10,6 +10,7 @@ from virl.helpers import (
     check_lab_cache,
     cache_lab,
     set_current_lab,
+    get_command,
 )
 
 
@@ -45,7 +46,7 @@ def use(lab, id, lab_name):
     lab_id = None
 
     if not lab and not id and not lab_name:
-        exit(call([sys.argv[0], "use", "--help"]))
+        exit(call([get_command(), "use", "--help"]))
 
     if id:
         lab_id = check_lab_cache_server(id, client)

@@ -333,3 +333,16 @@ def get_cml_client(server, ignore=False):
     logger.setLevel(level)
 
     return client
+
+
+def get_command():
+    """
+    Get the command that invoked virlutils.
+    It is done this way to avoid being set to setup.py during test.
+    """
+
+    command = "virl"
+    if os.path.basename(sys.argv[0]) == "cml":
+        command = "cml"
+
+    return command
