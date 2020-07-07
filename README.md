@@ -517,6 +517,15 @@ autoload bashcompinit
 bashcompinit
 ```
 
+And then the following to properly enable completions for zsh
+
+```sh
+eval "$(_VIRL_COMPLETE=source_zsh virl)"
+eval "$(_CML_COMPLETE=source_zsh cml)"
+```
+
+
+
 ## Local Development
 
 If you have an idea for a feature you would like to see, we gladly accept pull requests.  To get started developing, simply run the following..
