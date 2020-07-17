@@ -63,11 +63,12 @@ def get_prop(prop_name):
 
     # search up directory tree for a .virlrc
     virl_dir = find_virl()
-    virlrc = os.path.join(virl_dir, ".virlrc")
-    prop = _get_from_file(virlrc, prop_name)
+    if virl_dir:
+        virlrc = os.path.join(virl_dir, ".virlrc")
+        prop = _get_from_file(virlrc, prop_name)
 
-    if prop:
-        return prop
+        if prop:
+            return prop
 
     # try environment next
     prop = os.getenv(prop_name, None)
