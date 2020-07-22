@@ -51,6 +51,7 @@ setup(
     packages=find_packages(),
     package_data={"virl": ["templates/**/*.j2", "swagger/templates/*", "swagger/static/*"]},
     include_package_data=True,
+    long_description_content_type="text/markdown",
     long_description=readme(),
     test_suite="tests",
     tests_require=test_requirements,
