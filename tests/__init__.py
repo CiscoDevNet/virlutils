@@ -14,8 +14,8 @@ def setup_environ():
 
 
 setup_environ()
-# This is done specifically to avoid prompting during import during
-# test.
+# This is done specifically to avoid prompting during import
+# while running "make test" or "make coverage".
 from virl.cli.main import virl  # noqa: E402
 
 
