@@ -1,0 +1,21 @@
+# virlutils generated ansible file for sim id {{ sim_name }}
+#
+# the overall structure of the inventory follows best practices
+# at http://docs.ansible.com/ansible/latest/intro_inventory.html
+
+# we've rendered what we think is best if you disagree, override
+# virl.generators.ansible_inventory_generator
+
+# you can modify grouping behavior by adding extension entries
+# to your .virl file as such
+
+# <node name="router1" type="SIMPLE" subtype="CSR1000v" location="361,129" ipv4="172.16.252.6" ipv6="2001:db8:b:0:1::2">
+#    <extensions>
+#        <entry key="ansible_group" type="String">mygroup</entry>
+#    </extensions>
+# </node>
+
+{%- for group, devices in inventory.all.children.items() %}
+[{{group}}]
+{%- for name, device in devices.items() %}
+{{ name }} ansible_host={{ device.ansible_host }}{%- if device.console_server %}{%- if device.console_port %} console_server={{ device.console_server }} console_port={{ device.console_port }}{%- endif %}{%- if device.device_type %} ansible_network_os={{ device.device_type }}{%- endif %}{%- endif %}{%- endfor %}{% endfor %}

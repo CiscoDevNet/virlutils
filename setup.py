@@ -25,7 +25,8 @@ REQUIRES = [
     "tabulate",
     "pyyaml",
     "jinja2",
-    "lxml"
+    "lxml",
+    "virl2_client",
 ]
 
 test_requirements = [
@@ -34,28 +35,24 @@ test_requirements = [
 
 
 def readme():
-    with io.open('README.rst', encoding='utf-8') as f:
+    with io.open("README.md", encoding="utf-8") as f:
         return f.read()
 
 
 setup(
     name=NAME,
     version=VERSION,
-    description="A collection of utilities for interacting with Cisco VIRL",
-    author="Kevin Corbin",
-    author_email="kecorbin@cisco.com",
+    description="A collection of utilities for interacting with Cisco VIRL/CML",
+    author="Kevin Corbin, Joe Clarke",
+    author_email="jclarke@cisco.com",
     url="https://github.com/CiscoDevNet/virlutils",
     install_requires=REQUIRES,
-    entry_points={"console_scripts": [
-        "virl=virl.cli.main:virl",
-    ]},
+    entry_points={"console_scripts": ["virl=virl.cli.main:virl", "cml=virl.cli.main:virl"]},
     packages=find_packages(),
-    package_data={'virl': ['templates/**/*.j2',
-                           'swagger/templates/*',
-                           'swagger/static/*']},
+    package_data={"virl": ["templates/**/*.j2", "swagger/templates/*", "swagger/static/*"]},
     include_package_data=True,
     long_description=readme(),
-    test_suite='tests',
+    test_suite="tests",
     tests_require=test_requirements,
-    zip_safe=False
+    zip_safe=False,
 )

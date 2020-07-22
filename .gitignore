@@ -5,6 +5,7 @@ scratch*
 # virl stuff 
 .virl/
 .virlrc
+topology.yaml
 topology.virl
 
 # Byte-compiled / optimized / DLL files
@@ -93,8 +94,9 @@ celerybeat-schedule
 
 # virtualenv
 .venv
-venv/
+venv*/
 ENV/
+cmlutils/
 
 # Spyder project settings
 .spyderproject

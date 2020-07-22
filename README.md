@@ -4,63 +4,69 @@
 [![Coverage Status](https://coveralls.io/repos/github/CiscoDevNet/virlutils/badge.svg?branch=master)](https://coveralls.io/github/CiscoDevNet/virlutils?branch=master)
 [![PyPI version](https://badge.fury.io/py/virlutils.svg)](https://badge.fury.io/py/virlutils)
 
-A collection of utilities for interacting with [Cisco VIRL](https://learningnetworkstore.cisco.com/virlfaq/aboutVirl)
+A collection of utilities for interacting with [Cisco VIRL](https://learningnetworkstore.cisco.com/virlfaq/aboutVirl) 1.x or Cisco Modeling Labs (CML) v2+.
 
-### virl up
+This document describes the new version of virlutils (aka cmlutils) that works with Cisco Modeling Labs v2.0 and higher.  Documentation for working with VIRL/CML 1.x is available [here](README_virl1.md).
 
+### virl up / cml up
 
-`virl` is a devops style cli which supports the most common VIRL operations.  Adding new ones is easy...
+`virl` (or `cml`) is a devops style cli which supports the most common VIRL/CML operations.  Adding new ones is easy...
 
-```
-Usage: virl [OPTIONS] COMMAND [ARGS]...
+```sh
+Usage: cml [OPTIONS] COMMAND [ARGS]...
 
 Options:
-  --help  Show this message and exit.
+  --debug / --no-debug  Print any debugging output.
+  --help                Show this message and exit.
 
 Commands:
-  console   console for node
-  down      stop a virl simulation
-  flavors   Manage VIRL Flavors Attributes
-  generate  generate inv file for various tools
-  id        gets sim id for local environment
-  logs      Retrieves log information for the provided...
-  ls        lists running simulations in the current...
-  nodes     get nodes for sim_name
-  pull      pull topology.virl from repo
-  save      save simulation to local virl file
-  search    lists virl topologies available via github
-  ssh       ssh to a node
-  start     start a node
-  stop      stop a node
-  swagger   manage local swagger ui server
-  telnet    telnet to a node
-  up        start a virl simulation
-  use       use virl simulation launched elsewhere
-  uwm       opens UWM for the sim
-  version   version information
-  viz       opens live visualization for the sim
-
+  clear        clear the current lab ID
+  cockpit      opens the Cockpit UI
+  console      console for node
+  definitions  manage image and node definitions
+  down         stop a lab
+  extract      extract configurations from all nodes in a lab
+  generate     generate inv file for various tools
+  id           get the current lab title and ID
+  license      work with product licensing
+  ls           lists running labs and optionally those in the cache
+  nodes        get node list for the current lab
+  pull         pull topology.yaml from repo
+  rm           remove a lab
+  save         save lab to a local yaml file
+  search       list topologies available via github
+  ssh          ssh to a node
+  start        start a node
+  stop         stop a node
+  telnet       telnet to a node
+  ui           opens the Workbench for the current lab
+  up           start a lab
+  use          use lab launched elsewhere
+  version      version information
+  wipe         wipe a lab or nodes within a lab
 ```
+
+
 
 <!-- TOC depthFrom:2 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
+- [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [Usage / Workflows](#usage--workflows)
 - [Development](#local-development)
 
-
 <!-- /TOC -->
 
-## Prerequisites 
+## Prerequisites
 
-- Python 3 (tested with Python 3.7.7)
+- Python 3.6.8+ (tested with Python 3.7)
 
 ## Installation
 
 1. Clone this repo
 
-```
+```sh
 git clone https://github.com/CiscoDevNet/virlutils
 cd virlutils
 ```
@@ -69,13 +75,19 @@ cd virlutils
 
    2a. Use pip
 
-   ```
+   ```sh
    pip install virlutils
+   ```
+
+   Or
+
+   ```sh
+   pip install cmlutils
    ```
 
    2b. Use setup.py
 
-   ```
+   ```sh
    python3 -m venv venv
    source venv/bin/activate
    python setup.py install
@@ -83,8 +95,7 @@ cd virlutils
 
 ## Configuration
 
-There really isn't much to configure, just set your VIRL credentials.  
-There are a few different ways to accomplish this, pick whichever one works best for you. The options listed below are in the `preferred` order.  
+There really isn't much to configure, just set your CML credentials.  There are a few different ways to accomplish this, pick whichever one works best for you. The options listed below are in the `preferred` order.
 
 
 #### .virlrc in working directory
@@ -95,7 +106,7 @@ directory.
 
 The contents would look something like this.
 
-```
+```sh
 VIRL_HOST=specialvirlserver.foo.com
 ```
 
@@ -104,17 +115,17 @@ VIRL_HOST=specialvirlserver.foo.com
 You can also add them as environment variables. This is useful if you want to override
 the global VIRL settings.
 
-```
-export VIRL_HOST=1.1.1.1
-export VIRL_USERNAME=guest
-export VIRL_PASSWORD=guest
+```sh
+export VIRL_HOST=192.0.2.100
+export VIRL_USERNAME=admin
+export VIRL_PASSWORD=admin123
 ```
 
 #### .virlrc in your home directory
 
 Configure VIRL credentials globally by putting them in ~/.virlrc the formatting
 
-```
+```sh
 VIRL_USERNAME=netadmins
 VIRL_PASSWORD=cancodetoo!
 ```
@@ -128,34 +139,46 @@ using any of the methods mentioned previously
   This command will be passed the host/ip information from the running simulation
 
    Example:
-   ```
+   ```sh
    export VIRL_TELNET_COMMAND="mytelnet {host}"
    ```
 
-* `VIRL_CONSOLE_COMMAND` - allows the user to customize the telnet command that is called
- this command will be passed the host/ip and port information information from the running simulation
-
-  Example:
-  ```
-  export VIRL_TELNET_COMMAND="mytelnet {host} {port}"
-  ```
-
-* `VIRL_SSH_USERNAME` - the username by which SSH connections to the nodes running in
-  the simulation will be initiated with
-
-  Example:
-  ```
-  export VIRL_SSH_USERNAME=netadmin
-  ```
 
 
 * `VIRL_SSH_COMMAND` - allows the user to customize the ssh command that is called.
   This command will be passed the host/ip as well as the username from the running simulation
 
   Example:
-  ```
+  ```sh
   export VIRL_SSH_COMMAND="myssh {username}@{host}"
   ```
+
+- `CML_VERIFY_CERT` - The path to a PEM-encoded certificate file to use to verify the CML controller VM's SSL certificate.  If you do not wish to verify the certificate, set this to "False"
+
+  Example:
+
+  ```sh
+  export CML_VERIFY_CERT=/etc/certs/ca_bundle.pem
+  ```
+
+- `CML_CONSOLE_COMMAND` - allows the user to customize the SSH command that is called.
+
+  This command will be passed the CML controller VM IP, the console path of the node, and the CML controller username (**note:** you may have to force a TTY allocation in your SSH command)
+
+  Example:
+
+  ```sh
+  export CML_SSH_COMMAND="myssh {user}@{host} {console}"
+  ```
+
+- `CML2_PLUS` - If set in the config or in the environment then virlutils will assume the server is a CML 2+ server and not try and automatically guess its version.  If omitted, then virutils will attempt to automatically determine the CML/VIRL server version
+
+  Example:
+
+  ```sh
+  export CML2_PLUS="yes"
+  ```
+
 
 
 ### Why so many choices??!?!
@@ -168,185 +191,205 @@ Assume the following directory structure...
 .
 ├── dev
 │   ├── .virlrc
-│   └── topology.virl
+│   └── topology.yaml
 ├── prod
 │   ├── .virlrc
-│   └── topology.virl
+│   └── topology.yaml
 └── test
     ├── .virlrc
-    └── topology.virl
+    └── topology.yaml
 
 ```
 
 This allows three major benefits.  
 
 1. you can easily use different credentials/servers for various environments
-2. you can specify environment specific details into your .virl files if you need to. we find
-this most useful in the context of out-of-band management networks/gateways and such.
+2. you can customize your lab .yaml files to include different tags, different node configurations, etc.
 3. you have a badass workflow..
 
-```
-(netdevops-demo) ➜  dev git:(test) ✗ virl ls  
+```sh
+$ cml ls  
+Labs on Server
+╒════════╤════════════════════════════════╤═════════════════════════╤═════════════════╤═════════╤═════════╤══════════════╕
+│ ID     │ Title                          │ Description             │ Status          │   Nodes │   Links │   Interfaces │
+╞════════╪════════════════════════════════╪═════════════════════════╪═════════════════╪═════════╪═════════╪══════════════╡
+|        |                                |                         |                 |         |         |              |
+╘════════╧════════════════════════════════╧═════════════════════════╧═════════════════╧═════════╧═════════╧══════════════╛
+$ cd ../test
+$ cml ls
+Labs on Server
+╒════════╤════════════════════════════════╤═════════════════════════╤═════════════════╤═════════╤═════════╤══════════════╕
+│ ID     │ Title                          │ Description             │ Status          │   Nodes │   Links │   Interfaces │
+╞════════╪════════════════════════════════╪═════════════════════════╪═════════════════╪═════════╪═════════╪══════════════╡
+│ 7c2cf3 │ Small Branch Test              │                         │ STARTED         │       9 │       8 │           23 │
+╘════════╧════════════════════════════════╧═════════════════════════╧═════════════════╧═════════╧═════════╧══════════════╛
+$ cd ../prod
+$ cml ls
 Running Simulations
-╒══════════════╤══════════╤════════════╤═══════════╕
-│ Simulation   │ Status   │ Launched   │ Expires   │
-╞══════════════╪══════════╪════════════╪═══════════╡
-╘══════════════╧══════════╧════════════╧═══════════╛
-(netdevops-demo) ➜  dev git:(test) ✗ cd ../test
-(netdevops-demo) ➜  test git:(test) ✗ virl ls
-Running Simulations
-╒═════════════════════╤══════════╤════════════════════════════╤═══════════╕
-│ Simulation          │ Status   │ Launched                   │ Expires   │
-╞═════════════════════╪══════════╪════════════════════════════╪═══════════╡
-│ test_default_hfMQHh │ ACTIVE   │ 2018-03-18T06:23:05.607199 │           │
-╘═════════════════════╧══════════╧════════════════════════════╧═══════════╛
-(netdevops-demo) ➜  test git:(test) ✗ cd ../prod
-(netdevops-demo) ➜  prod git:(test) ✗ virl ls
-Running Simulations
-╒═════════════════════╤══════════╤════════════════════════════╤═══════════╕
-│ Simulation          │ Status   │ Launched                   │ Expires   │
-╞═════════════════════╪══════════╪════════════════════════════╪═══════════╡
-│ prod_default_jbdKOW │ ACTIVE   │ 2018-03-18T06:18:04.635601 │           │
-╘═════════════════════╧══════════╧════════════════════════════╧═══════════╛
+╒════════╤════════════════════════════════╤═════════════════════════╤═════════════════╤═════════╤═════════╤══════════════╕
+│ ID     │ Title                          │ Description             │ Status          │   Nodes │   Links │   Interfaces │
+╞════════╪════════════════════════════════╪═════════════════════════╪═════════════════╪═════════╪═════════╪══════════════╡
+│ 7c2cf3 │ Small Branch Prod              │                         │ STARTED         │       9 │       8 │           23 │
+╘════════╧════════════════════════════════╧═════════════════════════╧═════════════════╧═════════╧═════════╧══════════════╛
 ```
 
 
 
 ## Usage / Workflows
 
-### Find and import VIRL files
-
-A collection of topologies is being maintained at https://github.com/virlfiles
-
-These repos can be searched from the command line.
-
-```
-$ virl search ios
-Displaying 1 Results For ios
-╒════════════════════════╤═════════╤═══════════════╕
-│ Name                   │   Stars │ Description   │
-╞════════════════════════╪═════════╪═══════════════╡
-│ virlfiles/2-ios-router │       0 │               │
-╘════════════════════════╧═════════╧═══════════════╛
-```
-
-Once you find an intersting topology, you can either `pull` the topology into your
-current environment or launch it directly
-
-pull topology to local directory (as topology.virl)
-```
-virl pull virlfiles/2-ios-router
-```
-
-launch the topology directly using `virl up`
-
-```
-virl up virlfiles/2-ios-router
-```
-
 ### Basic Workflow
 
 in the absence of better documentation, here's a sample workflow
 
 
-```
-(venv) KECORBIN-M-90Y9:virl_cli kecorbin$ virl ls
+```sh
+[venv]jclarke@jamahal:~/src/git/virlutils|cmlutils
+⇒  cml ls
+Labs on Server
+╒════════╤════════════════════════════════╤═════════════════════════╤═════════════════╤═════════╤═════════╤══════════════╕
+│ ID     │ Title                          │ Description             │ Status          │   Nodes │   Links │   Interfaces │
+╞════════╪════════════════════════════════╪═════════════════════════╪═════════════════╪═════════╪═════════╪══════════════╡
+│ 02f6c6 │ CCIE Enterprise Infrastructure │                         │ DEFINED_ON_CORE │      54 │      67 │          216 │
+├────────┼────────────────────────────────┼─────────────────────────┼─────────────────┼─────────┼─────────┼──────────────┤
+│ 332eab │ Branch Test                    │                         │ DEFINED_ON_CORE │       6 │       5 │           15 │
+├────────┼────────────────────────────────┼─────────────────────────┼─────────────────┼─────────┼─────────┼──────────────┤
+│ 7c2cf3 │ Small Branch                   │                         │ STOPPED         │       9 │       8 │           23 │
+├────────┼────────────────────────────────┼─────────────────────────┼─────────────────┼─────────┼─────────┼──────────────┤
+│ e5afaf │ Dynamic Split Tunnel           │                         │ STOPPED         │      10 │       9 │           36 │
+├────────┼────────────────────────────────┼─────────────────────────┼─────────────────┼─────────┼─────────┼──────────────┤
+│ 66defd │ Lab at Tue 14:45 PM            │                         │ STOPPED         │       2 │       1 │            6 │
+├────────┼────────────────────────────────┼─────────────────────────┼─────────────────┼─────────┼─────────┼──────────────┤
+│ bc518e │ Lab at Wed 21:39 PM            │                         │ STOPPED         │       9 │       1 │           26 │
+├────────┼────────────────────────────────┼─────────────────────────┼─────────────────┼─────────┼─────────┼──────────────┤
+│ 0e1bb2 │ DFN                            │ German Research Network │ DEFINED_ON_CORE │      51 │      80 │          211 │
+╘════════╧════════════════════════════════╧═════════════════════════╧═════════════════╧═════════╧═════════╧══════════════╛
 
-    Here is a list of all the running nodes
+[venv]jclarke@jamahal:~/src/git/virlutils|cmlutils
+⇒  cml id
+Small Branch (ID: 7c2cf3)
 
-╒═════════════════╤══════════╤════════════════════════════╤═══════════╕
-│ Simulation      │ Status   │ Launched                   │ Expires   │
-╞═════════════════╪══════════╪════════════════════════════╪═══════════╡
-│ topology-CoC73j │ ACTIVE   │ 2017-12-02T14:44:29.209647 │           │
-╘═════════════════╧══════════╧════════════════════════════╧═══════════╛
-(venv) KECORBIN-M-90Y9:virl_cli kecorbin$ virl up
-Launching Simulation from topology.virl
-virl_cli-GnMIWY
-
-
-(venv) KECORBIN-M-90Y9:virl_cli kecorbin$ virl ls
-
-    Here is a list of all the running nodes
-
-╒═════════════════╤══════════╤════════════════════════════╤═══════════╕
-│ Simulation      │ Status   │ Launched                   │ Expires   │
-╞═════════════════╪══════════╪════════════════════════════╪═══════════╡
-│ topology-CoC73j │ ACTIVE   │ 2017-12-02T14:44:29.209647 │           │
-├─────────────────┼──────────┼────────────────────────────┼───────────┤
-│ virl_cli-GnMIWY │ ACTIVE   │ 2017-12-08T07:35:46.444588 │           │
-╘═════════════════╧══════════╧════════════════════════════╧═══════════╛
-
-
-(venv) KECORBIN-M-90Y9:virl_cli kecorbin$ virl nodes virl_cli-GnMIWY
-
-    Here is a list of all the running nodes
-
-╒═══════════╤══════════╤══════════╤═════════════╤═══════════════════════╕
-│ Node      │ Type     │ State    │ Reachable   │ management-protocol   │
-╞═══════════╪══════════╪══════════╪═════════════╪═══════════════════════╡
-│ iosv-2    │ IOSv     │ BUILDING │ False       │ telnet                │
-├───────────┼──────────┼──────────┼─────────────┼───────────────────────┤
-│ ~mgmt-lxc │ mgmt-lxc │ ACTIVE   │ True        │ ssh                   │
-├───────────┼──────────┼──────────┼─────────────┼───────────────────────┤
-│ iosv-1    │ IOSv     │ ACTIVE   │ False       │ telnet                │
-╘═══════════╧══════════╧══════════╧═════════════╧═══════════════════════╛
+[venv]jclarke@jamahal:~/src/git/virlutils|cmlutils
+⇒  cml up
+Lab Small Branch (ID: 7c2cf3) is already set as the current lab
+Starting lab Small Branch (ID: 7c2cf3)
 
 
-(venv) KECORBIN-M-90Y9:virl_cli kecorbin$ virl console virl_cli-GnMIWY iosv-1
-iosv-1
-Attempting to connect to console of iosv-1
-Trying 10.94.140.41...
-Connected to mm-c1-6620.cisco.com.
+[venv]jclarke@jamahal:~/src/git/virlutils|cmlutils
+⇒  cml ls
+Labs on Server
+╒════════╤════════════════════════════════╤═════════════════════════╤═════════════════╤═════════╤═════════╤══════════════╕
+│ ID     │ Title                          │ Description             │ Status          │   Nodes │   Links │   Interfaces │
+╞════════╪════════════════════════════════╪═════════════════════════╪═════════════════╪═════════╪═════════╪══════════════╡
+│ 02f6c6 │ CCIE Enterprise Infrastructure │                         │ DEFINED_ON_CORE │      54 │      67 │          216 │
+├────────┼────────────────────────────────┼─────────────────────────┼─────────────────┼─────────┼─────────┼──────────────┤
+│ 332eab │ Branch Test                    │                         │ DEFINED_ON_CORE │       6 │       5 │           15 │
+├────────┼────────────────────────────────┼─────────────────────────┼─────────────────┼─────────┼─────────┼──────────────┤
+│ 7c2cf3 │ Small Branch                   │                         │ STARTED         │       9 │       8 │           23 │
+├────────┼────────────────────────────────┼─────────────────────────┼─────────────────┼─────────┼─────────┼──────────────┤
+│ e5afaf │ Dynamic Split Tunnel           │                         │ STOPPED         │      10 │       9 │           36 │
+├────────┼────────────────────────────────┼─────────────────────────┼─────────────────┼─────────┼─────────┼──────────────┤
+│ 66defd │ Lab at Tue 14:45 PM            │                         │ STOPPED         │       2 │       1 │            6 │
+├────────┼────────────────────────────────┼─────────────────────────┼─────────────────┼─────────┼─────────┼──────────────┤
+│ bc518e │ Lab at Wed 21:39 PM            │                         │ STOPPED         │       9 │       1 │           26 │
+├────────┼────────────────────────────────┼─────────────────────────┼─────────────────┼─────────┼─────────┼──────────────┤
+│ 0e1bb2 │ DFN                            │ German Research Network │ DEFINED_ON_CORE │      51 │      80 │          211 │
+╘════════╧════════════════════════════════╧═════════════════════════╧═════════════════╧═════════╧═════════╧══════════════╛
+
+
+[venv]jclarke@jamahal:~/src/git/virlutils|cmlutils
+⇒  cml nodes
+Here is a list of nodes in this lab
+╒══════╤════════════════╤════════════════════╤═════════╤══════════╤══════════════════╕
+│ ID   │ Label          │ Type               │ State   │ Wiped?   │ L3 Address(es)   │
+╞══════╪════════════════╪════════════════════╪═════════╪══════════╪══════════════════╡
+│ n0   │ branch-rtr     │ csr1000v           │ BOOTED  │ False    │ 192.168.10.219   │
+├──────┼────────────────┼────────────────────┼─────────┼──────────┼──────────────────┤
+│ n1   │ Internet       │ external_connector │ BOOTED  │ False    │                  │
+├──────┼────────────────┼────────────────────┼─────────┼──────────┼──────────────────┤
+│ n2   │ branch-sw      │ iosvl2             │ BOOTED  │ False    │                  │
+├──────┼────────────────┼────────────────────┼─────────┼──────────┼──────────────────┤
+│ n3   │ client-desktop │ desktop            │ BOOTED  │ False    │                  │
+├──────┼────────────────┼────────────────────┼─────────┼──────────┼──────────────────┤
+│ n4   │ WAN Link 1     │ wan_emulator       │ BOOTED  │ False    │                  │
+├──────┼────────────────┼────────────────────┼─────────┼──────────┼──────────────────┤
+│ n5   │ rtr-2          │ iosv               │ BOOTED  │ False    │                  │
+├──────┼────────────────┼────────────────────┼─────────┼──────────┼──────────────────┤
+│ n8   │ ext-conn-1     │ external_connector │ BOOTED  │ False    │                  │
+├──────┼────────────────┼────────────────────┼─────────┼──────────┼──────────────────┤
+│ n6   │ trex-0         │ trex               │ BOOTED  │ False    │                  │
+├──────┼────────────────┼────────────────────┼─────────┼──────────┼──────────────────┤
+│ n7   │ VLAN 10        │ external_connector │ BOOTED  │ False    │                  │
+╘══════╧════════════════╧════════════════════╧═════════╧══════════╧══════════════════╛
+
+
+[venv]jclarke@jamahal:~/src/git/virlutils|cmlutils
+⇒  cml console branch-rtr
+admin@192.168.10.214's password:
+Connecting to console for
+Connected to terminalserver.
 Escape character is '^]'.
 
-[OK] (elapsed time was 9 seconds)
-
-Building configuration...
-
-telnet> quit
-Connection closed.
+branch-rtr#
+branch-rtr#
+branch-rtr#
+branch-rtr#
 
 
-(venv) KECORBIN-M-90Y9:virl_cli kecorbin$ virl down virl_cli-GnMIWY
-Shutting Down Simulation virl_cli-GnMIWY.....SUCCESS
-(venv) KECORBIN-M-90Y9:virl_cli kecorbin$ virl ls
+[venv]jclarke@jamahal:~/src/git/virlutils|cmlutils
+⇒  cml down
+Shutting down lab Small Branch (ID: 7c2cf3).....
+SUCCESS
 
-    Here is a list of all the running nodes
+[venv]jclarke@jamahal:~/src/git/virlutils|cmlutils⚡
+⇒  cml ls
+Labs on Server
+╒════════╤════════════════════════════════╤═════════════════════════╤═════════════════╤═════════╤═════════╤══════════════╕
+│ ID     │ Title                          │ Description             │ Status          │   Nodes │   Links │   Interfaces │
+╞════════╪════════════════════════════════╪═════════════════════════╪═════════════════╪═════════╪═════════╪══════════════╡
+│ 02f6c6 │ CCIE Enterprise Infrastructure │                         │ DEFINED_ON_CORE │      54 │      67 │          216 │
+├────────┼────────────────────────────────┼─────────────────────────┼─────────────────┼─────────┼─────────┼──────────────┤
+│ 332eab │ Branch Test                    │                         │ DEFINED_ON_CORE │       6 │       5 │           15 │
+├────────┼────────────────────────────────┼─────────────────────────┼─────────────────┼─────────┼─────────┼──────────────┤
+│ 7c2cf3 │ Small Branch                   │                         │ STOPPED         │       9 │       8 │           23 │
+├────────┼────────────────────────────────┼─────────────────────────┼─────────────────┼─────────┼─────────┼──────────────┤
+│ e5afaf │ Dynamic Split Tunnel           │                         │ STOPPED         │      10 │       9 │           36 │
+├────────┼────────────────────────────────┼─────────────────────────┼─────────────────┼─────────┼─────────┼──────────────┤
+│ 66defd │ Lab at Tue 14:45 PM            │                         │ STOPPED         │       2 │       1 │            6 │
+├────────┼────────────────────────────────┼─────────────────────────┼─────────────────┼─────────┼─────────┼──────────────┤
+│ bc518e │ Lab at Wed 21:39 PM            │                         │ STOPPED         │       9 │       1 │           26 │
+├────────┼────────────────────────────────┼─────────────────────────┼─────────────────┼─────────┼─────────┼──────────────┤
+│ 0e1bb2 │ DFN                            │ German Research Network │ DEFINED_ON_CORE │      51 │      80 │          211 │
+╘════════╧════════════════════════════════╧═════════════════════════╧═════════════════╧═════════╧═════════╧══════════════╛
 
-╒═════════════════╤══════════╤════════════════════════════╤═══════════╕
-│ Simulation      │ Status   │ Launched                   │ Expires   │
-╞═════════════════╪══════════╪════════════════════════════╪═══════════╡
-│ topology-CoC73j │ ACTIVE   │ 2017-12-02T14:44:29.209647 │           │
-├─────────────────┼──────────┼────────────────────────────┼───────────┤
-│ virl_cli-GnMIWY │ STOP     │ 2017-12-08T07:35:46.444588 │           │
-╘═════════════════╧══════════╧════════════════════════════╧═══════════╛
+[venv]jclarke@jamahal:~/src/git/virlutils|cmlutils
+⇒  cml use --lab-name "Small Branch"
 
-(venv) KECORBIN-M-90Y9:virl_cli kecorbin$ virl ls
-
-    Here is a list of all the running nodes
-
-╒═════════════════╤══════════╤════════════════════════════╤═══════════╕
-│ Simulation      │ Status   │ Launched                   │ Expires   │
-╞═════════════════╪══════════╪════════════════════════════╪═══════════╡
-│ topology-CoC73j │ ACTIVE   │ 2017-12-02T14:44:29.209647 │           │
-╘═════════════════╧══════════╧════════════════════════════╧═══════════╛
+[venv]jclarke@jamahal:~/src/git/virlutils|cmlutils
+⇒  cml nodes
+Here is a list of nodes in this lab
+╒══════╤════════════════╤════════════════════╤═════════╤══════════╤══════════════════╕
+│ ID   │ Label          │ Type               │ State   │ Wiped?   │ L3 Address(es)   │
+╞══════╪════════════════╪════════════════════╪═════════╪══════════╪══════════════════╡
+│ n0   │ branch-rtr     │ csr1000v           │ STOPPED │ False    │                  │
+├──────┼────────────────┼────────────────────┼─────────┼──────────┼──────────────────┤
+│ n1   │ Internet       │ external_connector │ STOPPED │ False    │                  │
+├──────┼────────────────┼────────────────────┼─────────┼──────────┼──────────────────┤
+│ n2   │ branch-sw      │ iosvl2             │ STOPPED │ False    │                  │
+├──────┼────────────────┼────────────────────┼─────────┼──────────┼──────────────────┤
+│ n3   │ client-desktop │ desktop            │ STOPPED │ False    │                  │
+├──────┼────────────────┼────────────────────┼─────────┼──────────┼──────────────────┤
+│ n4   │ WAN Link 1     │ wan_emulator       │ STOPPED │ False    │                  │
+├──────┼────────────────┼────────────────────┼─────────┼──────────┼──────────────────┤
+│ n5   │ rtr-2          │ iosv               │ STOPPED │ False    │                  │
+├──────┼────────────────┼────────────────────┼─────────┼──────────┼──────────────────┤
+│ n8   │ ext-conn-1     │ external_connector │ STOPPED │ False    │                  │
+├──────┼────────────────┼────────────────────┼─────────┼──────────┼──────────────────┤
+│ n6   │ trex-0         │ trex               │ STOPPED │ False    │                  │
+├──────┼────────────────┼────────────────────┼─────────┼──────────┼──────────────────┤
+│ n7   │ VLAN 10        │ external_connector │ STOPPED │ False    │                  │
+╘══════╧════════════════╧════════════════════╧═════════╧══════════╧══════════════════╛
 
 ```
-
-### Localization
-
-virlutils provides a handy way of maintaining portability across multiple VIRL
-backend servers.  Any configuration that is stored in your `topology.virl` file
-can make use of some special tags which will be substituted at launch (`virl up`) for parameters
-unique to the virl host.  
-
-Currently the following tags are supported:
-
-* {{ gateway }} - will be replaced with the default gateway of the `flat` network
-* {{ flat1_gateway }} - will be replaced with the gateway IP address of the  `flat1` network
-* {{ dns_server }} - replaced with the dns_server configured on the VIRL host
-
-**NOTE:** these tags must be copied exactly (including surrounding braces+spaces)
 
 ### Inventory Generation
 
@@ -356,8 +399,8 @@ virlutils will generate inventories for various management systems
 
 quickly turn your simulations into a testbed file that can be used for pyATS/Genie
 
-```
-virl generate pyats
+```sh
+cml generate pyats
 ```
 
 #### Ansible Inventory Generation
@@ -365,8 +408,8 @@ virl generate pyats
 quickly turn your simulations into an inventory file that can be used to run your playbooks
 against.  Both INI and YAML(default) formats are supported by the tool.
 
-```
-Usage: virl generate ansible [OPTIONS] [ENV]
+```sh
+Usage: cml generate ansible [OPTIONS]
 
   generate ansible inventory
 
@@ -376,16 +419,16 @@ Options:
   --help              Show this message and exit.
 ```
 
-The ansible group membership can be controlled by adding additional extensions to your
-VIRL files.  
+The ansible group membership can be controlled by adding the "ansible_group" tag to nodes in your CML labs.  Multiple "ansible_group" tags can be assigned to a single node, and that node will be placed into each Ansible inventory group.
 
 
-```
-<node name="router1" type="SIMPLE" subtype="CSR1000v" location="361,129" ipv4="172.16.252.6" ipv6="2001:db8:b:0:1::2">
-  <extensions>
-    <entry key="ansible_group" type="String">mygroup</entry>
-  </extensions>
-</node>
+```yaml
+nodes:
+  - id: n0
+    label: branch-rtr
+    node_definition: csr1000v
+    tags:
+      - ansible_group=mygroup
 ```
 
 would result in the following inventory entry
@@ -395,13 +438,12 @@ all:
   children:
     mygroup:
       hosts:
-        router1:
-          ansible_host: 172.16.252.6
+        branch-router:
+          ansible_host: 192.0.2.1
 
 ```
 
-**NOTE:** if the ansible_group key is not specified for a node, that node will not be included during
-inventory generation.  
+**NOTE:** if the ansible_group tag is not specified for a node, that node will not be included during inventory generation.  Additionally, CML needs to know each node's management IP address before it will be placed into the inventory file 
 
 #### Cisco Network Services Orchestrator
 
@@ -410,26 +452,25 @@ You can add/update Network Services Orchestrator with your VIRL simulation.
 
 Usage
 
-```
-virl generate nso [OPTIONS] [ENV]
+```sh
+Usage: cml generate nso [OPTIONS]
 
   generate nso inventory
 
 Options:
   -o, --output TEXT           just dump the payload to file without sending
   --syncfrom / --no-syncfrom  Perform sync-from after updating devices
-  --syncto / --no-syncto      Perform sync-to afgter updating devices
   --help                      Show this message and exit.
 ```
 
 output
 
-```
+```sh
 Updating NSO....
 Enter NSO IP/Hostname: localhost
 Enter NSO username: admin
 Enter NSO password:
-Successfully added VIRL devices to NSO
+Successfully added CML devices to NSO
 
 ```
 
@@ -442,35 +483,48 @@ variables
 
 NSO Configuration Example
 
-```
+```sh
 export NSO_HOST=localhost
 export NSO_USERNAME=admin
 export NSO_PASSWORD=admin
 ```
 
-
-
 #### Tab Completions
 
 
-```
-➜  test git:(test) virl l<tab>
-logs  ls  
-
+```sh
+[venv]jclarke@jamahal:~/src/git/virlutils|cmlutils
+⇒  cml l<tab>
+license  ls
 ```
 
 You can activate VIRL autocompletions by executing the following command
 
-```
+```sh
 eval "$(_VIRL_COMPLETE=source virl)"
+```
+
+To do the same for the `cml` command, do the following
+
+```sh
+eval "$(_CML_COMPLETE=source cml)"
 ```
 
 zsh users may need to run the following prior
 
-```
+```sh
 autoload bashcompinit
 bashcompinit
 ```
+
+And then the following to properly enable completions for zsh
+
+```sh
+eval "$(_VIRL_COMPLETE=source_zsh virl)"
+eval "$(_CML_COMPLETE=source_zsh cml)"
+```
+
+
 
 ## Local Development
 

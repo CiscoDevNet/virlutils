@@ -14,6 +14,6 @@ PyYAML==5.3.1
 requests==2.23.0
 six==1.14.0
 tabulate==0.8.7
-urllib3==1.25.8
-virlutils==0.8.8
+urllib3==1.25.9
+virl2-client==2.0.0b5
 Werkzeug==1.0.1

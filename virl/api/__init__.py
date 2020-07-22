@@ -1,1 +1,2 @@
-from .api import VIRLServer # noqa
+from .api import VIRLServer  # noqa
+from .cml import CachedLab  # noqa

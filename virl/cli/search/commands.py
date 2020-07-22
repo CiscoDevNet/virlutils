@@ -4,13 +4,14 @@ from virl.cli.views.search import repo_table
 
 
 @click.command()
-@click.argument('query', required=False)
+@click.argument("query", required=False)
+@click.option("--org", default="virlfiles", required=False, help="GitHub organization to search (default: virlfiles)")
 def search(query=None, **kwargs):
     """
-    lists virl topologies available via github
+    list topologies available via github
     """
 
-    repos = get_repos(query=query)
+    repos = get_repos(org=kwargs["org"], query=query)
     if query is not None:
         click.secho("Displaying {} Results For {}".format(len(repos), query))
     else:

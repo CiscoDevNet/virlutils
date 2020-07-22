@@ -11,12 +11,11 @@ VERSION = "0.0.1"
 # prerequisite: setuptools
 # http://pypi.python.org/pypi/setuptools
 
-REQUIRES = [
-    "virlutils"
-]
+REQUIRES = ["virlutils"]
+
 
 def readme():
-    with io.open('README.md', encoding='utf-8') as f:
+    with io.open("README.md", encoding="utf-8") as f:
         return f.read()
 
 
