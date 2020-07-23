@@ -25,9 +25,10 @@ def ls(all, **kwargs):
     if all:
         cached_labs = []
         cache_root = get_cache_root()
-        for f in os.listdir(cache_root):
-            lab_id = f
-            cached_labs.append(CachedLab(lab_id, cache_root + "/" + f))
+        if os.path.isdir(cache_root):
+            for f in os.listdir(cache_root):
+                lab_id = f
+                cached_labs.append(CachedLab(lab_id, cache_root + "/" + f))
 
     lab_list_table(labs, cached_labs)
 
