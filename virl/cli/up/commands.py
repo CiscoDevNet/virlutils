@@ -124,8 +124,9 @@ def up(repo=None, provision=False, **kwargs):
         elif not lab:
             # try to pull from virlfiles
             if repo and os.path.basename(fname) == "topology.yaml":
-                call([get_command(), "pull", repo])
-                exit(call([get_command(), "up"]))
+                rc = call([get_command(), "pull", repo])
+                if rc == 0:
+                    exit(call([get_command(), "up"]))
 
         if lab:
             if check_lab_active(lab):
