@@ -5,7 +5,7 @@ from virl.helpers import get_current_lab, get_cml_client, safe_join_existing_lab
 
 
 @click.command()
-def id():
+def lid():
     """
     get the current lab title and ID
     """
@@ -28,7 +28,7 @@ def id():
 
 
 @click.command()
-def id1():
+def sid():
     """
     gets sim id for local environment
     """

@@ -24,7 +24,7 @@ from .search.commands import search  # noqa: F401
 from .swagger.commands import swagger1  # noqa: F401
 from .uwm.commands import uwm1  # noqa: F401
 from .viz.commands import viz1  # noqa: F401
-from .id.commands import id, id1  # noqa: F401
+from .id.commands import lid, sid  # noqa: F401
 from .version.commands import version, version1  # noqa: F401
 from .flavors import flavors1  # noqa: F401
 from .definitions import definitions  # noqa: F401
@@ -121,6 +121,7 @@ if __server_ver == "1":
     virl.add_command(logs1, name="logs")
     virl.add_command(swagger1, name="swagger")
     virl.add_command(viz1, name="viz")
+    virl.add_command(sid, name="id")
 else:
     virl.add_command(cockpit)
     virl.add_command(definitions)
@@ -130,6 +131,7 @@ else:
     virl.add_command(ui)
     virl.add_command(license)
     virl.add_command(rm)
+    virl.add_command(lid, name="id")
 
 virl.add_command(search)
 
@@ -147,7 +149,6 @@ __sub_commands = [
     "start",
     "stop",
     "pull",
-    "id",
     "version",
 ]
 
