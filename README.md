@@ -22,6 +22,7 @@ Options:
 Commands:
   clear        clear the current lab ID
   cockpit      opens the Cockpit UI
+  command      send a command or config to a node (requires pyATS)
   console      console for node
   definitions  manage image and node definitions
   down         stop a lab
@@ -452,7 +453,7 @@ nodes:
 
 would result in the following inventory entry
 
-```
+```yaml
 all:
   children:
     mygroup:
