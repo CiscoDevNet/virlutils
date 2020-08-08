@@ -403,6 +403,25 @@ quickly turn your simulations into a testbed file that can be used for pyATS/Gen
 cml generate pyats
 ```
 
+#### Command and Config Execution
+
+Using the same pyATS framework, `virlutils` can execute CLI EXEC-level (e.g., "show") commands as well as configuration commands on nodes within a lab.  These nodes do not have to be externally reachable or have any IP connectivity.  This is a great way to test operational aspects of a completely isolated topology.
+
+```sh
+[venv]jclarke@jamahal:~/src/git/virlutils|cmlutils
+⇒ cml command "branch-rtr" "show version"
+Cisco IOS XE Software, Version 16.11.01b
+Cisco IOS Software [Gibraltar], Virtual XE Software (X86_64_LINUX_IOSD-UNIVERSALK9-M), Version 16.11.1b, RELEASE SOFTWARE (fc2)
+Technical Support: http://www.cisco.com/techsupport
+...
+```
+
+```sh
+[venv]jclarke@jamahal:~/src/git/virlutils|cmlutils
+⇒ cml command --config "branch-rtr" "snmp-server community notpublic"
+
+```
+
 #### Ansible Inventory Generation
 
 quickly turn your simulations into an inventory file that can be used to run your playbooks
