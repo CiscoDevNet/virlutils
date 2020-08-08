@@ -35,6 +35,7 @@ from .clear.commands import clear  # noqa: F401
 from .ui.commands import ui  # noqa: F401
 from .license import license  # noqa: F401
 from .rm.commands import rm  # noqa: F401
+from .command.commands import command  # noqa: F401
 
 
 class CatchAllExceptions(click.Group):
@@ -132,6 +133,7 @@ else:
     virl.add_command(license)
     virl.add_command(rm)
     virl.add_command(lid, name="id")
+    virl.add_command(command)
 
 virl.add_command(search)
 
