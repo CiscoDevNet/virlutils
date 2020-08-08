@@ -340,7 +340,7 @@ branch-rtr#
 Shutting down lab Small Branch (ID: 7c2cf3).....
 SUCCESS
 
-[venv]jclarke@jamahal:~/src/git/virlutils|cmlutils⚡
+[venv]jclarke@jamahal:~/src/git/virlutils|cmlutils
 ⇒  cml ls
 Labs on Server
 ╒════════╤════════════════════════════════╤═════════════════════════╤═════════════════╤═════════╤═════════╤══════════════╕
@@ -405,7 +405,7 @@ cml generate pyats
 
 #### Command and Config Execution
 
-Using the same pyATS framework, `virlutils` can execute CLI EXEC-level (e.g., "show") commands as well as configuration commands on nodes within a lab.  These nodes do not have to be externally reachable or have any IP connectivity.  This is a great way to test operational aspects of a completely isolated topology.
+Using the same pyATS framework, `virlutils` can execute CLI EXEC-level (e.g., "show") commands as well as configuration commands on nodes within a lab.  These nodes do not have to be externally reachable or have any IP connectivity.  This is a great way to test operational aspects of a completely isolated topology.  Before using the `command` command you must install pyATS.  You can install pyATS by running `pip install pyats`.
 
 ```sh
 [venv]jclarke@jamahal:~/src/git/virlutils|cmlutils
