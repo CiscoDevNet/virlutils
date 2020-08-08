@@ -38,6 +38,11 @@ def sim_info(virl_xml, roster=None, interfaces=None, protocol="telnet"):
                 entry["prefix"] = "ios-id"
                 entry["ned"] = "cisco-ios"
                 entry["ns"] = "urn:ios-id"
+            elif "ASA" in type:
+                entry["prefix"] = "asa-id"
+                entry["ned"] = "cisco-asa"
+                entry["ns"] = "http://cisco.com/ned/asa-id"
+                entry["protocol"] = "ssh"
         except KeyError:
             pass
 
@@ -83,6 +88,10 @@ def lab_info(lab, server, protocol):
                 entry["prefix"] = "ios-id"
                 entry["ned"] = "cisco-ios"
                 entry["ns"] = "urn:ios-id"
+            elif "asa" in type:
+                entry["prefix"] = "asa-id"
+                entry["ned"] = "cisco-asa"
+                entry["ns"] = "http://cisco.com/ned/asa-id"
         except KeyError:
             pass
 
@@ -131,7 +140,7 @@ def nso_payload_generator1(env, virl_data, roster, interfaces, style="xml", prot
         raise NotImplementedError
 
 
-def nso_payload_generator(lab, server, style="xml", protocol="telnet"):
+def nso_payload_generator(lab, server, style="xml", protocol="ssh"):
     """
     given a lab produces a payload file suitable for
     use with network services orchestrator
