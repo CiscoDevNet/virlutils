@@ -27,21 +27,21 @@ def sim_info(virl_xml, roster=None, interfaces=None, protocol="telnet"):
         try:
             type = device["NodeSubtype"]
             if "NX" in type:
-                entry["prefix"] = "cisco-nx-id"
-                entry["ned"] = "cisco-nx"
-                entry["ns"] = "http://tail-f.com/ned/cisco-nx-id"
+                entry["prefix"] = "{{ NX_PREFIX }}"
+                entry["ned"] = "{{ NX_NED_ID }}"
+                entry["ns"] = "{{ NX_NAMESPACE }}"
             elif "XR" in type:
-                entry["prefix"] = "cisco-ios-xr-id"
-                entry["ned"] = "cisco-ios-xr"
-                entry["ns"] = "http://tail-f.com/ned/cisco-ios-xr-id"
+                entry["prefix"] = "{{ XR_PREFIX }}"
+                entry["ned"] = "{{ XR_NED_ID }}"
+                entry["ns"] = "{{ XR_NAMESPACE }}"
             elif "CSR" in type or "IOS" in type:
-                entry["prefix"] = "ios-id"
-                entry["ned"] = "cisco-ios"
-                entry["ns"] = "urn:ios-id"
+                entry["prefix"] = "{{ IOS_PREFIX }}"
+                entry["ned"] = "{{ IOS_NED_ID }}"
+                entry["ns"] = "{{ IOS_NAMESPACE }}"
             elif "ASA" in type:
-                entry["prefix"] = "asa-id"
-                entry["ned"] = "cisco-asa"
-                entry["ns"] = "http://cisco.com/ned/asa-id"
+                entry["prefix"] = "{{ ASA_PREFIX }}"
+                entry["ned"] = "{{ ASA_NED_ID }}"
+                entry["ns"] = "{{ ASA_NAMESPACE }}"
                 entry["protocol"] = "ssh"
         except KeyError:
             pass

@@ -78,7 +78,22 @@ class NSO(object):
             "cisco-nx-": "NX",
             "cisco-asa-": "ASA",
         }
-        ned_vars = {}
+        # Set soome "sane" defaults.  These are at least the same as what the older
+        # virlutils had.
+        ned_vars = {
+            "NX_PREFIX": "cisco-nx-id",
+            "NX_NED_ID": "cisco-nx",
+            "NX_NAMESPACE": "http://tail-f.com/ned/cisco-nx-id",
+            "XR_PREFIX": "cisco-ios-xr-id",
+            "XR_NED_ID": "cisco-ios-xr",
+            "XR_NAMESPACE": "http://tail-f.com/ned/cisco-ios-xr-id",
+            "IOS_PREFIX": "ios-id",
+            "IOS_NED_ID": "cisco-ios",
+            "IOS_NAMESPACE": "urn:ios-id",
+            "ASA_PREFIX": "asa-id",
+            "ASA_NED_ID": "cisco-asa",
+            "ASA_NAMESPACE": "http://cisco.com/ned/asa-id",
+        }
 
         response = requests.request("GET", murl, auth=(self.__nso_username, self.__nso_password), headers=headers)
         modules = response.json()
