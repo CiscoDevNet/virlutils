@@ -12,7 +12,7 @@ except ImportError:
 
 class Tests(BaseTest):
 
-    @patch('virl.api.nso.get_credentials',
+    @patch('virl.api.nso.NSO.__get_credentials',
            return_value=('localhost', 'admin', 'admin'))
     def test_virl_generate_nso(self, prompt_responses):
         with requests_mock.mock() as m:
