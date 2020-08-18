@@ -81,6 +81,8 @@ def find_virl():
     while pwd != root:
         if platform.system() == "Windows":
             lookin = "\\".join(pwd)
+            if lookin == "":
+                lookin = "\\"
         else:
             lookin = os.path.join(os.sep, *pwd)
         if ".virl" in os.listdir(lookin):
