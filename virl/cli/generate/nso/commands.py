@@ -4,7 +4,7 @@ from virl.cli.views import sync_table
 from virl import helpers
 from virl.helpers import get_cml_client, safe_join_existing_lab, get_current_lab
 from virl.generators import nso_payload_generator1, nso_payload_generator
-from virl.api.nso import update_devices, perform_sync_from
+from virl.api.nso import NSO
 
 
 @click.command()
@@ -37,14 +37,15 @@ def nso(syncfrom, **kwargs):
                         fd.write(inv)
                 else:
                     click.secho("Updating NSO....")
-                    nso_response = update_devices(inv)
+                    nso_obj = NSO()
+                    nso_response = nso_obj.update_devices(inv)
                     if nso_response.ok:
                         click.secho("Successfully added CML devices to NSO")
                     else:
                         click.secho("Error updating NSO: ", fg="red")
                         click.secho(nso_response.text)
                     if syncfrom:
-                        resp = perform_sync_from()
+                        resp = nso_obj.perform_sync_from()
                         sync_table(resp.json())
             else:
                 click.secho("Failed to get inventory data", fg="red")
@@ -93,14 +94,15 @@ def nso1(env, syncfrom, **kwargs):
                 payload_file.write(payload)
         else:
             click.secho("Updating NSO....")
-            nso_response = update_devices(payload)
+            nso_obj = NSO()
+            nso_response = nso_obj.update_devices(payload)
             if nso_response.ok:
                 click.secho("Successfully added VIRL devices to NSO")
             else:
                 click.secho("Error updating NSO: ", fg="red")
                 click.secho(nso_response.text)
             if syncfrom:
-                resp = perform_sync_from()
+                resp = nso_obj.perform_sync_from()
                 sync_table(resp.json())
 
     else:
