@@ -11,6 +11,9 @@ def setup_environ():
     os.environ["VIRL_HOST"] = "localhost"
     os.environ["VIRL_USERNAME"] = "guest"
     os.environ["VIRL_PASSWORD"] = "guest"
+    os.environ["NSO_HOST"] = "localhost"
+    os.environ["NSO_USERNAME"] = "admin"
+    os.environ["NSO_PASSWORD"] = "admin"
 
 
 setup_environ()
