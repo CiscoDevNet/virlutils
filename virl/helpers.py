@@ -201,7 +201,7 @@ def check_lab_cache(lab_id):
         if os.path.exists(fname):
             return fname
     except Exception:
-        return None
+        pass
 
     return None
 
