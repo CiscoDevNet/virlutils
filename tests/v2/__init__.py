@@ -61,6 +61,11 @@ class BaseCMLTest(unittest.TestCase):
 
         return virl
 
+    def tearDown(self):
+        for mid, m in sys.modules.copy().items():
+            if mid.startswith("virl"):
+                del sys.modules[mid]
+
     def get_api_path(self, path):
         return "https://localhost/api/v0/{}".format(path)
 
