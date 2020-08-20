@@ -19,7 +19,7 @@ class Tests(BaseTest):
 
         try:
             os.remove('.virl/default/id')
-            os.system('cp tests/static/fake_repo_topology.virl topology.virl')
+            os.system('cp tests/v1/static/fake_repo_topology.virl topology.virl')
 
         except OSError:
             pass

@@ -224,7 +224,7 @@ class MockVIRLServer:
     @classmethod
     def export(cls):
 
-        with open('tests/static/test_virl_data', 'r') as fh:
+        with open('tests/v1/static/test_virl_data', 'r') as fh:
             virl_data = fh.read()
         return virl_data
 
