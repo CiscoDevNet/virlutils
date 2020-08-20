@@ -54,17 +54,10 @@ class BaseCMLTest(unittest.TestCase):
         # This bit of hackery is done since coverage loads all modules into the same
         # namespace.  We need to reload our virl module to get this to recognize
         # the new environment.
-        for mid, m in sys.modules.copy().items():
-            if mid.startswith("virl"):
-                del sys.modules[mid]
+        del sys.modules["virl.cli.main"]
         from virl.cli.main import virl
 
         return virl
-
-    def tearDown(self):
-        for mid, m in sys.modules.copy().items():
-            if mid.startswith("virl"):
-                del sys.modules[mid]
 
     def get_api_path(self, path):
         return "https://localhost/api/v0/{}".format(path)
