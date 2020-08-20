@@ -1,6 +1,5 @@
 from . import BaseCMLTest
 from click.testing import CliRunner
-import sys
 
 
 class TestCMLHelp(BaseCMLTest):

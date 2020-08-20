@@ -1,5 +1,4 @@
 from . import BaseCMLTest
-from .mocks.api import MockCMLServer
 from click.testing import CliRunner
 import requests_mock
 
