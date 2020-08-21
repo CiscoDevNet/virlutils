@@ -230,8 +230,18 @@ class MockCMLServer(object):
 
     @staticmethod
     def print_req(req, ctx):
-        print("URL: {}, method = {}, params = {}".format(req.url, req.method, req.path))
-        return "BOGUS"
+        s = "!!!URL: {}, method = {}, params = {}".format(req.url, req.method, req.path)
+        print(s)
+        return s
+
+    @staticmethod
+    def get_lab_element_state(req, ctx):
+        response = {
+            "nodes": {"n0": "BOOTED", "n1": "BOOTED"},
+            "links": {"l0": "STARTED"},
+            "interfaces": {"i0": "STARTED", "i1": "STARTED", "i2": "STARTED", "i3": "STARTED", "i4": "STARTED", "i5": "STARTED"},
+        }
+        return response
 
     @staticmethod
     def get_topology(req, ctx):
