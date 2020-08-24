@@ -216,6 +216,98 @@ class MockCMLServer(object):
         return response
 
     @staticmethod
+    def download_alt_lab(req, ctx):
+        response = """
+        lab:
+          description: ''
+          notes: ''
+          timestamp: 1595337039.0416706
+          title: Other Lab
+          version: 0.0.3
+        nodes:
+          - id: n0
+            label: nxos9000-0
+            node_definition: nxosv9000
+            x: -450
+            y: -50
+            configuration: hostname inserthostname_here
+            image_definition: nxosv9000-9-2-3
+            tags: []
+            interfaces:
+              - id: i0
+                label: Loopback0
+                type: loopback
+              - id: i1
+                slot: 0
+                label: mgmt0
+                type: physical
+              - id: i2
+                slot: 1
+                label: Ethernet1/1
+                type: physical
+              - id: i3
+                slot: 2
+                label: Ethernet1/2
+                type: physical
+              - id: i4
+                slot: 3
+                label: Ethernet1/3
+                type: physical
+          - id: n1
+            label: xr9kv-0
+            node_definition: iosxrv9000
+            x: -150
+            y: -50
+            configuration: |-
+              hostname changeme
+              username cisco
+              group root-lr
+              group cisco-support
+              password cisco
+              !
+              username admin
+              group root-lr
+              group cisco-support
+              password admin
+              !
+              username lab
+              group root-lr
+              group cisco-support
+              password lab
+              !
+              end
+            image_definition: iosxrv9000-6-6-2
+            tags: []
+            interfaces:
+              - id: i0
+                label: Loopback0
+                type: loopback
+              - id: i1
+                slot: 0
+                label: MgmtEth0/RP0/CPU0/0
+                type: physical
+              - id: i2
+                slot: 1
+                label: donotuse1
+                type: physical
+              - id: i3
+                slot: 2
+                label: donotuse2
+                type: physical
+              - id: i4
+                slot: 3
+                label: GigabitEthernet0/0/0/0
+                type: physical
+        links:
+          - id: l0
+            i1: i1
+            n1: n0
+            i2: i1
+            n2: n1
+        """
+        return response
+
+    @staticmethod
     def get_sys_info(req, ctx):
         response = {"version": "2.1.0-b89.f8805559", "ready": True}
         return response
@@ -303,6 +395,7 @@ class MockCMLServer(object):
         }
         return response
 
+    @staticmethod
     def get_alt_topology(req, ctx):
         response = {
             "nodes": [
@@ -357,7 +450,7 @@ class MockCMLServer(object):
                 {"id": "i9", "node": "n1", "data": {"label": "GigabitEthernet0/0/0/0", "slot": 3, "state": "STOPPED", "type": "physical"}},
             ],
             "lab_notes": "",
-            "lab_title": "Joe's Lab",
+            "lab_title": "Other Lab",
             "lab_description": "",
             "state": "STOPPED",
             "created_timestamp": 1595337039.0416706,
