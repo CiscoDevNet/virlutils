@@ -22,6 +22,16 @@ class TestCMLUp(BaseCMLTest):
         m.put(self.get_api_path("labs/{}/start".format(self.get_up_id())), json="STARTED")
         m.put(self.get_api_path("labs/{}/start".format(self.get_alt_id())), json="STARTED")
         m.get(self.get_api_path("labs/{}/download".format(self.get_up_id())), text=MockGitHub.get_topology)
+        m.get(self.get_api_path("labs/{}/lab_element_state".format(self.get_up_id())), json=TestCMLUp.get_fake_element_state)
+
+    @staticmethod
+    def get_fake_element_state(req, ctx):
+        response = {
+            "nodes": {"n0": "BOOTED", "n1": "BOOTED"},
+            "links": {"l0": "STARTED"},
+            "interfaces": {"i0": "STARTED", "i1": "STARTED", "i2": "STARTED", "i3": "STARTED", "i4": "STARTED", "i5": "STARTED"},
+        }
+        return response
 
     @staticmethod
     def get_fake_topology(req, ctx):
@@ -88,7 +98,7 @@ class TestCMLUp(BaseCMLTest):
 
         try:
             os.remove(".virl/current_cml_lab")
-            os.system("cp tests/v2/static/fake_repo_topology.yaml topology.yaml")
+            os.system("cp -f tests/v2/static/fake_repo_topology.yaml topology.yaml")
 
         except OSError:
             pass
@@ -126,10 +136,94 @@ class TestCMLUp(BaseCMLTest):
             self.assertTrue(os.path.basename(os.readlink(".virl/current_cml_lab")) == self.get_alt_id())
             self.assertTrue(os.path.isfile(os.readlink(".virl/current_cml_lab")))
 
+    def test_cml_up_bad_yaml(self):
+        try:
+            os.system("cp tests/v2/static/fake_repo_bad_topology.yaml topology.yaml")
+        except OSError:
+            pass
+
+        with requests_mock.Mocker() as m:
+            # Mock the request to return what we expect from the API.
+            self.setup_mocks(m)
+            virl = self.get_virl()
+            runner = CliRunner()
+            result = runner.invoke(virl, ["up"])
+            self.assertEqual(1, result.exit_code)
+            self.assertIn("does not appear to be a YAML-formatted CML topology file", result.output)
+
+    def test_cml_up_provision(self):
+        with requests_mock.Mocker() as m:
+            # Mock the request to return what we expect from the API.
+            self.setup_mocks(m)
+            virl = self.get_virl()
+            runner = CliRunner()
+            result = runner.invoke(virl, ["up", "--provision"])
+            self.assertEqual(0, result.exit_code)
+            self.assertIn("Waiting for all nodes to be online", result.output)
+
+    def test_cml_up_after_use(self):
+        super().setUp()
+        with requests_mock.Mocker() as m:
+            # Mock the request to return what we expect from the API.
+            self.setup_mocks(m)
+            virl = self.get_virl()
+            runner = CliRunner()
+            result = runner.invoke(virl, ["up"])
+            self.assertEqual(0, result.exit_code)
+            self.assertIn(
+                "Lab {} (ID: {}) is already set as the current lab".format(self.get_test_title(), self.get_test_id()), result.output
+            )
+
+    def test_cml_up_running_lab(self):
+        with requests_mock.Mocker() as m:
+            # Mock the request to return what we expect from the API.
+            self.setup_mocks(m)
+            virl = self.get_virl()
+            runner = CliRunner()
+            result = runner.invoke(virl, ["up", "--id", self.get_test_id()])
+            self.assertEqual(0, result.exit_code)
+            self.assertIn("Lab is already running (ID: {}, Title: {})".format(self.get_test_id(), self.get_test_title()), result.output)
+
     @patch("virl.cli.up.commands.call", auto_spec=False)
+    def test_cml_up_no_lab(self, call_mock):
+        try:
+            os.remove("topology.yaml")
+        except OSError:
+            pass
+
+        with requests_mock.Mocker() as m:
+            # Mock the request to return what we expect from the API.
+            self.setup_mocks(m)
+            virl = self.get_virl()
+            runner = CliRunner()
+            result = runner.invoke(virl, ["up"])
+            self.assertEqual(1, result.exit_code)
+            self.assertIn("Could not find a lab to start", result.output)
+
+    def test_cml_up_bogus_current_lab(self):
+        src_dir = os.path.realpath(".virl")
+        with open(".virl/cached_cml_labs/123456", "w") as fd:
+            fd.write("lab: bogus\n")
+
+        os.symlink("{}/cached_cml_labs/123456".format(src_dir), "{}/current_cml_lab".format(src_dir))
+        with requests_mock.Mocker() as m:
+            # Mock the request to return what we expect from the API.
+            self.setup_mocks(m)
+            virl = self.get_virl()
+            runner = CliRunner()
+            result = runner.invoke(virl, ["up"])
+            os.remove(".virl/cached_cml_labs/123456")
+            self.assertIn("Current lab is already set to {}, but that lab is not on server".format("123456"), result.output)
+
+    @patch("virl.cli.up.commands.call", auto_spec=False, return_value=0)
     def test_cml_up_from_repo(self, call_mock):
         try:
             os.remove("topology.yaml")
+        except OSError:
+            pass
+
+        try:
+            os.remove("topology.virl")
         except OSError:
             pass
 
@@ -140,4 +234,6 @@ class TestCMLUp(BaseCMLTest):
             m.get(topo_url, json=MockGitHub.get_topology)
             virl = self.get_virl()
             runner = CliRunner()
-            runner.invoke(virl, ["up", "foo/bar"])
+            result = runner.invoke(virl, ["up", "foo/bar"])
+            # The "call" function was called twice
+            self.assertEqual(2, len(call_mock.mock_calls))

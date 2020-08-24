@@ -41,6 +41,10 @@ def debug_on(*exceptions):
 
 class BaseCMLTest(unittest.TestCase):
     def setUp(self):
+        try:
+            os.makedirs(".virl")
+        except OSError:
+            pass
         # Only doing this because we don't have a better way of controlling
         # injection of VIRL_HOST
         virl = self.get_virl()
