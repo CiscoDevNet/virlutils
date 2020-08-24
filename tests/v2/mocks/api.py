@@ -302,3 +302,6 @@ class MockCMLServer(object):
             "version": "0.0.3",
         }
         return response
+
+    def get_lab_state(req, ctx):
+        return "STARTED"

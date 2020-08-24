@@ -1,5 +1,4 @@
 from . import BaseCMLTest
-from .mocks import MockCMLServer
 from click.testing import CliRunner
 import requests_mock
 
@@ -13,7 +12,7 @@ class CMLConsoleTests(BaseCMLTest):
     def test_cml_console_display(self):
         with requests_mock.Mocker() as m:
             # Mock the request to return what we expect from the API.
-            self.setup_basic_mocks(m)
+            self.setup_mocks(m)
             virl = self.get_virl()
             runner = CliRunner()
             result = runner.invoke(virl, ["console", "rtr-1", "--display"])
@@ -23,7 +22,7 @@ class CMLConsoleTests(BaseCMLTest):
     def test_cml_console_connect(self, call_mock):
         with requests_mock.Mocker() as m:
             # Mock the request to return what we expect from the API.
-            self.setup_basic_mocks(m)
+            self.setup_mocks(m)
             virl = self.get_virl()
             runner = CliRunner()
             runner.invoke(virl, ["console", "rtr-1"])

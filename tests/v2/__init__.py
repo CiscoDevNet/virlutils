@@ -7,7 +7,6 @@ import sys
 import traceback
 import pdb
 import requests_mock
-import re
 
 
 def setup_cml_environ():
@@ -47,7 +46,7 @@ class BaseCMLTest(unittest.TestCase):
         virl = self.get_virl()
         runner = CliRunner()
         with requests_mock.Mocker() as m:
-            self.setup_basic_mocks(m)
+            self.setup_mocks(m)
             runner.invoke(virl, ["use", self.get_test_title()])
 
     def get_virl(self):
@@ -58,6 +57,7 @@ class BaseCMLTest(unittest.TestCase):
             del sys.modules["virl.cli.main"]
         except KeyError:
             pass
+
         setup_cml_environ()
         from virl.cli.main import virl
 
@@ -72,7 +72,7 @@ class BaseCMLTest(unittest.TestCase):
     def get_test_title(self):
         return "Mock Test"
 
-    def setup_basic_mocks(self, m):
+    def setup_mocks(self, m):
         m.get(self.get_api_path("labs"), json=MockCMLServer.get_labs)
         m.get(self.get_api_path("populate_lab_tiles"), json=MockCMLServer.get_lab_tiles)
         m.get(self.get_api_path("labs/{}/download".format(self.get_test_id())), text=MockCMLServer.download_lab)
@@ -83,6 +83,7 @@ class BaseCMLTest(unittest.TestCase):
         m.get(self.get_api_path("system_information"), json=MockCMLServer.get_sys_info)
         m.get(self.get_api_path("authok"), text=MockCMLServer.auth_ok)
         m.post(self.get_api_path("authenticate"), text=MockCMLServer.authenticate)
+        m.get(self.get_api_path("labs/{}/state".format(self.get_test_id())), json=MockCMLServer.get_lab_state)
 
     def add_debug_mock(self, m):
-        m.get(re.compile("https://localhost"), text=MockCMLServer.print_req)
+        m.register_uri(requests_mock.ANY, requests_mock.ANY, text=MockCMLServer.print_req)

@@ -8,7 +8,7 @@ class CMLIdTest(BaseCMLTest):
         virl = self.get_virl()
         with requests_mock.Mocker() as m:
             # Mock the request to return what we expect from the API.
-            self.setup_basic_mocks(m)
+            self.setup_mocks(m)
             runner = CliRunner()
             result = runner.invoke(virl, ["id"])
-            self.assertEqual("Mock Test (ID: 5f0d96)\n", result.output)
+            self.assertEqual("{} (ID: {})\n".format(self.get_test_title(), self.get_test_id()), result.output)
