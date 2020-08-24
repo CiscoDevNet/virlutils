@@ -28,7 +28,6 @@ class Tests(BaseTest):
 
         try:
             os.remove('.virl/default/id')
-            os.remove('topology.virl')
         except OSError:
             pass
 
