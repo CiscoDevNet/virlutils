@@ -303,5 +303,65 @@ class MockCMLServer(object):
         }
         return response
 
-    def get_lab_state(req, ctx):
-        return "STARTED"
+    def get_alt_topology(req, ctx):
+        response = {
+            "nodes": [
+                {
+                    "id": "n0",
+                    "data": {
+                        "node_definition": "nxosv9000",
+                        "image_definition": "nxosv9000-9-2-3",
+                        "label": "nxos9000-0",
+                        "configuration": "hostname inserthostname_here",
+                        "x": -450,
+                        "y": -50,
+                        "state": "STOPPED",
+                        "ram": None,
+                        "cpus": None,
+                        "cpu_limit": None,
+                        "data_volume": None,
+                        "boot_disk_size": None,
+                        "tags": [],
+                    },
+                },
+                {
+                    "id": "n1",
+                    "data": {
+                        "node_definition": "iosxrv9000",
+                        "image_definition": "iosxrv9000-6-6-2",
+                        "label": "xr9kv-0",
+                        "configuration": "hostname changeme\n",
+                        "x": -150,
+                        "y": -50,
+                        "state": "STOPPED",
+                        "ram": None,
+                        "cpus": None,
+                        "cpu_limit": None,
+                        "data_volume": None,
+                        "boot_disk_size": None,
+                        "tags": [],
+                    },
+                },
+            ],
+            "links": [{"id": "l0", "interface_a": "i1", "interface_b": "i6", "data": {"state": "STOPPED"}}],
+            "interfaces": [
+                {"id": "i0", "node": "n0", "data": {"label": "Loopback0", "slot": None, "state": "STOPPED", "type": "loopback"}},
+                {"id": "i1", "node": "n0", "data": {"label": "mgmt0", "slot": 0, "state": "STOPPED", "type": "physical"}},
+                {"id": "i2", "node": "n0", "data": {"label": "Ethernet1/1", "slot": 1, "state": "STOPPED", "type": "physical"}},
+                {"id": "i3", "node": "n0", "data": {"label": "Ethernet1/2", "slot": 2, "state": "STOPPED", "type": "physical"}},
+                {"id": "i4", "node": "n0", "data": {"label": "Ethernet1/3", "slot": 3, "state": "STOPPED", "type": "physical"}},
+                {"id": "i5", "node": "n1", "data": {"label": "Loopback0", "slot": None, "state": "STOPPED", "type": "loopback"}},
+                {"id": "i6", "node": "n1", "data": {"label": "MgmtEth0/RP0/CPU0/0", "slot": 0, "state": "STOPPED", "type": "physical"}},
+                {"id": "i7", "node": "n1", "data": {"label": "donotuse1", "slot": 1, "state": "STOPPED", "type": "physical"}},
+                {"id": "i8", "node": "n1", "data": {"label": "donotuse2", "slot": 2, "state": "STOPPED", "type": "physical"}},
+                {"id": "i9", "node": "n1", "data": {"label": "GigabitEthernet0/0/0/0", "slot": 3, "state": "STOPPED", "type": "physical"}},
+            ],
+            "lab_notes": "",
+            "lab_title": "Joe's Lab",
+            "lab_description": "",
+            "state": "STOPPED",
+            "created_timestamp": 1595337039.0416706,
+            "cluster_id": "cluster_1",
+            "version": "0.0.3",
+        }
+        return response
