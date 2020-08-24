@@ -9,7 +9,7 @@ class TestCMLLs(BaseCMLTest):
             self.setup_mocks(m)
             virl = self.get_virl()
             runner = CliRunner()
-            result = runner.invoke(virl, ["ls", "--all"], catch_exceptions=False, color=True)
+            result = runner.invoke(virl, ["ls", "--all"])
             self.assertEqual(0, result.exit_code)
 
     def test_cml_ls(self):
