@@ -234,6 +234,6 @@ class TestCMLUp(BaseCMLTest):
             m.get(topo_url, json=MockGitHub.get_topology)
             virl = self.get_virl()
             runner = CliRunner()
-            result = runner.invoke(virl, ["up", "foo/bar"])
+            runner.invoke(virl, ["up", "foo/bar"])
             # The "call" function was called twice
             self.assertEqual(2, len(call_mock.mock_calls))
