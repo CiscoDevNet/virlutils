@@ -25,11 +25,13 @@ def node_list_table(nodes):
         tr.append(click.style(node.state, fg=color))
         tr.append(node.state == "DEFINED_ON_CORE")
         intfs = []
-        for i in node.interfaces():
-            if i.discovered_ipv4:
-                intfs += i.discovered_ipv4
-            if i.discovered_ipv6:
-                intfs += i.discovered_ipv6
+        if node.is_booted():
+            for i in node.interfaces():
+                if i.discovered_ipv4:
+                    intfs += i.discovered_ipv4
+                if i.discovered_ipv6:
+                    intfs += i.discovered_ipv6
+
         tr.append(",".join(intfs))
         table.append(tr)
     # wrap the output in this try/except block as some terminals
