@@ -117,6 +117,9 @@ def get_credentials(rcfile="~/.virlrc"):
         "CML_CONSOLE_COMMAND",
         "CML2_PLUS",
         "CML_VERIFY_CERT",
+        "CML_DEVICE_USERNAME",
+        "CML_DEVICE_PASSWORD",
+        "CML_DEVICE_ENABLE_PASSWORD",
     ]
 
     for p in configurable_props:

@@ -1,4 +1,5 @@
 import click
+import os
 from virl.api import VIRLServer
 from virl.helpers import get_cml_client, get_current_lab, safe_join_existing_lab
 from virl2_client.models.cl_pyats import ClPyats, PyatsNotInstalled, PyatsDeviceNotFound
@@ -25,6 +26,13 @@ def command(node, command, config, **kwargs):
             except PyatsNotInstalled:
                 click.secho("pyATS is not installed, run 'pip install pyats'", fg="red")
                 exit(1)
+
+            if server.config.get("CML_DEVICE_USERNAME"):
+                os.environ["PYATS_USERNAME"] = server.config.get("CML_DEVICE_USERNAME")
+            if server.config.get("CML_DEVICE_PASSWORD"):
+                os.environ["PYATS_PASSWORD"] = server.config.get("CML_DEVICE_PASSWORD")
+            if server.config.get("CML_DEVICE_ENABLE_PASSWORD"):
+                os.environ["PYATS_ATH_PASS"] = server.config.get("CML_DEVICE_ENABLE_PASSWORD")
 
             pylab.sync_testbed(server.user, server.passwd)
 
