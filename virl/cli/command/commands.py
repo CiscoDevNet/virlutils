@@ -27,12 +27,16 @@ def command(node, command, config, **kwargs):
                 click.secho("pyATS is not installed, run 'pip install pyats'", fg="red")
                 exit(1)
 
-            if server.config.get("CML_DEVICE_USERNAME"):
-                os.environ["PYATS_USERNAME"] = server.config.get("CML_DEVICE_USERNAME")
-            if server.config.get("CML_DEVICE_PASSWORD"):
-                os.environ["PYATS_PASSWORD"] = server.config.get("CML_DEVICE_PASSWORD")
-            if server.config.get("CML_DEVICE_ENABLE_PASSWORD"):
-                os.environ["PYATS_ATH_PASS"] = server.config.get("CML_DEVICE_ENABLE_PASSWORD")
+            pyats_username = server.config.get("CML_DEVICE_USERNAME")
+            pyats_password = server.config.get("CML_DEVICE_PASSWORD")
+            pyats_auth_password = server.config.get("CML_DEVICE_ENABLE_PASSWORD")
+
+            if pyats_username:
+                os.environ["PYATS_USERNAME"] = pyats_username
+            if pyats_password:
+                os.environ["PYATS_PASSWORD"] = pyats_password
+            if pyats_auth_password:
+                os.environ["PYATS_AUTH_PASS"] = pyats_auth_password
 
             pylab.sync_testbed(server.user, server.passwd)
 
