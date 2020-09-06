@@ -18,7 +18,7 @@ from virl.helpers import get_cml_client, safe_join_existing_lab, get_current_lab
 @click.option(
     "--from-cache/--no-from-cache",
     default=False,
-    required=True,
+    required=False,
     show_default=False,
     help="Remove the lab from the cache (default: do not remove from cache)",
 )
