@@ -3,6 +3,7 @@ from virl.api import VIRLServer
 from subprocess import call
 from virl import helpers
 from virl.helpers import get_cml_client, safe_join_existing_lab, get_current_lab, get_command
+from virl2_client.exceptions import NodeNotFound
 
 
 @click.command()
@@ -18,15 +19,16 @@ def start(node):
     if current_lab:
         lab = safe_join_existing_lab(current_lab, client)
         if lab:
-            node_obj = lab.get_node_by_label(node)
+            try:
+                node_obj = lab.get_node_by_label(node)
 
-            if node_obj:
-                if not node_obj.is_active():
-                    node_obj.start(wait=True)
-                    click.secho("Started node {}".format(node_obj.label))
-                else:
-                    click.secho("Node {} is already active".format(node_obj.label), fg="yellow")
-            else:
+                if node_obj:
+                    if not node_obj.is_active():
+                        node_obj.start(wait=True)
+                        click.secho("Started node {}".format(node_obj.label))
+                    else:
+                        click.secho("Node {} is already active".format(node_obj.label), fg="yellow")
+            except NodeNotFound:
                 click.secho("Node {} was not found in lab {}".format(node, current_lab), fg="red")
                 exit(1)
         else:
