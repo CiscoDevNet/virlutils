@@ -337,10 +337,10 @@ def get_cml_client(server, ignore=False):
         else:
             ssl_verify = server.config["CML_VERIFY_CERT"]
 
-    # Remove the VIRL2_USER and VIRL2_PASS envvars if they exist.  These would conflict with
-    # the virlutils config.
+    # Remove VIRL2 envvars if they exist.  These would conflict with the virlutils config.
     os.environ.pop("VIRL2_USER", None)
     os.environ.pop("VIRL2_PASS", None)
+    os.environ.pop("VIRL2_URL", None)
 
     client = ClientLibrary(server.host, server.user, server.passwd, raise_for_auth_failure=True, ssl_verify=ssl_verify)
     logger.setLevel(level)
