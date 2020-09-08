@@ -22,12 +22,11 @@ def start(node):
             try:
                 node_obj = lab.get_node_by_label(node)
 
-                if node_obj:
-                    if not node_obj.is_active():
-                        node_obj.start(wait=True)
-                        click.secho("Started node {}".format(node_obj.label))
-                    else:
-                        click.secho("Node {} is already active".format(node_obj.label), fg="yellow")
+                if not node_obj.is_active():
+                    node_obj.start(wait=True)
+                    click.secho("Started node {}".format(node_obj.label))
+                else:
+                    click.secho("Node {} is already active".format(node_obj.label), fg="yellow")
             except NodeNotFound:
                 click.secho("Node {} was not found in lab {}".format(node, current_lab), fg="red")
                 exit(1)
