@@ -9,6 +9,7 @@ import ctypes
 import logging
 import ipaddress
 import sys
+import concurrent.futures
 from requests.exceptions import HTTPError
 from virl2_client import ClientLibrary
 
@@ -41,8 +42,7 @@ def mkdir_p(path):
 
 
 def safe_open_w(path):
-    """ Open "path" for writing, creating any parent directories as needed.
-    """
+    """Open "path" for writing, creating any parent directories as needed."""
     mkdir_p(os.path.dirname(path))
     return open(path, "w")
 
@@ -266,6 +266,14 @@ def clear_current_lab(lab_id=None):
             os.remove(lname)
 
 
+def _extract_configuration_task(node):
+    """
+    concurrent task to extract a config from a node
+    """
+    if node.is_booted():
+        node.extract_configuration()
+
+
 def extract_configurations(lab):
     """
     extract each node's configuration to its day-0 config
@@ -274,16 +282,18 @@ def extract_configurations(lab):
     logger = logging.getLogger("virl2_client.models.authentication")
     level = logger.getEffectiveLevel()
     logger.setLevel(logging.CRITICAL)
-    for node in lab.nodes():
-        if node.is_booted():
+    with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
+        future_nodes = {executor.submit(_extract_configuration_task, node): node for node in lab.nodes()}
+        for fn in concurrent.futures.as_completed(future_nodes):
+            n = future_nodes[fn]
             try:
-                node.extract_configuration()
+                fn.result()
             except HTTPError as he:
                 if he.response.status_code != 400:
                     # Ignore 400 as that typically means the node doesn't support config extraction.
-                    click.secho("WARNING: Failed to extract configuration from node {}: {}".format(node.label, he), fg="yellow")
+                    click.secho("WARNING: Failed to extract configuration from node {}: {}".format(n.label, he), fg="yellow")
             except Exception as e:
-                click.secho("WARNING: Failed to extract configuration from node {}: {}".format(node.label, e), fg="yellow")
+                click.secho("WARNING: Failed to extract configuration from node {}: {}".format(n.label, e), fg="yellow")
 
     logger.setLevel(level)
 
