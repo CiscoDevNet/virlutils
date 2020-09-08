@@ -100,6 +100,7 @@ class BaseCMLTest(unittest.TestCase):
         m.post(self.get_api_path("authenticate"), text=MockCMLServer.authenticate)
         m.get(self.get_api_path("labs/{}/state".format(self.get_test_id())), json="STARTED")
         m.get(self.get_api_path("labs/{}/state".format(self.get_alt_id())), json="STOPPED")
+        m.get(self.get_api_path("labs/{}/check_if_converged".format(self.get_test_id())), json=True)
 
     def add_debug_mock(self, m):
         m.register_uri(requests_mock.ANY, requests_mock.ANY, text=MockCMLServer.print_req)

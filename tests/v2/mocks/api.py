@@ -89,6 +89,21 @@ class MockCMLServer(object):
                                 "boot_disk_size": None,
                                 "tags": [],
                             },
+                            {
+                                "id": "n2",
+                                "label": "rtr-2",
+                                "x": -200,
+                                "y": -50,
+                                "node_definition": "iosxrv9000",
+                                "image_definition": "iosxrv9000-6-6-2",
+                                "state": "DEFINED_ON_CORE",
+                                "cpus": None,
+                                "cpu_limit": None,
+                                "ram": None,
+                                "data_volume": None,
+                                "boot_disk_size": None,
+                                "tags": [],
+                            },
                         ],
                         "links": [{"id": "l0", "node_a": "n1", "node_b": "n0", "state": "STARTED"}],
                     },
@@ -163,6 +178,51 @@ class MockCMLServer(object):
                 type: physical
           - id: n1
             label: rtr-1
+            node_definition: iosxrv9000
+            x: -200
+            y: -50
+            configuration: |-
+              hostname changeme
+              username cisco
+              group root-lr
+              group cisco-support
+              password cisco
+              !
+              username admin
+              group root-lr
+              group cisco-support
+              password admin
+              !
+              username lab
+              group root-lr
+              group cisco-support
+              password lab
+              !
+              end
+            image_definition: iosxrv9000-6-6-2
+            tags: []
+            interfaces:
+              - id: i0
+                label: Loopback0
+                type: loopback
+              - id: i1
+                slot: 0
+                label: MgmtEth0/RP0/CPU0/0
+                type: physical
+              - id: i2
+                slot: 1
+                label: donotuse1
+                type: physical
+              - id: i3
+                slot: 2
+                label: donotuse2
+                type: physical
+              - id: i4
+                slot: 3
+                label: GigabitEthernet0/0/0/0
+                type: physical
+          - id: n2
+            label: rtr-2
             node_definition: iosxrv9000
             x: -200
             y: -50
@@ -329,7 +389,7 @@ class MockCMLServer(object):
     @staticmethod
     def get_lab_element_state(req, ctx):
         response = {
-            "nodes": {"n0": "BOOTED", "n1": "BOOTED"},
+            "nodes": {"n0": "BOOTED", "n1": "BOOTED", "n2": "DEFINED_ON_CORE"},
             "links": {"l0": "STARTED"},
             "interfaces": {"i0": "STARTED", "i1": "STARTED", "i2": "STARTED", "i3": "STARTED", "i4": "STARTED", "i5": "STARTED"},
         }
@@ -367,6 +427,24 @@ class MockCMLServer(object):
                         "x": -200,
                         "y": -50,
                         "state": "BOOTED",
+                        "ram": None,
+                        "cpus": None,
+                        "cpu_limit": None,
+                        "data_volume": None,
+                        "boot_disk_size": None,
+                        "tags": [],
+                    },
+                },
+                {
+                    "id": "n2",
+                    "data": {
+                        "node_definition": "iosxrv9000",
+                        "image_definition": "iosxrv9000-6-6-2",
+                        "label": "rtr-2",
+                        "configuration": "hostname changeme\n",
+                        "x": -200,
+                        "y": -50,
+                        "state": "DEFINED_ON_CORE",
                         "ram": None,
                         "cpus": None,
                         "cpu_limit": None,
