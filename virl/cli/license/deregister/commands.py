@@ -13,9 +13,7 @@ def deregister(confirm):
     """
     server = VIRLServer()
     client = get_cml_client(server)
-
-    # As of 2.0.0b5 of virl2-client, there is no Python API for licensing.  So we use
-    # the library as much as we can, and use requests for the rest.
+    licensing = client.licensing
 
     ret = "y"
     if confirm:
@@ -25,8 +23,7 @@ def deregister(confirm):
             exit(0)
 
     try:
-        response = client.session.delete(client._base_url + "licensing/deregistration")
-        response.raise_for_status()
+        licensing.deregister()
     except Exception as e:
-        click.secho("Failed to deregister the Smart License: {}".format(e), fg="red")
+        click.secho("Failed to deregister with Smart Licensing: {}".format(e), fg="red")
         exit(1)

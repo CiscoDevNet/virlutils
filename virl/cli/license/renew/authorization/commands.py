@@ -10,13 +10,10 @@ def authorization():
     """
     server = VIRLServer()
     client = get_cml_client(server)
-
-    # As of 2.0.0b5 of virl2-client, there is no Python API for licensing.  So we use
-    # the library as much as we can, and use requests for the rest.
+    licensing = client.licensing
 
     try:
-        response = client.session.put(client._base_url + "licensing/authorization/renew")
-        response.raise_for_status()
+        licensing.renew_authorization()
     except Exception as e:
         click.secho("Failed to renew authorization: {}".format(e), fg="red")
         exit(1)
