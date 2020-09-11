@@ -8,7 +8,7 @@ from virl2_client.models.cl_pyats import ClPyats, PyatsNotInstalled, PyatsDevice
 @click.command()
 @click.argument("node", nargs=1)
 @click.argument("command", nargs=1)
-@click.option("--config/--no-config", default="False", show_default=False, help="Command is a configuration command (default: False)")
+@click.option("--config/--no-config", default=False, show_default=False, help="Command is a configuration command (default: False)")
 def command(node, command, config, **kwargs):
     """
     send a command or config to a node (requires pyATS)
