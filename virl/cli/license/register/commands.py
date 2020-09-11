@@ -36,8 +36,6 @@ def register(token, **kwargs):
     client = get_cml_client(server)
     licensing = client.licensing
 
-    # Offer the config for SL gateway and proxy.  This is kind of a layer violation, but it may be okay for those that
-    # would want to use this interface.
     if ssms or proxy:
         if not ssms:
             ssms = DEFAULT_SSMS
