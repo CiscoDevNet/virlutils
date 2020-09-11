@@ -29,9 +29,8 @@ def register(token, **kwargs):
     ssms = kwargs["smart_license_server"]
     proxy = kwargs["proxy_host"]
     port = None
-    force = kwargs["reregister"]
     cert = kwargs["certificate"]
-    reregister = False
+    reregister = kwargs["reregister"]
     server = VIRLServer()
     client = get_cml_client(server)
     licensing = client.licensing
