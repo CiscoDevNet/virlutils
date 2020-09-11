@@ -70,9 +70,6 @@ def register(token, **kwargs):
                 click.secho("Failed to upload certificate {}: {}".format(cert, e), fg="red")
                 exit(1)
 
-    if force:
-        reregister = True
-
     try:
         licensing.register(token, reregister)
     except Exception as e:
