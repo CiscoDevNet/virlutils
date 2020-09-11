@@ -1,4 +1,5 @@
 import click
+import os
 from virl.api import VIRLServer
 from virl.helpers import get_cml_client
 
@@ -34,13 +35,6 @@ def register(token, **kwargs):
     server = VIRLServer()
     client = get_cml_client(server)
     licensing = client.licensing
-
-    if delete_cert:
-        try:
-            licensing.delete_certificate()
-        except Exception as e:
-            click.secho("Failed to delete existing certificate: {}".format(e))
-            exit(1)
 
     # Offer the config for SL gateway and proxy.  This is kind of a layer violation, but it may be okay for those that
     # would want to use this interface.
