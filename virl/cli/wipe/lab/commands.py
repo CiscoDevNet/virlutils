@@ -1,12 +1,16 @@
 import click
 from virl.api import VIRLServer
-from virl.helpers import get_cml_client, safe_join_existing_lab, get_current_lab, check_lab_active
+from virl.helpers import get_cml_client, safe_join_existing_lab, get_current_lab
 
 
 @click.command()
 @click.option("--force/--no-force", "-f", default=False, required=False, help="Stop a lab (if it's started) then wipe it (default: False)")
 @click.option(
-    "--confirm/--no-confirm", show_default=False, default=True, help="Do not prompt for confirmation (default: prompt)", required=False,
+    "--confirm/--no-confirm",
+    show_default=False,
+    default=True,
+    help="Do not prompt for confirmation (default: prompt)",
+    required=False,
 )
 def lab(force, confirm):
     """
@@ -19,12 +23,12 @@ def lab(force, confirm):
     if current_lab:
         lab = safe_join_existing_lab(current_lab, client)
         if lab:
-            active = check_lab_active(lab)
+            active = lab.is_active()
             if active and force:
                 lab.stop(wait=True)
 
             # Check again just to be sure.
-            if not check_lab_active(lab):
+            if not lab.is_active():
                 ret = "y"
                 if confirm:
                     ret = input("Are you sure you want to wipe lab {} (ID: {}) [y/N]? ".format(lab.title, current_lab))

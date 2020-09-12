@@ -10,7 +10,6 @@ from virl.helpers import (
     safe_join_existing_lab_by_title,
     check_lab_cache,
     cache_lab,
-    check_lab_active,
     set_current_lab,
     get_current_lab,
     clear_current_lab,
@@ -129,7 +128,7 @@ def up(repo=None, provision=False, **kwargs):
                     exit(call([get_command(), "up"]))
 
         if lab:
-            if check_lab_active(lab):
+            if lab.is_active():
                 cache_lab(lab)
                 set_current_lab(lab.id)
                 click.secho("Lab is already running (ID: {}, Title: {})".format(lab.id, lab.title))
@@ -141,7 +140,7 @@ def up(repo=None, provision=False, **kwargs):
             exit(1)
     else:
         click.secho("Lab {} (ID: {}) is already set as the current lab".format(clab.title, current_lab))
-        if not check_lab_active(clab):
+        if not clab.is_active():
             start_lab(clab, provision)
 
 

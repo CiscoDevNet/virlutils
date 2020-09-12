@@ -182,15 +182,6 @@ def safe_join_existing_lab_by_title(lab_name, client):
     return None
 
 
-def check_lab_active(lab):
-    """
-    check if a lab is active on a CML server
-    """
-
-    # XXX: We need this because lab.is_active() is currently broken.
-    return lab.state() in {"STARTED", "QUEUED", "BOOTED"}
-
-
 def check_lab_cache(lab_id):
     """
     determines if a given lab ID is in the local topology cache

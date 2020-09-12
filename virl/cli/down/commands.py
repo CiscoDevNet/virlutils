@@ -4,7 +4,6 @@ from virl.helpers import (
     check_sim_running,
     remove_sim_info,
     get_cml_client,
-    check_lab_active,
     safe_join_existing_lab_by_title,
     safe_join_existing_lab,
     clear_current_lab,
@@ -36,7 +35,7 @@ def down(id=None, lab_name=None):
             lab = safe_join_existing_lab(lab_id, client)
 
     if lab:
-        if check_lab_active(lab):
+        if lab.is_active():
             click.secho("Shutting down lab {} (ID: {}).....".format(lab.title, lab.id))
             lab.stop()
             clear_current_lab(lab.id)
