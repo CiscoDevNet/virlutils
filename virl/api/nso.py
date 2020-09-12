@@ -78,7 +78,7 @@ class NSO(object):
             "cisco-nx-": "NX",
             "cisco-asa-": "ASA",
         }
-        # Set soome "sane" defaults.  These are at least the same as what the older
+        # Set some "sane" defaults.  These are at least the same as what the older
         # virlutils had.
         ned_vars = {
             "NX_PREFIX": "cisco-nx-id",
