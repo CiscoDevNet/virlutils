@@ -74,5 +74,5 @@ def rm(force, confirm, from_cache):
             click.secho("Unable to find lab {}".format(current_lab), fg="red")
             exit(1)
     else:
-        click.secho("No current lab set", fg="red")
+        click.secho("Current lab is not set", fg="red")
         exit(1)
