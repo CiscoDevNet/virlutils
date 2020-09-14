@@ -56,10 +56,11 @@ def rm(force, confirm, from_cache):
                     if from_cache:
                         try:
                             os.remove(check_lab_cache(current_lab))
-                            click.secho("Removed lab {} from cache".format(current_lab))
-                        except Exception:
+                        except OSError:
                             # File doesn't exist.
                             pass
+                            
+                        click.secho("Removed lab {} from cache".format(current_lab))
                     clear_current_lab()
                 else:
                     click.secho("Not removing lab {} (ID: {})".format(lab.title, current_lab))
