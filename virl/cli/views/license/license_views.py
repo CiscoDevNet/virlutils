@@ -11,6 +11,25 @@ def license_details_table(license):
     print_features(license["features"])
 
 
+def license_features_table(license):
+    table = list()
+    headers = ["ID", "Name", "In Use"]
+    for feature in license:
+        tr = list()
+        tr.append(feature["id"])
+        tr.append(feature["name"])
+        tr.append(feature["in_use"])
+
+        table.append(tr)
+
+    # wrap the output in this try/except block as some terminals
+    # may have problem with the 'fancy_grid'
+    try:
+        click.echo(tabulate.tabulate(table, headers, tablefmt="fancy_grid"))
+    except UnicodeEncodeError:
+        click.echo(tabulate.tabulate(table, headers, tablefmt="grid"))
+
+
 def print_registration(reg_obj):
     table = list()
     headers = ["Status", "Expires", "Smart Account", "Virtual Account", "Registration Time", "Registration Status", "Next Renewal Time"]
