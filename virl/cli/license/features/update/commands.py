@@ -19,10 +19,8 @@ def update(id, value):
     client = get_cml_client(server)
     licensing = client.licensing
 
-    feature_dict = {id: value}
-
     try:
-        licensing.update_features(feature_dict)
+        licensing.update_features({id: value})
     except Exception as e:
         click.secho("Failed to update features: {}".format(e), fg="red")
         exit(1)
