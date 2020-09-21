@@ -57,3 +57,7 @@ class CachedLab(object):
     @property
     def statistics(self):
         return self.__stats
+
+    @property
+    def owner(self):
+        return "N/A"
