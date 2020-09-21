@@ -7,9 +7,20 @@ from virl.helpers import find_virl, get_cml_client, get_cache_root
 
 @click.command()
 @click.option(
-    "--all/--server", default=False, required=False, help="Display cached labs in addition to those on the server (default: False)",
+    "--all/--server",
+    default=False,
+    show_default=False,
+    required=False,
+    help="Display cached labs in addition to those on the server (default: server labs only)",
 )
-def ls(all, **kwargs):
+@click.option(
+    "--all-users/--only-me",
+    default=False,
+    show_default=False,
+    required=False,
+    help="Display labs for all users (only if current user is an admin) (default: only show labs owned by me)",
+)
+def ls(all, all_users, **kwargs):
     """
     lists running labs and optionally those in the cache
     """
@@ -18,7 +29,7 @@ def ls(all, **kwargs):
     labs = []
     cached_labs = None
 
-    lab_ids = client.get_lab_list()
+    lab_ids = client.get_lab_list(all_users)
     for id in lab_ids:
         labs.append(client.join_existing_lab(id))
 

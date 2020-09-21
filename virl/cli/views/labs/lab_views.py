@@ -14,13 +14,13 @@ def lab_list_table(labs, cached_labs=None):
 def print_labs(labs):
     table = list()
     # TODO: Do we truncate description as it can be kind of long?
-    headers = ["ID", "Title", "Description", "Status", "Nodes", "Links", "Interfaces"]
+    headers = ["ID", "Title", "Description", "Owner", "Status", "Nodes", "Links", "Interfaces"]
     for lab in labs:
         tr = list()
         tr.append(lab.id)
         tr.append(lab.title)
         tr.append(lab.description)
-        # XXX: This should be lab.state, but there is a bug with the missing @property decorator.
+        tr.append(lab.owner)
         status = lab.state()
         stats = lab.statistics
         if status in {"BOOTED", "STARTED"}:
