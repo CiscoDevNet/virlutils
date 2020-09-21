@@ -16,7 +16,6 @@ class CachedLab(object):
     __id = None
     __title = None
     __description = None
-    __state = "CACHED"
     __stats = {
         "nodes": 0,
         "links": 0,
@@ -52,7 +51,7 @@ class CachedLab(object):
         return self.__description
 
     def state(self):
-        return self.__state
+        return "CACHED"
 
     @property
     def statistics(self):
