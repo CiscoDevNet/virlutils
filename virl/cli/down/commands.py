@@ -38,7 +38,6 @@ def down(id=None, lab_name=None):
         if lab.is_active():
             click.secho("Shutting down lab {} (ID: {}).....".format(lab.title, lab.id))
             lab.stop()
-            clear_current_lab(lab.id)
             click.echo(click.style("SUCCESS", fg="green"))
         else:
             click.secho("Lab with ID {} and title {} is already stopped".format(lab.id, lab.title))
