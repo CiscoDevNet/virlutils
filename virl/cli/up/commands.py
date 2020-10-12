@@ -70,12 +70,15 @@ def start_lab(lab, provision=False):
 @click.argument("repo", default="default")
 @click.option(
     "-f",
-    default="topology.yaml",
     help="Lab file to launch, defaults to topology.yaml (or topology.virl if topology.yaml is not found)",
     required=False,
 )
 @click.option(
-    "--provision/--noprovision", show_default=False, default=False, help="Blocks execution until all nodes are reachable.", required=False,
+    "--provision/--noprovision",
+    show_default=False,
+    default=False,
+    help="Blocks execution until all nodes are reachable.",
+    required=False,
 )
 @click.option("--id", required=False, help="An existing lab ID to start (topology file is ignored, lab-name is ignored)")
 @click.option("--lab-name", "-n", "--sim-name", required=False, help="An existing lab name to start (topology file is ignored)")
@@ -86,7 +89,7 @@ def up(repo=None, provision=False, **kwargs):
     def_fname = kwargs["f"]
     alt_fname = "topology.virl"
     fname = def_fname
-    id = kwargs["id"]
+    lid = kwargs["id"]
     lab_name = kwargs["lab_name"]
     lab = None
     clab = None
@@ -101,15 +104,23 @@ def up(repo=None, provision=False, **kwargs):
             click.secho("Current lab is already set to {}, but that lab is not on server; clearing it.".format(current_lab), fg="yellow")
             clear_current_lab()
 
-    if not clab:
+    if not clab or fname or lid or lab_name:
+        if clab:
+            click.secho("WARNING: Current lab is set to {} (ID: {}); clearing it".format(clab.title, current_lab), fg="yellow")
+            clear_current_lab()
+
+        if not def_fname:
+            def_fname = "topology.yaml"
+            fname = def_fname
+
         if not os.path.isfile(def_fname) and os.path.isfile(alt_fname):
             fname = alt_fname
 
-        if id:
-            lab = safe_join_existing_lab(id, client)
+        if lid:
+            lab = safe_join_existing_lab(lid, client)
             if not lab:
                 # Check the cache
-                existing = check_lab_cache(id)
+                existing = check_lab_cache(lid)
                 if existing:
                     fname = existing
 
@@ -138,7 +149,7 @@ def up(repo=None, provision=False, **kwargs):
         else:
             click.secho("Could not find a lab to start.  Maybe try -f", fg="red")
             exit(1)
-    else:
+    elif clab:
         click.secho("Lab {} (ID: {}) is already set as the current lab".format(clab.title, current_lab))
         if not clab.is_active():
             start_lab(clab, provision)
