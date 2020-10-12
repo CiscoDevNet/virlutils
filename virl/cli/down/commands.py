@@ -6,7 +6,6 @@ from virl.helpers import (
     get_cml_client,
     safe_join_existing_lab_by_title,
     safe_join_existing_lab,
-    clear_current_lab,
     get_current_lab,
 )
 
