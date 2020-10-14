@@ -1,6 +1,7 @@
 # dev stuff
 *.code-workspace 
 scratch*
+.vscode/
 
 # virl stuff 
 .virl/
