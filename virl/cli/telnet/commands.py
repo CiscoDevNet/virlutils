@@ -11,6 +11,7 @@ from virl.helpers import (
     get_node_mgmt_ip,
     get_command,
 )
+from virl2_client.exceptions import NodeNotFound
 
 
 @click.command()
@@ -26,28 +27,28 @@ def telnet(node):
     if current_lab:
         lab = safe_join_existing_lab(current_lab, client)
         if lab:
-            node_obj = lab.get_node_by_label(node)
-
-            if node_obj:
-                if node_obj.is_active():
-                    mgmtip = get_node_mgmt_ip(node_obj)
-                    if mgmtip:
-                        if "VIRL_TELNET_COMMAND" in server.config:
-                            cmd = server.config["VIRL_TELNET_COMMAND"]
-                            cmd = cmd.format(host=mgmtip)
-                            print("Calling user specified command: {}".format(cmd))
-                            exit(call(cmd.split()))
-                        else:
-                            click.secho("Attemping telnet connection to {} at {}".format(node_obj.label, mgmtip))
-
-                            exit(call(["telnet", mgmtip]))
-                    else:
-                        click.secho("Node {} does not have an external management IP".format(node_obj.label))
-                else:
-                    click.secho("Node {} is not active".format(node_obj.label), fg="yellow")
-            else:
+            try:
+                node_obj = lab.get_node_by_label(node)
+            except NodeNotFound:
                 click.secho("Node {} was not found in lab {}".format(node, current_lab), fg="red")
                 exit(1)
+
+            if node_obj.is_active():
+                mgmtip = get_node_mgmt_ip(node_obj)
+                if mgmtip:
+                    if "VIRL_TELNET_COMMAND" in server.config:
+                        cmd = server.config["VIRL_TELNET_COMMAND"]
+                        cmd = cmd.format(host=mgmtip)
+                        print("Calling user specified command: {}".format(cmd))
+                        exit(call(cmd.split()))
+                    else:
+                        click.secho("Attemping telnet connection to {} at {}".format(node_obj.label, mgmtip))
+
+                        exit(call(["telnet", mgmtip]))
+                else:
+                    click.secho("Node {} does not have an external management IP".format(node_obj.label))
+            else:
+                click.secho("Node {} is not active".format(node_obj.label), fg="yellow")
         else:
             click.secho("Unable to find lab {}".format(current_lab), fg="red")
             exit(1)
