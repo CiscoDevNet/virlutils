@@ -113,6 +113,7 @@ class TestCMLUp(BaseCMLTest):
             self.assertEqual(0, result.exit_code)
             self.assertTrue(os.path.basename(os.readlink(".virl/current_cml_lab")) == self.get_up_id())
             self.assertTrue(os.path.isfile(os.readlink(".virl/current_cml_lab")))
+            self.assertIn("Starting lab", result.output)
 
     def test_cml_up_by_name(self):
         with requests_mock.Mocker() as m:
@@ -160,6 +161,16 @@ class TestCMLUp(BaseCMLTest):
             result = runner.invoke(virl, ["up", "--provision"])
             self.assertEqual(0, result.exit_code)
             self.assertIn("Waiting for all nodes to be online", result.output)
+
+    def test_cml_up_no_start(self):
+        with requests_mock.Mocker() as m:
+            # Mock the request to return what we expect from the API.
+            self.setup_mocks(m)
+            virl = self.get_virl()
+            runner = CliRunner()
+            result = runner.invoke(virl, ["up", "--no-start"])
+            self.assertEqual(0, result.exit_code)
+            self.assertNotIn("Starting lab", result.output)
 
     def test_cml_up_after_use(self):
         super().setUp()
