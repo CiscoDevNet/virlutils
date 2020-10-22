@@ -77,12 +77,19 @@ def start_lab(lab, provision=False):
     "--provision/--noprovision",
     show_default=False,
     default=False,
-    help="Blocks execution until all nodes are reachable.",
+    help="Blocks execution until all nodes are reachable (default: do not wait)",
+    required=False,
+)
+@click.option(
+    "--start/--no-start",
+    show_default=False,
+    default=True,
+    help="Whether or not to start the lab after importing (default: start the lab)",
     required=False,
 )
 @click.option("--id", required=False, help="An existing lab ID to start (topology file is ignored, lab-name is ignored)")
 @click.option("--lab-name", "-n", "--sim-name", required=False, help="An existing lab name to start (topology file is ignored)")
-def up(repo=None, provision=False, **kwargs):
+def up(repo=None, provision=False, start=True, **kwargs):
     """
     start a lab
     """
@@ -143,7 +150,7 @@ def up(repo=None, provision=False, **kwargs):
                 cache_lab(lab)
                 set_current_lab(lab.id)
                 click.secho("Lab is already running (ID: {}, Title: {})".format(lab.id, lab.title))
-            else:
+            elif start:
                 start_lab(lab, provision)
 
         else:
@@ -151,7 +158,7 @@ def up(repo=None, provision=False, **kwargs):
             exit(1)
     elif clab:
         click.secho("Lab {} (ID: {}) is already set as the current lab".format(clab.title, current_lab))
-        if not clab.is_active():
+        if not clab.is_active() and start:
             start_lab(clab, provision)
 
 
