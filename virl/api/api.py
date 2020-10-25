@@ -3,7 +3,6 @@ from .credentials import get_credentials
 
 
 class VIRLServer(object):
-
     def __init__(self, host=None, user=None, passwd=None, port=19399):
 
         self._host, self._user, self._passwd, self._config = get_credentials()
@@ -51,9 +50,7 @@ class VIRLServer(object):
         return self._config
 
     def get(self, url):
-        r = requests.get(url,
-                         auth=(self.user, self.passwd),
-                         headers=self._headers)
+        r = requests.get(url, auth=(self.user, self.passwd), headers=self._headers)
         r.raise_for_status()
         return r
 
@@ -63,34 +60,22 @@ class VIRLServer(object):
         return r.json()
 
     def post(self, url, data):
-        r = requests.post(url,
-                          auth=(self.user, self.passwd),
-                          headers=self._headers,
-                          data=data)
+        r = requests.post(url, auth=(self.user, self.passwd), headers=self._headers, data=data)
         r.raise_for_status()
         return r
 
     def put(self, url, data):
-        r = requests.put(url,
-                         auth=(self.user, self.passwd),
-                         headers=self._headers,
-                         data=data)
+        r = requests.put(url, auth=(self.user, self.passwd), headers=self._headers, data=data)
         r.raise_for_status()
         return r
 
     def post_with_params(self, url, data, params):
-        r = requests.post(url,
-                          auth=(self.user, self.passwd),
-                          headers=self._headers,
-                          params=params,
-                          data=data)
+        r = requests.post(url, auth=(self.user, self.passwd), headers=self._headers, params=params, data=data)
         r.raise_for_status()
         return r
 
     def delete(self, url):
-        r = requests.delete(url,
-                            auth=(self.user, self.passwd),
-                            headers=self._headers)
+        r = requests.delete(url, auth=(self.user, self.passwd), headers=self._headers)
         r.raise_for_status()
         return r
 
@@ -128,7 +113,7 @@ class VIRLServer(object):
         returns a list of node,status tuples
         """
         nodes = self.get_node_summary(simulation)
-        return nodes[node_name]['reachable']
+        return nodes[node_name]["reachable"]
 
     def export(self, simulation, ip=False):
         """
@@ -141,7 +126,7 @@ class VIRLServer(object):
         r = self.get(url)
         return r
 
-    def get_node_console(self, simulation, node=None, mode='telnet', port='0'):
+    def get_node_console(self, simulation, node=None, mode="telnet", port="0"):
         u = self.base_api + "/simengine/rest/serial_port/{}".format(simulation)
         u += "?mode={}&?port={}".format(mode, port)
         if node is not None:
@@ -172,7 +157,7 @@ class VIRLServer(object):
         """
         returns all interfaces for a simulation
         """
-        u = self.base_api + '/simengine/rest/interfaces/{}'
+        u = self.base_api + "/simengine/rest/interfaces/{}"
         u = u.format(simulation_name)
         r = self.get(u)
         return r
@@ -218,10 +203,10 @@ class VIRLServer(object):
         r = self.get_flavors()
 
         for f in list(r):
-            if f['name'] == flavor:
-                return f['id']
+            if f["name"] == flavor:
+                return f["id"]
 
-        raise IndexError('Flavor {} not found'.format(flavor))
+        raise IndexError("Flavor {} not found".format(flavor))
 
     def get_flavors(self, flavor_id=None):
         u = self.base_api + "/rest/flavors"
@@ -231,22 +216,22 @@ class VIRLServer(object):
         r = self.get(u)
 
         if flavor_id:
-            return r.json()['flavor']
-        return r.json()['flavors']
+            return r.json()["flavor"]
+        return r.json()["flavors"]
 
     def add_flavor(self, flavor=None, memory=None, vcpus=None):
         u = self.base_api + "/rest/flavors"
         data = {
-            'name': flavor,
-            'ram': memory,
-            'vcpus': vcpus,
+            "name": flavor,
+            "ram": memory,
+            "vcpus": vcpus,
         }
         r = self.post_with_params(u, None, data)
-        return r.json()['flavor']
+        return r.json()["flavor"]
 
     def delete_flavor(self, flavor):
         f = self.get_flavor_id(flavor)
         u = self.base_api + "/rest/flavors/{}"
         u = u.format(f)
         r = self.delete(u)
-        return r.json()['flavor']
+        return r.json()["flavor"]
