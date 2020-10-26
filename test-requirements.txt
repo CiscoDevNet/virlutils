@@ -26,6 +26,6 @@ requests==2.23.0
 requests-mock==1.8.0
 six==1.15.0
 urllib3==1.25.9
-virl2-client>=2.1.0rc1
+virl2-client>=2.1.0
 wcwidth==0.1.9
 zipp==3.1.0
