@@ -29,3 +29,4 @@ urllib3==1.25.9
 virl2-client>=2.1.0
 wcwidth==0.1.9
 zipp==1.2.0
+MarkupSafe==1.1.1
