@@ -28,4 +28,4 @@ six==1.15.0
 urllib3==1.25.9
 virl2-client>=2.1.0
 wcwidth==0.1.9
-zipp==3.1.0
+zipp==1.2.0
