@@ -17,7 +17,7 @@ class CMLUseTest(BaseCMLTest):
             virl = self.get_virl()
             runner = CliRunner()
             runner.invoke(virl, ["use"])
-            call_mock.assert_called_once()
+            call_mock.assert_called_once_with(["virl", "use", "--help"])
 
     def test_cml_use_with_lab(self):
         with requests_mock.Mocker() as m:
