@@ -13,27 +13,6 @@ VERSION = __version__
 # prerequisite: setuptools
 # http://pypi.python.org/pypi/setuptools
 
-REQUIRES = [
-    "click",
-    "gunicorn",
-    "requests>=2.20.0",
-    "urllib3>=1.23",
-    "six >= 1.10",
-    "certifi",
-    "flask>=0.12.3",
-    "python-dateutil",
-    "docopt",
-    "tabulate",
-    "pyyaml",
-    "jinja2",
-    "lxml",
-    "virl2_client",
-]
-
-test_requirements = [
-    "requests_mock",
-]
-
 
 def requirements(f):
     with open(f, "r") as fd:
