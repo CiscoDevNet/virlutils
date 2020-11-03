@@ -4,6 +4,7 @@ import io
 from virl import __version__
 
 NAME = "virlutils"
+CMLNAME = "cmlutils"
 VERSION = __version__
 # To install the library, run the following
 #
