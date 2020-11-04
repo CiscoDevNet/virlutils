@@ -53,7 +53,7 @@ def register(token, **kwargs):
         except Exception:
             pass
 
-        licensing.default_transport()
+        licensing.set_default_transport()
 
     if cert:
         if not os.path.isfile(cert):
