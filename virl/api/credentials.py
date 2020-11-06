@@ -129,10 +129,10 @@ def get_credentials(rcfile="~/.virlrc"):
         prompt = "Please enter the IP / hostname of your virl server: "
         host = _get_from_user(prompt)
 
-    if not username:
+    if not username:  # pragma: no cover
         username = _get_from_user("Please enter your VIRL username: ")
 
-    if not password:
+    if not password:  # pragma: no cover
         password = _get_password("Please enter your password: ")
 
     if not all([host, username, password]):  # pragma: no cover
