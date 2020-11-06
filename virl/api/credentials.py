@@ -4,7 +4,6 @@ configuration easier.
 """
 import getpass
 import os
-import sys
 from virl.helpers import find_virl
 
 
@@ -137,7 +136,7 @@ def get_credentials(rcfile="~/.virlrc"):
         password = _get_password("Please enter your password: ")
 
     if not all([host, username, password]):  # pragma: no cover
-        prompt = "Unable to determine VIRL credentials, please see docs"
-        sys.exit(prompt)
+        print("Unable to determine VIRL credentials, please see docs")
+        exit(1)
     else:
         return (host, username, password, config)
