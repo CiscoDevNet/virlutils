@@ -47,5 +47,5 @@ setup(
     tests_require=requirements("test-requirements.txt"),
     zip_safe=False,
     python_requires=">=3.5",
-    license=license()
+    license=license(),
 )
