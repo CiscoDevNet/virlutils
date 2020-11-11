@@ -37,11 +37,20 @@ test: ## run tests quickly with the default Python
 	python setup.py test
 
 release: dist ## package and upload a release
-	twine upload dist/*
+	twine upload dist/virl*
+	twine upload dist/cml*
 
 dist: clean ## builds source and wheel package
+    # Build virlutils
 	python setup.py sdist
 	python setup.py bdist_wheel
+	# Flip the name
+	sed -i .orig -e 's|NAME,|CMLNAME,|' setup.py
+	# Build cmlutils
+	python setup.py sdist
+	python setup.py bdist_wheel
+	cp -f setup.py.orig setup.py
+	rm -f setup.py.orig 
 	ls -l dist
 
 install: clean ## install the package to the active Python's site-packages
