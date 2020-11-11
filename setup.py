@@ -24,6 +24,11 @@ def readme():
         return f.read()
 
 
+def license():
+    with io.open("LICENSE", encoding="utf-8") as f:
+        return f.read()
+
+
 setup(
     name=NAME,
     version=VERSION,
@@ -42,4 +47,5 @@ setup(
     tests_require=requirements("test-requirements.txt"),
     zip_safe=False,
     python_requires=">=3.5",
+    license=license()
 )
