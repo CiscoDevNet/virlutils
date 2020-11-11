@@ -37,11 +37,13 @@ test: ## run tests quickly with the default Python
 	python setup.py test
 
 release: dist ## package and upload a release
+	@echo "*** Uploading virlutils... ***"
 	twine upload dist/virl*
+	@echo "*** Uploading cmlutils... ***"
 	twine upload dist/cml*
 
 dist: clean ## builds source and wheel package
-    # Build virlutils
+	# Build virlutils
 	python setup.py sdist
 	python setup.py bdist_wheel
 	# Flip the name
