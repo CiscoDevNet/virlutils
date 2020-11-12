@@ -46,7 +46,8 @@ class CatchAllExceptions(click.Group):
             click.secho("Exception raised while running your command", fg="red")
             if not virl.debug:
                 click.secho(
-                    "Please re-run as '{} --debug ...' and collect the output before opening an issue".format(get_command()), fg="red",
+                    "Please re-run as '{} --debug ...' and collect the output before opening an issue".format(get_command()),
+                    fg="red",
                 )
             else:
                 click.secho("Please open an issue and provide this output:", fg="red")
@@ -58,7 +59,10 @@ class CatchAllExceptions(click.Group):
 
 @click.group(cls=CatchAllExceptions)
 @click.option(
-    "--debug/--no-debug", default=False, help="Print any debugging output.", required=False,
+    "--debug/--no-debug",
+    default=False,
+    help="Print any debugging output.",
+    required=False,
 )
 def virl(**kwargs):
     if kwargs.get("debug"):
