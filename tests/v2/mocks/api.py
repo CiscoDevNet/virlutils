@@ -369,7 +369,7 @@ class MockCMLServer(object):
 
     @staticmethod
     def get_sys_info(req, ctx):
-        response = {"version": "2.1.0-b89.f8805559", "ready": True}
+        response = {"version": "2.1.0", "ready": True}
         return response
 
     @staticmethod
