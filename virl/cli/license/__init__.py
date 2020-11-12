@@ -1,9 +1,9 @@
 import click
-from virl.cli.license.show.commands import show
-from virl.cli.license.register.commands import register
-from virl.cli.license.renew import renew
-from virl.cli.license.deregister.commands import deregister
-from virl.cli.license.features import features
+from virl.cli.license.show.commands import show as showc
+from virl.cli.license.register.commands import register as registerc
+from virl.cli.license.renew import renew as renewc
+from virl.cli.license.deregister.commands import deregister as deregisterc
+from virl.cli.license.features import features as featuresc
 
 
 @click.group()
@@ -14,8 +14,8 @@ def license():
     pass
 
 
-license.add_command(show)
-license.add_command(register)
-license.add_command(renew)
-license.add_command(deregister)
-license.add_command(features)
+license.add_command(showc, name="show")
+license.add_command(registerc, name="register")
+license.add_command(renewc, name="renew")
+license.add_command(deregisterc, name="deregister")
+license.add_command(featuresc, name="features")

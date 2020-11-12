@@ -1,6 +1,6 @@
 import click
-from virl.cli.license.renew.registration.commands import registration
-from virl.cli.license.renew.authorization.commands import authorization
+from virl.cli.license.renew.registration.commands import registration as registrationc
+from virl.cli.license.renew.authorization.commands import authorization as authorizationc
 
 
 @click.group()
@@ -11,5 +11,5 @@ def renew():
     pass
 
 
-renew.add_command(registration)
-renew.add_command(authorization)
+renew.add_command(registrationc, name="registration")
+renew.add_command(authorizationc, name="authorization")
