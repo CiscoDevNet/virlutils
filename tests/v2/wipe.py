@@ -177,6 +177,16 @@ class CMLTestWipe(BaseCMLTest):
             self.assertEqual(0, result.exit_code)
             self.assertIn("Not wiping node", result.output)
 
+    def test_cml_wipe_node_not_stopped(self):
+        with requests_mock.Mocker() as m:
+            # Mock the request to return what we expect from the API.
+            self.setup_mocks(m)
+            virl = self.get_virl()
+            runner = CliRunner()
+            result = runner.invoke(virl, ["wipe", "node", "rtr-1"])
+            self.assertEqual(1, result.exit_code)
+            self.assertIn("is active", result.output)
+
     def test_cml_wipe_node_bogus_node(self):
         with requests_mock.Mocker() as m:
             # Mock the request to return what we expect from the API.
