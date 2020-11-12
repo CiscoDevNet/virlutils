@@ -388,8 +388,16 @@ class MockCMLServer(object):
 
     @staticmethod
     def get_lab_element_state(req, ctx):
+        return MockCMLServer._get_lab_element_state(req, ctx)
+
+    @staticmethod
+    def get_lab_element_state_down(req, ctx):
+        return MockCMLServer._get_lab_element_state(req, ctx, "STOPPED")
+
+    @staticmethod
+    def _get_lab_element_state(req, ctx, n2_state="BOOTED"):
         response = {
-            "nodes": {"n0": "BOOTED", "n1": "BOOTED", "n2": "DEFINED_ON_CORE"},
+            "nodes": {"n0": "BOOTED", "n1": n2_state, "n2": "DEFINED_ON_CORE"},
             "links": {"l0": "STARTED"},
             "interfaces": {"i0": "STARTED", "i1": "STARTED", "i2": "STARTED", "i3": "STARTED", "i4": "STARTED", "i5": "STARTED"},
         }
