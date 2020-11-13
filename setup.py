@@ -1,6 +1,5 @@
 # coding: utf-8
 from setuptools import setup, find_packages  # noqa: H301
-import io
 from virl import __version__
 
 NAME = "virlutils"
@@ -20,7 +19,7 @@ def requirements(f):
 
 
 def readme():
-    with io.open("README.md", encoding="utf-8") as f:
+    with open("README.md", "r") as f:
         return f.read()
 
 
