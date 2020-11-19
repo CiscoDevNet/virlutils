@@ -8,7 +8,7 @@ A collection of utilities for interacting with [Cisco VIRL](https://learningnetw
 
 This document describes the new version of virlutils (aka cmlutils) that works with Cisco Modeling Labs v2.0 and higher.  Documentation for working with VIRL/CML 1.x is available [here](README_virl1.md).
 
-### virl up / cml up
+## virl up / cml up
 
 `virl` (or `cml`) is a devops style cli which supports the most common VIRL/CML operations.  Adding new ones is easy...
 
@@ -46,8 +46,6 @@ Commands:
   version      version information
   wipe         wipe a lab or nodes within a lab
 ```
-
-
 
 <!-- TOC depthFrom:2 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
@@ -98,8 +96,7 @@ cd virlutils
 
 There really isn't much to configure, just set your CML credentials.  There are a few different ways to accomplish this, pick whichever one works best for you. The options listed below are in the `preferred` order.
 
-
-#### .virlrc in working directory
+### .virlrc in working directory
 
 Add a .virlrc to the working directory, this will always be checked first and
 is useful when you want to override one or more parameters for a particular project
@@ -111,8 +108,8 @@ The contents would look something like this.
 VIRL_HOST=specialvirlserver.foo.com
 ```
 
+### environment variables
 
-#### environment variables
 You can also add them as environment variables. This is useful if you want to override
 the global VIRL settings.
 
@@ -122,7 +119,7 @@ export VIRL_USERNAME=admin
 export VIRL_PASSWORD=admin123
 ```
 
-#### .virlrc in your home directory
+### .virlrc in your home directory
 
 Configure VIRL credentials globally by putting them in ~/.virlrc the formatting
 
@@ -136,20 +133,20 @@ VIRL_PASSWORD=cancodetoo!
 In addition to basic credentials, the following configuration options are supported
 using any of the methods mentioned previously
 
-* `VIRL_TELNET_COMMAND` - allows the user to customize the telnet command that is called.
+- `VIRL_TELNET_COMMAND` - allows the user to customize the telnet command that is called.
   This command will be passed the host/ip information from the running simulation
 
    Example:
+
    ```sh
    export VIRL_TELNET_COMMAND="mytelnet {host}"
    ```
 
-
-
-* `VIRL_SSH_COMMAND` - allows the user to customize the ssh command that is called.
+- `VIRL_SSH_COMMAND` - allows the user to customize the ssh command that is called.
   This command will be passed the host/ip as well as the username from the running simulation
 
   Example:
+
   ```sh
   export VIRL_SSH_COMMAND="myssh {username}@{host}"
   ```
@@ -180,15 +177,13 @@ using any of the methods mentioned previously
   export CML2_PLUS="yes"
   ```
 
-
-
 ### Why so many choices??!?!
 
 Understanding the precedence allows you to do some pretty cool things.
 
 Assume the following directory structure...
 
-```
+```plain
 .
 ├── dev
 │   ├── .virlrc
@@ -234,14 +229,11 @@ Running Simulations
 ╘════════╧════════════════════════════════╧═════════════════════════╧═════════════════╧═════════╧═════════╧══════════════╛
 ```
 
-
-
 ## Usage / Workflows
 
 ### Basic Workflow
 
 in the absence of better documentation, here's a sample workflow
-
 
 ```sh
 [venv]jclarke@jamahal:~/src/git/virlutils|cmlutils
@@ -441,7 +433,6 @@ Options:
 
 The ansible group membership can be controlled by adding the "ansible_group" tag to nodes in your CML labs.  Multiple "ansible_group" tags can be assigned to a single node, and that node will be placed into each Ansible inventory group.
 
-
 ```yaml
 nodes:
   - id: n0
@@ -463,12 +454,11 @@ all:
 
 ```
 
-**NOTE:** if the ansible_group tag is not specified for a node, that node will not be included during inventory generation.  Additionally, CML needs to know each node's management IP address before it will be placed into the inventory file 
+**NOTE:** if the ansible_group tag is not specified for a node, that node will not be included during inventory generation.  Additionally, CML needs to know each node's management IP address before it will be placed into the inventory file
 
 #### Cisco Network Services Orchestrator
 
 You can add/update Network Services Orchestrator with your VIRL simulation.
-
 
 Usage
 
@@ -497,9 +487,9 @@ Successfully added CML devices to NSO
 **NOTE**:  NSO environment is also attempted to be determined using the following environment
 variables
 
-* NSO_HOST
-* NSO_USERNAME
-* NSO_PASSWORD
+- NSO_HOST
+- NSO_USERNAME
+- NSO_PASSWORD
 
 NSO Configuration Example
 
@@ -510,7 +500,6 @@ export NSO_PASSWORD=admin
 ```
 
 #### Tab Completions
-
 
 ```sh
 [venv]jclarke@jamahal:~/src/git/virlutils|cmlutils
@@ -544,13 +533,11 @@ eval "$(_VIRL_COMPLETE=source_zsh virl)"
 eval "$(_CML_COMPLETE=source_zsh cml)"
 ```
 
-
-
 ## Local Development
 
 If you have an idea for a feature you would like to see, we gladly accept pull requests.  To get started developing, simply run the following..
 
-```
+```sh
 git clone https://github.com/CiscoDevNet/virlutils
 cd virlutils
 python setup.py develop
@@ -560,7 +547,7 @@ python setup.py develop
 
 We use flake 8 to lint our code. Please keep the repository clean by running:
 
-```
+```sh
 flake8
 ```
 
