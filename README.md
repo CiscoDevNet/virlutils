@@ -65,23 +65,23 @@ Commands:
 
 1. Clone this repo
 
-```sh
-git clone https://github.com/CiscoDevNet/virlutils
-cd virlutils
-```
+  ```sh
+  git clone https://github.com/CiscoDevNet/virlutils
+  cd virlutils
+  ```
 
 2. Either (2a) use pip, or (2b) use setup.py
 
    2a. Use pip
 
    ```sh
-   pip install virlutils
+   pip install cmlutils
    ```
 
    Or
 
    ```sh
-   pip install cmlutils
+   pip install virlutils
    ```
 
    2b. Use setup.py
@@ -201,7 +201,7 @@ This allows three major benefits.
 
 1. you can easily use different credentials/servers for various environments
 2. you can customize your lab .yaml files to include different tags, different node configurations, etc.
-3. you have a badass workflow..
+3. you have a badass workflow.
 
 ```sh
 $ cml ls  
