@@ -132,7 +132,7 @@ CML helper functions
 
 def find_virl_or_else():
     """
-    if a .virl directory does exist in our path tree, use the current
+    if a .virl directory does not exist in our path tree, use the current
     working directory to store it
     """
     virl_root = find_virl()
@@ -156,6 +156,14 @@ def get_current_lab_link():
     """
     virl_root = find_virl_or_else()
     return virl_root + "/.virl/current_cml_lab"
+
+
+def get_default_plugin_dir():
+    """
+    get the default plugin directory if one isn't otherwise configured
+    """
+    virl_root = find_virl_or_else()
+    return virl_root + "/.virl/plugins"
 
 
 def safe_join_existing_lab(lab_id, client):

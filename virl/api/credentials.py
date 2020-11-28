@@ -119,6 +119,7 @@ def get_credentials(rcfile="~/.virlrc"):
         "CML_DEVICE_USERNAME",
         "CML_DEVICE_PASSWORD",
         "CML_DEVICE_ENABLE_PASSWORD",
+        "CML_PLUGIN_DIR",
     ]
 
     for p in configurable_props:
@@ -136,7 +137,7 @@ def get_credentials(rcfile="~/.virlrc"):
         password = _get_password("Please enter your password: ")
 
     if not all([host, username, password]):  # pragma: no cover
-        print("Unable to determine VIRL credentials, please see docs")
+        print("Unable to determine CML/VIRL credentials, please see docs")
         exit(1)
     else:
         return (host, username, password, config)

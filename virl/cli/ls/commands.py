@@ -1,6 +1,6 @@
 import os
 import click
-from virl.api import VIRLServer, CachedLab
+from virl.api import VIRLServer, CachedLab, ViewerPlugin, NoPluginError
 from virl.cli.views import sim_list_table, lab_list_table
 from virl.helpers import find_virl, get_cml_client, get_cache_root
 
@@ -41,7 +41,11 @@ def ls(all, all_users, **kwargs):
                 lab_id = f
                 cached_labs.append(CachedLab(lab_id, cache_root + "/" + f))
 
-    lab_list_table(labs, cached_labs)
+    try:
+        pl = ViewerPlugin(viewer="lab")
+        pl.visualize(labs=labs, cached_labs=cached_labs)
+    except NoPluginError:
+        lab_list_table(labs, cached_labs)
 
 
 @click.command()

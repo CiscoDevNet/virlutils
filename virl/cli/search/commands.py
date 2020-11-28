@@ -1,4 +1,5 @@
 import click
+from virl.api import ViewerPlugin, NoPluginError
 from virl.api.github import get_repos
 from virl.cli.views.search import repo_table
 
@@ -16,4 +17,8 @@ def search(query=None, **kwargs):
         click.secho("Displaying {} Results For {}".format(len(repos), query))
     else:
         click.secho("Displaying {} Results".format(len(repos)))
-    repo_table(repos)
+    try:
+        pl = ViewerPlugin(viewer="repo")
+        pl.visualize(repos=repos)
+    except NoPluginError:
+        repo_table(repos)

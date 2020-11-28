@@ -1,5 +1,5 @@
 import click
-from virl.api import VIRLServer
+from virl.api import VIRLServer, ViewerPlugin, NoPluginError
 from subprocess import call
 from virl import helpers
 from virl.helpers import get_cml_client, get_current_lab, safe_join_existing_lab, get_command
@@ -33,7 +33,11 @@ def console(node, display, **kwargs):
                 if node_obj.is_active():
                     console = "/{}/{}/0".format(lab.id, node_obj.id)
                     if display:
-                        console_table([{"node": node, "console": console}])
+                        try:
+                            pl = ViewerPlugin(viewer="console")
+                            pl.visualize(consoles=[{"node": node, "console": console}])
+                        except NoPluginError:
+                            console_table([{"node": node, "console": console}])
                     else:
                         # use user specified ssh command
                         if "CML_CONSOLE_COMMAND" in server.config:

@@ -1,5 +1,5 @@
 import click
-from virl.api import VIRLServer
+from virl.api import VIRLServer, ViewerPlugin, NoPluginError
 from virl.cli.views import license_details_table
 from virl.helpers import get_cml_client
 
@@ -19,4 +19,8 @@ def show():
         click.secho("Failed to get license details: {}".format(e), fg="red")
         exit(1)
     else:
-        license_details_table(license)
+        try:
+            pl = ViewerPlugin(viewer="license")
+            pl.visualize(license=license)
+        except NoPluginError:
+            license_details_table(license)

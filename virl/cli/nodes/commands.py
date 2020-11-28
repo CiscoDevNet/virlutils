@@ -1,5 +1,5 @@
 import click
-from virl.api import VIRLServer
+from virl.api import VIRLServer, ViewerPlugin, NoPluginError
 from virl.cli.views import node_list_table1, node_list_table
 from virl.helpers import get_cml_client, get_current_lab, safe_join_existing_lab
 from virl import helpers
@@ -17,7 +17,11 @@ def nodes():
     if current_lab:
         lab = safe_join_existing_lab(current_lab, client)
         if lab:
-            node_list_table(lab.nodes())
+            try:
+                pl = ViewerPlugin(viewer="node")
+                pl.visualize(nodes=lab.nodes())
+            except NoPluginError:
+                node_list_table(lab.nodes())
         else:
             click.secho("Lab {} is not running".format(current_lab), fg="red")
             exit(1)

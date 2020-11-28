@@ -1,5 +1,6 @@
 import click
-from virl.api import VIRLServer
+from virl.api import VIRLServer, load_plugins, CommandPlugin, GeneratorPlugin
+from virl.helpers import get_default_plugin_dir
 import requests
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 import warnings
@@ -118,6 +119,25 @@ def __get_server_ver():
     return res
 
 
+def __init_plugins():
+    """
+    Scan a set of plugin directories and load them if any are found.
+    Plugins come in one of three types: command, generator, viewer.
+    In general, plugins can override base functionality.
+    """
+
+    server = VIRLServer()
+    plugin_dirs = server.config.get("CML_PLUGIN_DIRS", None)
+    if not plugin_dirs:
+        plugin_dirs = get_default_plugin_dir()
+
+    for pl in load_plugins(plugin_dirs):
+        if isinstance(pl, CommandPlugin):
+            virl.add_command(pl.run, name=pl.command)
+        elif isinstance(pl, GeneratorPlugin):
+            virl.__generator_plugins.append(pl)
+
+
 __server_ver = __get_server_ver()
 
 if __server_ver == "1":
@@ -161,6 +181,9 @@ __sub_commands = [
 for cmd in __sub_commands:
     virl.add_command(globals()[cmd + __server_ver], name=cmd)
 
+# Load plugins, but only for CML 2+
+if __server_ver != "1":
+    __init_plugins()
 
 if __name__ == "__main__":
     virl()  # pragma: no cover
