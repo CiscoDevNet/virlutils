@@ -40,7 +40,7 @@ setup(
     test_suite="tests",
     tests_require=requirements("test-requirements.txt"),
     zip_safe=False,
-    python_requires=">=3.5",
+    python_requires=">=3.6",
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
