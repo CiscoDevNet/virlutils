@@ -16,11 +16,17 @@ class Plugin(ABC):
     _generator_plugins = {}
     _viewer_plugins = {}
 
+    _plugin_map = {
+        "command": _command_plugins,
+        "generator": _generator_plugins,
+        "viewer": _viewer_plugins,
+    }
+
     def __new__(cls, **kwargs):
         ptype = None
         pdict = None
         pclass = None
-        for t, d in {"command": cls._command_plugins, "generator": cls._generator_plugins, "viewer": cls._viewer_plugins}.items():
+        for t, d in cls._plugin_map.items():
             nptype = kwargs.pop(t, None)
             if nptype and ptype:
                 raise ValueError("plugin may only contain one type: command, generator, or viewer")
@@ -39,18 +45,11 @@ class Plugin(ABC):
             raise ValueError("unsupported plugin")
 
     def __init_subclass__(cls, **kwargs):
-        if "command" in kwargs:
-            command = kwargs.pop("command")
-            if command not in cls._command_plugins:
-                cls._command_plugins[command] = cls
-        elif "generator" in kwargs:
-            generator = kwargs.pop("generator")
-            if generator not in cls._generator_plugins:
-                cls._generator_plugins[generator] = cls
-        elif "viewer" in kwargs:
-            viewer = kwargs.pop("viewer")
-            if viewer not in cls._viewer_plugins:
-                cls._viewer_plugins[viewer] = cls
+        for t, d in cls._plugin_map.items():
+            if t in kwargs:
+                val = kwargs.pop(t)
+                if val not in d:
+                    d[val] = cls
 
 
 class CommandPlugin(Plugin, ABC):
@@ -116,7 +115,7 @@ def load_plugins(basedirs) -> Iterable[Plugin]:
             module = import_module(name=mod.name)
             # This is a top-level attribute
             if hasattr(module, "command"):
-                plugin = Plugin(command=module.command)
+                plugin = CommandPlugin(command=module.command)
                 if not hasattr(plugin.run, "hidden") or not isinstance(plugin.__class__.__dict__["run"], staticmethod):
                     raise AttributeError(
                         "ERROR: Malformed plugin for command {}.  The `run` method must be static and a click.command".format(
@@ -124,7 +123,7 @@ def load_plugins(basedirs) -> Iterable[Plugin]:
                         )
                     )
             elif hasattr(module, "generator"):
-                plugin = Plugin(generator=module.generator)
+                plugin = GeneratorPlugin(generator=module.generator)
                 if not hasattr(plugin.generate, "hidden") or not isinstance(plugin.__class__.__dict__["generate"], staticmethod):
                     raise AttributeError(
                         "ERROR: Malformed plugin for generator {}.  The `generate` method must be static and a click.command".format(
@@ -132,7 +131,8 @@ def load_plugins(basedirs) -> Iterable[Plugin]:
                         )
                     )
             elif hasattr(module, "viewer"):
-                plugin = Plugin(viewer=module.viewer)
+                # We don't need to allocate a plugin for this as no additional checks are needed.
+                continue
             else:
                 raise TypeError("unknown plugin type")
 
