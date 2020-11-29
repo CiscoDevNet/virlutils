@@ -23,33 +23,31 @@ class Plugin(ABC):
     }
 
     def __new__(cls, **kwargs):
+        for t, d in cls._plugin_map.items():
+            if t in kwargs:
+                val = kwargs.pop(t)
+                if val in d:
+                    return object.__new__(d[val])
+                else:
+                    raise NoPluginError("no {} plugin for {}".format(t, val))
+
+        raise ValueError("unsupported plugin")
+
+    def __init_subclass__(cls, **kwargs):
         ptype = None
         pdict = None
-        pclass = None
         for t, d in cls._plugin_map.items():
             nptype = kwargs.pop(t, None)
             if nptype and ptype:
-                raise ValueError("plugin may only contain one type: command, generator, or viewer")
+                raise ValueError("plugin may only contain one type: {}".format(", ".join(cls._plugin_map.keys())))
 
             if nptype:
                 ptype = nptype
                 pdict = d
-                pclass = t
 
-        if ptype:
-            if ptype not in pdict:
-                raise NoPluginError("no {} plugin for {}".format(pclass, ptype))
-
-            return object.__new__(pdict[ptype])
-        else:
-            raise ValueError("unsupported plugin")
-
-    def __init_subclass__(cls, **kwargs):
-        for t, d in cls._plugin_map.items():
-            if t in kwargs:
-                val = kwargs.pop(t)
-                if val not in d:
-                    d[val] = cls
+            if ptype:
+                if ptype not in pdict:
+                    pdict[ptype] = cls
 
 
 class CommandPlugin(Plugin, ABC):
