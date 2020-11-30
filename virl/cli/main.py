@@ -127,9 +127,11 @@ def __init_plugins():
     """
 
     server = VIRLServer()
-    plugin_dirs = server.config.get("CML_PLUGIN_DIRS", None)
-    if not plugin_dirs:
-        plugin_dirs = get_default_plugin_dir()
+    plugin_dirs = server.config.get("CML_PLUGIN_PATH", "")
+    if plugin_dirs != "":
+        plugin_dirs += ":"
+
+    plugin_dirs += get_default_plugin_dir()
 
     for pl in load_plugins(plugin_dirs):
         if isinstance(pl, CommandPlugin):
