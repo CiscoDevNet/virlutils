@@ -6,6 +6,8 @@ import sys
 import os
 import click
 
+generator_plugins = []
+
 
 class NoPluginError(Exception):
     pass

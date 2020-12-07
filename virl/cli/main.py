@@ -1,5 +1,5 @@
 import click
-from virl.api import VIRLServer, load_plugins, CommandPlugin, GeneratorPlugin
+from virl.api import VIRLServer, load_plugins, CommandPlugin, GeneratorPlugin, plugin
 from virl.helpers import get_default_plugin_dir
 import requests
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
@@ -17,7 +17,7 @@ from .ls.commands import ls, ls1  # noqa: F401
 from .save.commands import save, save1  # noqa: F401
 from .telnet.commands import telnet, telnet1  # noqa: F401
 from .ssh.commands import ssh, ssh1  # noqa: F401
-from .generate import generate, generate1  # noqa: F401
+from .generate import generate, generate1, init_generators  # noqa: F401
 from .start.commands import start, start1  # noqa: F401
 from .stop.commands import stop, stop1  # noqa: F401
 from .pull.commands import pull, pull1  # noqa: F401
@@ -137,7 +137,11 @@ def __init_plugins():
         if isinstance(pl, CommandPlugin):
             virl.add_command(pl.run, name=pl.command)
         elif isinstance(pl, GeneratorPlugin):
-            virl.__generator_plugins.append(pl)
+            plugin.generator_plugins.append(pl)
+
+    # initialize the 'generate' command arguments after we've loaded
+    # any plugins.  Else the plugins will not be available
+    init_generators()
 
 
 __server_ver = __get_server_ver()
