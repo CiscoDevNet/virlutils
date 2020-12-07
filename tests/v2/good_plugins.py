@@ -1,4 +1,5 @@
 from . import BaseCMLTest
+from virl.api.plugin import _test_enable_plugins
 from click.testing import CliRunner
 import requests_mock
 import os
@@ -8,6 +9,12 @@ class CMLGoodPluginTest(BaseCMLTest):
     def setUp(self):
         super().setUp()
         os.environ["CML_PLUGIN_PATH"] = os.path.realpath("./tests/v2/plugins_good")
+        _test_enable_plugins()
+
+    def tearDown(self):
+        super().tearDown()
+        os.environ.pop("CML_PLUGIN_PATH", None)
+        _test_enable_plugins(enabled=False)
 
     def test_cmd_plugin_output(self):
         virl = self.get_virl()

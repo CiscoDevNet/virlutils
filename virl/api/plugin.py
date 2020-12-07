@@ -7,6 +7,7 @@ import os
 import click
 
 generator_plugins = []
+_plugins_enabled = True
 
 
 class NoPluginError(Exception):
@@ -25,6 +26,10 @@ class Plugin(ABC):
     }
 
     def __new__(cls, **kwargs):
+        # only provide a plugin if global plugin support is enabled.
+        if not _plugins_enabled:
+            raise NoPluginError("plugin support is disabled")
+
         for t, d in cls._plugin_map.items():
             if t in kwargs:
                 val = kwargs.pop(t)
@@ -140,3 +145,14 @@ def load_plugins(basedirs) -> Iterable[Plugin]:
         except (AttributeError, ImportError, ValueError, TypeError) as e:
             # This is not a valid plugin
             click.secho(str(e), fg="red")
+
+
+def _test_enable_plugins(enabled=True):
+    """
+    This function allows the unit tests to toggle
+    plugin support on and off.  Without it, once
+    pugins are loaded, they remain loaded for the whole
+    test suite.  This can break subsequent tests.
+    """
+    global _plugins_enabled
+    _plugins_enabled = enabled
