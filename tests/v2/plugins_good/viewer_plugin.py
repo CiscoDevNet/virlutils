@@ -1,8 +1,6 @@
 from virl.api import ViewerPlugin
 
-viewer = "lab"
 
-
-class LabViewer(ViewerPlugin, viewer=viewer):
+class LabViewer(ViewerPlugin, viewer="lab"):
     def visualize(self, **kwargs):
         print("TEST VIEWER")

@@ -7,12 +7,13 @@ import os
 
 class CMLGoodPluginTest(BaseCMLTest):
     def setUp(self):
+        _test_enable_plugins()
         super().setUp()
         os.environ["CML_PLUGIN_PATH"] = os.path.realpath("./tests/v2/plugins_good")
-        _test_enable_plugins()
 
-    def tearDown(self):
-        super().tearDown()
+    @classmethod
+    def tearDownClass(cls):
+        super().tearDownClass()
         os.environ.pop("CML_PLUGIN_PATH", None)
         _test_enable_plugins(enabled=False)
 

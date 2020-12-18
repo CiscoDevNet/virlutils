@@ -1,5 +1,5 @@
 import click
-from virl.api import VIRLServer, load_plugins, CommandPlugin, GeneratorPlugin, plugin
+from virl.api import VIRLServer, load_plugins, CommandPlugin, Plugin, check_valid_plugin, NoPluginError
 from virl.helpers import get_default_plugin_dir
 import requests
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
@@ -132,12 +132,20 @@ def __init_plugins():
         plugin_dirs += ":"
 
     plugin_dirs += get_default_plugin_dir()
+    load_plugins(plugin_dirs)
 
-    for pl in load_plugins(plugin_dirs):
-        if isinstance(pl, CommandPlugin):
-            virl.add_command(pl.run, name=pl.command)
-        elif isinstance(pl, GeneratorPlugin):
-            plugin.generator_plugins.append(pl)
+    for cmd in Plugin.get_plugins("command"):
+        try:
+            pl = CommandPlugin(command=cmd)
+        except NoPluginError:
+            continue
+        if not check_valid_plugin(pl, pl.run, "run"):
+            click.secho(
+                "ERROR: Malformed plugin for command {}.  The `run` method must be static and a click.command".format(cmd), fg="red"
+            )
+            Plugin.remove_plugin("command", cmd)
+        else:
+            virl.add_command(pl.run, name=cmd)
 
     # initialize the 'generate' command arguments after we've loaded
     # any plugins.  Else the plugins will not be available

@@ -1,10 +1,8 @@
 from virl.api.plugin import CommandPlugin
 import click
 
-command = "test-cmd"
 
-
-class TestCmdPlugin(CommandPlugin, command=command):
+class TestCmdPlugin(CommandPlugin, command="test-cmd"):
     @staticmethod
     @click.command()
     def run():

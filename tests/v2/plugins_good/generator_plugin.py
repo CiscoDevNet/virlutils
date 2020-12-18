@@ -1,10 +1,8 @@
 from virl.api.plugin import GeneratorPlugin
 import click
 
-generator = "test-gen"
 
-
-class TestGenPlugin(GeneratorPlugin, generator=generator):
+class TestGenPlugin(GeneratorPlugin, generator="test-gen"):
     @staticmethod
     @click.command()
     def generate():
