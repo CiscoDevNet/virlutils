@@ -32,7 +32,7 @@ setup(
     url="https://github.com/CiscoDevNet/virlutils",
     entry_points={"console_scripts": ["virl=virl.cli.main:virl", "cml=virl.cli.main:virl"]},
     packages=find_packages(),
-    package_data={"virl": ["templates/**/*.j2", "swagger/templates/*", "swagger/static/*"]},
+    package_data={"virl": ["templates/**/*.j2", "swagger/templates/*", "swagger/static/*", "examples/plugins/*"]},
     include_package_data=True,
     install_requires=requirements("requirements.txt"),
     long_description_content_type="text/markdown",
