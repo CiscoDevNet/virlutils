@@ -4,7 +4,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/CiscoDevNet/virlutils/badge.svg?branch=master)](https://coveralls.io/github/CiscoDevNet/virlutils?branch=master)
 [![PyPI version](https://badge.fury.io/py/virlutils.svg)](https://badge.fury.io/py/virlutils)
 
-A collection of utilities for interacting with [Cisco VIRL](https://learningnetworkstore.cisco.com/virlfaq/aboutVirl) 1.x or Cisco Modeling Labs (CML) v2+.
+A collection of utilities for interacting with [Cisco VIRL](https://learningnetworkstore.cisco.com/virlfaq/aboutVirl) 1.x or [Cisco Modeling Labs (CML)](https://developer.cisco.com/modeling-labs) v2.0+.
 
 This document describes the new version of virlutils (aka cmlutils) that works with Cisco Modeling Labs v2.0 and higher.  Documentation for working with VIRL/CML 1.x is available [here](README_virl1.md).
 
