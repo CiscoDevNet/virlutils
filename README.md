@@ -177,6 +177,14 @@ using any of the methods mentioned previously
     export CML2_PLUS="yes"
     ```
 
+-   `CML_PLUGIN_PATH` - A delimiter-separated list of directories in which to find cmlutils plugins.  See the [plugin documentation](examples/plugins/README.md) for more details.  By default, the `plugins` directory in the current `.virl` directory will be searched.
+
+    Example:
+
+    ```sh
+    export CML_PLUGIN_PATH="~/cmlutils/plugins:/opt/cmlutils/plugins"
+    ```
+
 ### Why so many choices??!?!
 
 Understanding the precedence allows you to do some pretty cool things.
