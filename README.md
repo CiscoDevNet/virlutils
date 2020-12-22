@@ -49,48 +49,48 @@ Commands:
 
 <!-- TOC depthFrom:2 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
-- [Prerequisites](#prerequisites)
-- [Installation](#installation)
-- [Configuration](#configuration)
-- [Usage / Workflows](#usage--workflows)
-- [Development](#local-development)
+-   [Prerequisites](#prerequisites)
+-   [Installation](#installation)
+-   [Configuration](#configuration)
+-   [Usage / Workflows](#usage--workflows)
+-   [Development](#local-development)
 
 <!-- /TOC -->
 
 ## Prerequisites
 
-- Python 3.5+ (tested with Python 3.7 and 3.8)
+-   Python 3.6+ (tested with Python 3.7 and 3.8)
 
 ## Installation
 
-1. Clone this repo
+1.  Clone this repo
 
-  ```sh
-  git clone https://github.com/CiscoDevNet/virlutils
-  cd virlutils
-  ```
+    ```sh
+    git clone https://github.com/CiscoDevNet/virlutils
+    cd virlutils
+    ```
 
-2. Either (2a) use pip, or (2b) use setup.py
+2.  Either (2a) use pip, or (2b) use setup.py
 
-   2a. Use pip
+    2a. Use pip
 
-   ```sh
-   pip install cmlutils
-   ```
+    ```sh
+    pip install cmlutils
+    ```
 
-   Or
+    Or
 
-   ```sh
-   pip install virlutils
-   ```
+    ```sh
+    pip install virlutils
+    ```
 
-   2b. Use setup.py
+    2b. Use setup.py
 
-   ```sh
-   python3 -m venv venv
-   source venv/bin/activate
-   python setup.py install
-   ```
+    ```sh
+    python3 -m venv venv
+    source venv/bin/activate
+    python setup.py install
+    ```
 
 ## Configuration
 
@@ -133,49 +133,49 @@ VIRL_PASSWORD=cancodetoo!
 In addition to basic credentials, the following configuration options are supported
 using any of the methods mentioned previously
 
-- `VIRL_TELNET_COMMAND` - allows the user to customize the telnet command that is called.
-  This command will be passed the host/ip information from the running simulation
+-   `VIRL_TELNET_COMMAND` - allows the user to customize the telnet command that is called.
+    This command will be passed the host/ip information from the running simulation
 
-   Example:
+     Example:
 
-   ```sh
-   export VIRL_TELNET_COMMAND="mytelnet {host}"
-   ```
+    ```sh
+    export VIRL_TELNET_COMMAND="mytelnet {host}"
+    ```
 
-- `VIRL_SSH_COMMAND` - allows the user to customize the ssh command that is called.
-  This command will be passed the host/ip as well as the username from the running simulation
+-   `VIRL_SSH_COMMAND` - allows the user to customize the ssh command that is called.
+    This command will be passed the host/ip as well as the username from the running simulation
 
-  Example:
+    Example:
 
-  ```sh
-  export VIRL_SSH_COMMAND="myssh {username}@{host}"
-  ```
+    ```sh
+    export VIRL_SSH_COMMAND="myssh {username}@{host}"
+    ```
 
-- `CML_VERIFY_CERT` - The path to a PEM-encoded certificate file to use to verify the CML controller VM's SSL certificate.  If you do not wish to verify the certificate, set this to "False"
+-   `CML_VERIFY_CERT` - The path to a PEM-encoded certificate file to use to verify the CML controller VM's SSL certificate.  If you do not wish to verify the certificate, set this to "False"
 
-  Example:
+    Example:
 
-  ```sh
-  export CML_VERIFY_CERT=/etc/certs/ca_bundle.pem
-  ```
+    ```sh
+    export CML_VERIFY_CERT=/etc/certs/ca_bundle.pem
+    ```
 
-- `CML_CONSOLE_COMMAND` - allows the user to customize the SSH command that is called.
+-   `CML_CONSOLE_COMMAND` - allows the user to customize the SSH command that is called.
 
-  This command will be passed the CML controller VM IP, the console path of the node, and the CML controller username (**note:** you may have to force a TTY allocation in your SSH command)
+    This command will be passed the CML controller VM IP, the console path of the node, and the CML controller username (**note:** you may have to force a TTY allocation in your SSH command)
 
-  Example:
+    Example:
 
-  ```sh
-  export CML_SSH_COMMAND="myssh {user}@{host} {console}"
-  ```
+    ```sh
+    export CML_SSH_COMMAND="myssh {user}@{host} {console}"
+    ```
 
-- `CML2_PLUS` - If set in the config or in the environment then virlutils will assume the server is a CML 2+ server and not try and automatically guess its version.  If omitted, then virutils will attempt to automatically determine the CML/VIRL server version
+-   `CML2_PLUS` - If set in the config or in the environment then virlutils will assume the server is a CML 2+ server and not try and automatically guess its version.  If omitted, then virutils will attempt to automatically determine the CML/VIRL server version
 
-  Example:
+    Example:
 
-  ```sh
-  export CML2_PLUS="yes"
-  ```
+    ```sh
+    export CML2_PLUS="yes"
+    ```
 
 ### Why so many choices??!?!
 
@@ -199,9 +199,9 @@ Assume the following directory structure...
 
 This allows three major benefits.  
 
-1. you can easily use different credentials/servers for various environments
-2. you can customize your lab .yaml files to include different tags, different node configurations, etc.
-3. you have a badass workflow.
+1.  you can easily use different credentials/servers for various environments
+2.  you can customize your lab .yaml files to include different tags, different node configurations, etc.
+3.  you have a badass workflow.
 
 ```sh
 $ cml ls  
@@ -487,9 +487,9 @@ Successfully added CML devices to NSO
 **NOTE**:  NSO environment is also attempted to be determined using the following environment
 variables
 
-- NSO_HOST
-- NSO_USERNAME
-- NSO_PASSWORD
+-   NSO_HOST
+-   NSO_USERNAME
+-   NSO_PASSWORD
 
 NSO Configuration Example
 
