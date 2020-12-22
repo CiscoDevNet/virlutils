@@ -18,7 +18,7 @@ def search(query=None, **kwargs):
     else:
         click.secho("Displaying {} Results".format(len(repos)))
     try:
-        pl = ViewerPlugin(viewer="repo")
+        pl = ViewerPlugin(viewer="search")
         pl.visualize(repos=repos)
     except NoPluginError:
         repo_table(repos)
