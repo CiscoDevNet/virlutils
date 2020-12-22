@@ -200,7 +200,7 @@ The _node_def_ viewer renders the output of `cml definitions node ls` (i.e., the
 passed an `node_defs` key in the `kwargs` dictionary.
 
 The value of `node_defs` is an object representing the list of node definitions on the CML server.  This structure is documented
-at <https://CML_SERVER/api/v0/ui/#/Node> Definitions/simple_ui.http_handlers.node_definition_get_list where CML_SERVER is your CML server's
+at <https://CML_SERVER/api/v0/ui/#/Node%20Definitions/simple_ui.http_handlers.node_definition_get_list> where CML_SERVER is your CML server's
 IP or hostname.
 
 #### _search_ Viewer
