@@ -5,9 +5,8 @@ from virl.helpers import get_cml_client
 
 
 @click.command()
-@click.argument("node", nargs=1)
 @click.option("-f", "--filename", required=True, metavar="<filename>", help="path to the local node definition file")
-def nimport(node, filename):
+def nimport(filename):
     """
     import a node definition
     """
@@ -26,7 +25,7 @@ def nimport(node, filename):
             contents = fd.read()
 
         try:
-            defs.upload_node_definition(node, contents)
+            defs.upload_node_definition(contents)
         except Exception as e:
-            click.secho("Failed to import node definition for {}: {}".format(node, e), fg="red")
+            click.secho("Failed to import node definition: {}".format(e), fg="red")
             exit(1)
