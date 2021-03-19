@@ -1,5 +1,5 @@
 Flask==1.1.2
-Jinja2==2.11.1
+Jinja2==2.11.3
 MarkupSafe==1.1.1
 PyYAML==5.3.1
 Werkzeug==1.0.1
