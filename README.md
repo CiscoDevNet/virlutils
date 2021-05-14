@@ -59,7 +59,7 @@ Commands:
 
 ## Prerequisites
 
--   Python 3.6+ (tested with Python 3.7 and 3.8)
+-   Python 3.6+ (tested with Python 3.7, 3.8, and 3.9)
 
 ## Installation
 
