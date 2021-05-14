@@ -2,7 +2,7 @@ import click
 from virl.api import VIRLServer, load_plugins, CommandPlugin, Plugin, check_valid_plugin, NoPluginError
 from virl.helpers import get_default_plugin_dir
 import requests
-from requests.packages.urllib3.exceptions import InsecureRequestWarning
+from urllib3.exceptions import InsecureRequestWarning
 import warnings
 import virl2_client
 import traceback
