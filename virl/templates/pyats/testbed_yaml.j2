@@ -61,7 +61,7 @@ topology:
         {%- if interface['network'] %}
         link: {{ interface['network'] }}
         {%- endif %}
-        {%- if 'oop' in interface['type'] %}
+        {%- if interface['type'] and 'oop' in interface['type'] %}
         type: loopback
         {%- else %}
         type: ethernet
