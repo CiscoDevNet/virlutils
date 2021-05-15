@@ -20,7 +20,7 @@ from virl.helpers import find_virl, get_cml_client, get_cache_root
     required=False,
     help="Display labs for all users (only if current user is an admin) (default: only show labs owned by me)",
 )
-def ls(all, all_users, **kwargs):
+def ls(all, all_users):
     """
     lists running labs and optionally those in the cache
     """
