@@ -10,7 +10,7 @@ functions (e.g., change the output of `cml ls`).
 ## Requirements
 
 -   Plugin support is only provided when using CML 2+.  Support for VIRL/CML 1.x is not available.
--   All plugins must be written in Python (or at least a stub so that can bootstrap other modules)
+-   All plugins must be written in Python (or at least a stub that can bootstrap modules written in other languages)
 
 ## Using Plugins
 
