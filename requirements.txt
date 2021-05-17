@@ -12,6 +12,7 @@ MarkupSafe
 python-dateutil
 PyYAML
 requests
+requests_toolbelt
 six
 tabulate
 urllib3

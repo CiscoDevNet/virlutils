@@ -34,6 +34,7 @@ python-coveralls
 python-dateutil
 requests-mock
 requests
+requests_toolbelt
 six
 tabulate
 urllib3
