@@ -37,6 +37,6 @@ requests
 six
 tabulate
 urllib3
-virl2-client>=2.1.0
+virl2-client>=2.2.1
 wcwidth
 zipp
