@@ -518,13 +518,13 @@ license  ls
 You can activate VIRL autocompletions by executing the following command
 
 ```sh
-eval "$(_VIRL_COMPLETE=source virl)"
+eval "$(_VIRL_COMPLETE=bash_source virl)"
 ```
 
 To do the same for the `cml` command, do the following
 
 ```sh
-eval "$(_CML_COMPLETE=source cml)"
+eval "$(_CML_COMPLETE=bash_source cml)"
 ```
 
 zsh users may need to run the following prior
@@ -537,8 +537,8 @@ bashcompinit
 And then the following to properly enable completions for zsh
 
 ```sh
-eval "$(_VIRL_COMPLETE=source_zsh virl)"
-eval "$(_CML_COMPLETE=source_zsh cml)"
+eval "$(_VIRL_COMPLETE=zsh_source virl)"
+eval "$(_CML_COMPLETE=zsh_source cml)"
 ```
 
 ## Local Development
