@@ -166,7 +166,7 @@ using any of the methods mentioned previously
     Example:
 
     ```sh
-    export CML_SSH_COMMAND="myssh {user}@{host} {console}"
+    export CML_CONSOLE_COMMAND="myssh {user}@{host} {console}"
     ```
 
 -   `CML2_PLUS` - If set in the config or in the environment then virlutils will assume the server is a CML 2+ server and not try and automatically guess its version.  If omitted, then virutils will attempt to automatically determine the CML/VIRL server version
