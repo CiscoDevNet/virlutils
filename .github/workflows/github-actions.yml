@@ -29,7 +29,5 @@ jobs:
           make coverage
           pip freeze
       - name: Run coveralls
-        uses: coverallsapp/github-action@master
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          path-to-lcov: ./.coverage
+        run: |
+          coveralls
