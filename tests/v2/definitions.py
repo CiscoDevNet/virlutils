@@ -1,5 +1,6 @@
 from . import BaseCMLTest
 from click.testing import CliRunner
+import requests_mock
 import os
 
 
