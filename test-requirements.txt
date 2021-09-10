@@ -30,7 +30,6 @@ pycodestyle
 pyflakes
 pyparsing
 pytest
-python-coveralls
 python-dateutil
 requests-mock
 requests
