@@ -32,4 +32,4 @@ jobs:
           pip freeze
       - name: Run coveralls
         run: |
-          coveralls
+          coveralls --service=github
