@@ -1,0 +1,8 @@
+id: alpine-3-10-base
+node_definition_id: alpine
+description: Alpine Linux and network tools
+label: Alpine 3.10
+disk_image: alpine-3-10-base.qcow2
+read_only: true
+disk_subfolder: alpine-3-10-base
+schema_version: 0.0.1
