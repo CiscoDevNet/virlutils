@@ -5,9 +5,8 @@ from virl.helpers import get_cml_client
 
 
 @click.command()
-@click.argument("image", nargs=1)
 @click.option("-f", "--filename", required=True, metavar="<filename>", help="path to the local image definition file")
-def definition(image, filename):
+def definition(filename):
     """
     import an image definition
     """
@@ -26,7 +25,7 @@ def definition(image, filename):
             contents = fd.read()
 
         try:
-            defs.upload_image_definition(image, contents)
+            defs.upload_image_definition(contents)
         except Exception as e:
-            click.secho("Failed to import image definition for {}: {}".format(image, e), fg="red")
+            click.secho("Failed to import image definition for {}: {}".format(filename, e), fg="red")
             exit(1)
