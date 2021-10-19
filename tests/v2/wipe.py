@@ -30,7 +30,7 @@ class CMLTestWipe(BaseCMLTest):
             self.get_api_path("labs/{}/lab_element_state".format(self.get_test_id())), json=MockCMLServer.get_lab_element_state_down
         )
 
-    @patch("virl.cli.wipe.lab.commands.input", auto_spec=False, return_value="y")
+    @patch("virl.cli.wipe.lab.commands.input", autospec=False, return_value="y")
     def test_cml_wipe_lab(self, input_mock):
         with requests_mock.Mocker() as m:
             # Mock the request to return what we expect from the API.
@@ -43,7 +43,7 @@ class CMLTestWipe(BaseCMLTest):
             self.assertEqual(0, result.exit_code)
             self.assertNotIn("Not wiping lab", result.output)
 
-    @patch("virl.cli.wipe.lab.commands.input", auto_spec=False, return_value="y")
+    @patch("virl.cli.wipe.lab.commands.input", autospec=False, return_value="y")
     def test_cml_wipe_lab_force(self, input_mock):
         with requests_mock.Mocker() as m:
             # Mock the request to return what we expect from the API.
@@ -55,7 +55,7 @@ class CMLTestWipe(BaseCMLTest):
             result = runner.invoke(virl, ["wipe", "lab", "--force"])
             self.assertEqual(0, result.exit_code)
 
-    @patch("virl.cli.wipe.lab.commands.input", auto_spec=False, return_value="y")
+    @patch("virl.cli.wipe.lab.commands.input", autospec=False, return_value="y")
     def test_cml_wipe_lab_no_confirm(self, input_mock):
         with requests_mock.Mocker() as m:
             # Mock the request to return what we expect from the API.
@@ -68,7 +68,7 @@ class CMLTestWipe(BaseCMLTest):
             self.assertEqual(0, result.exit_code)
             input_mock.assert_not_called()
 
-    @patch("virl.cli.wipe.lab.commands.input", auto_spec=False, return_value="n")
+    @patch("virl.cli.wipe.lab.commands.input", autospec=False, return_value="n")
     def test_cml_wipe_lab_denied(self, input_mock):
         with requests_mock.Mocker() as m:
             # Mock the request to return what we expect from the API.
@@ -130,7 +130,7 @@ class CMLTestWipe(BaseCMLTest):
             self.assertEqual(1, result.exit_code)
             self.assertIn("Unable to find lab 123456", result.output)
 
-    @patch("virl.cli.wipe.node.commands.input", auto_spec=False, return_value="y")
+    @patch("virl.cli.wipe.node.commands.input", autospec=False, return_value="y")
     def test_cml_wipe_node(self, input_mock):
         with requests_mock.Mocker() as m:
             # Mock the request to return what we expect from the API.
@@ -142,7 +142,7 @@ class CMLTestWipe(BaseCMLTest):
             self.assertEqual(0, result.exit_code)
             self.assertNotIn("Not wiping node", result.output)
 
-    @patch("virl.cli.wipe.node.commands.input", auto_spec=False, return_value="y")
+    @patch("virl.cli.wipe.node.commands.input", autospec=False, return_value="y")
     def test_cml_wipe_node_force(self, input_mock):
         with requests_mock.Mocker() as m:
             # Mock the request to return what we expect from the API.
@@ -154,7 +154,7 @@ class CMLTestWipe(BaseCMLTest):
             result = runner.invoke(virl, ["wipe", "node", "rtr-1", "--force"], catch_exceptions=False)
             self.assertEqual(0, result.exit_code)
 
-    @patch("virl.cli.wipe.node.commands.input", auto_spec=False, return_value="y")
+    @patch("virl.cli.wipe.node.commands.input", autospec=False, return_value="y")
     def test_cml_wipe_node_no_confirm(self, input_mock):
         with requests_mock.Mocker() as m:
             # Mock the request to return what we expect from the API.
@@ -166,7 +166,7 @@ class CMLTestWipe(BaseCMLTest):
             self.assertEqual(0, result.exit_code)
             input_mock.assert_not_called()
 
-    @patch("virl.cli.wipe.node.commands.input", auto_spec=False, return_value="n")
+    @patch("virl.cli.wipe.node.commands.input", autospec=False, return_value="n")
     def test_cml_wipe_node_denied(self, input_mock):
         with requests_mock.Mocker() as m:
             # Mock the request to return what we expect from the API.

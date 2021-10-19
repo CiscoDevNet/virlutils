@@ -1,6 +1,7 @@
 from . import BaseTest
 from click.testing import CliRunner
 from virl.cli.main import virl
+
 try:
     from unittest.mock import patch
 except ImportError:
@@ -8,10 +9,9 @@ except ImportError:
 
 
 class Tests(BaseTest):
-
-    @patch("virl.cli.viz.commands.subprocess.Popen", auto_spec=False)
+    @patch("virl.cli.viz.commands.subprocess.Popen", autospec=False)
     def test_virl_uwm(self, call_mock):
         runner = CliRunner()
         runner.invoke(virl, ["viz"])
-        url = 'http://localhost:19402/?sim_id=TEST_ENV#/layer/phy'
-        call_mock.assert_called_with(['open', url])
+        url = "http://localhost:19402/?sim_id=TEST_ENV#/layer/phy"
+        call_mock.assert_called_with(["open", url])

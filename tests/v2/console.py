@@ -18,7 +18,7 @@ class CMLConsoleTests(BaseCMLTest):
             result = runner.invoke(virl, ["console", "rtr-1", "--display"])
             self.assertEqual(0, result.exit_code)
 
-    @patch("virl.cli.console.commands.call", auto_spec=False)
+    @patch("virl.cli.console.commands.call", autospec=False)
     def test_cml_console_connect(self, call_mock):
         with requests_mock.Mocker() as m:
             # Mock the request to return what we expect from the API.

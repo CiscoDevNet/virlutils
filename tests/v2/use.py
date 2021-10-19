@@ -10,7 +10,7 @@ except ImportError:
 
 
 class CMLUseTest(BaseCMLTest):
-    @patch("virl.cli.use.commands.call", auto_spec=False, return_value=0)
+    @patch("virl.cli.use.commands.call", autospec=False, return_value=0)
     def test_cml_use(self, call_mock):
         with requests_mock.Mocker() as m:
             self.setup_mocks(m)

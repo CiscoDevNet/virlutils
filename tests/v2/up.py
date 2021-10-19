@@ -195,7 +195,7 @@ class TestCMLUp(BaseCMLTest):
             self.assertEqual(0, result.exit_code)
             self.assertIn("Lab is already running (ID: {}, Title: {})".format(self.get_test_id(), self.get_test_title()), result.output)
 
-    @patch("virl.cli.up.commands.call", auto_spec=False)
+    @patch("virl.cli.up.commands.call", autospec=False)
     def test_cml_up_no_lab(self, call_mock):
         try:
             os.remove("topology.yaml")
@@ -226,7 +226,7 @@ class TestCMLUp(BaseCMLTest):
             os.remove(".virl/cached_cml_labs/123456")
             self.assertIn("Current lab is already set to {}, but that lab is not on server".format("123456"), result.output)
 
-    @patch("virl.cli.up.commands.call", auto_spec=False, return_value=0)
+    @patch("virl.cli.up.commands.call", autospec=False, return_value=0)
     def test_cml_up_from_repo(self, call_mock):
         try:
             os.remove("topology.yaml")

@@ -22,7 +22,7 @@ class CMLTestRm(BaseCMLTest):
         self.__m.get(self.get_api_path("labs/{}/check_if_converged".format(self.get_alt_id())), json=True)
         return "WIPED"
 
-    @patch("virl.cli.rm.commands.input", auto_spec=False, return_value="y")
+    @patch("virl.cli.rm.commands.input", autospec=False, return_value="y")
     def test_cml_rm(self, input_mock):
         with requests_mock.Mocker() as m:
             # Mock the request to return what we expect from the API.
@@ -35,7 +35,7 @@ class CMLTestRm(BaseCMLTest):
             self.assertEqual(0, result.exit_code)
             self.assertNotIn("Not removing lab", result.output)
 
-    @patch("virl.cli.rm.commands.input", auto_spec=False, return_value="y")
+    @patch("virl.cli.rm.commands.input", autospec=False, return_value="y")
     def test_cml_rm_force(self, input_mock):
         with requests_mock.Mocker() as m:
             # Mock the request to return what we expect from the API.
@@ -47,7 +47,7 @@ class CMLTestRm(BaseCMLTest):
             result = runner.invoke(virl, ["rm", "--force"])
             self.assertEqual(0, result.exit_code)
 
-    @patch("virl.cli.rm.commands.input", auto_spec=False, return_value="y")
+    @patch("virl.cli.rm.commands.input", autospec=False, return_value="y")
     def test_cml_rm_no_confirm(self, input_mock):
         with requests_mock.Mocker() as m:
             # Mock the request to return what we expect from the API.
@@ -60,7 +60,7 @@ class CMLTestRm(BaseCMLTest):
             self.assertEqual(0, result.exit_code)
             input_mock.assert_not_called()
 
-    @patch("virl.cli.rm.commands.input", auto_spec=False, return_value="y")
+    @patch("virl.cli.rm.commands.input", autospec=False, return_value="y")
     def test_cml_rm_from_cache(self, input_mock):
         with requests_mock.Mocker() as m:
             # Mock the request to return what we expect from the API.
@@ -73,7 +73,7 @@ class CMLTestRm(BaseCMLTest):
             self.assertEqual(0, result.exit_code)
             self.assertIn("Removed lab {} from cache".format(self.get_alt_id()), result.output)
 
-    @patch("virl.cli.rm.commands.input", auto_spec=False, return_value="n")
+    @patch("virl.cli.rm.commands.input", autospec=False, return_value="n")
     def test_cml_rm_denied(self, input_mock):
         with requests_mock.Mocker() as m:
             # Mock the request to return what we expect from the API.

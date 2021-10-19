@@ -25,7 +25,7 @@ class CMLBadPluginTest(BaseCMLTest):
         os.environ.pop("CML_PLUGIN_PATH", None)
         _test_enable_plugins(enabled=False)
 
-    @patch("virl.cli.main.click.secho", auto_spec=False)
+    @patch("virl.cli.main.click.secho", autospec=False)
     def test_cmd_plugin_bad(self, secho_mock):
         self.localSetUp("plugins_bad_cmd")
         virl = self.get_virl()
@@ -40,7 +40,7 @@ class CMLBadPluginTest(BaseCMLTest):
                 "ERROR: Malformed plugin for command test-bad-cmd.  The `run` method must be static and a click.command", fg="red"
             )
 
-    @patch("virl.cli.generate.click.secho", auto_spec=False)
+    @patch("virl.cli.generate.click.secho", autospec=False)
     def test_gen_plugin_bad(self, secho_mock):
         self.localSetUp("plugins_bad_gen")
         virl = self.get_virl()
@@ -55,7 +55,7 @@ class CMLBadPluginTest(BaseCMLTest):
                 "ERROR: Malformed plugin for generator test-bad-gen.  The `generate` method must be static and a click.command", fg="red"
             )
 
-    @patch("virl.api.plugin.click.secho", auto_spec=False)
+    @patch("virl.api.plugin.click.secho", autospec=False)
     def test_view_plugin_bad(self, secho_mock):
         self.localSetUp("plugins_bad_viewer")
         virl = self.get_virl()
