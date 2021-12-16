@@ -19,7 +19,13 @@ def ls(**kwargs):
     # Regardless of the argument, we have to get all the node definitions
     # In the case of no arg, we print them all.
     # In the case of an arg, we have to go back and get details.
-    defs = client.definitions.node_definitions()
+    defs_orig = client.definitions.node_definitions()
+
+    # Create a new list of the *flattened* node definitions.  CML 2.3 removed the
+    # extra "data" layer of nesting in the node def JSON format.  To make the rest
+    # of the code work no matter which version of CML we're talking to, create a
+    # list of node definitions, removing the extra layer of nesting if needed.
+    defs = [f["data"] if "data" in f else f for f in defs_orig]
 
     try:
         pl = ViewerPlugin(viewer="node_def")

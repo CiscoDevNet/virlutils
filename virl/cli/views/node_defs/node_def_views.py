@@ -8,12 +8,13 @@ def node_def_list_table(image_list):
     table = list()
 
     for f in list(image_list):
+
         tr = list()
         tr.append(str(f["id"]))
-        tr.append(str(f["data"]["ui"].get("label", "N/A")))
-        tr.append(str(f["data"]["general"]["description"]))
-        tr.append(str(len(f["data"]["device"]["interfaces"]["physical"])))
-        linux_native = f["data"]["sim"].get("linux_native", None)
+        tr.append(str(f["ui"].get("label", "N/A")))
+        tr.append(str(f["general"]["description"]))
+        tr.append(str(len(f["device"]["interfaces"]["physical"])))
+        linux_native = f["sim"].get("linux_native", None)
         if linux_native:
             ram = int(linux_native.get("ram", 0))
             unit = "GB"
