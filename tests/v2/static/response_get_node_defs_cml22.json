@@ -1,0 +1,2382 @@
+[
+  {
+    "id": "external_connector",
+    "data": {
+      "id": "external_connector",
+      "configuration": {
+        "generator": {
+          "driver": null
+        }
+      },
+      "device": {
+        "interfaces": {
+          "has_loopback_zero": false,
+          "default_count": 1,
+          "physical": [
+            "port"
+          ],
+          "serial_ports": 0
+        }
+      },
+      "inherited": {
+        "image": {
+          "ram": false,
+          "cpus": false,
+          "data_volume": false,
+          "boot_disk_size": false,
+          "cpu_limit": false
+        },
+        "node": {
+          "ram": false,
+          "cpus": false,
+          "data_volume": false,
+          "boot_disk_size": false,
+          "cpu_limit": false
+        }
+      },
+      "general": {
+        "description": "Connect to devices outside of the simulation",
+        "nature": "external_connector",
+        "read_only": true
+      },
+      "schema_version": "0.0.1",
+      "sim": {
+        "linux_native": {
+          "driver": "external_connector",
+          "libvirt_domain_driver": "none"
+        }
+      },
+      "boot": {
+        "timeout": 5
+      },
+      "ui": {
+        "description": "The external connector can be configured either in\n\n- **NAT** mode -or-\n- **Bridge** mode.\n\nWhen configured in bridge mode then the node connected to the\nexternal connector will be placed in the same network as the\nCML^2 appliance and thus can be reached from the outside given\nit can acquire an IP via DHCP or IPv6 RAs, if available on the\nsegment. Or the node has a properly configured static address.",
+        "group": "Others",
+        "icon": "cloud",
+        "label": "External Connector",
+        "label_prefix": "ext-conn-",
+        "visible": true
+      }
+    }
+  },
+  {
+    "id": "server",
+    "data": {
+      "id": "server",
+      "configuration": {
+        "generator": {
+          "driver": "server"
+        },
+        "provisioning": {
+          "volume_name": "cfg",
+          "media_type": "iso",
+          "files": [
+            {
+              "name": "iosxe_config.txt",
+              "content": "# this is a shell script which will be sourced at boot\nhostname inserthostname_here\n# configurable user account\nUSERNAME=cisco\nPASSWORD=cisco\n# no password for tc user by default\nTC_PASSWORD=",
+              "editable": true
+            }
+          ]
+        }
+      },
+      "device": {
+        "interfaces": {
+          "has_loopback_zero": false,
+          "default_count": 1,
+          "physical": [
+            "eth0",
+            "eth1",
+            "eth2",
+            "eth3",
+            "eth4",
+            "eth5",
+            "eth6",
+            "eth7",
+            "eth8",
+            "eth9"
+          ],
+          "serial_ports": 1
+        }
+      },
+      "inherited": {
+        "image": {
+          "ram": true,
+          "cpus": true,
+          "cpu_limit": true,
+          "data_volume": true,
+          "boot_disk_size": true
+        },
+        "node": {
+          "ram": true,
+          "cpus": true,
+          "cpu_limit": true,
+          "data_volume": true,
+          "boot_disk_size": true
+        }
+      },
+      "general": {
+        "description": "Tiny Core Linux",
+        "nature": "server",
+        "read_only": true
+      },
+      "schema_version": "0.0.1",
+      "sim": {
+        "linux_native": {
+          "cpus": 1,
+          "disk_driver": "virtio",
+          "driver": "server",
+          "libvirt_domain_driver": "kvm",
+          "nic_driver": "virtio",
+          "ram": 128,
+          "boot_disk_size": 16,
+          "video": {
+            "memory": 16
+          }
+        }
+      },
+      "boot": {
+        "completed": [
+          "###### BOOT CONFIG DONE ######"
+        ],
+        "timeout": 20
+      },
+      "pyats": {
+        "os": "linux"
+      },
+      "ui": {
+        "description": "Tiny Core Linux\n\n128 MB DRAM, 1 vCPU\n\n##### Configuration\nShell commands in the configuration field of the\nnode are just sourced as user `root` when the node\nstarts up. Tiny Core Linux is pretty much a RAM disk\nbased distribution; unless a backup is initiated using\nthe `backup` command, there's nothing saved when\nrestarting / reloading a node. The default username\nis `tc` without a password. There is also a user\n`cisco` with password `cisco`. Additional packages\ncan be installed using the interactive `tce` command.\nThis, of course, requires external connectivity to\nreach the repo servers. For further information click\n[here](http://www.tinycorelinux.net/concepts.html).\n\n##### Example\n```shell\nhostname server-0\nifconfig eth1 10.0.0.1 netmask 255.255.255.0 up\nroute add -net 10.0.0.0/8 dev eth1\n```",
+        "group": "Others",
+        "icon": "server",
+        "label": "Server",
+        "label_prefix": "server-",
+        "visible": true
+      }
+    }
+  },
+  {
+    "id": "unmanaged_switch",
+    "data": {
+      "id": "unmanaged_switch",
+      "configuration": {
+        "generator": {
+          "driver": null
+        }
+      },
+      "device": {
+        "interfaces": {
+          "has_loopback_zero": false,
+          "default_count": 8,
+          "physical": [
+            "port0",
+            "port1",
+            "port2",
+            "port3",
+            "port4",
+            "port5",
+            "port6",
+            "port7",
+            "port8",
+            "port9",
+            "port10",
+            "port11",
+            "port12",
+            "port13",
+            "port14",
+            "port15",
+            "port16",
+            "port17",
+            "port18",
+            "port19",
+            "port20",
+            "port21",
+            "port22",
+            "port23",
+            "port24",
+            "port25",
+            "port26",
+            "port27",
+            "port28",
+            "port29",
+            "port30",
+            "port31"
+          ],
+          "serial_ports": 0
+        }
+      },
+      "inherited": {
+        "image": {
+          "ram": false,
+          "cpus": false,
+          "data_volume": false,
+          "boot_disk_size": false,
+          "cpu_limit": false
+        },
+        "node": {
+          "ram": false,
+          "cpus": false,
+          "data_volume": false,
+          "boot_disk_size": false,
+          "cpu_limit": false
+        }
+      },
+      "general": {
+        "description": "Unmanaged Switch",
+        "nature": "switch",
+        "read_only": true
+      },
+      "schema_version": "0.0.1",
+      "sim": {
+        "linux_native": {
+          "driver": "unmanaged_switch",
+          "libvirt_domain_driver": "none"
+        }
+      },
+      "boot": {
+        "timeout": 5
+      },
+      "ui": {
+        "description": "This is a simple virtual switch, no memory/CPU settings,\nno configuration.\n\nThis is basically a Linux bridge.\n",
+        "group": "Others",
+        "icon": "switch",
+        "label": "Unmanaged Switch",
+        "label_prefix": "unmanaged-switch-",
+        "visible": true
+      }
+    }
+  },
+  {
+    "id": "alpine",
+    "data": {
+      "id": "alpine",
+      "configuration": {
+        "generator": {
+          "driver": "alpine"
+        },
+        "provisioning": {
+          "volume_name": "cfg",
+          "media_type": "iso",
+          "files": [
+            {
+              "name": "node.cfg",
+              "content": "# this is a shell script which will be sourced at boot\nhostname inserthostname_here\n# configurable user account\nUSERNAME=cisco\nPASSWORD=cisco\n",
+              "editable": true
+            }
+          ]
+        }
+      },
+      "device": {
+        "interfaces": {
+          "has_loopback_zero": false,
+          "default_count": 1,
+          "physical": [
+            "eth0",
+            "eth1",
+            "eth2",
+            "eth3"
+          ],
+          "serial_ports": 1
+        }
+      },
+      "inherited": {
+        "image": {
+          "ram": true,
+          "cpus": true,
+          "cpu_limit": true,
+          "data_volume": true,
+          "boot_disk_size": true
+        },
+        "node": {
+          "ram": true,
+          "cpus": true,
+          "cpu_limit": true,
+          "data_volume": true,
+          "boot_disk_size": true
+        }
+      },
+      "general": {
+        "description": "Alpine Linux",
+        "nature": "server",
+        "read_only": true
+      },
+      "schema_version": "0.0.1",
+      "sim": {
+        "linux_native": {
+          "cpus": 1,
+          "disk_driver": "virtio",
+          "driver": "server",
+          "libvirt_domain_driver": "kvm",
+          "nic_driver": "virtio",
+          "ram": 512,
+          "boot_disk_size": 16,
+          "video": {
+            "memory": 16
+          }
+        }
+      },
+      "boot": {
+        "completed": [
+          "Welcome to Alpine Linux"
+        ],
+        "timeout": 60
+      },
+      "pyats": {
+        "os": "linux"
+      },
+      "ui": {
+        "description": "Alpine Linux\n\n512 MB DRAM, 1 vCPU, 16GB base disk\n\n##### Configuration\nShell commands in the configuration field of the node are just sourced as user `root`\nwhen the node starts up. This is based on Alpine Linux. More info [here](https://wiki.alpinelinux.org/wiki/Main_Page)\n\n##### Users\nThe 'root' user has the password 'cisco' and there's a 'cisco/cisco' user, too. This image has a couple of tools:\n\n- iperf -- basic traffic generation\n- routem -- OSPF/BGP control plane traffic generation\n- tcpdump, traceroute, ping, telnet, ssh\n- runs a SSH daemon\n\n##### Example\n```shell\nhostname desktop-0\nip address add 10.0.0.10/24 dev eth1\nip link set dev eth1 up\nip route add 10.0.0.0/8 dev eth1\nip route add default via 10.0.0.1\n```\n\n[Link](https://www.alpinelinux.org/)\n",
+        "group": "Others",
+        "icon": "server",
+        "label": "Alpine",
+        "label_prefix": "alpine-",
+        "visible": true
+      }
+    }
+  },
+  {
+    "id": "trex",
+    "data": {
+      "id": "trex",
+      "configuration": {
+        "generator": {
+          "driver": "alpine"
+        },
+        "provisioning": {
+          "volume_name": "cfg",
+          "media_type": "iso",
+          "files": [
+            {
+              "name": "node.cfg",
+              "content": "# this is a shell script which will be sourced at boot\nhostname inserthostname_here\n# configurable user account\nUSERNAME=cisco\nPASSWORD=cisco\n",
+              "editable": true
+            }
+          ]
+        }
+      },
+      "device": {
+        "interfaces": {
+          "has_loopback_zero": false,
+          "default_count": 2,
+          "management": [
+            "eth0"
+          ],
+          "physical": [
+            "eth0",
+            "eth1",
+            "eth2"
+          ],
+          "serial_ports": 1
+        }
+      },
+      "inherited": {
+        "image": {
+          "ram": true,
+          "cpus": true,
+          "cpu_limit": true,
+          "data_volume": true,
+          "boot_disk_size": true
+        },
+        "node": {
+          "ram": true,
+          "cpus": true,
+          "cpu_limit": true,
+          "data_volume": true,
+          "boot_disk_size": true
+        }
+      },
+      "general": {
+        "description": "Alpine Linux",
+        "nature": "server",
+        "read_only": true
+      },
+      "schema_version": "0.0.1",
+      "sim": {
+        "linux_native": {
+          "cpus": 1,
+          "disk_driver": "virtio",
+          "driver": "server",
+          "libvirt_domain_driver": "kvm",
+          "nic_driver": "virtio",
+          "ram": 512
+        }
+      },
+      "boot": {
+        "completed": [
+          "VIRL^2 TRex Node"
+        ],
+        "timeout": 60
+      },
+      "ui": {
+        "description": "Cisco TRex Traffic Generator Container\n\n(runs in *stateless* mode)\n\n512 MB DRAM\n\n##### Important\nTRex **MUST** have at least 2 interfaces. The first interface is used for\nmanagement (consider to connect it using a bridged external connector and\ngiving it a static IP so that a GUI can be connected to it), the 2nd and\n3rd interface is for data. The 3rd interface is optional.\n\nThe GUI can be downloaded from\n[here](https://github.com/cisco-system-traffic-generator/trex-stateless-gui),\nsearch for \"Builds\". Ensure the version matches the image.\n",
+        "group": "Others",
+        "icon": "access_point",
+        "label": "TRex",
+        "label_prefix": "trex-",
+        "visible": true
+      }
+    }
+  },
+  {
+    "id": "wan_emulator",
+    "data": {
+      "id": "wan_emulator",
+      "configuration": {
+        "generator": {
+          "driver": "wan_emulator"
+        },
+        "provisioning": {
+          "volume_name": "cfg",
+          "media_type": "iso",
+          "files": [
+            {
+              "name": "node.cfg",
+              "content": "# this is a shell script which will be sourced at boot\nhostname inserthostname_here\n# configurable user account\nUSERNAME=cisco\nPASSWORD=cisco\n# WAN Emulator configuration\nLATENCY=\"100\"\nJITTER=\"0\"\nLOSS=\"0.0\"\nBANDWIDTH=\"512\"\n",
+              "editable": true
+            }
+          ]
+        }
+      },
+      "device": {
+        "interfaces": {
+          "has_loopback_zero": false,
+          "default_count": 2,
+          "physical": [
+            "eth0",
+            "eth1"
+          ],
+          "serial_ports": 1
+        }
+      },
+      "inherited": {
+        "image": {
+          "ram": false,
+          "cpus": false,
+          "cpu_limit": true,
+          "data_volume": false,
+          "boot_disk_size": false
+        },
+        "node": {
+          "ram": false,
+          "cpus": false,
+          "cpu_limit": true,
+          "data_volume": false,
+          "boot_disk_size": false
+        }
+      },
+      "general": {
+        "description": "WAN Emulator",
+        "nature": "server",
+        "read_only": true
+      },
+      "schema_version": "0.0.1",
+      "sim": {
+        "linux_native": {
+          "cpus": 1,
+          "disk_driver": "virtio",
+          "driver": "server",
+          "libvirt_domain_driver": "kvm",
+          "nic_driver": "virtio",
+          "ram": 512
+        }
+      },
+      "boot": {
+        "completed": [
+          "VIRL^2 WAN Emulator"
+        ],
+        "timeout": 60
+      },
+      "ui": {
+        "description": "WAN Emulator Node\n\n512 MB DRAM\n\nEmulate WAN characteristics such as delay and packet loss.\n\n##### Configuration\nCan be static using variables put into the\nconfiguration field of the node as shown here\n\n```plain\nLATENCY=\"100\"\nJITTER=\"0\"\nLOSS=\"0.0\"\nBANDWIDTH=\"512\"\n```\n\nThere's also a text based UI available on the console\nof the node that allows to configure and monitor the\nWAN emulator.\n",
+        "group": "Others",
+        "icon": "access_point",
+        "label": "WAN Emulator",
+        "label_prefix": "wan-em-",
+        "visible": true
+      }
+    }
+  },
+  {
+    "id": "asav",
+    "data": {
+      "id": "asav",
+      "configuration": {
+        "generator": {
+          "driver": "asav"
+        },
+        "provisioning": {
+          "volume_name": "disk",
+          "media_type": "iso",
+          "files": [
+            {
+              "name": "day0-config",
+              "content": "",
+              "editable": true
+            }
+          ]
+        }
+      },
+      "inherited": {
+        "image": {
+          "ram": true,
+          "cpus": true,
+          "cpu_limit": true,
+          "data_volume": false,
+          "boot_disk_size": false
+        },
+        "node": {
+          "ram": true,
+          "cpus": true,
+          "cpu_limit": true,
+          "data_volume": false,
+          "boot_disk_size": false
+        }
+      },
+      "device": {
+        "interfaces": {
+          "has_loopback_zero": false,
+          "default_count": 2,
+          "management": [
+            "Management0/0"
+          ],
+          "physical": [
+            "Management0/0",
+            "GigabitEthernet0/0",
+            "GigabitEthernet0/1",
+            "GigabitEthernet0/2",
+            "GigabitEthernet0/3",
+            "GigabitEthernet0/4",
+            "GigabitEthernet0/5",
+            "GigabitEthernet0/6"
+          ],
+          "serial_ports": 1
+        }
+      },
+      "general": {
+        "description": "Cisco Adaptive Security Virtual Appliance",
+        "nature": "firewall",
+        "read_only": true
+      },
+      "schema_version": "0.0.1",
+      "sim": {
+        "linux_native": {
+          "cpus": 1,
+          "disk_driver": "virtio",
+          "driver": "asav",
+          "libvirt_domain_driver": "kvm",
+          "nic_driver": "virtio",
+          "ram": 2048
+        }
+      },
+      "boot": {
+        "timeout": 120,
+        "completed": [
+          "INFO: Power-On Self-Test complete."
+        ]
+      },
+      "pyats": {
+        "os": "asa",
+        "config_extract_command": "show run"
+      },
+      "ui": {
+        "description": "Cisco Adaptive Security Virtual Appliance (ASAv)\n\n2 GB DRAM, 1 vCPU\n\nMaximum 8 interfaces, including Management0/0.\n\n[CCO Link](https://www.cisco.com/c/en/us/support/security/virtual-adaptive-security-appliance-firewall/tsd-products-support-series-home.html)",
+        "group": "Cisco",
+        "icon": "firewall",
+        "label": "ASAv",
+        "label_prefix": "asav-",
+        "visible": true
+      }
+    }
+  },
+  {
+    "id": "coreos",
+    "data": {
+      "id": "coreos",
+      "sim": {
+        "linux_native": {
+          "driver": "server",
+          "libvirt_domain_driver": "kvm",
+          "disk_driver": "virtio",
+          "nic_driver": "virtio",
+          "ram": 2048,
+          "cpus": 2,
+          "data_volume": 0,
+          "boot_disk_size": 64
+        }
+      },
+      "inherited": {
+        "image": {
+          "ram": true,
+          "cpus": true,
+          "cpu_limit": true,
+          "data_volume": true,
+          "boot_disk_size": true
+        },
+        "node": {
+          "ram": true,
+          "cpus": true,
+          "cpu_limit": true,
+          "data_volume": true,
+          "boot_disk_size": true
+        }
+      },
+      "general": {
+        "nature": "server",
+        "description": "CoreOS Container Linux",
+        "read_only": true
+      },
+      "schema_version": "0.0.1",
+      "configuration": {
+        "generator": {
+          "driver": "coreos"
+        },
+        "provisioning": {
+          "volume_name": "config-2",
+          "media_type": "iso",
+          "files": [
+            {
+              "name": "/openstack/latest/user_data",
+              "content": "#cloud-config\nhostname: inserthostname_here\nusers:\n- gecos: \"user configured for console login via cisco/cisco\"\n  groups:\n  - sudo\n  - docker\n  - wheel\n  name: cisco\n  # password hash is \"cisco\"\n  # see https://coreos.com/os/docs/latest/clc-examples.html#generating-a-password-hash\n  # for methods to create your own password hash\n  passwd: \"$1$ZmGq.4za$8JZnpj4SkcF9v3AJQaOX//\"\n  # this key will be added to the user \"cisco\"\n  ssh_authorized_keys:\n  - your-ssh-pubkey-line-for-user-cisco-goes-here\n# this key will be added to the user \"core\"\nssh_authorized_keys:\n- your-ssh-pubkey-line-for-user-core-goes-here\n",
+              "editable": true
+            }
+          ]
+        }
+      },
+      "device": {
+        "interfaces": {
+          "physical": [
+            "eth0",
+            "eth1",
+            "eth2",
+            "eth3",
+            "eth4",
+            "eth5",
+            "eth6",
+            "eth7"
+          ],
+          "has_loopback_zero": false,
+          "default_count": 1,
+          "serial_ports": 1
+        }
+      },
+      "boot": {
+        "timeout": 60,
+        "completed": [
+          "SSH host key: SHA256"
+        ]
+      },
+      "pyats": {
+        "os": "linux"
+      },
+      "ui": {
+        "group": "Others",
+        "icon": "server",
+        "label": "CoreOS",
+        "label_prefix": "coreos-",
+        "visible": true,
+        "description": "CoreOS Container Linux\n\n1 GB DRAM, 1 vCPU\n\n##### Configuration\n\nThis CoreOS image uses cloud-init YAML for configuration. See\ndocumentation pages. The default config simply adds an SSH key,\nAccessing the host via SSH obviously requires connectivity from\nthe outside world.\n\n- [Cloud-Init](https://cloudinit.readthedocs.io/en/latest/topics/datasources/configdrive.html#version-2)\n- [Migrating from Cloud-Init to Ignition](https://coreos.com/os/docs/latest/migrating-to-clcs.html)\n- [Ignition examples](https://coreos.com/os/docs/latest/clc-examples.html)\n\nNote that the current template only supports Cloud-Init. We\nneed to have a different template with different config disk\nlayout to support Ignition!\n\n[Link](http://coreos.com/os/docs/latest/)\n"
+      }
+    }
+  },
+  {
+    "id": "csr1000v",
+    "data": {
+      "id": "csr1000v",
+      "configuration": {
+        "generator": {
+          "driver": "csr1000v"
+        },
+        "provisioning": {
+          "volume_name": "disk",
+          "media_type": "iso",
+          "files": [
+            {
+              "name": "iosxe_config.txt",
+              "content": "hostname inserthostname_here",
+              "editable": true
+            }
+          ]
+        }
+      },
+      "inherited": {
+        "image": {
+          "ram": true,
+          "cpus": true,
+          "cpu_limit": true,
+          "data_volume": false,
+          "boot_disk_size": false
+        },
+        "node": {
+          "ram": true,
+          "cpus": true,
+          "cpu_limit": true,
+          "data_volume": false,
+          "boot_disk_size": false
+        }
+      },
+      "device": {
+        "interfaces": {
+          "has_loopback_zero": true,
+          "default_count": 4,
+          "loopback": [
+            "Loopback0"
+          ],
+          "physical": [
+            "GigabitEthernet1",
+            "GigabitEthernet2",
+            "GigabitEthernet3",
+            "GigabitEthernet4",
+            "GigabitEthernet5",
+            "GigabitEthernet6",
+            "GigabitEthernet7",
+            "GigabitEthernet8",
+            "GigabitEthernet9",
+            "GigabitEthernet10",
+            "GigabitEthernet11",
+            "GigabitEthernet12",
+            "GigabitEthernet13",
+            "GigabitEthernet14",
+            "GigabitEthernet15",
+            "GigabitEthernet16",
+            "GigabitEthernet17",
+            "GigabitEthernet18",
+            "GigabitEthernet19",
+            "GigabitEthernet20",
+            "GigabitEthernet21",
+            "GigabitEthernet22",
+            "GigabitEthernet23",
+            "GigabitEthernet24",
+            "GigabitEthernet25",
+            "GigabitEthernet26",
+            "GigabitEthernet27",
+            "GigabitEthernet28",
+            "GigabitEthernet29",
+            "GigabitEthernet30",
+            "GigabitEthernet31",
+            "GigabitEthernet32"
+          ],
+          "serial_ports": 2
+        }
+      },
+      "general": {
+        "description": "Cloud Services Router 1000V",
+        "nature": "router",
+        "read_only": true
+      },
+      "schema_version": "0.0.1",
+      "sim": {
+        "linux_native": {
+          "cpus": 1,
+          "disk_driver": "virtio",
+          "driver": "csr1000v",
+          "libvirt_domain_driver": "kvm",
+          "nic_driver": "virtio",
+          "ram": 3072
+        }
+      },
+      "boot": {
+        "timeout": 250,
+        "completed": [
+          "Would you like to enter the initial configuration dialog?",
+          "Press RETURN to get started!",
+          "%CVAC-4-CONFIG_DONE:"
+        ]
+      },
+      "pyats": {
+        "os": "iosxe",
+        "series": "csr1000v",
+        "config_extract_command": "show run"
+      },
+      "ui": {
+        "description": "Cloud Services Router 1000V\n\n3 GB DRAM, 1 vCPU\n\n[CCO Link](https://www.cisco.com/c/en/us/support/routers/cloud-services-router-1000v-series/tsd-products-support-series-home.html)\n[Release Notes](https://www.cisco.com/c/en/us/td/docs/routers/csr1000/release/notes/xe-16/csr1000v-rn-16-6-book.html)",
+        "group": "Cisco",
+        "icon": "router",
+        "label": "CSR1000v",
+        "label_prefix": "csr1000v-",
+        "visible": true
+      }
+    }
+  },
+  {
+    "id": "desktop",
+    "data": {
+      "id": "desktop",
+      "configuration": {
+        "generator": {
+          "driver": "alpine"
+        },
+        "provisioning": {
+          "volume_name": "cfg",
+          "media_type": "iso",
+          "files": [
+            {
+              "name": "node.cfg",
+              "content": "# this is a shell script which will be sourced at boot\nhostname inserthostname_here\n# configurable user account\nUSERNAME=cisco\nPASSWORD=cisco\n",
+              "editable": true
+            }
+          ]
+        }
+      },
+      "device": {
+        "interfaces": {
+          "has_loopback_zero": false,
+          "default_count": 1,
+          "physical": [
+            "eth0",
+            "eth1",
+            "eth2",
+            "eth3"
+          ],
+          "serial_ports": 1
+        }
+      },
+      "inherited": {
+        "image": {
+          "ram": true,
+          "cpus": true,
+          "cpu_limit": true,
+          "data_volume": true,
+          "boot_disk_size": true
+        },
+        "node": {
+          "ram": true,
+          "cpus": true,
+          "cpu_limit": true,
+          "data_volume": true,
+          "boot_disk_size": true
+        }
+      },
+      "general": {
+        "description": "Alpine Linux with X11 Desktop",
+        "nature": "server",
+        "read_only": true
+      },
+      "schema_version": "0.0.1",
+      "sim": {
+        "linux_native": {
+          "cpus": 1,
+          "disk_driver": "virtio",
+          "driver": "server",
+          "libvirt_domain_driver": "kvm",
+          "nic_driver": "virtio",
+          "ram": 512,
+          "boot_disk_size": 16,
+          "video": {
+            "memory": 16
+          }
+        }
+      },
+      "boot": {
+        "completed": [
+          "Welcome to Alpine Linux"
+        ],
+        "timeout": 60
+      },
+      "pyats": {
+        "os": "linux"
+      },
+      "ui": {
+        "description": "Alpine Linux\n\n512 MB DRAM, 1 vCPU, 16GB root disk size\n\n##### Configuration\nShell commands in the configuration field of the node are just sourced as user `root`\nwhen the node starts up. This is based on Alpine Linux. More info [here](https://wiki.alpinelinux.org/wiki/Main_Page)\n\n##### Users\nThe 'root' user has the password 'alpine' and there's a 'cisco/cisco' user, too.\n\n##### Example\n```shell\nhostname desktop-0\nifconfig eth1 10.0.0.1 netmask 255.255.255.0 up\nroute add -net 10.0.0.0/8 dev eth1\n```\n\n[Link](https://www.alpinelinux.org/)\n",
+        "group": "Others",
+        "icon": "host",
+        "label": "Desktop",
+        "label_prefix": "desktop-",
+        "visible": true
+      }
+    }
+  },
+  {
+    "id": "iosv",
+    "data": {
+      "id": "iosv",
+      "sim": {
+        "linux_native": {
+          "driver": "iosv",
+          "libvirt_domain_driver": "kvm",
+          "nic_driver": "e1000",
+          "disk_driver": "virtio",
+          "ram": 512,
+          "cpus": 1
+        }
+      },
+      "general": {
+        "nature": "router",
+        "description": "Cisco IOSv Virtual Router Platform",
+        "read_only": true
+      },
+      "schema_version": "0.0.1",
+      "inherited": {
+        "image": {
+          "ram": true,
+          "cpus": false,
+          "cpu_limit": true,
+          "data_volume": false,
+          "boot_disk_size": false
+        },
+        "node": {
+          "ram": true,
+          "cpus": false,
+          "cpu_limit": true,
+          "data_volume": false,
+          "boot_disk_size": false
+        }
+      },
+      "configuration": {
+        "generator": {
+          "driver": "iosv"
+        },
+        "provisioning": {
+          "volume_name": "disk",
+          "media_type": "fat",
+          "files": [
+            {
+              "name": "ios_config.txt",
+              "content": "",
+              "editable": true
+            }
+          ]
+        }
+      },
+      "device": {
+        "interfaces": {
+          "physical": [
+            "GigabitEthernet0/0",
+            "GigabitEthernet0/1",
+            "GigabitEthernet0/2",
+            "GigabitEthernet0/3",
+            "GigabitEthernet0/4",
+            "GigabitEthernet0/5",
+            "GigabitEthernet0/6",
+            "GigabitEthernet0/7",
+            "GigabitEthernet0/8",
+            "GigabitEthernet0/9",
+            "GigabitEthernet0/10",
+            "GigabitEthernet0/11",
+            "GigabitEthernet0/12",
+            "GigabitEthernet0/13",
+            "GigabitEthernet0/14",
+            "GigabitEthernet0/15"
+          ],
+          "loopback": [
+            "Loopback0"
+          ],
+          "has_loopback_zero": true,
+          "default_count": 4,
+          "serial_ports": 2
+        }
+      },
+      "boot": {
+        "timeout": 180,
+        "completed": [
+          "%PLATFORM-5-SIGNATURE_VERIFIED:",
+          "Would you like to enter the initial configuration dialog?"
+        ]
+      },
+      "pyats": {
+        "os": "ios",
+        "series": "iosv",
+        "config_extract_command": "show run"
+      },
+      "ui": {
+        "group": "Cisco",
+        "icon": "router",
+        "label_prefix": "iosv-",
+        "label": "IOSv",
+        "visible": true,
+        "description": "Cisco IOSv Virtual Router Platform\n\n512 MB DRAM, 1 vCPU\n"
+      }
+    }
+  },
+  {
+    "id": "iosvl2",
+    "data": {
+      "id": "iosvl2",
+      "configuration": {
+        "generator": {
+          "driver": "iosvl2"
+        },
+        "provisioning": {
+          "volume_name": "disk",
+          "media_type": "fat",
+          "files": [
+            {
+              "name": "ios_config.txt",
+              "content": "hostname inserthostname_here",
+              "editable": true
+            }
+          ]
+        }
+      },
+      "device": {
+        "interfaces": {
+          "has_loopback_zero": true,
+          "default_count": 4,
+          "loopback": [
+            "Loopback0"
+          ],
+          "physical": [
+            "GigabitEthernet0/0",
+            "GigabitEthernet0/1",
+            "GigabitEthernet0/2",
+            "GigabitEthernet0/3",
+            "GigabitEthernet1/0",
+            "GigabitEthernet1/1",
+            "GigabitEthernet1/2",
+            "GigabitEthernet1/3",
+            "GigabitEthernet2/0",
+            "GigabitEthernet2/1",
+            "GigabitEthernet2/2",
+            "GigabitEthernet2/3",
+            "GigabitEthernet3/0",
+            "GigabitEthernet3/1",
+            "GigabitEthernet3/2",
+            "GigabitEthernet3/3"
+          ],
+          "serial_ports": 2
+        }
+      },
+      "inherited": {
+        "image": {
+          "ram": true,
+          "cpus": false,
+          "cpu_limit": true,
+          "data_volume": false,
+          "boot_disk_size": false
+        },
+        "node": {
+          "ram": true,
+          "cpus": false,
+          "cpu_limit": true,
+          "data_volume": false,
+          "boot_disk_size": false
+        }
+      },
+      "general": {
+        "description": "Cisco IOSv-L2 Virtual Switch Platform",
+        "nature": "switch",
+        "read_only": true
+      },
+      "schema_version": "0.0.1",
+      "sim": {
+        "linux_native": {
+          "cpus": 1,
+          "disk_driver": "virtio",
+          "driver": "iosvl2",
+          "libvirt_domain_driver": "kvm",
+          "nic_driver": "e1000",
+          "ram": 768
+        }
+      },
+      "boot": {
+        "timeout": 300,
+        "completed": [
+          "%PLATFORM-5-SIGNATURE_VERIFIED:",
+          "Would you like to enter the initial configuration dialog?"
+        ]
+      },
+      "pyats": {
+        "os": "ios",
+        "series": "iosv",
+        "config_extract_command": "show run"
+      },
+      "ui": {
+        "description": "Cisco IOSv-L2 Virtual Switch Platform\n\n768 MB DRAM, 1 vCPU\n",
+        "group": "Cisco",
+        "icon": "switch",
+        "label": "IOSvL2",
+        "label_prefix": "iosvl2-",
+        "visible": true
+      }
+    }
+  },
+  {
+    "id": "iosxrv",
+    "data": {
+      "id": "iosxrv",
+      "sim": {
+        "linux_native": {
+          "driver": "iosxrv",
+          "libvirt_domain_driver": "kvm",
+          "nic_driver": "e1000",
+          "disk_driver": "ide",
+          "ram": 3072,
+          "cpus": 1
+        }
+      },
+      "inherited": {
+        "image": {
+          "ram": true,
+          "cpus": true,
+          "cpu_limit": true,
+          "data_volume": false,
+          "boot_disk_size": false
+        },
+        "node": {
+          "ram": true,
+          "cpus": true,
+          "cpu_limit": true,
+          "data_volume": false,
+          "boot_disk_size": false
+        }
+      },
+      "general": {
+        "description": "Cisco IOS XRv Router platform",
+        "nature": "router",
+        "read_only": true
+      },
+      "schema_version": "0.0.1",
+      "configuration": {
+        "generator": {
+          "driver": "iosxrv"
+        },
+        "provisioning": {
+          "volume_name": "cidata",
+          "media_type": "iso",
+          "files": [
+            {
+              "name": "iosxr_config.txt",
+              "content": "",
+              "editable": true
+            },
+            {
+              "name": "iosxr_config_admin.txt",
+              "content": "!! IOS XR Admin Configuration\nusername cisco\n  group root-system\n  secret 0 cisco\n!\nend\n",
+              "editable": false
+            }
+          ]
+        }
+      },
+      "device": {
+        "interfaces": {
+          "management": [
+            "MgmtEth0/0/CPU0/0"
+          ],
+          "physical": [
+            "MgmtEth0/0/CPU0/0",
+            "GigabitEthernet0/0/0/0",
+            "GigabitEthernet0/0/0/1",
+            "GigabitEthernet0/0/0/2",
+            "GigabitEthernet0/0/0/3",
+            "GigabitEthernet0/0/0/4",
+            "GigabitEthernet0/0/0/5",
+            "GigabitEthernet0/0/0/6",
+            "GigabitEthernet0/0/0/7",
+            "GigabitEthernet0/0/0/8",
+            "GigabitEthernet0/0/0/9",
+            "GigabitEthernet0/0/0/10",
+            "GigabitEthernet0/0/0/11",
+            "GigabitEthernet0/0/0/12",
+            "GigabitEthernet0/0/0/13",
+            "GigabitEthernet0/0/0/14",
+            "GigabitEthernet0/0/0/15",
+            "GigabitEthernet0/0/0/16",
+            "GigabitEthernet0/0/0/17",
+            "GigabitEthernet0/0/0/18",
+            "GigabitEthernet0/0/0/19",
+            "GigabitEthernet0/0/0/20",
+            "GigabitEthernet0/0/0/21",
+            "GigabitEthernet0/0/0/22",
+            "GigabitEthernet0/0/0/23",
+            "GigabitEthernet0/0/0/24",
+            "GigabitEthernet0/0/0/25",
+            "GigabitEthernet0/0/0/26",
+            "GigabitEthernet0/0/0/27",
+            "GigabitEthernet0/0/0/28",
+            "GigabitEthernet0/0/0/29",
+            "GigabitEthernet0/0/0/30"
+          ],
+          "loopback": [
+            "Loopback0"
+          ],
+          "has_loopback_zero": true,
+          "default_count": 4,
+          "serial_ports": 3
+        }
+      },
+      "boot": {
+        "timeout": 400,
+        "completed": [
+          "Press RETURN to get started."
+        ]
+      },
+      "pyats": {
+        "os": "iosxr",
+        "series": "iosxrv",
+        "config_extract_command": "show running-config"
+      },
+      "ui": {
+        "group": "Cisco",
+        "icon": "router",
+        "label": "IOS XRv",
+        "label_prefix": "xrv-",
+        "visible": true,
+        "description": "Cisco IOS XRv Router platform\n\n3 GB DRAM, 1 vCPU\n"
+      }
+    }
+  },
+  {
+    "id": "iosxrv9000",
+    "data": {
+      "id": "iosxrv9000",
+      "configuration": {
+        "generator": {
+          "driver": "iosxrv9000"
+        },
+        "provisioning": {
+          "volume_name": "config",
+          "media_type": "iso",
+          "files": [
+            {
+              "name": "iosxr_config.txt",
+              "content": "hostname changeme\nusername cisco\ngroup root-lr\ngroup cisco-support\npassword cisco\n!\nusername admin\ngroup root-lr\ngroup cisco-support\npassword admin\n!\nusername lab\ngroup root-lr\ngroup cisco-support\npassword lab\n!\nend\n",
+              "editable": true
+            }
+          ]
+        }
+      },
+      "device": {
+        "interfaces": {
+          "has_loopback_zero": true,
+          "default_count": 4,
+          "loopback": [
+            "Loopback0"
+          ],
+          "management": [
+            "MgmtEth0/RP0/CPU0/0"
+          ],
+          "physical": [
+            "MgmtEth0/RP0/CPU0/0",
+            "donotuse1",
+            "donotuse2",
+            "GigabitEthernet0/0/0/0",
+            "GigabitEthernet0/0/0/1",
+            "GigabitEthernet0/0/0/2",
+            "GigabitEthernet0/0/0/3",
+            "GigabitEthernet0/0/0/4",
+            "GigabitEthernet0/0/0/5",
+            "GigabitEthernet0/0/0/6",
+            "GigabitEthernet0/0/0/7",
+            "GigabitEthernet0/0/0/8",
+            "GigabitEthernet0/0/0/9",
+            "GigabitEthernet0/0/0/10",
+            "GigabitEthernet0/0/0/11",
+            "GigabitEthernet0/0/0/12",
+            "GigabitEthernet0/0/0/13",
+            "GigabitEthernet0/0/0/14",
+            "GigabitEthernet0/0/0/15",
+            "GigabitEthernet0/0/0/16",
+            "GigabitEthernet0/0/0/17",
+            "GigabitEthernet0/0/0/18",
+            "GigabitEthernet0/0/0/19",
+            "GigabitEthernet0/0/0/20",
+            "GigabitEthernet0/0/0/21",
+            "GigabitEthernet0/0/0/22",
+            "GigabitEthernet0/0/0/23",
+            "GigabitEthernet0/0/0/24",
+            "GigabitEthernet0/0/0/25",
+            "GigabitEthernet0/0/0/26",
+            "GigabitEthernet0/0/0/27",
+            "GigabitEthernet0/0/0/28",
+            "GigabitEthernet0/0/0/29",
+            "GigabitEthernet0/0/0/30"
+          ],
+          "serial_ports": 4
+        }
+      },
+      "inherited": {
+        "image": {
+          "ram": true,
+          "cpus": true,
+          "cpu_limit": true,
+          "data_volume": false,
+          "boot_disk_size": false
+        },
+        "node": {
+          "ram": true,
+          "cpus": true,
+          "cpu_limit": true,
+          "data_volume": false,
+          "boot_disk_size": false
+        }
+      },
+      "general": {
+        "description": "Cisco IOS XRv 9000 Router platform",
+        "nature": "router",
+        "read_only": true
+      },
+      "schema_version": "0.0.1",
+      "sim": {
+        "linux_native": {
+          "cpus": 4,
+          "disk_driver": "virtio",
+          "driver": "iosxrv9000",
+          "libvirt_domain_driver": "kvm",
+          "nic_driver": "virtio",
+          "ram": 20480
+        }
+      },
+      "boot": {
+        "timeout": 1000,
+        "completed": [
+          "INFO: --- Administrative User Dialog --",
+          "%MGBL-CVAC-4-CONFIG_DONE",
+          "ios con0/RP0/CPU0 is now available"
+        ]
+      },
+      "pyats": {
+        "os": "iosxr",
+        "series": "iosxrv9k",
+        "config_extract_command": "show running-config"
+      },
+      "ui": {
+        "description": "Cisco IOS XRv 9000 Router platform\n\nIt is recommended to use 20 GB and 4 vCPUs.\nAt a very minimum, 10 GB of DRAM and 2 vCPUs are required.\n\n##### Note\nThe first data interface is the **4th interface**:\n- The first interface is management,\n- second and third are marked as 'do not use' and should not be connected to anything\n- The next interfaces are actual data interfaces.\n\n[CCO Link](https://www.cisco.com/c/en/us/support/routers/ios-xrv-9000-router/tsd-products-support-series-home.html)",
+        "group": "Cisco",
+        "icon": "router",
+        "label": "IOS XRv 9000",
+        "label_prefix": "xr9kv-",
+        "visible": true
+      }
+    }
+  },
+  {
+    "id": "nxosv",
+    "data": {
+      "id": "nxosv",
+      "configuration": {
+        "generator": {
+          "driver": "nxosv"
+        },
+        "provisioning": {
+          "volume_name": "disk",
+          "media_type": "iso",
+          "files": [
+            {
+              "name": "nxos_config.txt",
+              "content": "hostname inserthostname_here\n# minimum needed config to login\nno password strength-check\nusername admin role network-admin\nusername admin password cisco role network-admin\nusername cisco role network-admin\nusername cisco password cisco role network-admin\n",
+              "editable": true
+            }
+          ]
+        }
+      },
+      "device": {
+        "interfaces": {
+          "has_loopback_zero": true,
+          "default_count": 4,
+          "loopback": [
+            "Loopback0"
+          ],
+          "management": [
+            "mgmt0"
+          ],
+          "physical": [
+            "mgmt0",
+            "Ethernet2/1",
+            "Ethernet2/2",
+            "Ethernet2/3",
+            "Ethernet2/4",
+            "Ethernet2/5",
+            "Ethernet2/6",
+            "Ethernet2/7",
+            "Ethernet2/8",
+            "Ethernet2/9",
+            "Ethernet2/10",
+            "Ethernet2/11",
+            "Ethernet2/12",
+            "Ethernet2/13",
+            "Ethernet2/14",
+            "Ethernet2/15",
+            "Ethernet2/16",
+            "Ethernet2/17",
+            "Ethernet2/18",
+            "Ethernet2/19",
+            "Ethernet2/20",
+            "Ethernet2/21",
+            "Ethernet2/22",
+            "Ethernet2/23",
+            "Ethernet2/24",
+            "Ethernet2/25",
+            "Ethernet2/26",
+            "Ethernet2/27",
+            "Ethernet2/28",
+            "Ethernet2/29",
+            "Ethernet2/30",
+            "Ethernet2/31"
+          ],
+          "serial_ports": 2
+        }
+      },
+      "inherited": {
+        "image": {
+          "ram": true,
+          "cpus": true,
+          "cpu_limit": true,
+          "data_volume": false,
+          "boot_disk_size": false
+        },
+        "node": {
+          "ram": true,
+          "cpus": true,
+          "cpu_limit": true,
+          "data_volume": false,
+          "boot_disk_size": false
+        }
+      },
+      "general": {
+        "description": "Cisco NX-OSv \"Titanium\" Switch",
+        "nature": "switch",
+        "read_only": true
+      },
+      "schema_version": "0.0.1",
+      "sim": {
+        "linux_native": {
+          "cpus": 1,
+          "disk_driver": "ide",
+          "driver": "nxosv",
+          "libvirt_domain_driver": "kvm",
+          "nic_driver": "e1000",
+          "ram": 3072
+        }
+      },
+      "boot": {
+        "timeout": 400,
+        "completed": [
+          "---- System Admin Account Setup ----",
+          "User Access Verification"
+        ]
+      },
+      "pyats": {
+        "os": "nxos",
+        "series": "nxosv",
+        "config_extract_command": "show run"
+      },
+      "ui": {
+        "description": "Cisco NX-OSv \"Titanium\" Switch\n\n3 GB DRAM, 1 vCPU\n",
+        "group": "Cisco",
+        "icon": "switch",
+        "label": "NX-OS",
+        "label_prefix": "nxos-",
+        "visible": true
+      }
+    }
+  },
+  {
+    "id": "nxosv9000",
+    "data": {
+      "id": "nxosv9000",
+      "configuration": {
+        "generator": {
+          "driver": "nxosv9000"
+        },
+        "provisioning": {
+          "volume_name": "disk",
+          "media_type": "iso",
+          "files": [
+            {
+              "name": "nxos_config.txt",
+              "content": "# workaround for booting to loader> prompt\necho 'from cli import cli' > set_boot.py\necho 'import json' >> set_boot.py\necho 'import os' >> set_boot.py\necho 'import time' >> set_boot.py\necho 'bootimage = json.loads(cli(\"show version | json\"))[\"kick_file_name\"]' >> set_boot.py\necho 'set_boot = cli(\"conf t ; boot nxos {} ; no event manager applet BOOTCONFIG\".format(bootimage))' >> set_boot.py\necho 'i = 0' >> set_boot.py\necho 'while i < 10:' >> set_boot.py\necho '    try:' >> set_boot.py\necho '        save_config = cli(\"copy running-config startup-config\")' >> set_boot.py\necho '        break' >> set_boot.py\necho '    except Exception:' >> set_boot.py\necho '        i += 1' >> set_boot.py\necho '        time.sleep(1)' >> set_boot.py\necho 'os.remove(\"/bootflash/set_boot.py\")' >> set_boot.py\nevent manager applet BOOTCONFIG\n event syslog pattern \"Configured from vty\"\n action 1.0 cli python bootflash:set_boot.py\n# minimum needed config to login\nno password strength-check\nusername admin role network-admin\nusername admin password cisco role network-admin\nusername cisco role network-admin\nusername cisco password cisco role network-admin\n",
+              "editable": true
+            }
+          ]
+        }
+      },
+      "device": {
+        "interfaces": {
+          "has_loopback_zero": true,
+          "default_count": 4,
+          "loopback": [
+            "Loopback0"
+          ],
+          "management": [
+            "mgmt0"
+          ],
+          "physical": [
+            "mgmt0",
+            "Ethernet1/1",
+            "Ethernet1/2",
+            "Ethernet1/3",
+            "Ethernet1/4",
+            "Ethernet1/5",
+            "Ethernet1/6",
+            "Ethernet1/7",
+            "Ethernet1/8",
+            "Ethernet1/9",
+            "Ethernet1/10",
+            "Ethernet1/11",
+            "Ethernet1/12",
+            "Ethernet1/13",
+            "Ethernet1/14",
+            "Ethernet1/15",
+            "Ethernet1/16",
+            "Ethernet1/17",
+            "Ethernet1/18",
+            "Ethernet1/19",
+            "Ethernet1/20"
+          ],
+          "serial_ports": 2
+        }
+      },
+      "inherited": {
+        "image": {
+          "ram": true,
+          "cpus": true,
+          "data_volume": false,
+          "cpu_limit": true,
+          "boot_disk_size": false
+        },
+        "node": {
+          "ram": true,
+          "cpus": true,
+          "cpu_limit": true,
+          "data_volume": false,
+          "boot_disk_size": false
+        }
+      },
+      "general": {
+        "description": "Cisco Nexus 9000v Switch",
+        "nature": "switch",
+        "read_only": true
+      },
+      "schema_version": "0.0.1",
+      "sim": {
+        "linux_native": {
+          "base_image": null,
+          "cpus": 2,
+          "disk_driver": "sata",
+          "driver": "nxosv9000",
+          "efi_boot": true,
+          "libvirt_domain_driver": "kvm",
+          "nic_driver": "e1000",
+          "ram": 8192
+        }
+      },
+      "boot": {
+        "timeout": 480,
+        "completed": [
+          "There is no admin password in the bootstrap file",
+          "User Access Verification"
+        ]
+      },
+      "pyats": {
+        "os": "nxos",
+        "series": "n9k",
+        "config_extract_command": "show run"
+      },
+      "ui": {
+        "description": "Cisco Nexus 9000v Switch\n\nRequires 8 GB DRAM, 2 vCPUs\n\n[CCO Link](https://www.cisco.com/c/en/us/support/switches/nexus-9000v-switch/model.html)\n",
+        "group": "Cisco",
+        "icon": "switch",
+        "label": "NX-OS 9000",
+        "label_prefix": "nxos9000-",
+        "visible": true
+      }
+    }
+  },
+  {
+    "id": "ubuntu",
+    "data": {
+      "id": "ubuntu",
+      "sim": {
+        "linux_native": {
+          "driver": "server",
+          "libvirt_domain_driver": "kvm",
+          "disk_driver": "virtio",
+          "nic_driver": "virtio",
+          "ram": 2048,
+          "cpus": 1,
+          "data_volume": 0,
+          "boot_disk_size": 64
+        }
+      },
+      "inherited": {
+        "image": {
+          "ram": true,
+          "cpus": true,
+          "cpu_limit": true,
+          "data_volume": true,
+          "boot_disk_size": true
+        },
+        "node": {
+          "ram": true,
+          "cpus": true,
+          "cpu_limit": true,
+          "data_volume": true,
+          "boot_disk_size": true
+        }
+      },
+      "general": {
+        "nature": "server",
+        "description": "Ubuntu Cloud Init Platform",
+        "read_only": true
+      },
+      "schema_version": "0.0.1",
+      "configuration": {
+        "generator": {
+          "driver": "ubuntu"
+        },
+        "provisioning": {
+          "volume_name": "cidata",
+          "media_type": "iso",
+          "files": [
+            {
+              "name": "meta-data",
+              "content": "instance-id: ubuntu\nlocal-hostname: ubuntu\n",
+              "editable": false
+            },
+            {
+              "name": "user-data",
+              "content": "#cloud-config\nhostname: inserthostname_here\nmanage_etc_hosts: True\nsystem_info:\n  default_user:\n    name: cisco\npassword: cisco\nchpasswd: { expire: False }\nssh_pwauth: True\nssh_authorized_keys:\n   - your-ssh-pubkey-line-goes-here\n",
+              "editable": true
+            }
+          ]
+        }
+      },
+      "device": {
+        "interfaces": {
+          "physical": [
+            "ens3",
+            "ens4",
+            "ens5",
+            "ens6",
+            "ens7",
+            "ens8",
+            "ens9",
+            "ens10"
+          ],
+          "has_loopback_zero": false,
+          "default_count": 1,
+          "serial_ports": 1
+        }
+      },
+      "boot": {
+        "timeout": 180,
+        "completed": [
+          "Cloud-init target",
+          "Welcome to Ubuntu",
+          "running 'modules:final' at"
+        ]
+      },
+      "pyats": {
+        "os": "linux"
+      },
+      "ui": {
+        "group": "Others",
+        "icon": "server",
+        "label": "Ubuntu",
+        "label_prefix": "ubuntu-",
+        "visible": true,
+        "description": "Ubuntu Cloud Init Platform\n\n2 GB DRAM, 1 vCPU (can be adjusted)\n\n##### Configuration\n\nThis Ubuntu image uses cloud-init YAML for configuration. Please\nensure to have a valid cloud-init. The pre-configured username\nis 'ubuntu'. Use either the provided password or provide an\nSSH key. The node comes with a very brief (but complete)\ncloud-init example when you drop one onto the canvas.\n\nThe node has also a 32GB data disk which can be used e.g. to\nextend the root VG for additional space. It's not initialized at\nboot (has to be managed by user).\n\nSee [here](https://cloudinit.readthedocs.io/en/latest/topics/examples.html)\nfor additional cloud-init examples.\n"
+      }
+    }
+  },
+  {
+    "id": "f5-bigip-ve",
+    "data": {
+      "id": "f5-bigip-ve",
+      "general": {
+        "nature": "server",
+        "read_only": false,
+        "description": "F5 BIGIP Virtual Edition"
+      },
+      "device": {
+        "interfaces": {
+          "has_loopback_zero": false,
+          "physical": [
+            "eth0",
+            "eth1",
+            "eth2",
+            "eth3",
+            "eth4",
+            "eth5",
+            "eth6",
+            "eth7",
+            "eth8",
+            "eth9",
+            "eth10",
+            "eth11",
+            "eth12",
+            "eth13",
+            "eth14",
+            "eth15",
+            "eth16",
+            "eth17",
+            "eth18",
+            "eth19",
+            "eth20",
+            "eth21",
+            "eth22",
+            "eth23",
+            "eth24",
+            "eth25",
+            "eth26",
+            "eth27"
+          ],
+          "serial_ports": 1,
+          "default_count": 4
+        }
+      },
+      "ui": {
+        "visible": true,
+        "label_prefix": "bigip-",
+        "icon": "server",
+        "label": "F5 BIGIP-VE",
+        "description": "BIG-IP VE Appliance"
+      },
+      "sim": {
+        "linux_native": {
+          "libvirt_domain_driver": "kvm",
+          "driver": "server",
+          "disk_driver": "virtio",
+          "ram": 4096,
+          "cpus": 4,
+          "nic_driver": "virtio",
+          "video": {
+            "memory": 1
+          }
+        }
+      },
+      "boot": {
+        "timeout": 600,
+        "completed": [
+          "login: "
+        ]
+      },
+      "inherited": {
+        "image": {
+          "ram": true,
+          "cpus": true,
+          "data_volume": false,
+          "boot_disk_size": false,
+          "cpu_limit": true
+        },
+        "node": {
+          "ram": true,
+          "cpus": true,
+          "data_volume": false,
+          "boot_disk_size": false,
+          "cpu_limit": true
+        }
+      },
+      "configuration": {
+        "generator": {
+          "driver": null
+        },
+        "provisioning": {
+          "volume_name": "config-2",
+          "media_type": "iso",
+          "files": [
+            {
+              "name": "user_data",
+              "editable": true,
+              "content": "#cloud-config\n\nwrite_files:\n  - path: /config/onboarding/day0.sh\n     permissions: 0755\n     owner: root:root\n     content: |\n       #!/bin/sh\n       tmsh modify sys global-settings hostname mybigip.example.com\n\nruncmd: [nohup sh -c '/config/onboarding/day0.sh' &]"
+            },
+            {
+              "name": "meta_data.json",
+              "editable": true,
+              "content": "{ \"uuid\": \"1d9d6d3a-1d36-4db7-8d7c-63963d4d6f20\", \"hostname\": \"localhost\" }"
+            }
+          ]
+        }
+      },
+      "schema_version": "0.0.1"
+    }
+  },
+  {
+    "id": "cat9000",
+    "data": {
+      "id": "cat9000",
+      "configuration": {
+        "generator": {
+          "driver": "cat9k"
+        },
+        "provisioning": {
+          "volume_name": "disk",
+          "media_type": "iso",
+          "files": [
+            {
+              "name": "iosxe_config.txt",
+              "content": "hostname insert_hostname_here",
+              "editable": true
+            }
+          ]
+        }
+      },
+      "inherited": {
+        "image": {
+          "ram": true,
+          "cpus": true,
+          "cpu_limit": true,
+          "data_volume": false,
+          "boot_disk_size": false
+        },
+        "node": {
+          "ram": true,
+          "cpus": true,
+          "cpu_limit": true,
+          "data_volume": false,
+          "boot_disk_size": false
+        }
+      },
+      "device": {
+        "interfaces": {
+          "has_loopback_zero": true,
+          "default_count": 4,
+          "loopback": [
+            "Loopback0"
+          ],
+          "management": [
+            "GigabitEthernet0/0"
+          ],
+          "physical": [
+            "GigabitEthernet0/0",
+            "GigabitEthernet1/0/1",
+            "GigabitEthernet1/0/2",
+            "GigabitEthernet1/0/3",
+            "GigabitEthernet1/0/4",
+            "GigabitEthernet1/0/5",
+            "GigabitEthernet1/0/6"
+          ],
+          "serial_ports": 2
+        }
+      },
+      "general": {
+        "description": "Catalyst 9000 (EXPERIMENTAL)",
+        "nature": "router",
+        "read_only": false
+      },
+      "schema_version": "0.0.1",
+      "sim": {
+        "linux_native": {
+          "cpu_model": "Westmere",
+          "cpus": 6,
+          "disk_driver": "virtio",
+          "driver": "csr1000v",
+          "libvirt_domain_driver": "kvm",
+          "nic_driver": "e1000",
+          "ram": 16384
+        }
+      },
+      "boot": {
+        "timeout": 600,
+        "completed": [
+          "INFO: Press RETURN to get started!"
+        ]
+      },
+      "pyats": {
+        "os": "iosxe",
+        "config_extract_command": "show run"
+      },
+      "ui": {
+        "description": "\n16 GB DRAM, 8 vCPUs\n##### Note\n**EXPERIMENTAL**",
+        "group": "Cisco",
+        "icon": "switch",
+        "label": "Catalyst 9000v",
+        "label_prefix": "cat9kv-",
+        "visible": false
+      }
+    }
+  },
+  {
+    "id": "cat8000v",
+    "data": {
+      "id": "cat8000v",
+      "configuration": {
+        "generator": {
+          "driver": "csr1000v"
+        },
+        "provisioning": {
+          "volume_name": "disk",
+          "media_type": "iso",
+          "files": [
+            {
+              "name": "iosxe_config.txt",
+              "content": "platform console serial\n!\nhostname insert_hostname_here\n!\n!\n!\n!\n!\n!\n!\nend",
+              "editable": true
+            }
+          ]
+        }
+      },
+      "inherited": {
+        "image": {
+          "ram": true,
+          "cpus": true,
+          "data_volume": false,
+          "boot_disk_size": false,
+          "cpu_limit": true
+        },
+        "node": {
+          "ram": true,
+          "cpus": true,
+          "data_volume": false,
+          "boot_disk_size": false,
+          "cpu_limit": true
+        }
+      },
+      "device": {
+        "interfaces": {
+          "has_loopback_zero": true,
+          "default_count": 4,
+          "loopback": [
+            "Loopback0"
+          ],
+          "physical": [
+            "GigabitEthernet1",
+            "GigabitEthernet2",
+            "GigabitEthernet3",
+            "GigabitEthernet4",
+            "GigabitEthernet5",
+            "GigabitEthernet6",
+            "GigabitEthernet7",
+            "GigabitEthernet8",
+            "GigabitEthernet9",
+            "GigabitEthernet10",
+            "GigabitEthernet11",
+            "GigabitEthernet12",
+            "GigabitEthernet13",
+            "GigabitEthernet14",
+            "GigabitEthernet15",
+            "GigabitEthernet16",
+            "GigabitEthernet17",
+            "GigabitEthernet18",
+            "GigabitEthernet19",
+            "GigabitEthernet20",
+            "GigabitEthernet21",
+            "GigabitEthernet22",
+            "GigabitEthernet23",
+            "GigabitEthernet24",
+            "GigabitEthernet25",
+            "GigabitEthernet26",
+            "GigabitEthernet27",
+            "GigabitEthernet28",
+            "GigabitEthernet29",
+            "GigabitEthernet30",
+            "GigabitEthernet31",
+            "GigabitEthernet32"
+          ],
+          "serial_ports": 2
+        }
+      },
+      "general": {
+        "description": "Catalyst 8000V Edge Software",
+        "nature": "router",
+        "read_only": false
+      },
+      "schema_version": "0.0.1",
+      "sim": {
+        "linux_native": {
+          "cpus": 1,
+          "disk_driver": "virtio",
+          "driver": "csr1000v",
+          "libvirt_domain_driver": "kvm",
+          "nic_driver": "virtio",
+          "ram": 4096,
+          "cpu_limit": 100
+        }
+      },
+      "boot": {
+        "timeout": 250,
+        "completed": [
+          "Would you like to enter the initial configuration dialog?",
+          "Press RETURN to get started!",
+          "%CVAC-4-CONFIG_DONE:"
+        ]
+      },
+      "pyats": {
+        "os": "iosxe",
+        "series": "csr1000v",
+        "config_extract_command": "show run",
+        "use_in_testbed": true
+      },
+      "ui": {
+        "description": "Catalyst 8000V Edge Software\n\n4 GB DRAM, 1 vCPU\n\n[CCO Link](https://www.cisco.com/c/en/us/products/routers/catalyst-8000v-edge-software/index.html)",
+        "group": "Cisco",
+        "icon": "router",
+        "label": "CAT8000V",
+        "label_prefix": "cat8000v-",
+        "visible": true
+      }
+    }
+  },
+  {
+    "id": "viptela-manage",
+    "data": {
+      "id": "viptela-manage",
+      "configuration": {
+        "generator": {
+          "driver": null
+        },
+        "provisioning": {
+          "volume_name": "cidata",
+          "media_type": "iso",
+          "files": [
+            {
+              "name": "meta-data",
+              "content": "instance-id: vmanage\nlocal-hostname: vmanage",
+              "editable": false
+            },
+            {
+              "name": "user-data",
+              "content": "#cloud-config\nssh_authorized_keys:\n  - your-ssh-pub-key-line-goes-here",
+              "editable": true
+            }
+          ]
+        }
+      },
+      "device": {
+        "interfaces": {
+          "has_loopback_zero": false,
+          "physical": [
+            "eth0",
+            "ge0/0",
+            "ge0/1",
+            "ge0/2",
+            "ge0/3",
+            "ge0/4",
+            "ge0/5",
+            "ge0/6"
+          ],
+          "serial_ports": 1
+        }
+      },
+      "inherited": {
+        "image": {
+          "ram": true,
+          "cpus": true,
+          "data_volume": true,
+          "boot_disk_size": false,
+          "cpu_limit": true
+        },
+        "node": {
+          "ram": true,
+          "cpus": true,
+          "data_volume": true,
+          "boot_disk_size": false,
+          "cpu_limit": true
+        }
+      },
+      "general": {
+        "description": "Viptela vManage System",
+        "nature": "server",
+        "read_only": false
+      },
+      "boot": {
+        "timeout": 300,
+        "completed": [
+          ": System Ready"
+        ]
+      },
+      "sim": {
+        "linux_native": {
+          "cpus": 8,
+          "disk_driver": "ide",
+          "driver": "server",
+          "libvirt_domain_driver": "kvm",
+          "nic_driver": "virtio",
+          "ram": 32768,
+          "data_volume": 512
+        }
+      },
+      "pyats": {
+        "os": "sdwan",
+        "series": "viptela",
+        "config_extract_command": "show run",
+        "username": "admin",
+        "password": "admin"
+      },
+      "ui": {
+        "description": "Viptela vManage System\n\n32 GB DRAM, 8 vCPU, 512GB data disk\n\n[CCO Link](https://sdwan-docs.cisco.com/Product_Documentation)",
+        "group": "Others",
+        "icon": "server",
+        "label": "vManage",
+        "label_prefix": "vmanage-",
+        "visible": true
+      },
+      "schema_version": "0.0.1"
+    }
+  },
+  {
+    "id": "viptela-edge",
+    "data": {
+      "id": "viptela-edge",
+      "configuration": {
+        "generator": {
+          "driver": null
+        },
+        "provisioning": {
+          "volume_name": "cidata",
+          "media_type": "iso",
+          "files": [
+            {
+              "name": "meta-data",
+              "content": "instance-id: ubuntu\nlocal-hostname: ubuntu",
+              "editable": false
+            },
+            {
+              "name": "user-data",
+              "content": "#cloud-config\nvinitparam:\n- otp: 00000000000000000000000000000000\n- vbond: 1.2.3.4\n- uuid: 12345678-dead-beef-cafe-1234567890ab\n- org: some-org-string\nssh_authorized_keys:\n  - your-ssh-pub-key-line-goes-here",
+              "editable": true
+            }
+          ]
+        }
+      },
+      "device": {
+        "interfaces": {
+          "has_loopback_zero": false,
+          "physical": [
+            "eth0",
+            "ge0/0",
+            "ge0/1",
+            "ge0/2",
+            "ge0/3",
+            "ge0/4",
+            "ge0/5",
+            "ge0/6"
+          ],
+          "serial_ports": 1
+        }
+      },
+      "inherited": {
+        "image": {
+          "ram": true,
+          "cpus": true,
+          "data_volume": false,
+          "boot_disk_size": false,
+          "cpu_limit": true
+        },
+        "node": {
+          "ram": true,
+          "cpus": true,
+          "data_volume": false,
+          "boot_disk_size": false,
+          "cpu_limit": true
+        }
+      },
+      "general": {
+        "description": "Viptela vEdge System",
+        "nature": "server",
+        "read_only": false
+      },
+      "boot": {
+        "timeout": 120,
+        "completed": [
+          ": System Ready"
+        ]
+      },
+      "sim": {
+        "linux_native": {
+          "cpus": 2,
+          "disk_driver": "ide",
+          "driver": "server",
+          "libvirt_domain_driver": "kvm",
+          "nic_driver": "virtio",
+          "ram": 2048
+        }
+      },
+      "pyats": {
+        "os": "sdwan",
+        "series": "viptela",
+        "config_extract_command": "show run",
+        "username": "admin",
+        "password": "admin"
+      },
+      "ui": {
+        "description": "Viptela vEdge System\n\n2 GB DRAM, 2 vCPU\n\n[CCO Link](https://sdwan-docs.cisco.com/Product_Documentation)",
+        "group": "Others",
+        "icon": "server",
+        "label": "vEdge",
+        "label_prefix": "vedge-",
+        "visible": true
+      },
+      "schema_version": "0.0.1"
+    }
+  },
+  {
+    "id": "viptela-bond",
+    "data": {
+      "id": "viptela-bond",
+      "configuration": {
+        "generator": {
+          "driver": null
+        },
+        "provisioning": {
+          "volume_name": "cidata",
+          "media_type": "iso",
+          "files": [
+            {
+              "name": "meta-data",
+              "content": "instance-id: vbond\nlocal-hostname: vbond",
+              "editable": false
+            },
+            {
+              "name": "user-data",
+              "content": "#cloud-config\nssh_authorized_keys:\n  - your-ssh-pub-key-line-goes-here",
+              "editable": true
+            }
+          ]
+        }
+      },
+      "device": {
+        "interfaces": {
+          "has_loopback_zero": false,
+          "physical": [
+            "eth0",
+            "ge0/0",
+            "ge0/1",
+            "ge0/2",
+            "ge0/3",
+            "ge0/4",
+            "ge0/5",
+            "ge0/6"
+          ],
+          "serial_ports": 1
+        }
+      },
+      "inherited": {
+        "image": {
+          "ram": true,
+          "cpus": true,
+          "data_volume": false,
+          "boot_disk_size": false,
+          "cpu_limit": true
+        },
+        "node": {
+          "ram": true,
+          "cpus": true,
+          "data_volume": false,
+          "boot_disk_size": false,
+          "cpu_limit": true
+        }
+      },
+      "general": {
+        "description": "Viptela vBond System",
+        "nature": "server",
+        "read_only": false
+      },
+      "boot": {
+        "timeout": 300,
+        "completed": [
+          ": System Ready"
+        ]
+      },
+      "sim": {
+        "linux_native": {
+          "cpus": 2,
+          "disk_driver": "ide",
+          "driver": "server",
+          "libvirt_domain_driver": "kvm",
+          "nic_driver": "virtio",
+          "ram": 4096
+        }
+      },
+      "pyats": {
+        "os": "sdwan",
+        "series": "viptela",
+        "config_extract_command": "show run",
+        "username": "admin",
+        "password": "admin"
+      },
+      "ui": {
+        "description": "Viptela vBond System\n\n4 GB DRAM, 2 vCPU\n\n[CCO Link](https://sdwan-docs.cisco.com/Product_Documentation)",
+        "group": "Others",
+        "icon": "server",
+        "label": "vBond",
+        "label_prefix": "vbond-",
+        "visible": true
+      },
+      "schema_version": "0.0.1"
+    }
+  },
+  {
+    "id": "viptela-smart",
+    "data": {
+      "id": "viptela-smart",
+      "configuration": {
+        "generator": {
+          "driver": null
+        },
+        "provisioning": {
+          "volume_name": "cidata",
+          "media_type": "iso",
+          "files": [
+            {
+              "name": "meta-data",
+              "content": "instance-id: vsmart\nlocal-hostname: vsmart",
+              "editable": false
+            },
+            {
+              "name": "user-data",
+              "content": "#cloud-config\nssh_authorized_keys:\n  - your-ssh-pub-key-line-goes-here",
+              "editable": true
+            }
+          ]
+        }
+      },
+      "device": {
+        "interfaces": {
+          "has_loopback_zero": false,
+          "physical": [
+            "eth0",
+            "ge0/0",
+            "ge0/1",
+            "ge0/2",
+            "ge0/3",
+            "ge0/4",
+            "ge0/5",
+            "ge0/6"
+          ],
+          "serial_ports": 1
+        }
+      },
+      "inherited": {
+        "image": {
+          "ram": true,
+          "cpus": true,
+          "data_volume": false,
+          "boot_disk_size": false,
+          "cpu_limit": true
+        },
+        "node": {
+          "ram": true,
+          "cpus": true,
+          "data_volume": false,
+          "boot_disk_size": false,
+          "cpu_limit": true
+        }
+      },
+      "general": {
+        "description": "Viptela vSmart System",
+        "nature": "server",
+        "read_only": false
+      },
+      "boot": {
+        "timeout": 300,
+        "completed": [
+          ": System Ready"
+        ]
+      },
+      "sim": {
+        "linux_native": {
+          "cpus": 2,
+          "disk_driver": "ide",
+          "driver": "server",
+          "libvirt_domain_driver": "kvm",
+          "nic_driver": "virtio",
+          "ram": 4096
+        }
+      },
+      "pyats": {
+        "os": "sdwan",
+        "series": "viptela",
+        "config_extract_command": "show run",
+        "username": "admin",
+        "password": "admin"
+      },
+      "ui": {
+        "description": "Viptela vSmart System\n\n4 GB DRAM, 2 vCPU\n\n[CCO Link](https://sdwan-docs.cisco.com/Product_Documentation)",
+        "group": "Others",
+        "icon": "server",
+        "label": "vSmart",
+        "label_prefix": "vsmart-",
+        "visible": true
+      },
+      "schema_version": "0.0.1"
+    }
+  }
+]
