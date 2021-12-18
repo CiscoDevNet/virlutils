@@ -6,7 +6,7 @@ watchdog
 flake8
 Flask
 tox
-coverage=
+coverage
 Sphinx
 twine
 white
