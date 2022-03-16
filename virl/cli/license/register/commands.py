@@ -2,7 +2,6 @@ import click
 import os
 from virl.api import VIRLServer
 from virl.helpers import get_cml_client
-from virl2_client.models.licensing import DEFAULT_SSMS
 
 
 @click.command()
@@ -38,7 +37,7 @@ def register(token, **kwargs):
 
     if ssms or proxy:
         if not ssms:
-            ssms = DEFAULT_SSMS
+            ssms = licensing.status()["transport"]["default_ssms"]
         if proxy:
             port = kwargs["proxy_port"]
 

@@ -125,7 +125,7 @@ class MockCMLServer(object):
                 },
                 "is_licensed": True,
             },
-            "system_information": {"version": "2.1.0-b89.f8805559", "ready": True},
+            "system_information": {"version": "2.3.0", "ready": True},
             "system_stats": {
                 "clusters": {
                     "cluster_1": {
@@ -369,7 +369,7 @@ class MockCMLServer(object):
 
     @staticmethod
     def get_sys_info(req, ctx):
-        response = {"version": "2.1.0", "ready": True}
+        response = {"version": "2.3.0", "ready": True}
         return response
 
     @staticmethod
