@@ -26,4 +26,4 @@ class CMLConsoleTests(BaseCMLTest):
             virl = self.get_virl()
             runner = CliRunner()
             runner.invoke(virl, ["console", "rtr-1"])
-            call_mock.assert_called_once_with(["ssh", "-t", "admin@localhost", "open", "/5f0d96/n1/0"])
+            call_mock.assert_called_once_with(["ssh", "-t", "admin@localhost", "open", "/Mock", "Test", "rtr-1/0"])
