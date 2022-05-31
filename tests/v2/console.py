@@ -26,4 +26,15 @@ class CMLConsoleTests(BaseCMLTest):
             virl = self.get_virl()
             runner = CliRunner()
             runner.invoke(virl, ["console", "rtr-1"])
-            call_mock.assert_called_once_with(["ssh", "-t", "admin@localhost", "open", "/Mock", "Test/rtr-1/0"])
+            call_mock.assert_called_once_with(["ssh", "-t", "admin@localhost", "open", "/5f0d96/n1/0"])
+
+    @patch("virl.cli.console.commands.call", autospec=False)
+    def test_cml_console_connect_23(self, call_mock):
+        with requests_mock.Mocker() as m:
+            # Mock the request to return what we expect from the API.
+            self.setup_mocks(m)
+            virl = self.get_virl()
+            runner = CliRunner()
+            runner.invoke(virl, ["use", "--id", self.get_cml23_id()])
+            runner.invoke(virl, ["console", "rtr-1"])
+            call_mock.assert_called_once_with(["ssh", "-t", "admin@localhost", "open", "/Mock", "Test", "2.3/rtr-1/0"])

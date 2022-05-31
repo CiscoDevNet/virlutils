@@ -82,6 +82,9 @@ class BaseCMLTest(unittest.TestCase):
     def get_alt_title(self):
         return "Other Lab"
 
+    def get_cml23_id(self):
+        return "88119b68-9d08-40c4-90f5-6dc533fd0254"
+
     def setup_mocks(self, m):
         m.get(self.get_api_path("labs"), json=MockCMLServer.get_labs)
         m.get(self.get_api_path("populate_lab_tiles"), json=MockCMLServer.get_lab_tiles)

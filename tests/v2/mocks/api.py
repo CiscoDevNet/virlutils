@@ -48,6 +48,66 @@ class MockCMLServer(object):
                         "links": [{"id": "l0", "node_a": "n0", "node_b": "n1", "state": "STOPPED"}],
                     },
                 },
+                "88119b68-9d08-40c4-90f5-6dc533fd0254": {
+                    "state": "STARTED",
+                    "created": "2020-08-18 22:47:56",
+                    "lab_title": "Mock Test 2.3",
+                    "lab_description": "",
+                    "node_count": 2,
+                    "link_count": 1,
+                    "id": "88119b68-9d08-40c4-90f5-6dc533fd0254",
+                    "owner": "admin",
+                    "topology": {
+                        "nodes": [
+                            {
+                                "id": "88119b68-9d08-40c4-90f5-6dc533fd0255",
+                                "label": "Lab Net",
+                                "x": -400,
+                                "y": 0,
+                                "node_definition": "external_connector",
+                                "image_definition": None,
+                                "state": "BOOTED",
+                                "cpus": None,
+                                "cpu_limit": None,
+                                "ram": None,
+                                "data_volume": None,
+                                "boot_disk_size": None,
+                                "tags": [],
+                            },
+                            {
+                                "id": "88119b68-9d08-40c4-90f5-6dc533fd0256",
+                                "label": "rtr-1",
+                                "x": -200,
+                                "y": -50,
+                                "node_definition": "iosxrv9000",
+                                "image_definition": "iosxrv9000-6-6-2",
+                                "state": "BOOTED",
+                                "cpus": None,
+                                "cpu_limit": None,
+                                "ram": None,
+                                "data_volume": None,
+                                "boot_disk_size": None,
+                                "tags": [],
+                            },
+                            {
+                                "id": "88119b68-9d08-40c4-90f5-6dc533fd0257",
+                                "label": "rtr-2",
+                                "x": -200,
+                                "y": -50,
+                                "node_definition": "iosxrv9000",
+                                "image_definition": "iosxrv9000-6-6-2",
+                                "state": "DEFINED_ON_CORE",
+                                "cpus": None,
+                                "cpu_limit": None,
+                                "ram": None,
+                                "data_volume": None,
+                                "boot_disk_size": None,
+                                "tags": [],
+                            },
+                        ],
+                        "links": [{"id": "l0", "node_a": "n1", "node_b": "n0", "state": "STARTED"}],
+                    },
+                },
                 "5f0d96": {
                     "state": "STARTED",
                     "created": "2020-08-18 22:47:56",
@@ -151,7 +211,7 @@ class MockCMLServer(object):
 
     @staticmethod
     def get_labs(req, ctx):
-        response = ["5eaea5", "5f0d96"]
+        response = ["5eaea5", "5f0d96", "88119b68-9d08-40c4-90f5-6dc533fd0254"]
         return response
 
     @staticmethod
