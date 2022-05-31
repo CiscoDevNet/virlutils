@@ -105,7 +105,14 @@ class MockCMLServer(object):
                                 "tags": [],
                             },
                         ],
-                        "links": [{"id": "l0", "node_a": "n1", "node_b": "n0", "state": "STARTED"}],
+                        "links": [
+                            {
+                                "id": "88119b68-9d08-40c4-90f5-6dc533fd0258",
+                                "node_a": "88119b68-9d08-40c4-90f5-6dc533fd0256",
+                                "node_b": "88119b68-9d08-40c4-90f5-6dc533fd0255",
+                                "state": "STARTED",
+                            }
+                        ],
                     },
                 },
                 "5f0d96": {
@@ -451,6 +458,10 @@ class MockCMLServer(object):
         return MockCMLServer._get_lab_element_state(req, ctx)
 
     @staticmethod
+    def get_lab_element_state_23(req, ctx):
+        return MockCMLServer._get_lab_element_state_23(req, ctx)
+
+    @staticmethod
     def get_lab_element_state_down(req, ctx):
         return MockCMLServer._get_lab_element_state(req, ctx, "STOPPED")
 
@@ -460,6 +471,26 @@ class MockCMLServer(object):
             "nodes": {"n0": "BOOTED", "n1": n2_state, "n2": "DEFINED_ON_CORE"},
             "links": {"l0": "STARTED"},
             "interfaces": {"i0": "STARTED", "i1": "STARTED", "i2": "STARTED", "i3": "STARTED", "i4": "STARTED", "i5": "STARTED"},
+        }
+        return response
+
+    @staticmethod
+    def _get_lab_element_state_23(req, ctx, n2_state="BOOTED"):
+        response = {
+            "nodes": {
+                "88119b68-9d08-40c4-90f5-6dc533fd0255": "BOOTED",
+                "88119b68-9d08-40c4-90f5-6dc533fd0256": n2_state,
+                "88119b68-9d08-40c4-90f5-6dc533fd0257": "DEFINED_ON_CORE",
+            },
+            "links": {"88119b68-9d08-40c4-90f5-6dc533fd0259": "STARTED"},
+            "interfaces": {
+                "88119b68-9d08-40c4-90f5-6dc533fd020a": "STARTED",
+                "88119b68-9d08-40c4-90f5-6dc533fd020b": "STARTED",
+                "88119b68-9d08-40c4-90f5-6dc533fd020c": "STARTED",
+                "88119b68-9d08-40c4-90f5-6dc533fd020d": "STARTED",
+                "88119b68-9d08-40c4-90f5-6dc533fd020e": "STARTED",
+                "88119b68-9d08-40c4-90f5-6dc533fd020f": "STARTED",
+            },
         }
         return response
 
@@ -600,6 +631,115 @@ class MockCMLServer(object):
             "lab_description": "",
             "state": "STOPPED",
             "created_timestamp": 1595337039.0416706,
+            "cluster_id": "cluster_1",
+            "version": "0.0.3",
+        }
+        return response
+
+    @staticmethod
+    def get_topology_23(req, ctx):
+        response = {
+            "nodes": [
+                {
+                    "id": "88119b68-9d08-40c4-90f5-6dc533fd0255",
+                    "data": {
+                        "node_definition": "external_connector",
+                        "image_definition": None,
+                        "label": "Lab Net",
+                        "configuration": "bridge0",
+                        "x": -400,
+                        "y": 0,
+                        "state": "BOOTED",
+                        "ram": None,
+                        "cpus": None,
+                        "cpu_limit": None,
+                        "data_volume": None,
+                        "boot_disk_size": None,
+                        "tags": [],
+                    },
+                },
+                {
+                    "id": "88119b68-9d08-40c4-90f5-6dc533fd0256",
+                    "data": {
+                        "node_definition": "iosxrv9000",
+                        "image_definition": "iosxrv9000-6-6-2",
+                        "label": "rtr-1",
+                        "configuration": "hostname changeme\n",
+                        "x": -200,
+                        "y": -50,
+                        "state": "BOOTED",
+                        "ram": None,
+                        "cpus": None,
+                        "cpu_limit": None,
+                        "data_volume": None,
+                        "boot_disk_size": None,
+                        "tags": [],
+                    },
+                },
+                {
+                    "id": "88119b68-9d08-40c4-90f5-6dc533fd0257",
+                    "data": {
+                        "node_definition": "iosxrv9000",
+                        "image_definition": "iosxrv9000-6-6-2",
+                        "label": "rtr-2",
+                        "configuration": "hostname changeme\n",
+                        "x": -200,
+                        "y": -50,
+                        "state": "DEFINED_ON_CORE",
+                        "ram": None,
+                        "cpus": None,
+                        "cpu_limit": None,
+                        "data_volume": None,
+                        "boot_disk_size": None,
+                        "tags": [],
+                    },
+                },
+            ],
+            "links": [
+                {
+                    "id": "88119b68-9d08-40c4-90f5-6dc533fd0259",
+                    "interface_a": "88119b68-9d08-40c4-90f5-6dc533fd020c",
+                    "interface_b": "88119b68-9d08-40c4-90f5-6dc533fd020a",
+                    "data": {"state": "STARTED"},
+                }
+            ],
+            "interfaces": [
+                {
+                    "id": "88119b68-9d08-40c4-90f5-6dc533fd020a",
+                    "node": "88119b68-9d08-40c4-90f5-6dc533fd0255",
+                    "data": {"label": "port", "slot": 0, "state": "STARTED", "type": "physical"},
+                },
+                {
+                    "id": "88119b68-9d08-40c4-90f5-6dc533fd020b",
+                    "node": "88119b68-9d08-40c4-90f5-6dc533fd0256",
+                    "data": {"label": "Loopback0", "slot": None, "state": "STARTED", "type": "loopback"},
+                },
+                {
+                    "id": "88119b68-9d08-40c4-90f5-6dc533fd020c",
+                    "node": "88119b68-9d08-40c4-90f5-6dc533fd0256",
+                    "data": {"label": "MgmtEth0/RP0/CPU0/0", "slot": 0, "state": "STARTED", "type": "physical"},
+                },
+                {
+                    "id": "88119b68-9d08-40c4-90f5-6dc533fd020d",
+                    "node": "88119b68-9d08-40c4-90f5-6dc533fd0256",
+                    "data": {"label": "donotuse1", "slot": 1, "state": "STARTED", "type": "physical"},
+                },
+                {
+                    "id": "88119b68-9d08-40c4-90f5-6dc533fd020e",
+                    "node": "88119b68-9d08-40c4-90f5-6dc533fd0256",
+                    "data": {"label": "donotuse2", "slot": 2, "state": "STARTED", "type": "physical"},
+                },
+                {
+                    "id": "88119b68-9d08-40c4-90f5-6dc533fd020f",
+                    "node": "88119b68-9d08-40c4-90f5-6dc533fd0256",
+                    "data": {"label": "GigabitEthernet0/0/0/0", "slot": 3, "state": "STARTED", "type": "physical"},
+                },
+            ],
+            "lab_notes": "",
+            "lab_title": "Mock Test 2.3",
+            "lab_description": "",
+            "state": "STARTED",
+            "created_timestamp": 1597805276.8213837,
             "cluster_id": "cluster_1",
             "version": "0.0.3",
         }
