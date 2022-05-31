@@ -31,7 +31,7 @@ def console(node, display, **kwargs):
 
             if node_obj.node_definition not in skip_types:
                 if node_obj.is_active():
-                    if len(lab.id) == 5:
+                    if len(lab.id) == 6:
                         # Old-style (CML 2.2) lab IDs; console uses lab_id/node_id
                         console = "/{}/{}/0".format(lab.id, node_obj.id)
                     else:
