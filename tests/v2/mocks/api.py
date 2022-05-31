@@ -343,6 +343,127 @@ class MockCMLServer(object):
         return response
 
     @staticmethod
+    def download_lab_23(req, ctx):
+        response = """
+        lab:
+          description: ''
+          notes: ''
+          timestamp: 1597805276.8213837
+          title: Mock Test 2.3
+          version: 0.0.3
+        nodes:
+          - id: 88119b68-9d08-40c4-90f5-6dc533fd0255
+            label: Lab Net
+            node_definition: external_connector
+            x: -400
+            y: 0
+            configuration: bridge0
+            tags: []
+            interfaces:
+              - id: i0
+                slot: 0
+                label: port
+                type: physical
+          - id: 88119b68-9d08-40c4-90f5-6dc533fd0256
+            label: rtr-1
+            node_definition: iosxrv9000
+            x: -200
+            y: -50
+            configuration: |-
+              hostname changeme
+              username cisco
+              group root-lr
+              group cisco-support
+              password cisco
+              !
+              username admin
+              group root-lr
+              group cisco-support
+              password admin
+              !
+              username lab
+              group root-lr
+              group cisco-support
+              password lab
+              !
+              end
+            image_definition: iosxrv9000-6-6-2
+            tags: []
+            interfaces:
+              - id: 88119b68-9d08-40c4-90f5-6dc533fd020a
+                label: Loopback0
+                type: loopback
+              - id: 88119b68-9d08-40c4-90f5-6dc533fd020b
+                slot: 0
+                label: MgmtEth0/RP0/CPU0/0
+                type: physical
+              - id: 88119b68-9d08-40c4-90f5-6dc533fd020c
+                slot: 1
+                label: donotuse1
+                type: physical
+              - id: 88119b68-9d08-40c4-90f5-6dc533fd020d
+                slot: 2
+                label: donotuse2
+                type: physical
+              - id: 88119b68-9d08-40c4-90f5-6dc533fd020e
+                slot: 3
+                label: GigabitEthernet0/0/0/0
+                type: physical
+          - id: 88119b68-9d08-40c4-90f5-6dc533fd0257
+            label: rtr-2
+            node_definition: iosxrv9000
+            x: -200
+            y: -50
+            configuration: |-
+              hostname changeme
+              username cisco
+              group root-lr
+              group cisco-support
+              password cisco
+              !
+              username admin
+              group root-lr
+              group cisco-support
+              password admin
+              !
+              username lab
+              group root-lr
+              group cisco-support
+              password lab
+              !
+              end
+            image_definition: iosxrv9000-6-6-2
+            tags: []
+            interfaces:
+              - id: 88119b68-9d08-40c4-90f5-6dc533fd021a
+                label: Loopback0
+                type: loopback
+              - id: 88119b68-9d08-40c4-90f5-6dc533fd021b
+                slot: 0
+                label: MgmtEth0/RP0/CPU0/0
+                type: physical
+              - id: 88119b68-9d08-40c4-90f5-6dc533fd021c
+                slot: 1
+                label: donotuse1
+                type: physical
+              - id: 88119b68-9d08-40c4-90f5-6dc533fd021d
+                slot: 2
+                label: donotuse2
+                type: physical
+              - id: 88119b68-9d08-40c4-90f5-6dc533fd021e
+                slot: 3
+                label: GigabitEthernet0/0/0/0
+                type: physical
+        links:
+          - id: l0
+            i1: i1
+            n1: n1
+            i2: i0
+            n2: n0
+        """
+        return response
+
+    @staticmethod
     def download_alt_lab(req, ctx):
         response = """
         lab:

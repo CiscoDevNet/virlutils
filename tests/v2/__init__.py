@@ -89,6 +89,7 @@ class BaseCMLTest(unittest.TestCase):
         m.get(self.get_api_path("labs"), json=MockCMLServer.get_labs)
         m.get(self.get_api_path("populate_lab_tiles"), json=MockCMLServer.get_lab_tiles)
         m.get(self.get_api_path("labs/{}/download".format(self.get_test_id())), text=MockCMLServer.download_lab)
+        m.get(self.get_api_path("labs/{}/download".format(self.get_cml23_id())), text=MockCMLServer.download_lab_23)
         m.get(
             self.get_api_path("labs/{}/topology?exclude_configurations=False".format(self.get_test_id())), json=MockCMLServer.get_topology
         )
