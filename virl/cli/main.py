@@ -37,6 +37,7 @@ from .ui.commands import ui  # noqa: F401
 from .license import license  # noqa: F401
 from .rm.commands import rm  # noqa: F401
 from .command.commands import command  # noqa: F401
+from .cluster import cluster  # noqa: F401
 
 
 class CatchAllExceptions(click.Group):
@@ -119,6 +120,19 @@ def __get_server_ver():
     return res
 
 
+def __get_cml_ver():
+    server = VIRLServer()
+    client = get_cml_client(server)
+    try:
+        sys_info = client.system_info()
+        return sys_info["version"]
+    except Exception:
+        # This might occur because the client library is too old.
+        pass
+
+    return "2.0.0"
+
+
 def __init_plugins():
     """
     Scan a set of plugin directories and load them if any are found.
@@ -172,6 +186,10 @@ else:
     virl.add_command(rm)
     virl.add_command(lid, name="id")
     virl.add_command(command)
+    cml_vers = __get_cml_ver()
+    (major, minor, patch) = cml_vers.split(".")
+    if int(major) > 2 or (int(major) == 2 and int(minor) >= 4):
+        virl.add_command(cluster)
 
 virl.add_command(search)
 
