@@ -122,8 +122,8 @@ def __get_server_ver():
 
 def __get_cml_ver():
     server = VIRLServer()
-    client = get_cml_client(server)
     try:
+        client = get_cml_client(server)
         sys_info = client.system_info()
         return sys_info["version"]
     except Exception:
