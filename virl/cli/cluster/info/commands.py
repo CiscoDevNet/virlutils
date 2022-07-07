@@ -1,6 +1,6 @@
 import click
 from virl.api import VIRLServer, ViewerPlugin, NoPluginError
-from virl.cli.views import node_def_list_table
+from virl.cli.views import cluster_list_table
 from virl.helpers import get_cml_client
 
 
@@ -31,4 +31,4 @@ def info():
     if pl:
         pl.visualize(nodes=system_health["computes"])
     else:
-        node_def_list_table(system_health["computes"])
+        cluster_list_table(system_health["computes"])
