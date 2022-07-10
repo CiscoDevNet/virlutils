@@ -121,6 +121,7 @@ class BaseCMLTest(unittest.TestCase):
         m.get(self.get_api_path("labs/{}/state".format(self.get_alt_id())), json="STOPPED")
         m.get(self.get_api_path("labs/{}/check_if_converged".format(self.get_test_id())), json=True)
         m.get(self.get_api_path("labs/{}/check_if_converged".format(self.get_cml23_id())), json=True)
+        m.get(self.get_api_path("labs/{}/nodes/n1/check_if_converged".format(self.get_test_id())), json=True)
 
     def add_debug_mock(self, m):
         m.register_uri(requests_mock.ANY, requests_mock.ANY, text=MockCMLServer.print_req)
