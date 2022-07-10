@@ -21,6 +21,7 @@ Options:
 
 Commands:
   clear        clear the current lab ID
+  cluster      display and manage CML cluster details
   cockpit      opens the Cockpit UI
   command      send a command or config to a node (requires pyATS)
   console      console for node
@@ -49,21 +50,21 @@ Commands:
 
 <!-- TOC depthFrom:2 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
--   [Prerequisites](#prerequisites)
--   [Installation](#installation)
--   [Configuration](#configuration)
--   [Usage / Workflows](#usage--workflows)
--   [Development](#local-development)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Usage / Workflows](#usage--workflows)
+- [Development](#local-development)
 
 <!-- /TOC -->
 
 ## Prerequisites
 
--   Python 3.6+ (tested with Python 3.7, 3.8, and 3.9)
+- Python 3.7+ (tested with Python 3.7, 3.8, and 3.9)
 
 ## Installation
 
-1.  Clone this repo
+1.Clone this repo
 
     ```sh
     git clone https://github.com/CiscoDevNet/virlutils
