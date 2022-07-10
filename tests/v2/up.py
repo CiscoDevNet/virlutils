@@ -85,14 +85,16 @@ class TestCMLUp(BaseCMLTest):
                 {"id": "i4", "node": "n0", "data": {"label": "Ethernet2/3", "slot": 3, "state": "STOPPED", "type": "physical"}},
                 {"id": "i5", "node": "n1", "data": {"label": "port", "slot": 0, "state": "STOPPED", "type": "physical"}},
             ],
-            "lab_notes": "",
-            "lab_title": "Fake Lab",
-            "lab_description": "",
-            "lab_owner": "admin",
-            "state": "STOPPED",
-            "created_timestamp": 1589294717.9075089,
-            "cluster_id": "cluster_1",
-            "version": "0.0.3",
+            "lab": {
+                "notes": "",
+                "title": "Fake Lab",
+                "description": "",
+                "owner": "admin",
+                "state": "STOPPED",
+                "created_timestamp": 1589294717.9075089,
+                "cluster_id": "cluster_1",
+                "version": "0.0.3",
+            }
         }
         return response
 
