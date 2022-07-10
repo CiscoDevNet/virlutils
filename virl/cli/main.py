@@ -187,7 +187,7 @@ else:
     virl.add_command(lid, name="id")
     virl.add_command(command)
     cml_vers = __get_cml_ver()
-    (major, minor, patch) = cml_vers.split(".")
+    (major, minor, _) = cml_vers.split(".", 2)
     if int(major) > 2 or (int(major) == 2 and int(minor) >= 4):
         virl.add_command(cluster)
 

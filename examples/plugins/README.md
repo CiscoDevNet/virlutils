@@ -9,8 +9,8 @@ functions (e.g., change the output of `cml ls`).
 
 ## Requirements
 
--   Plugin support is only provided when using CML 2+.  Support for VIRL/CML 1.x is not available.
--   All plugins must be written in Python (or at least a stub that can bootstrap modules written in other languages)
+- Plugin support is only provided when using CML 2+.  Support for VIRL/CML 1.x is not available.
+- All plugins must be written in Python (or at least a stub that can bootstrap modules written in other languages)
 
 ## Using Plugins
 
@@ -131,14 +131,14 @@ class MyViewPlugin(ViewerPlugin, viewer="lab"):
 Each viewer plugin must extend the `ViewerPlugin` base class and provide a `viewer` keyword argument indicating which output it will
 support.  The list of viewers are:
 
--   **lab** : Render the output of `cml ls`
--   **node** : Render the output of `cml nodes`
--   **console** : Render the output of `cml console`
--   **license** : Render the output of `cml license show`
--   **license_feature** : Render the output of `cml license features show`
--   **image_def** : Render the output of `cml definitions image ls`
--   **node_def** : Render the output of `cml definitions node ls`
--   **search** : Render the output of `cml search`
+- **lab** : Render the output of `cml ls`
+- **node** : Render the output of `cml nodes`
+- **console** : Render the output of `cml console`
+- **license** : Render the output of `cml license show`
+- **license_feature** : Render the output of `cml license features show`
+- **image_def** : Render the output of `cml definitions image ls`
+- **node_def** : Render the output of `cml definitions node ls`
+- **search** : Render the output of `cml search`
 
 Each one of these viewers is discussed in more details below.
 
@@ -209,6 +209,24 @@ The _search_ viewer renders the output of `cml search` (i.e., a list of reposito
 a `repos` key in the `kwargs` dictionary.
 
 The value of `repos` is a list of elements of type string that match the given query.
+
+#### _cluster_ Viewer
+
+The _cluster_ viewer renders the output of `cml cluster info` (i.e., a list of cluster compute nodes).  Your viewer will be passed a dict, `computes` in the `kwargs` dictionary.
+
+The value of `computes` is a dictionary of compute nodes, keyed on the node ID.  For example:
+
+```json
+"17e91b4e-865a-4627-a6bb-50e3dfa988ab": {
+      "kvm_vmx_enabled": true,
+      "enough_cpus": true,
+      "refplat_images_available": true,
+      "lld_connected": true,
+      "valid": true,
+      "is_controller": true,
+      "hostname": "cml-controller"
+    }
+```
 
 ### Common Functions
 

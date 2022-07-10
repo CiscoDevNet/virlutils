@@ -7,7 +7,7 @@ from virl.helpers import get_cml_client
 @click.command()
 def info():
     """
-    display cluster configuratioh details
+    display cluster configuration details
     """
 
     server = VIRLServer()
@@ -16,7 +16,7 @@ def info():
 
     system_health = None
     try:
-        response = client.session.get(client._base_url + "system_information")
+        response = client.session.get(client._base_url + "system_health")
         response.raise_for_status()
         system_health = response.json()
     except Exception as e:
@@ -29,6 +29,6 @@ def info():
         pass
 
     if pl:
-        pl.visualize(nodes=system_health["computes"])
+        pl.visualize(computes=system_health["computes"])
     else:
         cluster_list_table(system_health["computes"])
