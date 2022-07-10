@@ -694,14 +694,16 @@ class MockCMLServer(object):
                 {"id": "i4", "node": "n1", "data": {"label": "donotuse2", "slot": 2, "state": "STARTED", "type": "physical"}},
                 {"id": "i5", "node": "n1", "data": {"label": "GigabitEthernet0/0/0/0", "slot": 3, "state": "STARTED", "type": "physical"}},
             ],
-            "lab_notes": "",
-            "lab_title": "Mock Test",
-            "lab_description": "",
-            "lab_owner": "admin",
-            "state": "STARTED",
-            "created_timestamp": 1597805276.8213837,
-            "cluster_id": "cluster_1",
-            "version": "0.0.3",
+            "lab": {
+                "notes": "",
+                "title": "Mock Test",
+                "description": "",
+                "owner": "admin",
+                "state": "STARTED",
+                "created_timestamp": 1597805276.8213837,
+                "cluster_id": "cluster_1",
+                "version": "0.0.3",
+            },
         }
         return response
 
@@ -761,14 +763,16 @@ class MockCMLServer(object):
                 {"id": "i8", "node": "n1", "data": {"label": "donotuse2", "slot": 2, "state": "STOPPED", "type": "physical"}},
                 {"id": "i9", "node": "n1", "data": {"label": "GigabitEthernet0/0/0/0", "slot": 3, "state": "STOPPED", "type": "physical"}},
             ],
-            "lab_notes": "",
-            "lab_title": "Other Lab",
-            "lab_description": "",
-            "lab_owner": "admin",
-            "state": "STOPPED",
-            "created_timestamp": 1595337039.0416706,
-            "cluster_id": "cluster_1",
-            "version": "0.0.3",
+            "lab": {
+                "notes": "",
+                "title": "Other Lab",
+                "description": "",
+                "owner": "admin",
+                "state": "STOPPED",
+                "created_timestamp": 1595337039.0416706,
+                "cluster_id": "cluster_1",
+                "version": "0.0.3",
+            },
         }
         return response
 
@@ -874,13 +878,15 @@ class MockCMLServer(object):
                     "data": {"label": "GigabitEthernet0/0/0/0", "slot": 3, "state": "STARTED", "type": "physical"},
                 },
             ],
-            "lab_notes": "",
-            "lab_title": "Mock Test 2.3",
-            "lab_description": "",
-            "lab_owner": "admin",
-            "state": "STARTED",
-            "created_timestamp": 1597805276.8213837,
-            "cluster_id": "cluster_1",
-            "version": "0.0.3",
+            "lab": {
+                "notes": "",
+                "title": "Mock Test 2.3",
+                "description": "",
+                "owner": "admin",
+                "state": "STARTED",
+                "created_timestamp": 1597805276.8213837,
+                "cluster_id": "cluster_1",
+                "version": "0.0.3",
+            },
         }
         return response
