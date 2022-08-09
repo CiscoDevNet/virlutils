@@ -21,6 +21,10 @@ clean-test: ## remove test and coverage artifacts
 	rm -fr .tox/
 	rm -f .coverage
 	rm -fr htmlcov/
+	rm -f 5f0d96.yaml
+	rm -f default_inventory.ini
+	rm -f default_inventory.yaml
+	rm -f default_testbed.yaml
 
 lint: ## check style with flake8
 	flake8
