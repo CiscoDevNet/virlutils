@@ -34,7 +34,7 @@ report: coverage
 	open htmlcov/index.html
 
 test: ## run tests quickly with the default Python
-	python setup.py test
+	python -W ignore::DeprecationWarning setup.py test
 
 release: dist ## package and upload a release
 	@echo "*** Uploading virlutils... ***"
