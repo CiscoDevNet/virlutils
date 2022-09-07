@@ -68,4 +68,4 @@ class CMLUseTest(BaseCMLTest):
             runner = CliRunner()
             result = runner.invoke(virl, ["use", "--id", "123456"])
             self.assertEqual(1, result.exit_code)
-            self.assertIn("Unable to find lab in the cache or on the server", result.output)
+            self.assertIn("Unable to find unique lab in the cache or on the server", result.output)
