@@ -135,6 +135,7 @@ class CMLTestWipe(BaseCMLTest):
         with requests_mock.Mocker() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
+            m.get(self.get_api_path("labs/{}/nodes/n2/check_if_converged".format(self.get_test_id())), json=True)
             m.put(self.get_api_path("labs/{}/nodes/n2/wipe_disks".format(self.get_test_id())), json=True)
             m.get(self.get_api_path("labs/{}/nodes/n2/check_if_converged".format(self.get_test_id())), json=True)
             virl = self.get_virl()
@@ -148,6 +149,7 @@ class CMLTestWipe(BaseCMLTest):
         with requests_mock.Mocker() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
+            m.get(self.get_api_path("labs/{}/nodes/n1/check_if_converged".format(self.get_test_id())), json=True)
             m.put(self.get_api_path("labs/{}/nodes/n1/state/stop".format(self.get_test_id())), json=self.stop_node)
             m.put(self.get_api_path("labs/{}/nodes/n1/wipe_disks".format(self.get_test_id())), json=True)
             virl = self.get_virl()
@@ -160,6 +162,7 @@ class CMLTestWipe(BaseCMLTest):
         with requests_mock.Mocker() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
+            m.get(self.get_api_path("labs/{}/nodes/n2/check_if_converged".format(self.get_test_id())), json=True)
             m.put(self.get_api_path("labs/{}/nodes/n2/wipe_disks".format(self.get_test_id())), json=True)
             m.get(self.get_api_path("labs/{}/nodes/n2/check_if_converged".format(self.get_test_id())), json=True)
             virl = self.get_virl()

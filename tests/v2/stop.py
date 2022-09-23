@@ -7,6 +7,7 @@ import os
 class CMLStopTests(BaseCMLTest):
     def test_cml_stop(self):
         with requests_mock.Mocker() as m:
+            m.get(self.get_api_path("labs/{}/nodes/n1/check_if_converged".format(self.get_test_id())), json=True)
             m.put(self.get_api_path("labs/{}/nodes/n1/state/stop".format(self.get_test_id())), json=None)
             self.setup_mocks(m)
             virl = self.get_virl()

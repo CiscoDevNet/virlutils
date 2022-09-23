@@ -21,6 +21,10 @@ clean-test: ## remove test and coverage artifacts
 	rm -fr .tox/
 	rm -f .coverage
 	rm -fr htmlcov/
+	rm -f 5f0d96.yaml
+	rm -f default_inventory.ini
+	rm -f default_inventory.yaml
+	rm -f default_testbed.yaml
 
 lint: ## check style with flake8
 	flake8
@@ -34,7 +38,7 @@ report: coverage
 	open htmlcov/index.html
 
 test: ## run tests quickly with the default Python
-	python setup.py test
+	python -W ignore::DeprecationWarning setup.py test
 
 release: dist ## package and upload a release
 	@echo "*** Uploading virlutils... ***"

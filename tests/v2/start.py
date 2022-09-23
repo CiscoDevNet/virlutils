@@ -8,6 +8,7 @@ class CMLStartTests(BaseCMLTest):
     def test_cml_start(self):
         with requests_mock.Mocker() as m:
             # Mock the request to return what we expect from the API.
+            m.get(self.get_api_path("labs/{}/nodes/n2/check_if_converged".format(self.get_test_id())), json=True)
             m.put(self.get_api_path("labs/{}/nodes/n2/state/start".format(self.get_test_id())), json=None)
             m.get(self.get_api_path("labs/{}/nodes/n2/check_if_converged".format(self.get_test_id())), json=True)
             self.setup_mocks(m)
