@@ -236,7 +236,7 @@ defined in `virl.helpers` ([code](https://github.com/CiscoDevNet/virlutils/blob/
 that are useful to interact with the CML server.  Search for "CML helper functions" as this begins the set of
 functions specific to CML 2+.
 
-For any command or generator plugin, your frst couple of lines in the `run()` or `generate()` method will likely be:
+For any command or generator plugin, your first couple of lines in the `run()` or `generate()` method will likely be:
 
 ```python
 server = VIRLServer()
