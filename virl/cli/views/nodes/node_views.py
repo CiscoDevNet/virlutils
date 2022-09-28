@@ -2,10 +2,14 @@ import tabulate
 import click
 
 
-def node_list_table(nodes):
+def node_list_table(nodes, computes):
     click.secho("Here is a list of nodes in this lab")
     table = list()
-    headers = ["ID", "Label", "Type", "State", "Wiped?", "L3 Address(es)"]
+    headers = ["ID", "Label", "Type"]
+    if len(computes.keys()) > 0:
+        headers.append("Compute Node")
+
+    headers += ["State", "Wiped?", "L3 Address(es)"]
     skip_types = []
     for node in nodes:
         tr = list()
@@ -15,6 +19,10 @@ def node_list_table(nodes):
         tr.append(node.id)
         tr.append(node.label)
         tr.append(node.node_definition)
+        if len(computes.keys()) > 0 and hasattr(node, "compute_id") and node.compute_id in computes:
+            tr.append(computes[node.compute_id]["hostname"])
+        elif len(computes.keys()) > 0:
+            tr.append("Unknown")
 
         color = "red"
         if node.is_booted():

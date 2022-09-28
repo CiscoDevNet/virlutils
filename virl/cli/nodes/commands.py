@@ -17,11 +17,20 @@ def nodes():
     if current_lab:
         lab = safe_join_existing_lab(current_lab, client)
         if lab:
+            computes = {}
+            try:
+                response = client.session.get(client._base_url + "system_health")
+                response.raise_for_status()
+                system_health = response.json()
+                computes = system_health["computes"]
+            except Exception:
+                pass
+
             try:
                 pl = ViewerPlugin(viewer="node")
-                pl.visualize(nodes=lab.nodes())
+                pl.visualize(nodes=lab.nodes(), computes=computes)
             except NoPluginError:
-                node_list_table(lab.nodes())
+                node_list_table(lab.nodes(), computes)
         else:
             click.secho("Lab {} is not running".format(current_lab), fg="red")
             exit(1)
