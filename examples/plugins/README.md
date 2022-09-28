@@ -155,9 +155,11 @@ a CachedLab instance.
 #### _node_ Viewer
 
 The _node_ viewer renders the output of `cml nodes` (i.e., the list of nodes for a given lab).  Your viewer will be passed
-a `nodes` key in the `kwargs` dictionary.
+`nodes` and `computes` keys in the `kwargs` dictionary.
 
 The value of `nodes` is a list containing elements of type `virl2_client.models.node.Node` ([documentation](https://developer.cisco.com/docs/virl2-client/)).
+
+The value of `computes` is a dict representing available compute nodes.  See below under the cluster info plugin for the structure of this dict.
 
 #### _console_ Viewer
 
