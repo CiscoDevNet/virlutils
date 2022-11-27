@@ -1,4 +1,5 @@
-from . import BaseCMLTest
+import unittest
+from . import BaseCMLTest, CLIENT_VERSION
 from .mocks.github import MockGitHub  # noqa
 from click.testing import CliRunner
 
@@ -8,6 +9,7 @@ except ImportError:
     from mock import patch  # noqa
 
 
+@unittest.skipIf(CLIENT_VERSION < CLIENT_VERSION.__class__("2.4.0"), "supported since 2.4.0")
 class TestCMLCluster(BaseCMLTest):
     def setup_mocks(self, m):
         super().setup_mocks(m)

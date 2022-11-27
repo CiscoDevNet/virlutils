@@ -42,10 +42,12 @@ def debug_on(*exceptions):
     return decorator
 
 
+CLIENT_VERSION = ClientLibrary.VERSION
+
+
 class BaseCMLTest(unittest.TestCase):
     def get_context(self):
-        version = ClientLibrary.VERSION.__class__
-        if ClientLibrary.VERSION >= version("2.5.0"):
+        if CLIENT_VERSION >= CLIENT_VERSION.__class__("2.5.0"):
             self.setup_func = self.uni_respx
             return respx.mock(assert_all_called=False)
         else:
