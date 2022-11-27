@@ -19,10 +19,7 @@ def nodes():
         if lab:
             computes = {}
             try:
-                response = client.session.get(client._base_url + "system_health")
-                response.raise_for_status()
-                system_health = response.json()
-                computes = system_health["computes"]
+                computes = client.get_system_health()["computes"]
             except Exception:
                 pass
 

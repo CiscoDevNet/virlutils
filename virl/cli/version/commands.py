@@ -13,9 +13,7 @@ def version():
     client = get_cml_client(server)
     server_version = "Unknown"
     try:
-        response = client.session.get(client._base_url + "system_information")
-        response.raise_for_status()
-        server_version = response.json()["version"]
+        server_version = client.system_info()["version"]
     except Exception:
         pass
     virlutils_version = __version__
