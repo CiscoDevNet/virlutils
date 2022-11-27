@@ -25,6 +25,8 @@ clean-test: ## remove test and coverage artifacts
 	rm -f default_inventory.ini
 	rm -f default_inventory.yaml
 	rm -f default_testbed.yaml
+	rm -f .virl/cached_cml_labs/*
+	rm -f .virl/current_cml_lab
 
 lint: ## check style with flake8
 	flake8
