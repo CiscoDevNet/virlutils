@@ -1,14 +1,13 @@
 from . import BaseCMLTest
 from click.testing import CliRunner
-import requests_mock
 import os
 
 
 class CMLStopTests(BaseCMLTest):
     def test_cml_stop(self):
-        with requests_mock.Mocker() as m:
-            m.get(self.get_api_path("labs/{}/nodes/n1/check_if_converged".format(self.get_test_id())), json=True)
-            m.put(self.get_api_path("labs/{}/nodes/n1/state/stop".format(self.get_test_id())), json=None)
+        with self.get_context() as m:
+            self.setup_func("get", m, self.get_api_path("labs/{}/nodes/n1/check_if_converged".format(self.get_test_id())), json=True)
+            self.setup_func("put", m, self.get_api_path("labs/{}/nodes/n1/state/stop".format(self.get_test_id())), json=None)
             self.setup_mocks(m)
             virl = self.get_virl()
             runner = CliRunner()
@@ -17,7 +16,7 @@ class CMLStopTests(BaseCMLTest):
             self.assertNotIn("Node rtr-1 is already stopped", result.output)
 
     def test_cml_stop_already_stopped(self):
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
             virl = self.get_virl()
@@ -27,7 +26,7 @@ class CMLStopTests(BaseCMLTest):
             self.assertIn("Node rtr-2 is already stopped", result.output)
 
     def test_cml_stop_bogus_node(self):
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
             virl = self.get_virl()
@@ -47,7 +46,7 @@ class CMLStopTests(BaseCMLTest):
             fd.write("lab: bogus\n")
 
         os.symlink("{}/cached_cml_labs/123456".format(src_dir), "{}/current_cml_lab".format(src_dir))
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
             virl = self.get_virl()
@@ -64,7 +63,7 @@ class CMLStopTests(BaseCMLTest):
         except OSError:
             pass
 
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
             virl = self.get_virl()

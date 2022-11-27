@@ -1,6 +1,5 @@
 from . import BaseCMLTest
 from click.testing import CliRunner
-import requests_mock
 import os
 
 try:
@@ -15,32 +14,32 @@ class CMLTestRm(BaseCMLTest):
     def setup_mocks(self, m):
         super().setup_mocks(m)
         self.__m = m
-        m.delete(self.get_api_path("labs/{}".format(self.get_alt_id())), json="DELETED")
+        self.setup_func("delete", m, self.get_api_path("labs/{}".format(self.get_alt_id())), json="DELETED")
 
-    def wipe_lab(self, req, ctx):
-        self.__m.get(self.get_api_path("labs/{}/state".format(self.get_alt_id())), json="DEFINED_ON_CORE")
-        self.__m.get(self.get_api_path("labs/{}/check_if_converged".format(self.get_alt_id())), json=True)
+    def wipe_lab(self, req, ctx=None):
+        self.setup_func("get", self.__m, self.get_api_path("labs/{}/state".format(self.get_alt_id())), json="DEFINED_ON_CORE")
+        self.setup_func("get", self.__m, self.get_api_path("labs/{}/check_if_converged".format(self.get_alt_id())), json=True)
         return "WIPED"
 
     @patch("virl.cli.rm.commands.input", autospec=False, return_value="y")
     def test_cml_rm(self, input_mock):
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
-            m.get(self.get_api_path("labs/{}/state".format(self.get_alt_id())), json="DEFINED_ON_CORE")
+            self.setup_func("get", m, self.get_api_path("labs/{}/state".format(self.get_alt_id())), json="DEFINED_ON_CORE")
             virl = self.get_virl()
             runner = CliRunner()
-            runner.invoke(virl, ["use", "--id", self.get_alt_id()])
+            result = runner.invoke(virl, ["use", "--id", self.get_alt_id()])
             result = runner.invoke(virl, ["rm"])
             self.assertEqual(0, result.exit_code)
             self.assertNotIn("Not removing lab", result.output)
 
     @patch("virl.cli.rm.commands.input", autospec=False, return_value="y")
     def test_cml_rm_force(self, input_mock):
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
-            m.put(self.get_api_path("labs/{}/wipe".format(self.get_alt_id())), json=self.wipe_lab)
+            self.setup_func("put", m, self.get_api_path("labs/{}/wipe".format(self.get_alt_id())), json=self.wipe_lab)
             virl = self.get_virl()
             runner = CliRunner()
             runner.invoke(virl, ["use", "--id", self.get_alt_id()])
@@ -49,10 +48,10 @@ class CMLTestRm(BaseCMLTest):
 
     @patch("virl.cli.rm.commands.input", autospec=False, return_value="y")
     def test_cml_rm_no_confirm(self, input_mock):
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
-            m.get(self.get_api_path("labs/{}/state".format(self.get_alt_id())), json="DEFINED_ON_CORE")
+            self.setup_func("get", m, self.get_api_path("labs/{}/state".format(self.get_alt_id())), json="DEFINED_ON_CORE")
             virl = self.get_virl()
             runner = CliRunner()
             runner.invoke(virl, ["use", "--id", self.get_alt_id()])
@@ -62,10 +61,10 @@ class CMLTestRm(BaseCMLTest):
 
     @patch("virl.cli.rm.commands.input", autospec=False, return_value="y")
     def test_cml_rm_from_cache(self, input_mock):
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
-            m.get(self.get_api_path("labs/{}/state".format(self.get_alt_id())), json="DEFINED_ON_CORE")
+            self.setup_func("get", m, self.get_api_path("labs/{}/state".format(self.get_alt_id())), json="DEFINED_ON_CORE")
             virl = self.get_virl()
             runner = CliRunner()
             runner.invoke(virl, ["use", "--id", self.get_alt_id()])
@@ -75,10 +74,10 @@ class CMLTestRm(BaseCMLTest):
 
     @patch("virl.cli.rm.commands.input", autospec=False, return_value="n")
     def test_cml_rm_denied(self, input_mock):
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
-            m.get(self.get_api_path("labs/{}/state".format(self.get_alt_id())), json="DEFINED_ON_CORE")
+            self.setup_func("get", m, self.get_api_path("labs/{}/state".format(self.get_alt_id())), json="DEFINED_ON_CORE")
             virl = self.get_virl()
             runner = CliRunner()
             runner.invoke(virl, ["use", "--id", self.get_alt_id()])
@@ -87,7 +86,7 @@ class CMLTestRm(BaseCMLTest):
             self.assertIn("Not removing lab", result.output)
 
     def test_cml_rm_not_wiped(self):
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
             virl = self.get_virl()
@@ -103,7 +102,7 @@ class CMLTestRm(BaseCMLTest):
         except OSError:
             pass
 
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
             virl = self.get_virl()
@@ -124,7 +123,7 @@ class CMLTestRm(BaseCMLTest):
 
         os.symlink("{}/cached_cml_labs/123456".format(src_dir), "{}/current_cml_lab".format(src_dir))
 
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
             virl = self.get_virl()

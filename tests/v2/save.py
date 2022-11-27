@@ -1,12 +1,11 @@
 from . import BaseCMLTest
 from click.testing import CliRunner
-import requests_mock
 import os
 
 
 class CMLSaveTests(BaseCMLTest):
     def test_cml_save(self):
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
             virl = self.get_virl()
@@ -17,7 +16,7 @@ class CMLSaveTests(BaseCMLTest):
             self.assertIn("Writing topology.yaml", result.output)
 
     def test_cml_save_no_extract(self):
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
             virl = self.get_virl()
@@ -28,7 +27,7 @@ class CMLSaveTests(BaseCMLTest):
             self.assertIn("Writing topology.yaml", result.output)
 
     def test_cml_save_filename(self):
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
             virl = self.get_virl()
@@ -44,7 +43,7 @@ class CMLSaveTests(BaseCMLTest):
         except OSError:
             pass
 
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
             virl = self.get_virl()
@@ -65,7 +64,7 @@ class CMLSaveTests(BaseCMLTest):
 
         os.symlink("{}/cached_cml_labs/123456".format(src_dir), "{}/current_cml_lab".format(src_dir))
 
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
             virl = self.get_virl()

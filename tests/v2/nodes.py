@@ -1,12 +1,11 @@
 from . import BaseCMLTest
 from click.testing import CliRunner
-import requests_mock
 import os
 
 
 class CMLNodesTest(BaseCMLTest):
     @staticmethod
-    def get_l3_addresses(req, ctx):
+    def get_l3_addresses(req, ctx=None):
         response = {
             "n0": {"name": "Lab Net", "interfaces": {}},
             "n1": {
@@ -22,10 +21,10 @@ class CMLNodesTest(BaseCMLTest):
         return response
 
     def test_cml_nodes(self):
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
-            m.get(self.get_api_path("labs/{}/layer3_addresses".format(self.get_test_id())), json=CMLNodesTest.get_l3_addresses)
+            self.setup_func("get", m, self.get_api_path("labs/{}/layer3_addresses".format(self.get_test_id())), json=CMLNodesTest.get_l3_addresses)
             virl = self.get_virl()
             runner = CliRunner()
             result = runner.invoke(virl, ["nodes"])
@@ -37,7 +36,7 @@ class CMLNodesTest(BaseCMLTest):
         except OSError:
             pass
 
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
             virl = self.get_virl()
@@ -58,7 +57,7 @@ class CMLNodesTest(BaseCMLTest):
 
         os.symlink("{}/cached_cml_labs/123456".format(src_dir), "{}/current_cml_lab".format(src_dir))
 
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
             virl = self.get_virl()

@@ -1,7 +1,6 @@
 from . import BaseCMLTest
 from virl.api.plugin import _test_enable_plugins
 from click.testing import CliRunner
-import requests_mock
 import os
 
 try:
@@ -29,7 +28,7 @@ class CMLBadPluginTest(BaseCMLTest):
     def test_cmd_plugin_bad(self, secho_mock):
         self.localSetUp("plugins_bad_cmd")
         virl = self.get_virl()
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             runner = CliRunner()
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
@@ -44,7 +43,7 @@ class CMLBadPluginTest(BaseCMLTest):
     def test_gen_plugin_bad(self, secho_mock):
         self.localSetUp("plugins_bad_gen")
         virl = self.get_virl()
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             runner = CliRunner()
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
@@ -59,7 +58,7 @@ class CMLBadPluginTest(BaseCMLTest):
     def test_view_plugin_bad(self, secho_mock):
         self.localSetUp("plugins_bad_viewer")
         virl = self.get_virl()
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             runner = CliRunner()
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)

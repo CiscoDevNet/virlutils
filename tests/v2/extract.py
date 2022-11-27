@@ -1,12 +1,11 @@
 from . import BaseCMLTest
 from click.testing import CliRunner
-import requests_mock
 import os
 
 
 class CMLExtractTests(BaseCMLTest):
     def test_cml_extract(self):
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
             virl = self.get_virl()
@@ -20,7 +19,7 @@ class CMLExtractTests(BaseCMLTest):
         except OSError:
             pass
 
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
             virl = self.get_virl()
@@ -41,7 +40,7 @@ class CMLExtractTests(BaseCMLTest):
 
         os.symlink("{}/cached_cml_labs/123456".format(src_dir), "{}/current_cml_lab".format(src_dir))
 
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
             virl = self.get_virl()

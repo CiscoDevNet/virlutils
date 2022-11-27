@@ -1,7 +1,6 @@
 from . import BaseCMLTest
 from .mocks.github import MockGitHub  # noqa
 from click.testing import CliRunner
-import requests_mock
 
 try:
     from unittest.mock import patch
@@ -12,10 +11,10 @@ except ImportError:
 class TestCMLCluster(BaseCMLTest):
     def setup_mocks(self, m):
         super().setup_mocks(m)
-        m.get(self.get_api_path("system_health"), json=TestCMLCluster.get_system_health)
+        self.setup_func("get", m, self.get_api_path("system_health"), json=TestCMLCluster.get_system_health)
 
     @staticmethod
-    def get_system_health(req, ctx):
+    def get_system_health(req, ctx=None):
         response = {
             "valid": True,
             "computes": {
@@ -35,7 +34,7 @@ class TestCMLCluster(BaseCMLTest):
         return response
 
     def test_cml_cluster_info(self):
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
             virl = self.get_virl()
