@@ -6,8 +6,8 @@ import os
 class CMLStopTests(BaseCMLTest):
     def test_cml_stop(self):
         with self.get_context() as m:
-            self.setup_func("get", m, self.get_api_path("labs/{}/nodes/n1/check_if_converged".format(self.get_test_id())), json=True)
-            self.setup_func("put", m, self.get_api_path("labs/{}/nodes/n1/state/stop".format(self.get_test_id())), json=None)
+            self.setup_func("get", m, "labs/{}/nodes/n1/check_if_converged".format(self.get_test_id()), json=True)
+            self.setup_func("put", m, "labs/{}/nodes/n1/state/stop".format(self.get_test_id()), json=None)
             self.setup_mocks(m)
             virl = self.get_virl()
             runner = CliRunner()

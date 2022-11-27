@@ -24,7 +24,7 @@ class CMLNodesTest(BaseCMLTest):
         with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
-            self.setup_func("get", m, self.get_api_path("labs/{}/layer3_addresses".format(self.get_test_id())), json=CMLNodesTest.get_l3_addresses)
+            self.setup_func("get", m, "labs/{}/layer3_addresses".format(self.get_test_id()), json=CMLNodesTest.get_l3_addresses)
             virl = self.get_virl()
             runner = CliRunner()
             result = runner.invoke(virl, ["nodes"])

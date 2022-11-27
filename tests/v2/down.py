@@ -6,8 +6,8 @@ import os
 class CMLTestDown(BaseCMLTest):
     def setup_mocks(self, m):
         super().setup_mocks(m)
-        self.setup_func("put", m, self.get_api_path("labs/{}/stop".format(self.get_test_id())), json="STOPPED")
-        self.setup_func("get", m, self.get_api_path("labs/{}/check_if_converged".format(self.get_test_id())), json=True)
+        self.setup_func("put", m, "labs/{}/stop".format(self.get_test_id()), json="STOPPED")
+        self.setup_func("get", m, "labs/{}/check_if_converged".format(self.get_test_id()), json=True)
 
     def test_cml_down(self):
         with self.get_context() as m:

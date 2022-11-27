@@ -11,7 +11,7 @@ except ImportError:
 class TestCMLCluster(BaseCMLTest):
     def setup_mocks(self, m):
         super().setup_mocks(m)
-        self.setup_func("get", m, self.get_api_path("system_health"), json=TestCMLCluster.get_system_health)
+        self.setup_func("get", m, "system_health", json=TestCMLCluster.get_system_health)
 
     @staticmethod
     def get_system_health(req, ctx=None):

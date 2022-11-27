@@ -15,13 +15,15 @@ class TestCMLUp(BaseCMLTest):
 
     def setup_mocks(self, m):
         super().setup_mocks(m)
-        self.setup_func("post", m, self.get_api_path("import?title=Fake%20Lab"), json={"id": self.get_up_id()})
-        self.setup_func("get", m, self.get_api_path("labs/{}/topology?exclude_configurations=False".format(self.get_up_id())), json=TestCMLUp.get_fake_topology)
-        self.setup_func("get", m, self.get_api_path("labs/{}/state".format(self.get_up_id())), json="STOPPED")
-        self.setup_func("put", m, self.get_api_path("labs/{}/start".format(self.get_up_id())), json="STARTED")
-        self.setup_func("put", m, self.get_api_path("labs/{}/start".format(self.get_alt_id())), json="STARTED")
-        self.setup_func("get", m, self.get_api_path("labs/{}/download".format(self.get_up_id())), text=MockGitHub.get_topology)
-        self.setup_func("get", m, self.get_api_path("labs/{}/lab_element_state".format(self.get_up_id())), json=TestCMLUp.get_fake_element_state)
+        self.setup_func("post", m, "import?title=Fake%20Lab", json={"id": self.get_up_id()})
+        self.setup_func(
+            "get", m, "labs/{}/topology?exclude_configurations=False".format(self.get_up_id()), json=TestCMLUp.get_fake_topology
+        )
+        self.setup_func("get", m, "labs/{}/state".format(self.get_up_id()), json="STOPPED")
+        self.setup_func("put", m, "labs/{}/start".format(self.get_up_id()), json="STARTED")
+        self.setup_func("put", m, "labs/{}/start".format(self.get_alt_id()), json="STARTED")
+        self.setup_func("get", m, "labs/{}/download".format(self.get_up_id()), text=MockGitHub.get_topology)
+        self.setup_func("get", m, "labs/{}/lab_element_state".format(self.get_up_id()), json=TestCMLUp.get_fake_element_state)
 
     @staticmethod
     def get_fake_element_state(req, ctx=None):
@@ -244,8 +246,7 @@ class TestCMLUp(BaseCMLTest):
 
         with self.get_context() as m:
             self.setup_mocks(m)
-            topo_url = "https://raw.githubusercontent.com/"
-            topo_url += "foo/bar/master/topology.yaml"
+            topo_url = "https://raw.githubusercontent.com/foo/bar/master/topology.yaml"
             self.setup_func("get", m, topo_url, json=MockGitHub.get_topology)
             virl = self.get_virl()
             runner = CliRunner()

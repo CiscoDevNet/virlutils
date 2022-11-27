@@ -17,23 +17,25 @@ class CMLTestWipe(BaseCMLTest):
         self.__m = m
 
     def stop_lab(self, req=None, ctx=None):
-        self.setup_func("get", self.__m, self.get_api_path("labs/{}/state".format(self.get_test_id())), json="DEFINED_ON_CORE")
+        self.setup_func("get", self.__m, "labs/{}/state".format(self.get_test_id()), json="DEFINED_ON_CORE")
         return "STOPPED"
 
     def wipe_lab(self, req=None, ctx=None):
-        self.setup_func("get", self.__m, self.get_api_path("labs/{}/check_if_converged".format(self.get_test_id())), json=True)
+        self.setup_func("get", self.__m, "labs/{}/check_if_converged".format(self.get_test_id()), json=True)
         return "WIPED"
 
     def stop_node(self, req=None, ctx=None):
-        self.setup_func("get", self.__m, self.get_api_path("labs/{}/lab_element_state".format(self.get_test_id())), json=MockCMLServer.get_lab_element_state_down)
+        self.setup_func(
+            "get", self.__m, "labs/{}/lab_element_state".format(self.get_test_id()), json=MockCMLServer.get_lab_element_state_down
+        )
 
     @patch("virl.cli.wipe.lab.commands.input", autospec=False, return_value="y")
     def test_cml_wipe_lab(self, input_mock):
         with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
-            self.setup_func("get", m, self.get_api_path("labs/{}/state".format(self.get_test_id())), json="DEFINED_ON_CORE")
-            self.setup_func("put", m, self.get_api_path("labs/{}/wipe".format(self.get_test_id())), json=self.wipe_lab)
+            self.setup_func("get", m, "labs/{}/state".format(self.get_test_id()), json="DEFINED_ON_CORE")
+            self.setup_func("put", m, "labs/{}/wipe".format(self.get_test_id()), json=self.wipe_lab)
             virl = self.get_virl()
             runner = CliRunner()
             result = runner.invoke(virl, ["wipe", "lab"])
@@ -45,8 +47,8 @@ class CMLTestWipe(BaseCMLTest):
         with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
-            self.setup_func("put", m, self.get_api_path("labs/{}/wipe".format(self.get_test_id())), json=self.wipe_lab)
-            self.setup_func("put", m, self.get_api_path("labs/{}/stop".format(self.get_test_id())), json=self.stop_lab)
+            self.setup_func("put", m, "labs/{}/wipe".format(self.get_test_id()), json=self.wipe_lab)
+            self.setup_func("put", m, "labs/{}/stop".format(self.get_test_id()), json=self.stop_lab)
             virl = self.get_virl()
             runner = CliRunner()
             result = runner.invoke(virl, ["wipe", "lab", "--force"])
@@ -57,8 +59,8 @@ class CMLTestWipe(BaseCMLTest):
         with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
-            self.setup_func("get", m, self.get_api_path("labs/{}/state".format(self.get_test_id())), json="DEFINED_ON_CORE")
-            self.setup_func("put", m, self.get_api_path("labs/{}/wipe".format(self.get_test_id())), json=self.wipe_lab)
+            self.setup_func("get", m, "labs/{}/state".format(self.get_test_id()), json="DEFINED_ON_CORE")
+            self.setup_func("put", m, "labs/{}/wipe".format(self.get_test_id()), json=self.wipe_lab)
             virl = self.get_virl()
             runner = CliRunner()
             result = runner.invoke(virl, ["wipe", "lab", "--no-confirm"])
@@ -70,8 +72,8 @@ class CMLTestWipe(BaseCMLTest):
         with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
-            self.setup_func("get", m, self.get_api_path("labs/{}/state".format(self.get_test_id())), json="DEFINED_ON_CORE")
-            self.setup_func("put", m, self.get_api_path("labs/{}/wipe".format(self.get_test_id())), json=self.wipe_lab)
+            self.setup_func("get", m, "labs/{}/state".format(self.get_test_id()), json="DEFINED_ON_CORE")
+            self.setup_func("put", m, "labs/{}/wipe".format(self.get_test_id()), json=self.wipe_lab)
             virl = self.get_virl()
             runner = CliRunner()
             result = runner.invoke(virl, ["wipe", "lab"])
@@ -82,7 +84,7 @@ class CMLTestWipe(BaseCMLTest):
         with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
-            self.setup_func("put", m, self.get_api_path("labs/{}/wipe".format(self.get_test_id())), json=self.wipe_lab)
+            self.setup_func("put", m, "labs/{}/wipe".format(self.get_test_id()), json=self.wipe_lab)
             virl = self.get_virl()
             runner = CliRunner()
             result = runner.invoke(virl, ["wipe", "lab"])
@@ -132,9 +134,9 @@ class CMLTestWipe(BaseCMLTest):
         with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
-            self.setup_func("get", m, self.get_api_path("labs/{}/nodes/n2/check_if_converged".format(self.get_test_id())), json=True)
-            self.setup_func("put", m, self.get_api_path("labs/{}/nodes/n2/wipe_disks".format(self.get_test_id())), json=True)
-            self.setup_func("get", m, self.get_api_path("labs/{}/nodes/n2/check_if_converged".format(self.get_test_id())), json=True)
+            self.setup_func("get", m, "labs/{}/nodes/n2/check_if_converged".format(self.get_test_id()), json=True)
+            self.setup_func("put", m, "labs/{}/nodes/n2/wipe_disks".format(self.get_test_id()), json=True)
+            self.setup_func("get", m, "labs/{}/nodes/n2/check_if_converged".format(self.get_test_id()), json=True)
             virl = self.get_virl()
             runner = CliRunner()
             result = runner.invoke(virl, ["wipe", "node", "rtr-2"])
@@ -146,9 +148,9 @@ class CMLTestWipe(BaseCMLTest):
         with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
-            self.setup_func("get", m, self.get_api_path("labs/{}/nodes/n1/check_if_converged".format(self.get_test_id())), json=True)
-            self.setup_func("put", m, self.get_api_path("labs/{}/nodes/n1/state/stop".format(self.get_test_id())), json=self.stop_node)
-            self.setup_func("put", m, self.get_api_path("labs/{}/nodes/n1/wipe_disks".format(self.get_test_id())), json=True)
+            self.setup_func("get", m, "labs/{}/nodes/n1/check_if_converged".format(self.get_test_id()), json=True)
+            self.setup_func("put", m, "labs/{}/nodes/n1/state/stop".format(self.get_test_id()), json=self.stop_node)
+            self.setup_func("put", m, "labs/{}/nodes/n1/wipe_disks".format(self.get_test_id()), json=True)
             virl = self.get_virl()
             runner = CliRunner()
             result = runner.invoke(virl, ["wipe", "node", "rtr-1", "--force"], catch_exceptions=False)
@@ -159,9 +161,9 @@ class CMLTestWipe(BaseCMLTest):
         with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
-            self.setup_func("get", m, self.get_api_path("labs/{}/nodes/n2/check_if_converged".format(self.get_test_id())), json=True)
-            self.setup_func("put", m, self.get_api_path("labs/{}/nodes/n2/wipe_disks".format(self.get_test_id())), json=True)
-            self.setup_func("get", m, self.get_api_path("labs/{}/nodes/n2/check_if_converged".format(self.get_test_id())), json=True)
+            self.setup_func("get", m, "labs/{}/nodes/n2/check_if_converged".format(self.get_test_id()), json=True)
+            self.setup_func("put", m, "labs/{}/nodes/n2/wipe_disks".format(self.get_test_id()), json=True)
+            self.setup_func("get", m, "labs/{}/nodes/n2/check_if_converged".format(self.get_test_id()), json=True)
             virl = self.get_virl()
             runner = CliRunner()
             result = runner.invoke(virl, ["wipe", "node", "rtr-2", "--no-confirm"])

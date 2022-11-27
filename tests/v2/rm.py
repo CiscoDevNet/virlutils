@@ -14,11 +14,11 @@ class CMLTestRm(BaseCMLTest):
     def setup_mocks(self, m):
         super().setup_mocks(m)
         self.__m = m
-        self.setup_func("delete", m, self.get_api_path("labs/{}".format(self.get_alt_id())), json="DELETED")
+        self.setup_func("delete", m, "labs/{}".format(self.get_alt_id()), json="DELETED")
 
     def wipe_lab(self, req, ctx=None):
-        self.setup_func("get", self.__m, self.get_api_path("labs/{}/state".format(self.get_alt_id())), json="DEFINED_ON_CORE")
-        self.setup_func("get", self.__m, self.get_api_path("labs/{}/check_if_converged".format(self.get_alt_id())), json=True)
+        self.setup_func("get", self.__m, "labs/{}/state".format(self.get_alt_id()), json="DEFINED_ON_CORE")
+        self.setup_func("get", self.__m, "labs/{}/check_if_converged".format(self.get_alt_id()), json=True)
         return "WIPED"
 
     @patch("virl.cli.rm.commands.input", autospec=False, return_value="y")
@@ -26,7 +26,7 @@ class CMLTestRm(BaseCMLTest):
         with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
-            self.setup_func("get", m, self.get_api_path("labs/{}/state".format(self.get_alt_id())), json="DEFINED_ON_CORE")
+            self.setup_func("get", m, "labs/{}/state".format(self.get_alt_id()), json="DEFINED_ON_CORE")
             virl = self.get_virl()
             runner = CliRunner()
             result = runner.invoke(virl, ["use", "--id", self.get_alt_id()])
@@ -39,7 +39,7 @@ class CMLTestRm(BaseCMLTest):
         with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
-            self.setup_func("put", m, self.get_api_path("labs/{}/wipe".format(self.get_alt_id())), json=self.wipe_lab)
+            self.setup_func("put", m, "labs/{}/wipe".format(self.get_alt_id()), json=self.wipe_lab)
             virl = self.get_virl()
             runner = CliRunner()
             runner.invoke(virl, ["use", "--id", self.get_alt_id()])
@@ -51,7 +51,7 @@ class CMLTestRm(BaseCMLTest):
         with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
-            self.setup_func("get", m, self.get_api_path("labs/{}/state".format(self.get_alt_id())), json="DEFINED_ON_CORE")
+            self.setup_func("get", m, "labs/{}/state".format(self.get_alt_id()), json="DEFINED_ON_CORE")
             virl = self.get_virl()
             runner = CliRunner()
             runner.invoke(virl, ["use", "--id", self.get_alt_id()])
@@ -64,7 +64,7 @@ class CMLTestRm(BaseCMLTest):
         with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
-            self.setup_func("get", m, self.get_api_path("labs/{}/state".format(self.get_alt_id())), json="DEFINED_ON_CORE")
+            self.setup_func("get", m, "labs/{}/state".format(self.get_alt_id()), json="DEFINED_ON_CORE")
             virl = self.get_virl()
             runner = CliRunner()
             runner.invoke(virl, ["use", "--id", self.get_alt_id()])
@@ -77,7 +77,7 @@ class CMLTestRm(BaseCMLTest):
         with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
-            self.setup_func("get", m, self.get_api_path("labs/{}/state".format(self.get_alt_id())), json="DEFINED_ON_CORE")
+            self.setup_func("get", m, "labs/{}/state".format(self.get_alt_id()), json="DEFINED_ON_CORE")
             virl = self.get_virl()
             runner = CliRunner()
             runner.invoke(virl, ["use", "--id", self.get_alt_id()])

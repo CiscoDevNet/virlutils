@@ -47,7 +47,7 @@ class BaseCMLTest(unittest.TestCase):
         version = ClientLibrary.VERSION.__class__
         if ClientLibrary.VERSION >= version("2.5.0"):
             self.setup_func = self.uni_respx
-            return respx.mock(base_url="https://localhost/api/v0/", assert_all_called=False)
+            return respx.mock(assert_all_called=False)
         else:
             self.setup_func = self.uni_request
             return requests_mock.Mocker()
@@ -80,8 +80,7 @@ class BaseCMLTest(unittest.TestCase):
         return virl
 
     def get_api_path(self, path):
-        return path
-        # return "https://localhost/api/v0/{}".format(path)
+        return "https://localhost/api/v0/{}".format(path)
 
     def get_test_id(self):
         return "5f0d96"
@@ -103,52 +102,53 @@ class BaseCMLTest(unittest.TestCase):
             kwargs["content"] = kwargs.pop("body")
 
         side_effect = None
-        for t, v in kwargs.copy().items():
+        for k, v in kwargs.copy().items():
             if callable(v):
-                side_effect = kwargs.pop(t)
+                side_effect = kwargs.pop(k)
 
         def side_effect_mod(req):
-            return Response(200, json=side_effect(req))
+            if side_effect is not None:
+                return Response(200, **{k: side_effect(req)})
 
         return kwargs, side_effect_mod if side_effect is not None else None
 
-    @staticmethod
-    def parse_path(path):
-        return path.replace("False", "false").replace("True", "true")
-
     def uni_respx(self, method, m, path, **kwargs):
         kwargs, side_effect = self.prep_respx(**kwargs)
-        m.request(method.upper(), self.parse_path(path)).mock(return_value=Response(200, **kwargs), side_effect=side_effect)
+        # respx uses lowercase bool
+        path = path.replace("False", "false").replace("True", "true")
+        path = self.get_api_path(path)
+        m.request(method.upper(), path).mock(return_value=Response(200, **kwargs), side_effect=side_effect)
 
     def uni_request(self, method, m, path, **kwargs):
-        m.request(method.upper(), "https://localhost/api/v0/{}".format(path), **kwargs)
+        path = self.get_api_path(path)
+        m.request(method.upper(), path, **kwargs)
 
     def setup_mocks(self, m):
         json_dict = {
-            self.get_api_path("labs"): MockCMLServer.get_labs,
-            self.get_api_path("populate_lab_tiles"): MockCMLServer.get_lab_tiles,
-            self.get_api_path("labs/{}/topology?exclude_configurations=False".format(self.get_test_id())): MockCMLServer.get_topology,
-            self.get_api_path("labs/{}/topology?exclude_configurations=False".format(self.get_alt_id())): MockCMLServer.get_alt_topology,
-            self.get_api_path("labs/{}/topology?exclude_configurations=False".format(self.get_cml23_id())): MockCMLServer.get_topology_23,
-            self.get_api_path("labs/{}/topology?exclude_configurations=True".format(self.get_test_id())): MockCMLServer.get_topology,
-            self.get_api_path("labs/{}/topology?exclude_configurations=True".format(self.get_alt_id())): MockCMLServer.get_alt_topology,
-            self.get_api_path("labs/{}/topology?exclude_configurations=True".format(self.get_cml23_id())): MockCMLServer.get_topology_23,
-            self.get_api_path("labs/{}/lab_element_state".format(self.get_test_id())): MockCMLServer.get_lab_element_state,
-            self.get_api_path("labs/{}/lab_element_state".format(self.get_cml23_id())): MockCMLServer.get_lab_element_state_23,
-            self.get_api_path("system_information"): MockCMLServer.get_sys_info,
-            self.get_api_path("labs/{}/state".format(self.get_test_id())): "STARTED",
-            self.get_api_path("labs/{}/state".format(self.get_cml23_id())): "STARTED",
-            self.get_api_path("labs/{}/state".format(self.get_alt_id())): "STOPPED",
-            self.get_api_path("labs/{}/check_if_converged".format(self.get_test_id())): True,
-            self.get_api_path("labs/{}/check_if_converged".format(self.get_cml23_id())): True,
-            self.get_api_path("labs/{}/nodes/n1/check_if_converged".format(self.get_test_id())): True
+            "labs": MockCMLServer.get_labs,
+            "populate_lab_tiles": MockCMLServer.get_lab_tiles,
+            "labs/{}/topology?exclude_configurations=False".format(self.get_test_id()): MockCMLServer.get_topology,
+            "labs/{}/topology?exclude_configurations=False".format(self.get_alt_id()): MockCMLServer.get_alt_topology,
+            "labs/{}/topology?exclude_configurations=False".format(self.get_cml23_id()): MockCMLServer.get_topology_23,
+            "labs/{}/topology?exclude_configurations=True".format(self.get_test_id()): MockCMLServer.get_topology,
+            "labs/{}/topology?exclude_configurations=True".format(self.get_alt_id()): MockCMLServer.get_alt_topology,
+            "labs/{}/topology?exclude_configurations=True".format(self.get_cml23_id()): MockCMLServer.get_topology_23,
+            "labs/{}/lab_element_state".format(self.get_test_id()): MockCMLServer.get_lab_element_state,
+            "labs/{}/lab_element_state".format(self.get_cml23_id()): MockCMLServer.get_lab_element_state_23,
+            "system_information": MockCMLServer.get_sys_info,
+            "labs/{}/state".format(self.get_test_id()): "STARTED",
+            "labs/{}/state".format(self.get_cml23_id()): "STARTED",
+            "labs/{}/state".format(self.get_alt_id()): "STOPPED",
+            "labs/{}/check_if_converged".format(self.get_test_id()): True,
+            "labs/{}/check_if_converged".format(self.get_cml23_id()): True,
+            "labs/{}/nodes/n1/check_if_converged".format(self.get_test_id()): True
         }
 
         text_dict = {
-            self.get_api_path("labs/{}/download".format(self.get_test_id())): MockCMLServer.download_lab,
-            self.get_api_path("labs/{}/download".format(self.get_cml23_id())): MockCMLServer.download_lab_23,
-            self.get_api_path("labs/{}/download".format(self.get_alt_id())): MockCMLServer.download_alt_lab,
-            self.get_api_path("authok"): MockCMLServer.auth_ok,
+            "labs/{}/download".format(self.get_test_id()): MockCMLServer.download_lab,
+            "labs/{}/download".format(self.get_cml23_id()): MockCMLServer.download_lab_23,
+            "labs/{}/download".format(self.get_alt_id()): MockCMLServer.download_alt_lab,
+            "authok": MockCMLServer.auth_ok,
         }
 
         if isinstance(m, requests_mock.Mocker):
@@ -162,7 +162,7 @@ class BaseCMLTest(unittest.TestCase):
         for path, value in text_dict.items():
             self.setup_func("get", m, path, text=value)
 
-        self.setup_func("post", m, self.get_api_path("authenticate"), text=MockCMLServer.authenticate)
+        self.setup_func("post", m, "authenticate", text=MockCMLServer.authenticate)
 
     def add_debug_mock(self, m):
         m.register_uri(requests_mock.ANY, requests_mock.ANY, text=MockCMLServer.print_req)
