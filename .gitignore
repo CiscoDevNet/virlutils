@@ -2,6 +2,7 @@
 *.code-workspace 
 scratch*
 .vscode/
+.idea
 
 # virl stuff 
 .virl/
@@ -56,6 +57,9 @@ nosetests.xml
 coverage.xml
 *.cover
 .hypothesis/
+5f0d96.yaml
+default_inventory.*
+default_testbed.yaml
 
 # Translations
 *.mo
