@@ -40,7 +40,7 @@ respx
 six
 tabulate
 urllib3
-virl2-client>=2.2.1
+virl2-client>=2.2.1,!=2.4.0
 wcwidth
 wheel
 zipp
