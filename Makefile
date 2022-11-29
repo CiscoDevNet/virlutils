@@ -32,7 +32,7 @@ lint: ## check style with flake8
 	flake8
 
 coverage:
-	coverage run --source=virl setup.py test
+	PYTHONWARNINGS="ignore::DeprecationWarning" coverage run --source=virl setup.py test
 
 report: coverage
 	coverage html
