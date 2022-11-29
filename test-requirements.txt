@@ -14,6 +14,7 @@ enum34
 flake8
 funcsigs
 gunicorn
+httpx
 idna
 importlib-metadata
 itsdangerous
@@ -35,9 +36,11 @@ python-dateutil
 requests-mock
 requests
 requests_toolbelt
+respx
 six
 tabulate
 urllib3
 virl2-client>=2.2.1
 wcwidth
+wheel
 zipp
