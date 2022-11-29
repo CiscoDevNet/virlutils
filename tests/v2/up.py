@@ -1,7 +1,6 @@
 from . import BaseCMLTest
 from .mocks.github import MockGitHub  # noqa
 from click.testing import CliRunner
-import requests_mock
 import os
 
 try:
@@ -16,16 +15,18 @@ class TestCMLUp(BaseCMLTest):
 
     def setup_mocks(self, m):
         super().setup_mocks(m)
-        m.post(self.get_api_path("import?title=Fake%20Lab"), json={"id": self.get_up_id()})
-        m.get(self.get_api_path("labs/{}/topology?exclude_configurations=False".format(self.get_up_id())), json=TestCMLUp.get_fake_topology)
-        m.get(self.get_api_path("labs/{}/state".format(self.get_up_id())), json="STOPPED")
-        m.put(self.get_api_path("labs/{}/start".format(self.get_up_id())), json="STARTED")
-        m.put(self.get_api_path("labs/{}/start".format(self.get_alt_id())), json="STARTED")
-        m.get(self.get_api_path("labs/{}/download".format(self.get_up_id())), text=MockGitHub.get_topology)
-        m.get(self.get_api_path("labs/{}/lab_element_state".format(self.get_up_id())), json=TestCMLUp.get_fake_element_state)
+        self.setup_func("post", m, "import?title=Fake%20Lab", json={"id": self.get_up_id()})
+        self.setup_func(
+            "get", m, "labs/{}/topology?exclude_configurations=False".format(self.get_up_id()), json=TestCMLUp.get_fake_topology
+        )
+        self.setup_func("get", m, "labs/{}/state".format(self.get_up_id()), json="STOPPED")
+        self.setup_func("put", m, "labs/{}/start".format(self.get_up_id()), json="STARTED")
+        self.setup_func("put", m, "labs/{}/start".format(self.get_alt_id()), json="STARTED")
+        self.setup_func("get", m, "labs/{}/download".format(self.get_up_id()), text=MockGitHub.get_topology)
+        self.setup_func("get", m, "labs/{}/lab_element_state".format(self.get_up_id()), json=TestCMLUp.get_fake_element_state)
 
     @staticmethod
-    def get_fake_element_state(req, ctx):
+    def get_fake_element_state(req, ctx=None):
         response = {
             "nodes": {"n0": "BOOTED", "n1": "BOOTED"},
             "links": {"l0": "STARTED"},
@@ -34,7 +35,7 @@ class TestCMLUp(BaseCMLTest):
         return response
 
     @staticmethod
-    def get_fake_topology(req, ctx):
+    def get_fake_topology(req, ctx=None):
         response = {
             "nodes": [
                 {
@@ -85,16 +86,14 @@ class TestCMLUp(BaseCMLTest):
                 {"id": "i4", "node": "n0", "data": {"label": "Ethernet2/3", "slot": 3, "state": "STOPPED", "type": "physical"}},
                 {"id": "i5", "node": "n1", "data": {"label": "port", "slot": 0, "state": "STOPPED", "type": "physical"}},
             ],
-            "lab": {
-                "notes": "",
-                "title": "Fake Lab",
-                "description": "",
-                "owner": "admin",
-                "state": "STOPPED",
-                "created_timestamp": 1589294717.9075089,
-                "cluster_id": "cluster_1",
-                "version": "0.0.3",
-            }
+            "lab_notes": "",
+            "lab_title": "Fake Lab",
+            "lab_description": "",
+            "lab_owner": "admin",
+            "state": "STOPPED",
+            "created_timestamp": 1589294717.9075089,
+            "cluster_id": "cluster_1",
+            "version": "0.0.3",
         }
         return response
 
@@ -109,7 +108,7 @@ class TestCMLUp(BaseCMLTest):
             pass
 
     def test_cml_up(self):
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
             virl = self.get_virl()
@@ -121,7 +120,7 @@ class TestCMLUp(BaseCMLTest):
             self.assertIn("Starting lab", result.output)
 
     def test_cml_up_by_name(self):
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
             virl = self.get_virl()
@@ -132,7 +131,7 @@ class TestCMLUp(BaseCMLTest):
             self.assertTrue(os.path.isfile(os.readlink(".virl/current_cml_lab")))
 
     def test_cml_up_by_id(self):
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
             virl = self.get_virl()
@@ -148,7 +147,7 @@ class TestCMLUp(BaseCMLTest):
         except OSError:
             pass
 
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
             virl = self.get_virl()
@@ -158,7 +157,7 @@ class TestCMLUp(BaseCMLTest):
             self.assertIn("does not appear to be a YAML-formatted CML topology file", result.output)
 
     def test_cml_up_provision(self):
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
             virl = self.get_virl()
@@ -168,7 +167,7 @@ class TestCMLUp(BaseCMLTest):
             self.assertIn("Waiting for all nodes to be online", result.output)
 
     def test_cml_up_no_start(self):
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
             virl = self.get_virl()
@@ -179,7 +178,7 @@ class TestCMLUp(BaseCMLTest):
 
     def test_cml_up_after_use(self):
         super().setUp()
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
             virl = self.get_virl()
@@ -191,7 +190,7 @@ class TestCMLUp(BaseCMLTest):
             )
 
     def test_cml_up_running_lab(self):
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
             virl = self.get_virl()
@@ -207,7 +206,7 @@ class TestCMLUp(BaseCMLTest):
         except OSError:
             pass
 
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
             virl = self.get_virl()
@@ -222,7 +221,7 @@ class TestCMLUp(BaseCMLTest):
             fd.write("lab: bogus\n")
 
         os.symlink("{}/cached_cml_labs/123456".format(src_dir), "{}/current_cml_lab".format(src_dir))
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
             virl = self.get_virl()
@@ -243,11 +242,10 @@ class TestCMLUp(BaseCMLTest):
         except OSError:
             pass
 
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             self.setup_mocks(m)
-            topo_url = "https://raw.githubusercontent.com/"
-            topo_url += "foo/bar/master/topology.yaml"
-            m.get(topo_url, json=MockGitHub.get_topology)
+            topo_url = "https://raw.githubusercontent.com/foo/bar/master/topology.yaml"
+            self.setup_func("get", m, topo_url, json=MockGitHub.get_topology)
             virl = self.get_virl()
             runner = CliRunner()
             runner.invoke(virl, ["up", "foo/bar"])

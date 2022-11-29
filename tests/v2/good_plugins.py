@@ -1,7 +1,6 @@
 from . import BaseCMLTest
 from virl.api.plugin import _test_enable_plugins
 from click.testing import CliRunner
-import requests_mock
 import os
 
 
@@ -19,7 +18,7 @@ class CMLGoodPluginTest(BaseCMLTest):
 
     def test_cmd_plugin_output(self):
         virl = self.get_virl()
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             runner = CliRunner()
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
@@ -29,7 +28,7 @@ class CMLGoodPluginTest(BaseCMLTest):
 
     def test_cmd_plugin(self):
         virl = self.get_virl()
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
             runner = CliRunner()
@@ -38,7 +37,7 @@ class CMLGoodPluginTest(BaseCMLTest):
 
     def test_gen_plugin_output(self):
         virl = self.get_virl()
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             runner = CliRunner()
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
@@ -48,7 +47,7 @@ class CMLGoodPluginTest(BaseCMLTest):
 
     def test_gen_plugin(self):
         virl = self.get_virl()
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
             runner = CliRunner()
@@ -57,7 +56,7 @@ class CMLGoodPluginTest(BaseCMLTest):
 
     def test_view_plugin(self):
         virl = self.get_virl()
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
             runner = CliRunner()

@@ -1,12 +1,11 @@
 from . import BaseCMLTest
 from click.testing import CliRunner
-import requests_mock
 
 
 class CMLIdTest(BaseCMLTest):
     def test_cml_id(self):
         virl = self.get_virl()
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
             runner = CliRunner()

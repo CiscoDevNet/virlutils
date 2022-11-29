@@ -16,11 +16,9 @@ def info():
 
     system_health = None
     try:
-        response = client.session.get(client._base_url + "system_health")
-        response.raise_for_status()
-        system_health = response.json()
+        system_health = client.get_system_health()
     except Exception as e:
-        click.secho(f"Failed to get system health data: {e} ({response.text})", fg="red")
+        click.secho(f"Failed to get system health data: {e}", fg="red")
         exit(1)
 
     try:

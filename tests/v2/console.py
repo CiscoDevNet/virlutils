@@ -1,6 +1,5 @@
 from . import BaseCMLTest
 from click.testing import CliRunner
-import requests_mock
 
 try:
     from unittest.mock import patch
@@ -10,7 +9,7 @@ except ImportError:
 
 class CMLConsoleTests(BaseCMLTest):
     def test_cml_console_display(self):
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
             virl = self.get_virl()
@@ -20,7 +19,7 @@ class CMLConsoleTests(BaseCMLTest):
 
     @patch("virl.cli.console.commands.call", autospec=False)
     def test_cml_console_connect(self, call_mock):
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
             virl = self.get_virl()
@@ -30,7 +29,7 @@ class CMLConsoleTests(BaseCMLTest):
 
     @patch("virl.cli.console.commands.call", autospec=False)
     def test_cml_console_connect_23(self, call_mock):
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
             virl = self.get_virl()

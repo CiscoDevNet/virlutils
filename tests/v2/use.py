@@ -1,7 +1,6 @@
 import os
 from . import BaseCMLTest
 from click.testing import CliRunner
-import requests_mock
 
 try:
     from unittest.mock import patch
@@ -12,7 +11,7 @@ except ImportError:
 class CMLUseTest(BaseCMLTest):
     @patch("virl.cli.use.commands.call", autospec=False, return_value=0)
     def test_cml_use(self, call_mock):
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             self.setup_mocks(m)
             virl = self.get_virl()
             runner = CliRunner()
@@ -20,7 +19,7 @@ class CMLUseTest(BaseCMLTest):
             call_mock.assert_called_once_with(["virl", "use", "--help"])
 
     def test_cml_use_with_lab(self):
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             self.setup_mocks(m)
             virl = self.get_virl()
             runner = CliRunner()
@@ -28,7 +27,7 @@ class CMLUseTest(BaseCMLTest):
             self.assertEqual(0, result.exit_code)
 
     def test_cml_use_with_id(self):
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             self.setup_mocks(m)
             virl = self.get_virl()
             runner = CliRunner()
@@ -36,7 +35,7 @@ class CMLUseTest(BaseCMLTest):
             self.assertEqual(0, result.exit_code)
 
     def test_cml_use_with_lab_name(self):
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             self.setup_mocks(m)
             virl = self.get_virl()
             runner = CliRunner()
@@ -54,7 +53,7 @@ class CMLUseTest(BaseCMLTest):
         except OSError:
             pass
 
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             self.setup_mocks(m)
             virl = self.get_virl()
             runner = CliRunner()
@@ -62,7 +61,7 @@ class CMLUseTest(BaseCMLTest):
             self.assertEqual(0, result.exit_code)
 
     def test_cml_use_with_bogus_id(self):
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             self.setup_mocks(m)
             virl = self.get_virl()
             runner = CliRunner()

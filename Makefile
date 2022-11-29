@@ -25,12 +25,14 @@ clean-test: ## remove test and coverage artifacts
 	rm -f default_inventory.ini
 	rm -f default_inventory.yaml
 	rm -f default_testbed.yaml
+	rm -f .virl/cached_cml_labs/*
+	rm -f .virl/current_cml_lab
 
 lint: ## check style with flake8
 	flake8
 
 coverage:
-	coverage run --source=virl setup.py test
+	PYTHONWARNINGS="ignore::DeprecationWarning" coverage run --source=virl setup.py test
 
 report: coverage
 	coverage html

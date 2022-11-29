@@ -1,6 +1,6 @@
 class MockCMLServer(object):
     @staticmethod
-    def get_lab_tiles(req, ctx):
+    def get_lab_tiles(req, ctx=None):
         response = {
             "lab_tiles": {
                 "5eaea5": {
@@ -225,12 +225,12 @@ class MockCMLServer(object):
         return response
 
     @staticmethod
-    def get_labs(req, ctx):
+    def get_labs(req, ctx=None):
         response = ["5eaea5", "5f0d96", "88119b68-9d08-40c4-90f5-6dc533fd0254"]
         return response
 
     @staticmethod
-    def download_lab(req, ctx):
+    def download_lab(req, ctx=None):
         response = """
         lab:
           description: ''
@@ -351,7 +351,7 @@ class MockCMLServer(object):
         return response
 
     @staticmethod
-    def download_lab_23(req, ctx):
+    def download_lab_23(req, ctx=None):
         response = """
         lab:
           description: ''
@@ -472,7 +472,7 @@ class MockCMLServer(object):
         return response
 
     @staticmethod
-    def download_alt_lab(req, ctx):
+    def download_alt_lab(req, ctx=None):
         response = """
         lab:
           description: ''
@@ -564,38 +564,38 @@ class MockCMLServer(object):
         return response
 
     @staticmethod
-    def get_sys_info(req, ctx):
+    def get_sys_info(req, ctx=None):
         response = {"version": "2.4.0+build.3", "ready": True}
         return response
 
     @staticmethod
-    def auth_ok(req, ctx):
+    def auth_ok(req, ctx=None):
         return "OK"
 
     @staticmethod
-    def authenticate(req, ctx):
+    def authenticate(req, ctx=None):
         return "1234567890"
 
     @staticmethod
-    def print_req(req, ctx):
+    def print_req(req, ctx=None):
         s = "!!!URL: {}, method = {}, params = {}".format(req.url, req.method, req.path)
         print(s)
         return s
 
     @staticmethod
-    def get_lab_element_state(req, ctx):
+    def get_lab_element_state(req, ctx=None):
         return MockCMLServer._get_lab_element_state(req, ctx)
 
     @staticmethod
-    def get_lab_element_state_23(req, ctx):
+    def get_lab_element_state_23(req, ctx=None):
         return MockCMLServer._get_lab_element_state_23(req, ctx)
 
     @staticmethod
-    def get_lab_element_state_down(req, ctx):
+    def get_lab_element_state_down(req, ctx=None):
         return MockCMLServer._get_lab_element_state(req, ctx, "STOPPED")
 
     @staticmethod
-    def _get_lab_element_state(req, ctx, n2_state="BOOTED"):
+    def _get_lab_element_state(req, ctx=None, n2_state="BOOTED"):
         response = {
             "nodes": {"n0": "BOOTED", "n1": n2_state, "n2": "DEFINED_ON_CORE"},
             "links": {"l0": "STARTED"},
@@ -604,7 +604,7 @@ class MockCMLServer(object):
         return response
 
     @staticmethod
-    def _get_lab_element_state_23(req, ctx, n2_state="BOOTED"):
+    def _get_lab_element_state_23(req, ctx=None, n2_state="BOOTED"):
         response = {
             "nodes": {
                 "88119b68-9d08-40c4-90f5-6dc533fd0255": "BOOTED",
@@ -624,7 +624,7 @@ class MockCMLServer(object):
         return response
 
     @staticmethod
-    def get_topology(req, ctx):
+    def get_topology(req, ctx=None):
         response = {
             "nodes": [
                 {
@@ -694,21 +694,19 @@ class MockCMLServer(object):
                 {"id": "i4", "node": "n1", "data": {"label": "donotuse2", "slot": 2, "state": "STARTED", "type": "physical"}},
                 {"id": "i5", "node": "n1", "data": {"label": "GigabitEthernet0/0/0/0", "slot": 3, "state": "STARTED", "type": "physical"}},
             ],
-            "lab": {
-                "notes": "",
-                "title": "Mock Test",
-                "description": "",
-                "owner": "admin",
-                "state": "STARTED",
-                "created_timestamp": 1597805276.8213837,
-                "cluster_id": "cluster_1",
-                "version": "0.0.3",
-            },
+            "lab_notes": "",
+            "lab_title": "Mock Test",
+            "lab_description": "",
+            "lab_owner": "admin",
+            "state": "STARTED",
+            "created_timestamp": 1597805276.8213837,
+            "cluster_id": "cluster_1",
+            "version": "0.0.3",
         }
         return response
 
     @staticmethod
-    def get_alt_topology(req, ctx):
+    def get_alt_topology(req, ctx=None):
         response = {
             "nodes": [
                 {
@@ -763,21 +761,19 @@ class MockCMLServer(object):
                 {"id": "i8", "node": "n1", "data": {"label": "donotuse2", "slot": 2, "state": "STOPPED", "type": "physical"}},
                 {"id": "i9", "node": "n1", "data": {"label": "GigabitEthernet0/0/0/0", "slot": 3, "state": "STOPPED", "type": "physical"}},
             ],
-            "lab": {
-                "notes": "",
-                "title": "Other Lab",
-                "description": "",
-                "owner": "admin",
-                "state": "STOPPED",
-                "created_timestamp": 1595337039.0416706,
-                "cluster_id": "cluster_1",
-                "version": "0.0.3",
-            },
+            "lab_notes": "",
+            "lab_title": "Other Lab",
+            "lab_description": "",
+            "lab_owner": "admin",
+            "state": "STOPPED",
+            "created_timestamp": 1595337039.0416706,
+            "cluster_id": "cluster_1",
+            "version": "0.0.3",
         }
         return response
 
     @staticmethod
-    def get_topology_23(req, ctx):
+    def get_topology_23(req, ctx=None):
         response = {
             "nodes": [
                 {
@@ -878,15 +874,13 @@ class MockCMLServer(object):
                     "data": {"label": "GigabitEthernet0/0/0/0", "slot": 3, "state": "STARTED", "type": "physical"},
                 },
             ],
-            "lab": {
-                "notes": "",
-                "title": "Mock Test 2.3",
-                "description": "",
-                "owner": "admin",
-                "state": "STARTED",
-                "created_timestamp": 1597805276.8213837,
-                "cluster_id": "cluster_1",
-                "version": "0.0.3",
-            },
+            "lab_notes": "",
+            "lab_title": "Mock Test 2.3",
+            "lab_description": "",
+            "lab_owner": "admin",
+            "state": "STARTED",
+            "created_timestamp": 1597805276.8213837,
+            "cluster_id": "cluster_1",
+            "version": "0.0.3",
         }
         return response

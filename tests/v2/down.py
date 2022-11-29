@@ -1,17 +1,16 @@
 from . import BaseCMLTest
 from click.testing import CliRunner
-import requests_mock
 import os
 
 
 class CMLTestDown(BaseCMLTest):
     def setup_mocks(self, m):
         super().setup_mocks(m)
-        m.put(self.get_api_path("labs/{}/stop".format(self.get_test_id())), json="STOPPED")
-        m.get(self.get_api_path("labs/{}/check_if_converged".format(self.get_test_id())), json=True)
+        self.setup_func("put", m, "labs/{}/stop".format(self.get_test_id()), json="STOPPED")
+        self.setup_func("get", m, "labs/{}/check_if_converged".format(self.get_test_id()), json=True)
 
     def test_cml_down(self):
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
             virl = self.get_virl()
@@ -26,7 +25,7 @@ class CMLTestDown(BaseCMLTest):
         except OSError:
             pass
 
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
             virl = self.get_virl()
@@ -41,7 +40,7 @@ class CMLTestDown(BaseCMLTest):
         except OSError:
             pass
 
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
             virl = self.get_virl()

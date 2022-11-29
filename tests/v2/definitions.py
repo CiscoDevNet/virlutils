@@ -1,17 +1,17 @@
 from . import BaseCMLTest
 from click.testing import CliRunner
-import requests_mock
 import textwrap
 import os
 import traceback
 
 
 class CMLDefinitionsTest(BaseCMLTest):
+
     def test_cml_image_definitions_import(self):
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
-            m.post(self.get_api_path("image_definitions/"), json=True)  # virl2_client 2.2.1 uses URI that ends in slashes
+            self.setup_func("post", m, "image_definitions/", json=True)  # virl2_client 2.2.1 uses URI that ends in slashes
             virl = self.get_virl()
             runner = CliRunner()
             result = runner.invoke(
@@ -28,12 +28,12 @@ class CMLDefinitionsTest(BaseCMLTest):
             self.assertEqual(0, result.exit_code, result.stdout)
 
     def test_node_definitions_list(self):
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             with open(os.path.join(os.path.dirname(__file__), "static/response_get_node_defs.json"), "rb") as fh_node_defs:
                 # Mock the request to return what we expect from the API.
                 self.setup_mocks(m)
-                m.get(
-                    self.get_api_path("node_definitions/"), body=fh_node_defs, headers={"content-type": "application/json; charset=utf-8"}
+                self.setup_func(
+                    "get", m, "node_definitions/", body=fh_node_defs, headers={"content-type": "application/json; charset=utf-8"}
                 )
                 virl = self.get_virl()
                 runner = CliRunner()
@@ -46,13 +46,12 @@ class CMLDefinitionsTest(BaseCMLTest):
                     self.assertEquals(output_text, result.output)
 
     def test_node_definitions_list_one(self):
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             with open(os.path.join(os.path.dirname(__file__), "static/response_get_node_defs.json"), "rb") as fh_node_defs:
                 # Mock the request to return what we expect from the API.
                 self.setup_mocks(m)
-                m.get(
-                    self.get_api_path("node_definitions/"), body=fh_node_defs, headers={"content-type": "application/json; charset=utf-8"}
-                )
+                self.setup_func(
+                    "get", m, "node_definitions/", body=fh_node_defs, headers={"content-type": "application/json; charset=utf-8"})
                 virl = self.get_virl()
                 runner = CliRunner()
                 result = runner.invoke(virl, ["definitions", "nodes", "ls", "--node", "nxosv9000"])
@@ -75,12 +74,12 @@ class CMLDefinitionsTest(BaseCMLTest):
         Check that we can still handle data in the legacy format that was
         returned by the API before CML 2.3.
         """
-        with requests_mock.Mocker() as m:
+        with self.get_context() as m:
             with open(os.path.join(os.path.dirname(__file__), "static/response_get_node_defs_cml22.json"), "rb") as fh_node_defs:
                 # Mock the request to return what we expect from the API.
                 self.setup_mocks(m)
-                m.get(
-                    self.get_api_path("node_definitions/"), body=fh_node_defs, headers={"content-type": "application/json; charset=utf-8"}
+                self.setup_func(
+                    "get", m, "node_definitions/", body=fh_node_defs, headers={"content-type": "application/json; charset=utf-8"}
                 )
                 virl = self.get_virl()
                 runner = CliRunner()
