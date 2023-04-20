@@ -84,7 +84,7 @@ def lab_info(lab, server, protocol):
                 entry["prefix"] = "{{ XR_PREFIX }}"
                 entry["ned"] = "{{ XR_NED_ID }}"
                 entry["ns"] = "{{ XR_NAMESPACE }}"
-            elif "csr" in node_type or "ios" in node_type:
+            elif "csr" in node_type or "ios" in node_type or "cat" in node_type:
                 entry["prefix"] = "{{ IOS_PREFIX }}"
                 entry["ned"] = "{{ IOS_NED_ID }}"
                 entry["ns"] = "{{ IOS_NAMESPACE }}"
