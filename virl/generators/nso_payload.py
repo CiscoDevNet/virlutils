@@ -25,20 +25,20 @@ def sim_info(virl_xml, roster=None, interfaces=None, protocol="telnet"):
         entry["ns"] = "unkown"
         # map node types to known NED's
         try:
-            type = device["NodeSubtype"]
-            if "NX" in type:
+            node_type = device["NodeSubtype"]
+            if "NX" in node_type:
                 entry["prefix"] = "{{ NX_PREFIX }}"
                 entry["ned"] = "{{ NX_NED_ID }}"
                 entry["ns"] = "{{ NX_NAMESPACE }}"
-            elif "XR" in type:
+            elif "XR" in node_type:
                 entry["prefix"] = "{{ XR_PREFIX }}"
                 entry["ned"] = "{{ XR_NED_ID }}"
                 entry["ns"] = "{{ XR_NAMESPACE }}"
-            elif "CSR" in type or "IOS" in type:
+            elif "CSR" in node_type or "IOS" in node_type:
                 entry["prefix"] = "{{ IOS_PREFIX }}"
                 entry["ned"] = "{{ IOS_NED_ID }}"
                 entry["ns"] = "{{ IOS_NAMESPACE }}"
-            elif "ASA" in type:
+            elif "ASA" in node_type:
                 entry["prefix"] = "{{ ASA_PREFIX }}"
                 entry["ned"] = "{{ ASA_NED_ID }}"
                 entry["ns"] = "{{ ASA_NAMESPACE }}"
@@ -75,20 +75,20 @@ def lab_info(lab, server, protocol):
 
         # determine device/os type
         try:
-            type = node.node_definition.lower()
-            if "nx" in type:
+            node_type = node.node_definition.lower()
+            if "nx" in node_type:
                 entry["prefix"] = "{{ NX_PREFIX }}"
                 entry["ned"] = "{{ NX_NED_ID }}"
                 entry["ns"] = "{{ NX_NAMESPACE }}"
-            elif "xr" in type:
+            elif "xr" in node_type:
                 entry["prefix"] = "{{ XR_PREFIX }}"
                 entry["ned"] = "{{ XR_NED_ID }}"
                 entry["ns"] = "{{ XR_NAMESPACE }}"
-            elif "csr" in type or "ios" in type:
+            elif "csr" in node_type or "ios" in node_type or "cat" in node_type:
                 entry["prefix"] = "{{ IOS_PREFIX }}"
                 entry["ned"] = "{{ IOS_NED_ID }}"
                 entry["ns"] = "{{ IOS_NAMESPACE }}"
-            elif "asa" in type:
+            elif "asa" in node_type:
                 entry["prefix"] = "{{ ASA_PREFIX }}"
                 entry["ned"] = "{{ ASA_NED_ID }}"
                 entry["ns"] = "{{ ASA_NAMESPACE }}"
