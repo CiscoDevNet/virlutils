@@ -4,9 +4,8 @@ import os
 
 
 class CMLNodesTest(BaseCMLTest):
-    @staticmethod
-    def get_l3_addresses(req, ctx=None):
-        response = {
+    def test_cml_nodes(self):
+        data = {
             "n0": {"name": "Lab Net", "interfaces": {}},
             "n1": {
                 "name": "rtr-1",
@@ -18,13 +17,12 @@ class CMLNodesTest(BaseCMLTest):
                 },
             },
         }
-        return response
-
-    def test_cml_nodes(self):
         with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
-            self.setup_func("get", m, "labs/{}/layer3_addresses".format(self.get_test_id()), json=CMLNodesTest.get_l3_addresses)
+            self.setup_func("get", m, "labs/{}/layer3_addresses".format(self.get_test_id()), json=data)
+            self.setup_func("get", m, "labs/{}/nodes/n0/layer3_addresses".format(self.get_test_id()), json=data["n0"])
+            self.setup_func("get", m, "labs/{}/nodes/n1/layer3_addresses".format(self.get_test_id()), json=data["n1"])
             virl = self.get_virl()
             runner = CliRunner()
             result = runner.invoke(virl, ["nodes"])
