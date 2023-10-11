@@ -38,6 +38,7 @@ requests
 requests_toolbelt
 respx
 six
+setuptools
 tabulate
 urllib3
 virl2-client>=2.2.1,!=2.4.0

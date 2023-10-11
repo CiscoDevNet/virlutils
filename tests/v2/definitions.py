@@ -43,7 +43,7 @@ class CMLDefinitionsTest(BaseCMLTest):
                     raise result.exception
                 with open(os.path.join(os.path.dirname(__file__), "static/node_defs_list_output.txt")) as fh_node_defs:
                     output_text = fh_node_defs.read()
-                    self.assertEquals(output_text, result.output)
+                    self.assertEqual(output_text, result.output)
 
     def test_node_definitions_list_one(self):
         with self.get_context() as m:
@@ -67,7 +67,7 @@ class CMLDefinitionsTest(BaseCMLTest):
                     ╘═══════════╧════════════╧══════════════════════════╧══════════════════════╧════════╧════════╧══════════════════╛
                     """
                 )
-                self.assertEquals(expected, result.output)
+                self.assertEqual(expected, result.output)
 
     def test_node_definitions_list_legacy(self):
         """
@@ -89,4 +89,4 @@ class CMLDefinitionsTest(BaseCMLTest):
                     raise result.exception
                 with open(os.path.join(os.path.dirname(__file__), "static/node_defs_list_output_cml22.txt")) as fh_node_defs:
                     output_text = fh_node_defs.read()
-                    self.assertEquals(output_text, result.output)
+                    self.assertEqual(output_text, result.output)
