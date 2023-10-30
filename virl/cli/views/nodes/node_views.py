@@ -53,15 +53,19 @@ def node_list_table(nodes, computes):
         elif node.is_active():
             color = "yellow"
 
-        tr.append(click.style(node.state, fg=color))
-        tr.append(node.state == "DEFINED_ON_CORE")
+        node_state = node.state
+        tr.append(click.style(node_state, fg=color))
+        tr.append(node_state == "DEFINED_ON_CORE")
         intfs = []
         if booted:
             for i in node.interfaces():
-                if i.discovered_ipv4:
-                    intfs += i.discovered_ipv4
-                if i.discovered_ipv6:
-                    intfs += i.discovered_ipv6
+                disc_ipv4 = i.discovered_ipv4
+                if disc_ipv4:
+                    intfs += disc_ipv4
+
+                disc_ipv6 = i.discovered_ipv6
+                if disc_ipv6:
+                    intfs += disc_ipv6
 
         tr.append(",".join(intfs))
         table.append(tr)
