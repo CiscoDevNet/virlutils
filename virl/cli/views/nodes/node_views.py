@@ -20,8 +20,11 @@ def node_list_table(nodes, computes):
             "sync_l3_addresses_if_outdated",
             "sync_topology_if_outdated",
         ):
-            meth = getattr(node.lab, sync)
-            if meth:
+            try:
+                meth = getattr(node.lab, sync)
+            except AttributeError:
+                pass
+            else:
                 meth()
 
         node.lab.auto_sync = False
