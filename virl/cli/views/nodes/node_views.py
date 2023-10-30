@@ -6,7 +6,7 @@ def node_list_table(nodes, computes):
     click.secho("Here is a list of nodes in this lab")
     table = list()
     headers = ["ID", "Label", "Type"]
-    if len(computes.keys()) > 0:
+    if computes:
         headers.append("Compute Node")
 
     headers += ["State", "Wiped?", "L3 Address(es)"]
@@ -43,7 +43,7 @@ def node_list_table(nodes, computes):
 
         if node_compute_id and node_compute_id in computes:
             tr.append(computes[node_compute_id]["hostname"])
-        elif len(computes.keys()) > 0:
+        elif computes:
             tr.append("Unknown")
 
         color = "red"
