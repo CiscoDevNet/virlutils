@@ -38,6 +38,7 @@ from .license import license  # noqa: F401
 from .rm.commands import rm  # noqa: F401
 from .command.commands import command  # noqa: F401
 from .cluster import cluster  # noqa: F401
+from .tmux.commands import tmux  # noqa: F401
 
 
 class CatchAllExceptions(click.Group):
@@ -186,6 +187,7 @@ else:
     virl.add_command(rm)
     virl.add_command(lid, name="id")
     virl.add_command(command)
+    virl.add_command(tmux)
     cml_vers = __get_cml_ver()
     (major, minor, _) = cml_vers.split(".", 2)
     if int(major) > 2 or (int(major) == 2 and int(minor) >= 4):
