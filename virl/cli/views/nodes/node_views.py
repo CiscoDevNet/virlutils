@@ -12,6 +12,19 @@ def node_list_table(nodes, computes):
     headers += ["State", "Wiped?", "L3 Address(es)"]
     skip_types = []
     for node in nodes:
+        # Skip a full operational sync per node.
+        node.lab.auto_sync = True
+        for sync in (
+            "sync_statistics_if_outdated",
+            "sync_states_if_outdated",
+            "sync_layer3_addresses_if_outdated",
+            "sync_topology_if_outdated",
+        ):
+            meth = getattr(node.lab, sync)
+            meth()
+
+        node.lab.auto_sync = False
+
         tr = list()
         if node.node_definition in skip_types:
             continue
