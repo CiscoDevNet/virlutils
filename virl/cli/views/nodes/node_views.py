@@ -32,8 +32,13 @@ def node_list_table(nodes, computes):
         tr.append(node.id)
         tr.append(node.label)
         tr.append(node.node_definition)
-        if len(computes.keys()) > 0 and hasattr(node, "compute_id") and node.compute_id in computes:
-            tr.append(computes[node.compute_id]["hostname"])
+        try:
+            node_compute_id = node.compute_id
+        except AttributeError:
+            node_compute_id = None
+
+        if node_compute_id and node_compute_id in computes:
+            tr.append(computes[node_compute_id]["hostname"])
         elif len(computes.keys()) > 0:
             tr.append("Unknown")
 
