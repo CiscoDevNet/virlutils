@@ -47,7 +47,8 @@ def node_list_table(nodes, computes):
             tr.append("Unknown")
 
         color = "red"
-        if node.is_booted():
+        booted = node.is_booted()
+        if booted:
             color = "green"
         elif node.is_active():
             color = "yellow"
@@ -55,7 +56,7 @@ def node_list_table(nodes, computes):
         tr.append(click.style(node.state, fg=color))
         tr.append(node.state == "DEFINED_ON_CORE")
         intfs = []
-        if node.is_booted():
+        if booted:
             for i in node.interfaces():
                 if i.discovered_ipv4:
                     intfs += i.discovered_ipv4
