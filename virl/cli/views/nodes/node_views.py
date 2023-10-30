@@ -21,7 +21,8 @@ def node_list_table(nodes, computes):
             "sync_topology_if_outdated",
         ):
             meth = getattr(node.lab, sync)
-            meth()
+            if meth:
+                meth()
 
         node.lab.auto_sync = False
 
