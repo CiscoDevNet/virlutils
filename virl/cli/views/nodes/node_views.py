@@ -15,7 +15,7 @@ def node_list_table(nodes, computes):
         # Skip a full operational sync per node.
         node.lab.auto_sync = True
         for sync in (
-            "sync_statistics_if_outdated",
+            # "sync_statistics_if_outdated",
             "sync_states_if_outdated",
             "sync_l3_addresses_if_outdated",
             "sync_topology_if_outdated",

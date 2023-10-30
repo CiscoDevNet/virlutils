@@ -25,7 +25,7 @@ class CMLNodesTest(BaseCMLTest):
             self.setup_func("get", m, "labs/{}/nodes/n1/layer3_addresses".format(self.get_test_id()), json=data["n1"])
             virl = self.get_virl()
             runner = CliRunner()
-            result = runner.invoke(virl, ["nodes"])
+            result = runner.invoke(virl, ["nodes"], catch_exceptions=False)
             self.assertEqual(0, result.exit_code)
 
     def test_cml_nodes_no_lab(self):
