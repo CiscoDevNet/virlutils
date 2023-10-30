@@ -17,7 +17,7 @@ def node_list_table(nodes, computes):
         for sync in (
             "sync_statistics_if_outdated",
             "sync_states_if_outdated",
-            "sync_layer3_addresses_if_outdated",
+            "sync_l3_addresses_if_outdated",
             "sync_topology_if_outdated",
         ):
             meth = getattr(node.lab, sync)
