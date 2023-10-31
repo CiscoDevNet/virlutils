@@ -17,6 +17,12 @@ def nodes():
     if current_lab:
         lab = safe_join_existing_lab(current_lab, client)
         if lab:
+            # Force an operational sync.
+            try:
+                lab.sync_operational_if_outdated()
+            except Exception:
+                pass
+
             computes = {}
             try:
                 computes = client.get_system_health()["computes"]
