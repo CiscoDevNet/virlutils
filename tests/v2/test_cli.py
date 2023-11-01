@@ -29,6 +29,7 @@ class TestCMLHelp(BaseCMLTest):
             "start",
             "stop",
             "telnet",
+            "tmux",
             "ui",
             "up",
             "use",

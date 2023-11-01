@@ -18,6 +18,7 @@ httpx
 idna
 importlib-metadata
 itsdangerous
+libtmux
 lxml
 mccabe
 mock
