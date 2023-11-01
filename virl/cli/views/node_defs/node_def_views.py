@@ -3,12 +3,10 @@ import tabulate
 
 
 def node_def_list_table(image_list):
-
     headers = ["ID", "Label", "Description", "Max No. Interfaces", "RAM", "CPUs", "Boot Disk Size"]
     table = list()
 
     for f in list(image_list):
-
         tr = list()
         tr.append(str(f["id"]))
         tr.append(str(f["ui"].get("label", "N/A")))

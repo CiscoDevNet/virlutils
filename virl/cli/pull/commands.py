@@ -30,14 +30,3 @@ def pull(repo, **kwargs):
         ret = do_pull(repo, "topology.virl")
         if not ret:
             exit(1)
-
-
-@click.command()
-@click.argument("repo")
-def pull1(repo, **kwargs):
-    """
-    pull topology.virl from repo
-    """
-    ret = do_pull(repo, "topology.virl")
-    if not ret:
-        exit(1)

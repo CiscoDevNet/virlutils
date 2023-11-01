@@ -30,7 +30,7 @@ setup(
     author="Joe Clarke",  # With a big thanks to its original author, Kevin Corbin
     author_email="jclarke@cisco.com",
     url="https://github.com/CiscoDevNet/virlutils",
-    entry_points={"console_scripts": ["virl=virl.cli.main:virl", "cml=virl.cli.main:virl"]},
+    entry_points={"console_scripts": ["cml=virl.cli.main:virl"]},
     packages=find_packages(),
     package_data={"virl": ["templates/**/*.j2", "swagger/templates/*", "swagger/static/*", "examples/plugins/*"]},
     include_package_data=True,

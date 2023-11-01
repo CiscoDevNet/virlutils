@@ -7,27 +7,22 @@ import warnings
 import virl2_client
 import traceback
 from virl.helpers import get_cml_client, get_command
-from .console.commands import console, console1  # noqa: F401
-from .nodes.commands import nodes, nodes1  # noqa: F401
-from .logs.commands import logs1  # noqa: F401
-from .up.commands import up, up1  # noqa: F401
-from .use.commands import use, use1  # noqa: F401
-from .down.commands import down, down1  # noqa: F401
-from .ls.commands import ls, ls1  # noqa: F401
-from .save.commands import save, save1  # noqa: F401
-from .telnet.commands import telnet, telnet1  # noqa: F401
-from .ssh.commands import ssh, ssh1  # noqa: F401
-from .generate import generate, generate1, init_generators  # noqa: F401
-from .start.commands import start, start1  # noqa: F401
-from .stop.commands import stop, stop1  # noqa: F401
-from .pull.commands import pull, pull1  # noqa: F401
+from .console.commands import console  # noqa: F401
+from .nodes.commands import nodes  # noqa: F401
+from .up.commands import up  # noqa: F401
+from .use.commands import use  # noqa: F401
+from .down.commands import down  # noqa: F401
+from .ls.commands import ls  # noqa: F401
+from .save.commands import save  # noqa: F401
+from .telnet.commands import telnet  # noqa: F401
+from .ssh.commands import ssh  # noqa: F401
+from .generate import generate, init_generators  # noqa: F401
+from .start.commands import start  # noqa: F401
+from .stop.commands import stop  # noqa: F401
+from .pull.commands import pull  # noqa: F401
 from .search.commands import search  # noqa: F401
-from .swagger.commands import swagger1  # noqa: F401
-from .uwm.commands import uwm1  # noqa: F401
-from .viz.commands import viz1  # noqa: F401
-from .id.commands import lid, sid  # noqa: F401
-from .version.commands import version, version1  # noqa: F401
-from .flavors import flavors1  # noqa: F401
+from .id.commands import lid  # noqa: F401
+from .version.commands import version  # noqa: F401
 from .definitions import definitions  # noqa: F401
 from .cockpit.commands import cockpit  # noqa: F401
 from .wipe import wipe  # noqa: F401
@@ -169,51 +164,37 @@ def __init_plugins():
 
 __server_ver = __get_server_ver()
 
-if __server_ver == "1":
-    virl.add_command(uwm1, name="uwm")
-    virl.add_command(flavors1, name="flavors")
-    virl.add_command(logs1, name="logs")
-    virl.add_command(swagger1, name="swagger")
-    virl.add_command(viz1, name="viz")
-    virl.add_command(sid, name="id")
-else:
-    virl.add_command(cockpit)
-    virl.add_command(definitions)
-    virl.add_command(wipe)
-    virl.add_command(extract)
-    virl.add_command(clear)
-    virl.add_command(ui)
-    virl.add_command(license)
-    virl.add_command(rm)
-    virl.add_command(lid, name="id")
-    virl.add_command(command)
-    virl.add_command(tmux)
-    cml_vers = __get_cml_ver()
-    (major, minor, _) = cml_vers.split(".", 2)
-    if int(major) > 2 or (int(major) == 2 and int(minor) >= 4):
-        virl.add_command(cluster)
-
+virl.add_command(clear)
+virl.add_command(cockpit)
+virl.add_command(command)
+virl.add_command(console)
+virl.add_command(definitions)
+virl.add_command(down)
+virl.add_command(extract)
+virl.add_command(generate)
+virl.add_command(license)
+virl.add_command(lid, name="id")
+virl.add_command(ls)
+virl.add_command(nodes)
+virl.add_command(pull)
+virl.add_command(rm)
+virl.add_command(save)
 virl.add_command(search)
+virl.add_command(ssh)
+virl.add_command(start)
+virl.add_command(stop)
+virl.add_command(telnet)
+virl.add_command(tmux)
+virl.add_command(ui)
+virl.add_command(up)
+virl.add_command(use)
+virl.add_command(version)
+virl.add_command(wipe)
+cml_vers = __get_cml_ver()
+(major, minor, _) = cml_vers.split(".", 2)
+if int(major) > 2 or (int(major) == 2 and int(minor) >= 4):
+    virl.add_command(cluster)
 
-__sub_commands = [
-    "console",
-    "nodes",
-    "up",
-    "down",
-    "ls",
-    "use",
-    "save",
-    "telnet",
-    "ssh",
-    "generate",
-    "start",
-    "stop",
-    "pull",
-    "version",
-]
-
-for cmd in __sub_commands:
-    virl.add_command(globals()[cmd + __server_ver], name=cmd)
 
 # Load plugins, but only for CML 2+
 if __server_ver != "1":
