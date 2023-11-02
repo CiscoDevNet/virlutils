@@ -1,55 +1,5 @@
-from collections import OrderedDict
-import yaml
 from jinja2 import Environment, PackageLoader
-from lxml import etree
 from virl.helpers import get_node_mgmt_ip
-
-
-def setup_yaml():
-    """https://stackoverflow.com/a/8661021"""
-    represent_dict_order = lambda self, data: self.represent_mapping("tag:yaml.org,2002:map", data.items())  # noqa
-    yaml.add_representer(OrderedDict, represent_dict_order)
-
-
-setup_yaml()
-
-
-def create_group_map(virl_xmlstr):
-    """
-    retrieves ansible group information from `virl_xmlstr`
-    returns a dictionary handy for determining the group that a node belongs to
-
-    NOTE:  `virl_xmlstr` must be received from the VIRL API, not the virl file
-
-    Ansible Groups are controlled by adding an extension to the VIRL XML file
-
-    e.g
-
-    <node name="router1" type="SIMPLE" subtype="CSR1000v">
-        <extensions>
-            <entry key="ansible_group" type="String">mygroup</entry>
-        </extensions>
-     </node>
-
-    """
-    root = etree.fromstring(virl_xmlstr)
-
-    # get all ansible_groups
-    groups = root.xpath("//virl:entry[@key='ansible_group']/text()", namespaces={"virl": "http://www.cisco.com/VIRL"})
-    groups = set(groups)
-    group_map = dict()
-
-    # populate nodes in correct groups
-    for g in groups:
-        # query returns a list strings representing the node names in group
-        q = '//virl:node//virl:entry[text()="{}"]/ancestor::virl:node/@name'
-        query = q.format(g)
-        members = root.xpath(query, namespaces={"virl": "http://www.cisco.com/VIRL"})
-        # add to map so that hostnames can be resolved to groups later
-        for m in members:
-            group_map[m] = g
-
-    return group_map
 
 
 def generate_inventory_dict(lab, server):
