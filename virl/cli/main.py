@@ -162,8 +162,6 @@ def __init_plugins():
     init_generators()
 
 
-__server_ver = __get_server_ver()
-
 virl.add_command(clear)
 virl.add_command(cockpit)
 virl.add_command(command)
@@ -192,13 +190,12 @@ virl.add_command(version)
 virl.add_command(wipe)
 cml_vers = __get_cml_ver()
 (major, minor, _) = cml_vers.split(".", 2)
-if int(major) > 2 or (int(major) == 2 and int(minor) >= 4):
+if int(major) == 2 and int(minor) >= 4:
     virl.add_command(cluster)
 
 
-# Load plugins, but only for CML 2+
-if __server_ver != "1":
-    __init_plugins()
+# Load plugins.
+__init_plugins()
 
 if __name__ == "__main__":
     virl()  # pragma: no cover
