@@ -17,5 +17,5 @@ def version():
     except Exception:
         pass
     virlutils_version = __version__
-    click.secho("virlutils Version: {}".format(virlutils_version))
+    click.secho("cmlutils Version: {}".format(virlutils_version))
     click.secho("CML Controller Version: {}".format(server_version))
