@@ -1,10 +1,6 @@
 import click
 from virl.api import VIRLServer, load_plugins, CommandPlugin, Plugin, check_valid_plugin, NoPluginError
 from virl.helpers import get_default_plugin_dir
-import requests
-from urllib3.exceptions import InsecureRequestWarning
-import warnings
-import virl2_client
 import traceback
 from virl.helpers import get_cml_client, get_command
 from .console.commands import console  # noqa: F401
@@ -74,46 +70,46 @@ def virl(**kwargs):
 virl.debug = False
 
 
-def __get_server_ver():
-    """
-    Taste a VIRL/CML server and try and determine its version.
-    This tries the 2.x flow and assumes 1.x if that flow fails in an
-    unexpected way.  The reason for this is that compatibility with 1.x
-    is stressed, but the code has been factored in a way so that the 1.x
-    code can be removed when the time is right.
+# def __get_server_ver():
+#     """
+#     Taste a VIRL/CML server and try and determine its version.
+#     This tries the 2.x flow and assumes 1.x if that flow fails in an
+#     unexpected way.  The reason for this is that compatibility with 1.x
+#     is stressed, but the code has been factored in a way so that the 1.x
+#     code can be removed when the time is right.
 
-    Returns:
-        string: Either '1' for VIRL/CML 1.x or the empty string for CML 2+
-    """
-    res = ""
-    try:
-        server = VIRLServer()
-        if "CML2_PLUS" not in server.config:
-            # If the user hasn't explicitly said they are on the CML 2+, then
-            # attempt to guess the server version.
+#     Returns:
+#         string: Either '1' for VIRL/CML 1.x or the empty string for CML 2+
+#     """
+#     res = ""
+#     try:
+#         server = VIRLServer()
+#         if "CML2_PLUS" not in server.config:
+#             # If the user hasn't explicitly said they are on the CML 2+, then
+#             # attempt to guess the server version.
 
-            # We don't care about cert validation here.  If this is a CML server,
-            # we'll fail validation later anyway.
-            #
-            # Because of that, pass obviously bogus credentials.  The login will fail
-            # in a predictable way if this is a CML server.
-            requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
-            r = requests.get("https://{}/".format(server.host), verify=False)
-            warnings.simplefilter("default", InsecureRequestWarning)
-            r.raise_for_status()
-            # While one could have a user called virutils-test, the user must have a password.
-            # So if we send an empty password, that will fail with a known error.
-            server.user = "virlutils-test"
-            server.passwd = ""
-            get_cml_client(server, ignore=True)
-    except virl2_client.InitializationError:
-        # The client library will raise this error if it encounters an authorization failure.
-        pass
-    except Exception:
-        # Any other error likely means a VIRL/CML 1.x host.
-        res = "1"
+#             # We don't care about cert validation here.  If this is a CML server,
+#             # we'll fail validation later anyway.
+#             #
+#             # Because of that, pass obviously bogus credentials.  The login will fail
+#             # in a predictable way if this is a CML server.
+#             requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+#             r = requests.get("https://{}/".format(server.host), verify=False)
+#             warnings.simplefilter("default", InsecureRequestWarning)
+#             r.raise_for_status()
+#             # While one could have a user called virutils-test, the user must have a password.
+#             # So if we send an empty password, that will fail with a known error.
+#             server.user = "virlutils-test"
+#             server.passwd = ""
+#             get_cml_client(server, ignore=True)
+#     except virl2_client.InitializationError:
+#         # The client library will raise this error if it encounters an authorization failure.
+#         pass
+#     except Exception:
+#         # Any other error likely means a VIRL/CML 1.x host.
+#         res = "1"
 
-    return res
+#     return res
 
 
 def __get_cml_ver():
