@@ -4,9 +4,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/CiscoDevNet/virlutils/badge.svg?branch=master)](https://coveralls.io/github/CiscoDevNet/virlutils?branch=master)
 [![PyPI version](https://badge.fury.io/py/virlutils.svg)](https://badge.fury.io/py/virlutils)
 
-A collection of utilities for interacting with [Cisco VIRL](https://learningnetworkstore.cisco.com/virlfaq/aboutVirl) 1.x or [Cisco Modeling Labs (CML)](https://developer.cisco.com/modeling-labs) v2.0+.
-
-This document describes the new version of virlutils (aka cmlutils) that works with Cisco Modeling Labs v2.0 and higher.  Documentation for working with VIRL/CML 1.x is available [here](README_virl1.md).
+A collection of utilities for interacting with [Cisco Modeling Labs (CML)](https://developer.cisco.com/modeling-labs) v2.0+.
 
 ## virl up / cml up
 
@@ -168,14 +166,6 @@ using any of the methods mentioned previously
 
     ```sh
     export CML_CONSOLE_COMMAND="myssh {user}@{host} {console}"
-    ```
-
-- `CML2_PLUS` - If set in the config or in the environment then virlutils will assume the server is a CML 2+ server and not try and automatically guess its version.  If omitted, then virutils will attempt to automatically determine the CML/VIRL server version
-
-    Example:
-
-    ```sh
-    export CML2_PLUS="yes"
     ```
 
 - `CML_PLUGIN_PATH` - A delimiter-separated list of directories in which to find cmlutils plugins.  See the [plugin documentation](examples/plugins/README.md) for more details.  By default, the `plugins` directory in the current `.virl` directory will be searched.
