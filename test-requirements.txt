@@ -3,3 +3,4 @@ coveralls
 requests_mock
 respx
 flake8
+setuptools
