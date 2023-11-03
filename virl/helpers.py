@@ -1,8 +1,5 @@
 import click
-import random
-import string
 import os
-import shutil
 import errno
 import platform
 import ctypes
@@ -47,34 +44,6 @@ def safe_open_w(path):
     return open(path, "w")
 
 
-def store_sim_info(name, env="default"):
-    with safe_open_w("./.virl/{}/id".format(env)) as f:
-        f.write(name)
-
-
-def remove_sim_info(env="default"):
-    path = "./.virl/{}".format(env)
-    click.secho("Removing {}".format(path))
-    try:
-        shutil.rmtree(path)
-    except OSError:
-        click.secho("Could not remove {}".format(path))
-
-
-def generate_sim_id():
-    letters = string.ascii_letters
-    digits = string.digits
-    return "".join(random.choice(letters + digits) for _ in range(6))
-
-
-def get_env_sim_name(env):
-    fname = "./.virl/{}/id".format(env)
-    with open(fname, "r") as f:
-        sim_name = f.read()
-
-    return sim_name
-
-
 def find_virl():
     pwd = os.getcwd().split(os.sep)
     root = os.path.abspath(os.sep)
@@ -91,38 +60,6 @@ def find_virl():
             pwd.pop()
         except IndexError:
             return None
-
-
-def check_sim_running(env):
-    """
-    determines if a sim is already running for a given environment
-    """
-    try:
-        virl_root = find_virl()
-        fname = virl_root + "/.virl/{}/id".format(env)
-        with open(fname, "r") as f:
-            sim_name = f.read()
-        if sim_name:
-            return sim_name
-        else:
-            return None
-    except Exception:
-        return None
-
-
-def get_mgmt_lxc_ip(sim_roster):
-    # grab mgmt-lxc info in case we need it later
-    for k, v in sim_roster.items():
-        if k.endswith("mgmt-lxc"):
-            lxc_ip = v.get("externalAddr", None)
-            print("lxc is at {}".format(lxc_ip))
-    return lxc_ip
-
-
-def get_node_from_roster(name, roster):
-    for k, v in roster.items():
-        if k.endswith(name):
-            return v
 
 
 """

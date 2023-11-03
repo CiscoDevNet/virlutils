@@ -5,7 +5,11 @@ from virl.helpers import get_cml_client
 
 @click.command()
 @click.option(
-    "--confirm/--no-confirm", show_default=False, default=True, help="Do not prompt for confirmation (default: prompt)", required=False,
+    "--confirm/--no-confirm",
+    show_default=False,
+    default=True,
+    help="Do not prompt for confirmation (default: prompt)",
+    required=False,
 )
 def deregister(confirm):
     """

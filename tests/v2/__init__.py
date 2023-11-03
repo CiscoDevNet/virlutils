@@ -140,13 +140,14 @@ class BaseCMLTest(unittest.TestCase):
             "labs/{}/state".format(self.get_alt_id()): "STOPPED",
             "labs/{}/check_if_converged".format(self.get_test_id()): True,
             "labs/{}/check_if_converged".format(self.get_cml23_id()): True,
-            "labs/{}/nodes/n1/check_if_converged".format(self.get_test_id()): True
+            "labs/{}/nodes/n1/check_if_converged".format(self.get_test_id()): True,
         }
 
         text_dict = {
             "labs/{}/download".format(self.get_test_id()): MockCMLServer.download_lab,
             "labs/{}/download".format(self.get_cml23_id()): MockCMLServer.download_lab_23,
             "labs/{}/download".format(self.get_alt_id()): MockCMLServer.download_alt_lab,
+            "labs/{}/pyats_testbed".format(self.get_test_id()): MockCMLServer.get_pyats_testbed,
             "authok": MockCMLServer.auth_ok,
         }
 

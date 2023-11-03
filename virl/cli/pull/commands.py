@@ -21,23 +21,10 @@ def do_pull(repo, fname, branch="master", recurse=False):
 
 @click.command()
 @click.argument("repo")
-def pull(repo, **kwargs):
+def pull(repo):
     """
     pull topology.yaml from repo
     """
     ret = do_pull(repo, "topology.yaml")
-    if not ret:
-        ret = do_pull(repo, "topology.virl")
-        if not ret:
-            exit(1)
-
-
-@click.command()
-@click.argument("repo")
-def pull1(repo, **kwargs):
-    """
-    pull topology.virl from repo
-    """
-    ret = do_pull(repo, "topology.virl")
     if not ret:
         exit(1)

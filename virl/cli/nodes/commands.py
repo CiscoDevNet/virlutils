@@ -1,8 +1,7 @@
 import click
 from virl.api import VIRLServer, ViewerPlugin, NoPluginError
-from virl.cli.views import node_list_table1, node_list_table
+from virl.cli.views import node_list_table
 from virl.helpers import get_cml_client, get_current_lab, safe_join_existing_lab
-from virl import helpers
 
 
 @click.command()
@@ -40,19 +39,3 @@ def nodes():
     else:
         click.secho("No current lab selected", fg="red")
         exit(1)
-
-
-@click.command()
-@click.argument("env", default="default")
-def nodes1(env, **kwargs):
-    """
-    get nodes for sim_name
-    """
-    running = helpers.check_sim_running(env)
-    if running:
-        sim_name = running
-        server = VIRLServer()
-        details = server.get_sim_roster(sim_name)
-        node_list_table1(details)
-    else:
-        click.secho("Environment {} is not running".format(env), fg="red")

@@ -19,15 +19,3 @@ def version():
     virlutils_version = __version__
     click.secho("virlutils Version: {}".format(virlutils_version))
     click.secho("CML Controller Version: {}".format(server_version))
-
-
-@click.command()
-def version1():
-    """
-    version information
-    """
-    server = VIRLServer()
-    virlutils_version = __version__
-    server_version = server.get_version().get("virl-version")
-    click.secho("virlutils Version: {}".format(virlutils_version))
-    click.echo("VIRL Core Version: {}".format(server_version))
