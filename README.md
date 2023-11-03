@@ -19,7 +19,6 @@ Options:
 
 Commands:
   clear        clear the current lab ID
-  cluster      display and manage CML cluster details
   cockpit      opens the Cockpit UI
   command      send a command or config to a node (requires pyATS)
   console      console for node
@@ -39,6 +38,7 @@ Commands:
   start        start a node
   stop         stop a node
   telnet       telnet to a node
+  tmux         console to all nodes using tmux
   ui           opens the Workbench for the current lab
   up           start a lab
   use          use lab launched elsewhere
