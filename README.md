@@ -196,14 +196,14 @@ Assume the following directory structure...
 
 ```
 
-This allows three major benefits.  
+This allows three major benefits.
 
 1. you can easily use different credentials/servers for various environments
 2. you can customize your lab .yaml files to include different tags, different node configurations, etc.
 3. you have a badass workflow.
 
 ```sh
-$ cml ls  
+$ cml ls
 Labs on Server
 ╒════════╤════════════════════════════════╤═════════════════════════╤═════════════════╤═════════╤═════════╤══════════════╕
 │ ID     │ Title                          │ Description             │ Status          │   Nodes │   Links │   Interfaces │
@@ -381,6 +381,89 @@ Here is a list of nodes in this lab
 │ n7   │ VLAN 10        │ external_connector │ STOPPED │ False    │                  │
 ╘══════╧════════════════╧════════════════════╧═════════╧══════════╧══════════════════╛
 
+```
+
+### Console to All Nodes with tmux
+
+If you are a `tmux` user you can console to all nodes with the following command:
+
+```sh
+❯ cml tmux --help
+Usage: cml tmux [OPTIONS]
+
+  console to all nodes using tmux
+
+Options:
+  --group [panes|windows]  'panes': group all nodes in one window, 'windows':
+                           one node per window  [default: panes]
+  --help                   Show this message and exit.
+
+❯ cml nodes
+Here is a list of nodes in this lab
+╒══════════════════════════════════════╤════════════════════╤════════════════════╤════════════════╤═════════╤══════════╤══════════════════╕
+│ ID                                   │ Label              │ Type               │ Compute Node   │ State   │ Wiped?   │ L3 Address(es)   │
+╞══════════════════════════════════════╪════════════════════╪════════════════════╪════════════════╪═════════╪══════════╪══════════════════╡
+│ 5fdb38b6-7ff7-4792-b685-5eeaa41d8865 │ c8v-2              │ cat8000v           │ cml-01         │ BOOTED  │ False    │                  │
+├──────────────────────────────────────┼────────────────────┼────────────────────┼────────────────┼─────────┼──────────┼──────────────────┤
+│ 7bdedc4a-a196-4ad0-b1f3-888cf77eee8b │ c8v-1              │ cat8000v           │ cml-01         │ BOOTED  │ False    │                  │
+├──────────────────────────────────────┼────────────────────┼────────────────────┼────────────────┼─────────┼──────────┼──────────────────┤
+│ ab3ee63d-109d-424e-a2c0-7581a61b1d1d │ unmanaged-switch-0 │ unmanaged_switch   │ cml-01         │ BOOTED  │ False    │                  │
+├──────────────────────────────────────┼────────────────────┼────────────────────┼────────────────┼─────────┼──────────┼──────────────────┤
+│ 9a068ec0-0565-44a0-bf16-8e4690108ac9 │ ext-conn-0         │ external_connector │ cml-01         │ BOOTED  │ False    │                  │
+╘══════════════════════════════════════╧════════════════════╧════════════════════╧════════════════╧═════════╧══════════╧══════════════════╛
+```
+
+This will create a new tmux session with title "lab name + first 4 lab id chars" (e.g. `PPK-c93a`).
+By default, the nodes will be grouped into one window (`cml tmux --group panes`),
+
+``` sh
+❯  printf '\033]2;%s\033\\' 'c8v-2'
+❯  ssh -t admin@cml-01 open /PPK/c8v-2/0
+admin@cml-01's password:
+Connecting to console for c8v-2
+Connected to CML terminalserver.
+Escape character is '^]'.
+
+c8v2#
+─────────────────────────────────────────────────────────────────────────
+❯  printf '\033]2;%s\033\\' 'c8v-1'
+❯  ssh -t admin@cml-01 open /PPK/c8v-1/0
+admin@cml-01's password:
+Connecting to console for c8v-1
+Connected to CML terminalserver.
+Escape character is '^]'.
+
+c8v1#
+ PPK-c93a >> 1 > ssh >                                     < 20:20
+```
+> Note: the command `printf '\033]2;%s\033\\' 'c8v-2'` is used to set the pane's title see: [tmux man](https://man7.org/linux/man-pages/man1/tmux.1.html#NAMES_AND_TITLES)
+
+
+if you prefer having one connection per window, use: `cml tmux --group windows`.
+
+``` sh
+❯  ssh -t admin@cml-01 open /PPK/c8v-2/0
+admin@cml-01's password:
+Connecting to console for c8v-2
+Connected to CML terminalserver.
+Escape character is '^]'.
+
+c8v2#
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ PPK-c93a >> 1 > c8v-2 >> 2 > c8v-1 >                      < 20:32
 ```
 
 ### Inventory Generation
