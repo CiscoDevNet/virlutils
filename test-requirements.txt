@@ -10,7 +10,6 @@ click
 coverage
 coveralls
 docopt
-enum34
 flake8
 funcsigs
 gunicorn
