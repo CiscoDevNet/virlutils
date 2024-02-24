@@ -1,3 +1,4 @@
+import logging
 import os
 import unittest
 from click.testing import CliRunner
@@ -10,6 +11,11 @@ import requests_mock
 import respx
 from httpx import Response
 from virl2_client import ClientLibrary
+
+
+# set to warning to hide unwanted HTTP requests
+logger = logging.getLogger("httpx")
+logger.setLevel(logging.WARNING)
 
 
 def setup_cml_environ():

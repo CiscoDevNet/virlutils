@@ -5,3 +5,4 @@ omit =
     */templates/*
     */static/*
     */examples/*
+    tests/*
