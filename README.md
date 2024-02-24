@@ -436,8 +436,8 @@ Escape character is '^]'.
 c8v1#
  PPK-c93a >> 1 > ssh >                                     < 20:20
 ```
-> Note: the command `printf '\033]2;%s\033\\' 'c8v-2'` is used to set the pane's title see: [tmux man](https://man7.org/linux/man-pages/man1/tmux.1.html#NAMES_AND_TITLES)
 
+> Note: the command `printf '\033]2;%s\033\\' 'c8v-2'` is used to set the pane's title see: [tmux man](https://man7.org/linux/man-pages/man1/tmux.1.html#NAMES_AND_TITLES)
 
 if you prefer having one connection per window, use: `cml tmux --group windows`.
 
