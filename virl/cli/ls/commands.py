@@ -1,8 +1,8 @@
 import os
 import click
 from virl.api import VIRLServer, CachedLab, ViewerPlugin, NoPluginError
-from virl.cli.views import sim_list_table, lab_list_table
-from virl.helpers import find_virl, get_cml_client, get_cache_root
+from virl.cli.views import lab_list_table
+from virl.helpers import get_cml_client, get_cache_root
 
 
 @click.command()
@@ -46,29 +46,3 @@ def ls(all, all_users):
         pl.visualize(labs=labs, cached_labs=cached_labs)
     except NoPluginError:
         lab_list_table(labs, cached_labs)
-
-
-@click.command()
-@click.option(
-    "--all/--local",
-    default=False,
-    help=" \
-Display all simulations or only ones from the current project (default)",
-)
-def ls1(all, **kwargs):
-    """
-    lists running simulations in the current project
-    """
-
-    server = VIRLServer()
-
-    sim_dict = server.list_simulations()
-    if not all:
-        # only sims for this project
-        dirpath = find_virl()
-        foldername = os.path.basename(dirpath)
-        for k in list(sim_dict):
-            if not k.startswith(foldername):
-                sim_dict.pop(k)
-
-    sim_list_table(sim_dict)

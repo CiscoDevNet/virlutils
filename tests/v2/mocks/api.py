@@ -884,3 +884,46 @@ class MockCMLServer(object):
             "version": "0.0.3",
         }
         return response
+
+    @staticmethod
+    def get_pyats_testbed(req, ctx=None):
+        response = """
+        testbed:
+        name: lab
+        devices:
+        terminal_server:
+        os: linux
+        type: server
+        credentials:
+            default:
+            username: change_me
+            password: change_me
+        connections:
+            cli:
+            protocol: ssh
+            ip: localhost
+            port: 22
+        internet-rtr01:
+        os: iosxe
+        type: router
+        platform: csr1000v
+        credentials:
+            default:
+            username: cisco
+            password: cisco
+        connections:
+            defaults:
+            class: unicon.unicon
+            a:
+            protocol: telnet
+            proxy: terminal_server
+            command: open /lab/internet-rtr01/0
+        internet-rtr01:
+        interfaces:
+            loopback0:
+            type: loopback
+            gigabitethernet1:
+            link: 37486a17-1d4f-4235-910a-b90fe23d18e7
+            type: ethernet
+        """
+        return response

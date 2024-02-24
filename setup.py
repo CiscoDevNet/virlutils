@@ -26,7 +26,7 @@ def readme():
 setup(
     name=NAME,
     version=VERSION,
-    description="A collection of utilities for interacting with Cisco VIRL/CML",
+    description="A collection of utilities for interacting with Cisco Modeling Labs",
     author="Joe Clarke",  # With a big thanks to its original author, Kevin Corbin
     author_email="jclarke@cisco.com",
     url="https://github.com/CiscoDevNet/virlutils",

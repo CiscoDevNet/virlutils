@@ -2,7 +2,6 @@ import click
 from subprocess import call
 from virl.api import VIRLServer
 from virl.helpers import (
-    store_sim_info,
     get_cml_client,
     safe_join_existing_lab_by_title,
     safe_join_existing_lab,
@@ -65,13 +64,3 @@ def use(lab, id, lab_name):
     else:
         click.secho("Unable to find unique lab in the cache or on the server", fg="red")
         exit(1)
-
-
-@click.command()
-@click.argument("sim")
-def use1(sim):
-    """
-    use virl simulation launched elsewhere
-    """
-    store_sim_info(sim, env="default")  # 'topology-2lkx2'
-    click.secho("Now using VIRL simulation {}".format(sim))

@@ -1,8 +1,6 @@
 import click
 from virl.api import VIRLServer
-from subprocess import call
-from virl import helpers
-from virl.helpers import get_cml_client, safe_join_existing_lab, get_current_lab, get_command
+from virl.helpers import get_cml_client, safe_join_existing_lab, get_current_lab
 from virl2_client.exceptions import NodeNotFound
 
 
@@ -36,32 +34,3 @@ def start(node):
     else:
         click.secho("No current lab set", fg="red")
         exit(1)
-
-
-@click.command()
-@click.argument("node", nargs=-1)
-def start1(node):
-    """
-    start a node
-    """
-    if len(node) == 2:
-        # we received env and node name
-        env = node[0]
-        running = helpers.check_sim_running(env)
-        node = node[1]
-    elif len(node) == 1:
-        # assume default env
-        env = "default"
-        running = helpers.check_sim_running(env)
-        node = node[0]
-    else:
-        exit(call([get_command(), "start", "--help"]))
-
-    if running:
-        sim_name = running
-        server = VIRLServer()
-        resp = server.start_node(sim_name, node)
-        if resp.ok:
-            click.secho("Started node {}".format(node))
-        else:
-            click.secho("Error starting Node {}: {}".format(node, resp), fg="red")
