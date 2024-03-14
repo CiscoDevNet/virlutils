@@ -1,7 +1,7 @@
 PyYAML
 click
 jinja2
-libtmux
+libtmux==0.2.7
 requests
 tabulate
 virl2-client>=2.2.1
