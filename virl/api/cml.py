@@ -60,3 +60,7 @@ class CachedLab(object):
     @property
     def owner(self):
         return "N/A"
+
+    @property
+    def username(self):
+        return "N/A"
