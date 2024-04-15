@@ -67,7 +67,7 @@ def node_list_table(nodes, computes):
                 if disc_ipv6:
                     intfs += disc_ipv6
 
-        tr.append(",".join(intfs))
+        tr.append("\n".join(intfs))
         table.append(tr)
     # wrap the output in this try/except block as some terminals
     # may have problem with the 'fancy_grid'

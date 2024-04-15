@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import textwrap
+
 import click
 import tabulate
 
@@ -13,14 +15,14 @@ def lab_list_table(labs, cached_labs=None):
 
 def print_labs(labs):
     table = list()
-    # TODO: Do we truncate description as it can be kind of long?
     headers = ["ID", "Title", "Description", "Owner", "Status", "Nodes", "Links", "Interfaces"]
     for lab in labs:
         tr = list()
         tr.append(lab.id)
         tr.append(lab.title)
-        tr.append(lab.description)
-        tr.append(lab.owner)
+        wrapped_description = textwrap.fill(lab.description, width=40)
+        tr.append(wrapped_description)
+        tr.append(lab.username)
         status = lab.state()
         stats = lab.statistics
         if status in {"BOOTED", "STARTED"}:
