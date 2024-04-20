@@ -81,7 +81,7 @@ def tmux(group):
                 node_console_cmd.append((node_obj, cmd))
 
             if node_console_cmd:
-                session_title = "{}-{}".format(str(lab.title).replace(".", "_"), lab.id[:4])
+                session_title = "{}-{}".format(str(lab.title).replace(".", "_").replace(":", "_"), lab.id[:4])
                 connect_tmux(session_title, node_console_cmd, group)
             else:
                 click.secho("Unable to find any valid nodes", fg="red")
