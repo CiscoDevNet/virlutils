@@ -1,5 +1,5 @@
-import tabulate
 import click
+import tabulate
 
 
 def repo_table(repo_entries):

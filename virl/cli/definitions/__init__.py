@@ -1,6 +1,7 @@
 import click
-from virl.cli.definitions.nodes import nodes
+
 from virl.cli.definitions.images import images
+from virl.cli.definitions.nodes import nodes
 
 
 @click.group()

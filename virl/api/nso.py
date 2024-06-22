@@ -1,6 +1,7 @@
 import requests
-from .credentials import get_prop, _get_password, _get_from_user
 from jinja2 import Environment
+
+from .credentials import _get_from_user, _get_password, get_prop
 
 
 class NSO(object):

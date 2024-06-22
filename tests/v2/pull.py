@@ -1,7 +1,8 @@
+import requests_mock
+from click.testing import CliRunner
+
 from . import BaseCMLTest
 from .mocks.github import MockGitHub
-from click.testing import CliRunner
-import requests_mock
 
 
 class Tests(BaseCMLTest):

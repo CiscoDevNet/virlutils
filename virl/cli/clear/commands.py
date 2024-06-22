@@ -1,4 +1,5 @@
 import click
+
 from virl.helpers import clear_current_lab
 
 

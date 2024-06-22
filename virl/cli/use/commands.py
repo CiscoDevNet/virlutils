@@ -1,15 +1,11 @@
-import click
 from subprocess import call
+
+import click
+
 from virl.api import VIRLServer
-from virl.helpers import (
-    get_cml_client,
-    safe_join_existing_lab_by_title,
-    safe_join_existing_lab,
-    check_lab_cache,
-    cache_lab,
-    set_current_lab,
-    get_command,
-)
+from virl.helpers import (cache_lab, check_lab_cache, get_cml_client,
+                          get_command, safe_join_existing_lab,
+                          safe_join_existing_lab_by_title, set_current_lab)
 
 
 # This may need to become a helper

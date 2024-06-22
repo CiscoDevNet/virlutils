@@ -1,5 +1,5 @@
-import tabulate
 import click
+import tabulate
 
 
 def cluster_list_table(computes: dict) -> None:

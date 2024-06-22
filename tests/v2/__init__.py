@@ -1,17 +1,18 @@
+import functools
 import logging
 import os
-import unittest
-from click.testing import CliRunner
-from .mocks import MockCMLServer
-import functools
+import pdb
 import sys
 import traceback
-import pdb
+import unittest
+
 import requests_mock
 import respx
+from click.testing import CliRunner
 from httpx import Response
 from virl2_client import ClientLibrary
 
+from .mocks import MockCMLServer
 
 # set to warning to hide unwanted HTTP requests
 logger = logging.getLogger("httpx")

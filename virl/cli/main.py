@@ -1,35 +1,40 @@
-import click
-from virl.api import VIRLServer, load_plugins, CommandPlugin, Plugin, check_valid_plugin, NoPluginError
-from virl.helpers import get_default_plugin_dir
 import traceback
-from virl.helpers import get_cml_client, get_command
+
+import click
+
+from virl.api import (CommandPlugin, NoPluginError, Plugin, VIRLServer,
+                      check_valid_plugin, load_plugins)
+from virl.helpers import get_cml_client, get_command, get_default_plugin_dir
+
+from .clear.commands import clear  # noqa: F401
+from .cluster import cluster  # noqa: F401
+from .cockpit.commands import cockpit  # noqa: F401
+from .command.commands import command  # noqa: F401
 from .console.commands import console  # noqa: F401
-from .nodes.commands import nodes  # noqa: F401
-from .up.commands import up  # noqa: F401
-from .use.commands import use  # noqa: F401
+from .definitions import definitions  # noqa: F401
 from .down.commands import down  # noqa: F401
-from .ls.commands import ls  # noqa: F401
-from .save.commands import save  # noqa: F401
-from .telnet.commands import telnet  # noqa: F401
-from .ssh.commands import ssh  # noqa: F401
+from .extract.commands import extract  # noqa: F401
 from .generate import generate, init_generators  # noqa: F401
+from .groups import groups  # noqa: F401
+from .id.commands import lid  # noqa: F401
+from .license import license  # noqa: F401
+from .ls.commands import ls  # noqa: F401
+from .nodes.commands import nodes  # noqa: F401
+from .pull.commands import pull  # noqa: F401
+from .rm.commands import rm  # noqa: F401
+from .save.commands import save  # noqa: F401
+from .search.commands import search  # noqa: F401
+from .ssh.commands import ssh  # noqa: F401
 from .start.commands import start  # noqa: F401
 from .stop.commands import stop  # noqa: F401
-from .pull.commands import pull  # noqa: F401
-from .search.commands import search  # noqa: F401
-from .id.commands import lid  # noqa: F401
-from .version.commands import version  # noqa: F401
-from .definitions import definitions  # noqa: F401
-from .cockpit.commands import cockpit  # noqa: F401
-from .wipe import wipe  # noqa: F401
-from .extract.commands import extract  # noqa: F401
-from .clear.commands import clear  # noqa: F401
-from .ui.commands import ui  # noqa: F401
-from .license import license  # noqa: F401
-from .rm.commands import rm  # noqa: F401
-from .command.commands import command  # noqa: F401
-from .cluster import cluster  # noqa: F401
+from .telnet.commands import telnet  # noqa: F401
 from .tmux.commands import tmux  # noqa: F401
+from .ui.commands import ui  # noqa: F401
+from .up.commands import up  # noqa: F401
+from .use.commands import use  # noqa: F401
+from .users import users  # noqa: F401
+from .version.commands import version  # noqa: F401
+from .wipe import wipe  # noqa: F401
 
 
 class CatchAllExceptions(click.Group):
@@ -166,6 +171,7 @@ virl.add_command(definitions)
 virl.add_command(down)
 virl.add_command(extract)
 virl.add_command(generate)
+virl.add_command(groups)
 virl.add_command(license)
 virl.add_command(lid, name="id")
 virl.add_command(ls)
@@ -182,6 +188,7 @@ virl.add_command(tmux)
 virl.add_command(ui)
 virl.add_command(up)
 virl.add_command(use)
+virl.add_command(users)
 virl.add_command(version)
 virl.add_command(wipe)
 cml_vers = __get_cml_ver()

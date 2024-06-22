@@ -1,5 +1,6 @@
 import click
-from virl.api import ViewerPlugin, NoPluginError
+
+from virl.api import NoPluginError, ViewerPlugin
 from virl.api.github import get_repos
 from virl.cli.views.search import repo_table
 

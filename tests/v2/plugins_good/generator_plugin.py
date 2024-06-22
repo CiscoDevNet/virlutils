@@ -1,5 +1,6 @@
-from virl.api.plugin import GeneratorPlugin
 import click
+
+from virl.api.plugin import GeneratorPlugin
 
 
 class TestGenPlugin(GeneratorPlugin, generator="test-gen"):

@@ -1,7 +1,9 @@
 import click
-from virl.api import VIRLServer
-from virl.helpers import get_cml_client, safe_join_existing_lab, get_current_lab
 from virl2_client.exceptions import NodeNotFound
+
+from virl.api import VIRLServer
+from virl.helpers import (get_cml_client, get_current_lab,
+                          safe_join_existing_lab)
 
 
 @click.command()

@@ -1,5 +1,5 @@
-import tabulate
 import click
+import tabulate
 
 
 def console_table(consoles):

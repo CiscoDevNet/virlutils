@@ -1,7 +1,9 @@
 import unittest
-from . import BaseCMLTest, CLIENT_VERSION
-from .mocks.github import MockGitHub  # noqa
+
 from click.testing import CliRunner
+
+from . import CLIENT_VERSION, BaseCMLTest
+from .mocks.github import MockGitHub  # noqa
 
 try:
     from unittest.mock import patch

@@ -1,8 +1,10 @@
-from virl.api import GeneratorPlugin
-import click
 import csv
-from virl.api import VIRLServer
-from virl.helpers import get_current_lab, get_cml_client, safe_join_existing_lab, get_node_mgmt_ip
+
+import click
+
+from virl.api import GeneratorPlugin, VIRLServer
+from virl.helpers import (get_cml_client, get_current_lab, get_node_mgmt_ip,
+                          safe_join_existing_lab)
 
 
 class CSVInventory(GeneratorPlugin, generator="csv"):

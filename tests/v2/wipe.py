@@ -1,7 +1,9 @@
+import os
+
+from click.testing import CliRunner
+
 from . import BaseCMLTest
 from .mocks import MockCMLServer
-from click.testing import CliRunner
-import os
 
 try:
     from unittest.mock import patch

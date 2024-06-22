@@ -1,9 +1,11 @@
 import click
+
 from virl.api import VIRLServer
-from virl.cli.views import sync_table
-from virl.helpers import get_cml_client, safe_join_existing_lab, get_current_lab
-from virl.generators import nso_payload_generator
 from virl.api.nso import NSO
+from virl.cli.views import sync_table
+from virl.generators import nso_payload_generator
+from virl.helpers import (get_cml_client, get_current_lab,
+                          safe_join_existing_lab)
 
 
 @click.command()

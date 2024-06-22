@@ -1,5 +1,6 @@
 import click
-from virl.api import VIRLServer, ViewerPlugin, NoPluginError
+
+from virl.api import NoPluginError, ViewerPlugin, VIRLServer
 from virl.cli.views import license_features_table
 from virl.helpers import get_cml_client
 

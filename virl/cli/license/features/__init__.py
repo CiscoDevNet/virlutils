@@ -1,4 +1,5 @@
 import click
+
 from virl.cli.license.features.show.commands import show as showc
 from virl.cli.license.features.update.commands import update as updatec
 
