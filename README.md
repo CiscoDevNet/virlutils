@@ -19,6 +19,7 @@ Options:
 
 Commands:
   clear        clear the current lab ID
+  cluster      display and manage CML cluster details
   cockpit      opens the Cockpit UI
   command      send a command or config to a node (requires pyATS)
   console      console for node
@@ -26,6 +27,7 @@ Commands:
   down         stop a lab
   extract      extract configurations from all nodes in a lab
   generate     generate inv file for various tools
+  groups       manage groups
   id           get the current lab title and ID
   license      work with product licensing
   ls           lists running labs and optionally those in the cache
@@ -42,6 +44,7 @@ Commands:
   ui           opens the Workbench for the current lab
   up           start a lab
   use          use lab launched elsewhere
+  users        manage users
   version      version information
   wipe         wipe a lab or nodes within a lab
 ```
@@ -52,7 +55,7 @@ Commands:
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [Usage / Workflows](#usage--workflows)
-- [Development](#local-development)
+- [Contributing](#contributing)
 
 <!-- /TOC -->
 
@@ -568,7 +571,263 @@ export NSO_USERNAME=admin
 export NSO_PASSWORD=admin
 ```
 
-#### Tab Completions
+### User and Group Management
+
+You can manage users and groups too!
+
+#### Users
+
+To manage users you can use the `cml users` command
+
+``` sh
+❯ cml users
+Usage: cml users [OPTIONS] COMMAND [ARGS]...
+
+  manage users
+
+Options:
+  --help  Show this message and exit.
+
+Commands:
+  create  Create one or more users (e.g., user1 user2)
+  delete  Delete one or more users (e.g., user1 user2)
+  ls      List all users on the server.
+  update  Update one or more users (e.g., user1 user2)
+```
+
+To list users
+
+```sh
+❯ cml users ls
+╒════════════╤═════════════════╤═════════════╤═════════╤════════════╤════════════════════════╕
+│ Username   │ Administrator   │ Full Name   │ Email   │ Groups     │ Labs                   │
+╞════════════╪═════════════════╪═════════════╪═════════╪════════════╪════════════════════════╡
+│ admin      │ True            │             │         │ users      │ BGP                    │
+│            │                 │             │         │ superusers │                        │
+├────────────┼─────────────────┼─────────────┼─────────┼────────────┼────────────────────────┤
+│ john       │ False           │ Uncle John  │         │ users      │ OSPF                   │
+├────────────┼─────────────────┼─────────────┼─────────┼────────────┼────────────────────────┤
+│ chuck      │ False           │ Uncle Chuck │         │            │                        │
+╘════════════╧═════════════════╧═════════════╧═════════╧════════════╧════════════════════════╛
+```
+
+By default, user IDs are not shown, to display them use the `--verbose` or `-v` flag:
+
+```sh
+❯ cml users ls --verbose
+Users on Server
+╒══════════════════════════════════════╤════════════╤═════════════════╤═════════════╤═════════╤════════════╤════════════════════════╕
+│ ID                                   │ Username   │ Administrator   │ Full Name   │ Email   │ Groups     │ Labs                   │
+╞══════════════════════════════════════╪════════════╪═════════════════╪═════════════╪═════════╪════════════╪════════════════════════╡
+│ 00000000-0000-4000-a000-000000000000 │ admin      │ True            │             │         │ users      │ BGP                    │
+│                                      │            │                 │             │         │ superusers │                        │
+├──────────────────────────────────────┼────────────┼─────────────────┼─────────────┼─────────┼────────────┼────────────────────────┤
+│ 9e4e75b4-aaab-47af-9edb-9364460a81ae │ john       │ False           │ Uncle John  │         │ users      │ OSPF                   │
+├──────────────────────────────────────┼────────────┼─────────────────┼─────────────┼─────────┼────────────┼────────────────────────┤
+│ dcc96fe1-8cba-4227-9aa6-b41d5ff91e3a │ chuck      │ True            │ Uncle Chuck │         │            │                        │
+╘══════════════════════════════════════╧════════════╧═════════════════╧═════════════╧═════════╧════════════╧════════════════════════╛
+```
+
+You can create one or multiple users. For each user, you will be prompted for the password and confirmation.
+Optionally, you can grant admin privileges and add the users to one or more groups.
+
+``` sh
+❯ cml users create alice bob --admin --group users --superusers
+Enter alice's password:
+Re-Enter alice's password:
+User alice successfully created
+Enter bob's password:
+Re-Enter bob's password:
+User bob successfully created
+
+
+❯ cml users ls
+╒════════════╤═════════════════╤═════════════╤═════════╤════════════╤════════════════════════╕
+│ Username   │ Administrator   │ Full Name   │ Email   │ Groups     │ Labs                   │
+╞════════════╪═════════════════╪═════════════╪═════════╪════════════╪════════════════════════╡
+│ admin      │ True            │             │         │ users      │ BGP                    │
+│            │                 │             │         │ superusers │                        │
+├────────────┼─────────────────┼─────────────┼─────────┼────────────┼────────────────────────┤
+│ john       │ False           │ Uncle John  │         │ users      │ OSPF                   │
+├────────────┼─────────────────┼─────────────┼─────────┼────────────┼────────────────────────┤
+│ chuck      │ False           │ Uncle Chuck │         │            │                        │
+├────────────┼─────────────────┼─────────────┼─────────┼────────────┼────────────────────────┤
+│ alice      │ True            │             │         │ users      │                        │
+│            │                 │             │         │ superusers │                        │
+├────────────┼─────────────────┼─────────────┼─────────┼────────────┼────────────────────────┤
+│ bob        │ True            │             │         │ users      │                        │
+│            │                 │             │         │ superusers │                        │
+╘════════════╧═════════════════╧═════════════╧═════════╧════════════╧════════════════════════╛
+```
+
+You can also update one or more existing users (e.g. removing admin privileges)
+
+``` sh
+❯ cml users update alice bob --no-admin --remove-from-all-groups
+User alice successfully updated
+User bob successfully updated
+
+❯ cml users ls
+╒════════════╤═════════════════╤═════════════╤═════════╤════════════╤════════════════════════╕
+│ Username   │ Administrator   │ Full Name   │ Email   │ Groups     │ Labs                   │
+╞════════════╪═════════════════╪═════════════╪═════════╪════════════╪════════════════════════╡
+│ admin      │ True            │             │         │ users      │ BGP                    │
+│            │                 │             │         │ superusers │                        │
+├────────────┼─────────────────┼─────────────┼─────────┼────────────┼────────────────────────┤
+│ john       │ False           │ Uncle John  │         │ users      │ OSPF                   │
+├────────────┼─────────────────┼─────────────┼─────────┼────────────┼────────────────────────┤
+│ chuck      │ False           │ Uncle Chuck │         │            │                        │
+├────────────┼─────────────────┼─────────────┼─────────┼────────────┼────────────────────────┤
+│ alice      │ False           │             │         │            │                        │
+├────────────┼─────────────────┼─────────────┼─────────┼────────────┼────────────────────────┤
+│ bob        │ False           │             │         │            │                        │
+╘════════════╧═════════════════╧═════════════╧═════════╧════════════╧════════════════════════╛
+```
+
+Check the cli help for more options.
+
+
+To delete one or multiple users.
+
+``` sh
+❯ cml users delete alice bob
+User alice successfully deleted
+User bob successfully deleted
+
+❯ cml users ls
+╒════════════╤═════════════════╤═════════════╤═════════╤════════════╤════════════════════════╕
+│ Username   │ Administrator   │ Full Name   │ Email   │ Groups     │ Labs                   │
+╞════════════╪═════════════════╪═════════════╪═════════╪════════════╪════════════════════════╡
+│ admin      │ True            │             │         │ users      │ BGP                    │
+│            │                 │             │         │ superusers │                        │
+├────────────┼─────────────────┼─────────────┼─────────┼────────────┼────────────────────────┤
+│ john       │ False           │ Uncle John  │         │ users      │ OSPF                   │
+├────────────┼─────────────────┼─────────────┼─────────┼────────────┼────────────────────────┤
+│ chuck      │ False           │ Uncle Chuck │         │            │                        │
+╘════════════╧═════════════════╧═════════════╧═════════╧════════════╧════════════════════════╛
+```
+
+
+#### Groups
+
+To manage groups you can use the `cml groups` command
+
+``` sh
+❯ cml groups --help
+Usage: cml groups [OPTIONS] COMMAND [ARGS]...
+
+  manage groups
+
+Options:
+  --help  Show this message and exit.
+
+Commands:
+  create  Create one or more groups (e.g., group1 group2)
+  delete  Delete one or more groups (e.g., group1 group2)
+  ls      List all groups on the server
+  update  Update one or more groups (e.g., group1 group2)
+```
+
+To list groups
+
+``` sh
+❯ cml groups ls
+Groups on Server
+╒════════════╤═══════════════╤═════════╤════════════════════════════════════╕
+│ Name       │ Description   │ Users   │ Labs                               │
+╞════════════╪═══════════════╪═════════╪════════════════════════════════════╡
+│ users      │ All Users     │ admin   │ netbox (read_only)                 │
+│            │               │ john    │ Multi Platform Network (read_only) │
+│            │               │         │ BFD (read_only)                    │
+├────────────┼───────────────┼─────────┼────────────────────────────────────┤
+│ superusers │ Superusers    │ admin   │                                    │
+╘════════════╧═══════════════╧═════════╧════════════════════════════════════╛
+```
+
+You can create one or more groups and assign them to multiple labs or members.
+
+``` sh
+❯ cml ls
+Labs on Server
+╒══════════════════════════════════════╤════════════════════════╤═════════════════════════════════════════╤══════════╤══════════╤═════════╤═════════╤══════════════╕
+│ ID                                   │ Title                  │ Description                             │ Owner    │ Status   │   Nodes │   Links │   Interfaces │
+╞══════════════════════════════════════╪════════════════════════╪═════════════════════════════════════════╪══════════╪══════════╪═════════╪═════════╪══════════════╡
+│ ba9a1282-048f-4914-a419-59c8027afa6a │ Quantum IPsec          │                                         │ admin    │ STOPPED  │       5 │       4 │           20 │
+├──────────────────────────────────────┼────────────────────────┼─────────────────────────────────────────┼──────────┼──────────┼─────────┼─────────┼──────────────┤
+│ 0786b045-aa39-4e98-af01-575b22566cf2 │ Multi-SA HSRP          │                                         │ admin    │ STARTED  │      10 │      13 │           47 │
+╘══════════════════════════════════════╧════════════════════════╧═════════════════════════════════════════╧══════════╧══════════╧═════════╧═════════╧══════════════╛
+
+❯ cml groups create --member alice --member bob --member mike --lab ba9a1282-048f-4914-a419-59c8027afa6a read_only --lab 0786b045-aa39-4e98-af01-575b22566cf2 read_write cryptopals
+Group cryptopals successfully created
+
+❯ cml groups ls
+Groups on Server
+╒════════════╤═══════════════╤═════════╤════════════════════════════════════╕
+│ Name       │ Description   │ Users   │ Labs                               │
+╞════════════╪═══════════════╪═════════╪════════════════════════════════════╡
+│ users      │ All Users     │ admin   │ netbox (read_only)                 │
+│            │               │ john    │ Multi Platform Network (read_only) │
+│            │               │         │ BFD (read_only)                    │
+├────────────┼───────────────┼─────────┼────────────────────────────────────┤
+│ superusers │ Superusers    │ admin   │                                    │
+├────────────┼───────────────┼─────────┼────────────────────────────────────┤
+│ cryptopals │               │ alice   │ Quantum IPsec (read_only)          │
+│            │               │ bob     │ Multi-SA HSRP (read_write)         │
+│            │               │ mike    │                                    │
+╘════════════╧═══════════════╧═════════╧════════════════════════════════════╛
+```
+
+Similarly, you can update one or more groups and assign them to multiple labs or members.
+Also, for both `cml groups create` and `cml groups update` you can assign all labs and/or all users to the groups.
+
+``` sh
+❯ cml groups update --add-all-users --add-all-labs read_only users
+Group users successfully updated
+
+❯ cml groups ls
+Groups on Server
+╒════════════╤═══════════════╤══════════╤════════════════════════════════════╕
+│ Name       │ Description   │ Users    │ Labs                               │
+╞════════════╪═══════════════╪══════════╪════════════════════════════════════╡
+│ users      │ All Users     │ admin    │ netbox (read_only)                 │
+│            │               │ john     │ Multi Platform Network (read_only) │
+│            │               │ alice    │ BFD (read_only)                    │
+│            │               │ bob      │ Quantum IPsec (read_only)          │
+│            │               │ mike     │ Multi-SA HSRP (read_only)          │
+├────────────┼───────────────┼──────────┼────────────────────────────────────┤
+│ superusers │ Superusers    │ admin    │                                    │
+├────────────┼───────────────┼──────────┼────────────────────────────────────┤
+│ cryptopals │               │ alice    │ Quantum IPsec (read_only)          │
+│            │               │ bob      │ Multi-SA HSRP (read_write)         │
+│            │               │ mike     │                                    │
+╘════════════╧═══════════════╧══════════╧════════════════════════════════════╛
+```
+
+To delete one ore multiple groups
+
+``` sh
+❯ cml groups delete superusers cryptopals
+Group superusers successfully deleted
+Group cryptopals successfully deleted
+
+❯ cml groups ls
+Groups on Server
+╒════════╤═══════════════╤══════════╤════════════════════════════════════╕
+│ Name   │ Description   │ Users    │ Labs                               │
+╞════════╪═══════════════╪══════════╪════════════════════════════════════╡
+│ users  │ All Users     │ admin    │ nso-ha (read_only)                 │
+│        │               │ john     │ netbox (read_only)                 │
+│        │               │ sgherdao │ Multi Platform Network (read_only) │
+│        │               │ saladoo  │ BFD (read_only)                    │
+│        │               │ kmilo    │ Vodafone-PT (read_only)            │
+│        │               │ cisco1   │ fastapi-ubuntu (read_only)         │
+│        │               │ alice    │ upm-quick-test (read_only)         │
+│        │               │ bob      │ Quantum IPsec (read_only)          │
+│        │               │ mike     │ Multi-SA HSRP (read_only)          │
+╘════════╧═══════════════╧══════════╧════════════════════════════════════╛
+```
+
+### Tab Completions
 
 ```sh
 [venv]jclarke@jamahal:~/src/git/virlutils|cmlutils
