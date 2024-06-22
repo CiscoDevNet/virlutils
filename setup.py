@@ -1,5 +1,6 @@
 # coding: utf-8
-from setuptools import setup, find_packages  # noqa: H301
+from setuptools import find_packages, setup  # noqa: H301
+
 from virl import __version__
 
 NAME = "virlutils"

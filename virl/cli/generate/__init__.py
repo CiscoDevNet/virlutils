@@ -1,8 +1,9 @@
 import click
-from virl.api import plugin, check_valid_plugin, NoPluginError
+
+from virl.api import NoPluginError, check_valid_plugin, plugin
 from virl.cli.generate.ansible.commands import ansible
-from virl.cli.generate.pyats.commands import pyats
 from virl.cli.generate.nso.commands import nso
+from virl.cli.generate.pyats.commands import pyats
 
 
 @click.group()

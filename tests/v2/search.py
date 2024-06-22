@@ -1,6 +1,7 @@
 import requests_mock
-from . import BaseCMLTest
 from click.testing import CliRunner
+
+from . import BaseCMLTest
 
 
 class SearchTests(BaseCMLTest):

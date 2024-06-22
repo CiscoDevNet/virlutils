@@ -1,8 +1,10 @@
 import os
+
 import click
-from virl.api import VIRLServer, CachedLab, ViewerPlugin, NoPluginError
+
+from virl.api import CachedLab, NoPluginError, ViewerPlugin, VIRLServer
 from virl.cli.views import lab_list_table
-from virl.helpers import get_cml_client, get_cache_root
+from virl.helpers import get_cache_root, get_cml_client
 
 
 @click.command()

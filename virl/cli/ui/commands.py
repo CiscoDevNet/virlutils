@@ -1,7 +1,10 @@
-import click
-from virl.api import VIRLServer
-from virl.helpers import get_cml_client, get_current_lab, safe_join_existing_lab
 import subprocess
+
+import click
+
+from virl.api import VIRLServer
+from virl.helpers import (get_cml_client, get_current_lab,
+                          safe_join_existing_lab)
 
 
 @click.command()

@@ -1,8 +1,12 @@
-import click
 import os
+
+import click
+from virl2_client.models.cl_pyats import (ClPyats, PyatsDeviceNotFound,
+                                          PyatsNotInstalled)
+
 from virl.api import VIRLServer
-from virl.helpers import get_cml_client, get_current_lab, safe_join_existing_lab
-from virl2_client.models.cl_pyats import ClPyats, PyatsNotInstalled, PyatsDeviceNotFound
+from virl.helpers import (get_cml_client, get_current_lab,
+                          safe_join_existing_lab)
 
 
 @click.command()

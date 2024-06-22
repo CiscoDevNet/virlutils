@@ -1,8 +1,11 @@
-import click
-from virl.api import VIRLServer
-from virl.helpers import get_cml_client, get_current_lab, safe_join_existing_lab
-import libtmux
 import os
+
+import click
+import libtmux
+
+from virl.api import VIRLServer
+from virl.helpers import (get_cml_client, get_current_lab,
+                          safe_join_existing_lab)
 
 
 def connect_tmux(session_title, node_console_cmd, group):

@@ -1,5 +1,6 @@
 import click
-from virl.api import VIRLServer, ViewerPlugin, NoPluginError
+
+from virl.api import NoPluginError, ViewerPlugin, VIRLServer
 from virl.cli.views import cluster_list_table
 from virl.helpers import get_cml_client
 

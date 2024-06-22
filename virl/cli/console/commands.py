@@ -1,11 +1,14 @@
-import click
-from virl.api import VIRLServer, ViewerPlugin, NoPluginError
-from subprocess import call
-from virl import helpers
-from virl.helpers import get_cml_client, get_current_lab, safe_join_existing_lab
-from virl.cli.views.console import console_table
-from virl2_client.exceptions import NodeNotFound
 import platform
+from subprocess import call
+
+import click
+from virl2_client.exceptions import NodeNotFound
+
+from virl import helpers
+from virl.api import NoPluginError, ViewerPlugin, VIRLServer
+from virl.cli.views.console import console_table
+from virl.helpers import (get_cml_client, get_current_lab,
+                          safe_join_existing_lab)
 
 
 @click.command()

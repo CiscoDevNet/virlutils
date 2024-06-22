@@ -1,6 +1,7 @@
 import click
-from virl.api import VIRLServer
+
 from virl import __version__
+from virl.api import VIRLServer
 from virl.helpers import get_cml_client
 
 

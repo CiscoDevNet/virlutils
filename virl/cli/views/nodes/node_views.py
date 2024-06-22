@@ -1,5 +1,5 @@
-import tabulate
 import click
+import tabulate
 
 
 def node_list_table(nodes, computes):

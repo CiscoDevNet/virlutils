@@ -1,6 +1,7 @@
 import click
-from virl.cli.wipe.node.commands import node as nodec
+
 from virl.cli.wipe.lab.commands import lab as labc
+from virl.cli.wipe.node.commands import node as nodec
 
 
 @click.group()

@@ -4,6 +4,7 @@ configuration easier.
 """
 import getpass
 import os
+
 from virl.helpers import find_virl
 
 

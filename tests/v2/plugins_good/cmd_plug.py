@@ -1,5 +1,6 @@
-from virl.api.plugin import CommandPlugin
 import click
+
+from virl.api.plugin import CommandPlugin
 
 
 class TestCmdPlugin(CommandPlugin, command="test-cmd"):

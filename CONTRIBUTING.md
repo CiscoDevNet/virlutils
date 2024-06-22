@@ -49,4 +49,17 @@ With those settings, navigate to **View > Testing** in VSCode.  The view should 
 
 ### Code Style
 
-Additionally, the code should follow any stylistic and architectural guidelines prescribed by the project.  The project now uses [black](https://black.readthedocs.io/) to ensure consistent code formatting.  When you installed the requirements_dev.txt in your virtual environment, it installed the `black` command.  For each file that you are modifying, run `black ./virl/path/to/file.py` before you commit the file or submit a pull request.
+Additionally, the code should follow any stylistic and architectural guidelines prescribed by the project.  The project now uses [black](https://black.readthedocs.io/) and [isort](https://pycqa.github.io/isort/) to ensure consistent code formatting.  When you installed the requirements_dev.txt in your virtual environment, it installed the `black` and `isort` commands.  For each file that you are modifying, run the following before you commit the file or submit a pull request:
+
+```sh
+black ./virl/path/to/file.py
+isort ./virl/path/to/file.py
+```
+
+### Linting
+
+We use flake 8 to lint our code. Please keep the repository clean by running:
+
+```sh
+flake8
+```

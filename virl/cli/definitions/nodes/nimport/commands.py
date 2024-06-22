@@ -1,5 +1,7 @@
-import click
 import os
+
+import click
+
 from virl.api import VIRLServer
 from virl.helpers import get_cml_client
 

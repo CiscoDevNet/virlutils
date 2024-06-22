@@ -1,6 +1,8 @@
-import click
-from virl.api import VIRLServer
 import subprocess
+
+import click
+
+from virl.api import VIRLServer
 
 
 @click.command()

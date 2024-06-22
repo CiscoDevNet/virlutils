@@ -1,5 +1,6 @@
-from . import BaseCMLTest
 from click.testing import CliRunner
+
+from . import BaseCMLTest
 
 
 class CMLIdTest(BaseCMLTest):

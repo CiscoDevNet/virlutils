@@ -1,13 +1,11 @@
-import click
-from virl.api import VIRLServer
 from subprocess import call
-from virl.helpers import (
-    get_cml_client,
-    get_current_lab,
-    safe_join_existing_lab,
-    get_node_mgmt_ip,
-)
+
+import click
 from virl2_client.exceptions import NodeNotFound
+
+from virl.api import VIRLServer
+from virl.helpers import (get_cml_client, get_current_lab, get_node_mgmt_ip,
+                          safe_join_existing_lab)
 
 
 @click.command()

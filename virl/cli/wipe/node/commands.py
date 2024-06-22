@@ -1,8 +1,11 @@
-import click
-from virl.api import VIRLServer
 import time
-from virl.helpers import get_cml_client, safe_join_existing_lab, get_current_lab
+
+import click
 from virl2_client import NodeNotFound
+
+from virl.api import VIRLServer
+from virl.helpers import (get_cml_client, get_current_lab,
+                          safe_join_existing_lab)
 
 
 @click.command()

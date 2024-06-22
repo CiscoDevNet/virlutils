@@ -1,7 +1,10 @@
-import click
 import os
+
+import click
+
 from virl.api import VIRLServer
-from virl.helpers import get_cml_client, safe_join_existing_lab, get_current_lab, check_lab_cache, clear_current_lab
+from virl.helpers import (check_lab_cache, clear_current_lab, get_cml_client,
+                          get_current_lab, safe_join_existing_lab)
 
 
 @click.command()

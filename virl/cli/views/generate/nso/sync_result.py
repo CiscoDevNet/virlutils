@@ -1,5 +1,5 @@
-import tabulate
 import click
+import tabulate
 
 
 def sync_table(sync_result):

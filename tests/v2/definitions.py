@@ -1,8 +1,10 @@
-from . import BaseCMLTest
-from click.testing import CliRunner
-import textwrap
 import os
+import textwrap
 import traceback
+
+from click.testing import CliRunner
+
+from . import BaseCMLTest
 
 
 class CMLDefinitionsTest(BaseCMLTest):

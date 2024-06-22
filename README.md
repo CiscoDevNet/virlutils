@@ -602,29 +602,6 @@ eval "$(_VIRL_COMPLETE=zsh_source virl)"
 eval "$(_CML_COMPLETE=zsh_source cml)"
 ```
 
-## Local Development
+## Contributing
 
-If you have an idea for a feature you would like to see, we gladly accept pull requests. To get started developing, simply run the following..
-
-```sh
-git clone https://github.com/CiscoDevNet/virlutils
-cd virlutils
-python setup.py develop
-```
-
-### Linting
-
-We use flake 8 to lint our code. Please keep the repository clean by running:
-
-```sh
-flake8
-```
-
-### Testing
-
-We have some testing implemented, but would love to have better coverage. If you
-add a feature, or just feel like writing tests please update the appropriate files
-in the `tests` folder.
-
-To run the tests in the `tests` folder, you can simply run `make test` from
-the project root.
+If you have an idea for a feature you would like to see, we gladly accept pull requests. To get started please review the [Contributing Guide](CONTRIBUTING.md)

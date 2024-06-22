@@ -1,7 +1,10 @@
-from . import BaseCMLTest
-from virl.api.plugin import _test_enable_plugins
-from click.testing import CliRunner
 import os
+
+from click.testing import CliRunner
+
+from virl.api.plugin import _test_enable_plugins
+
+from . import BaseCMLTest
 
 try:
     from unittest.mock import patch

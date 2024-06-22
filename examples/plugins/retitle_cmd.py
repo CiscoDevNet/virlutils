@@ -1,7 +1,8 @@
-from virl.api import CommandPlugin
 import click
-from virl.api import VIRLServer
-from virl.helpers import get_cml_client, get_current_lab, safe_join_existing_lab
+
+from virl.api import CommandPlugin, VIRLServer
+from virl.helpers import (get_cml_client, get_current_lab,
+                          safe_join_existing_lab)
 
 
 class RetitleCommand(CommandPlugin, command="retitle"):

@@ -1,19 +1,14 @@
-import click
-from subprocess import call
-from virl.api import VIRLServer, CachedLab
-from virl.helpers import (
-    get_cml_client,
-    safe_join_existing_lab,
-    safe_join_existing_lab_by_title,
-    check_lab_cache,
-    cache_lab,
-    set_current_lab,
-    get_current_lab,
-    clear_current_lab,
-    get_command,
-)
 import os
 import time
+from subprocess import call
+
+import click
+
+from virl.api import CachedLab, VIRLServer
+from virl.helpers import (cache_lab, check_lab_cache, clear_current_lab,
+                          get_cml_client, get_command, get_current_lab,
+                          safe_join_existing_lab,
+                          safe_join_existing_lab_by_title, set_current_lab)
 
 
 def get_lab_title(fname):

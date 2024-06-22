@@ -1,7 +1,9 @@
+import os
+
+from click.testing import CliRunner
+
 from . import BaseCMLTest
 from .mocks.github import MockGitHub  # noqa
-from click.testing import CliRunner
-import os
 
 try:
     from unittest.mock import patch

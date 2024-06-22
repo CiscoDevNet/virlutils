@@ -1,7 +1,8 @@
 import click
+
+from virl.cli.definitions.nodes.export.commands import export
 from virl.cli.definitions.nodes.ls.commands import ls
 from virl.cli.definitions.nodes.nimport.commands import nimport
-from virl.cli.definitions.nodes.export.commands import export
 
 
 @click.group()

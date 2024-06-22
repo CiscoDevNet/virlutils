@@ -1,6 +1,8 @@
 import click
-from virl.api import VIRLServer, CachedLab
-from virl.helpers import get_current_lab, get_cml_client, safe_join_existing_lab, get_current_lab_link
+
+from virl.api import CachedLab, VIRLServer
+from virl.helpers import (get_cml_client, get_current_lab,
+                          get_current_lab_link, safe_join_existing_lab)
 
 
 @click.command()

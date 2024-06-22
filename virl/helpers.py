@@ -1,12 +1,13 @@
-import click
-import os
-import errno
-import platform
-import ctypes
-import logging
-import ipaddress
-import sys
 import concurrent.futures
+import ctypes
+import errno
+import ipaddress
+import logging
+import os
+import platform
+import sys
+
+import click
 from requests.exceptions import HTTPError
 from virl2_client import ClientLibrary
 

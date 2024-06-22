@@ -1,5 +1,6 @@
-from . import BaseCMLTest
 from click.testing import CliRunner
+
+from . import BaseCMLTest
 
 
 class TestCMLHelp(BaseCMLTest):
@@ -17,6 +18,7 @@ class TestCMLHelp(BaseCMLTest):
             "down",
             "extract",
             "generate",
+            "groups",
             "id",
             "license",
             "ls",
@@ -33,6 +35,7 @@ class TestCMLHelp(BaseCMLTest):
             "ui",
             "up",
             "use",
+            "users",
             "version",
             "wipe",
         ]:
