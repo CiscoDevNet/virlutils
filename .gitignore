@@ -135,3 +135,8 @@ Network Trash Folder
 Temporary Items
 .apdisk
 *.icloud
+
+# virlutils test
+5f0d96_inventory.ini
+5f0d96_inventory.yaml
+5f0d96_testbed.yaml
