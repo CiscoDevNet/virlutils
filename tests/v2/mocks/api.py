@@ -230,6 +230,63 @@ class MockCMLServer(object):
         return response
 
     @staticmethod
+    def get_lab_details(req, ctx=None):
+        response = {
+            "created": "2020-08-18 22:47:56",
+            "groups": [],
+            "id": "5f0d96",
+            "lab_description": "",
+            "lab_notes": "",
+            "lab_title": "Mock Test",
+            "link_count": 1,
+            "modified": "2023-06-06T11:25:32+00:00",
+            "node_count": 2,
+            "owner": "00000000-0000-4000-a000-000000000000",
+            "owner_fullname": "",
+            "owner_username": "admin",
+            "state": "STARTED",
+        }
+        return response
+
+    @staticmethod
+    def get_lab_alt_details(req, ctx=None):
+        response = {
+            "created": "2020-07-21 09:10:39",
+            "groups": [],
+            "id": "5eaea5",
+            "lab_description": "",
+            "lab_notes": "",
+            "lab_title": "Other Lab",
+            "link_count": 2,
+            "modified": "2023-06-06T11:25:32+00:00",
+            "node_count": 1,
+            "owner": "00000000-0000-4000-a000-000000000000",
+            "owner_fullname": "",
+            "owner_username": "admin",
+            "state": "STOPPED",
+        }
+        return response
+
+    @staticmethod
+    def get_lab_details_23(req, ctx=None):
+        response = {
+            "created": "2020-08-18 22:47:56",
+            "groups": [],
+            "id": "88119b68-9d08-40c4-90f5-6dc533fd0254",
+            "lab_description": "",
+            "lab_notes": "",
+            "lab_title": "Mock Test 2.3",
+            "link_count": 1,
+            "modified": "2023-06-06T11:25:32+00:00",
+            "node_count": 2,
+            "owner": "00000000-0000-4000-a000-000000000000",
+            "owner_fullname": "",
+            "owner_username": "admin",
+            "state": "STARTED",
+        }
+        return response
+
+    @staticmethod
     def download_lab(req, ctx=None):
         response = """
         lab:
