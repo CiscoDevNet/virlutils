@@ -65,3 +65,20 @@ class CachedLab(object):
     @property
     def username(self):
         return "N/A"
+
+    def details(self):
+        return {
+            "state": self.state(),
+            "created": "N/A",
+            "modified": "N/A",
+            "lab_title": self.__title,
+            "lab_description": self.__description,
+            "lab_notes": "",
+            "owner": self.owner,
+            "owner_username": "N/A",
+            "owner_fullname": "N/A",
+            "node_count": self.__stats["nodes"],
+            "link_count": self.__stats["links"],
+            "id": self.__id,
+            "groups": [],
+        }

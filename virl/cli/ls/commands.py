@@ -28,12 +28,8 @@ def ls(all, all_users):
     """
     server = VIRLServer()
     client = get_cml_client(server)
-    labs = []
     cached_labs = None
-
-    lab_ids = client.get_lab_list(all_users)
-    for id in lab_ids:
-        labs.append(client.join_existing_lab(id))
+    labs = client.all_labs(show_all=all_users)
 
     if all:
         cached_labs = []

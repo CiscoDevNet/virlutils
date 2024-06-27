@@ -14,17 +14,17 @@ def lab_list_table(labs, cached_labs=None):
 
 
 def print_labs(labs):
-    table = list()
+    table = []
     headers = ["ID", "Title", "Description", "Owner", "Status", "Nodes", "Links", "Interfaces"]
     for lab in labs:
-        tr = list()
-        tr.append(lab.id)
-        tr.append(lab.title)
-        wrapped_description = textwrap.fill(lab.description, width=40)
+        lab_details = lab.details()
+        tr = []
+        tr.append(lab_details["owner_username"])
+        tr.append(lab_details["lab_title"])
+        wrapped_description = textwrap.fill(lab_details["lab_description"], width=40)
         tr.append(wrapped_description)
-        tr.append(lab.username)
-        status = lab.state()
-        stats = lab.statistics
+        tr.append(lab_details["owner_username"])
+        status = lab_details["state"]
         if status in {"BOOTED", "STARTED"}:
             color = "green"
         elif status in {"QUEUED"}:
@@ -32,8 +32,9 @@ def print_labs(labs):
         else:
             color = "red"
         tr.append(click.style(status, fg=color))
-        tr.append(stats["nodes"])
-        tr.append(stats["links"])
+        tr.append(lab_details["node_count"])
+        tr.append(lab_details["link_count"])
+        stats = lab.statistics
         tr.append(stats["interfaces"])
         table.append(tr)
     # wrap the output in this try/except block as some terminals
