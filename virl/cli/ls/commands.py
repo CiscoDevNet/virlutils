@@ -47,6 +47,6 @@ def ls(all, all_users):
 
     try:
         pl = ViewerPlugin(viewer="lab")
-        pl.visualize(labs=labs, cached_labs=cached_labs)
+        pl.visualize(labs=labs, ownerids_usernames=ownerids_usernames, cached_labs=cached_labs)
     except NoPluginError:
-        lab_list_table(labs, ownerids_usernames, cached_labs)
+        lab_list_table(labs, ownerids_usernames, cached_labs=cached_labs)
