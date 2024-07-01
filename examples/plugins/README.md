@@ -145,7 +145,7 @@ Each one of these viewers is discussed in more details below.
 #### _lab_ Viewer
 
 The _lab_ viewer renders the output of `cml ls` (i.e., the list of labs on the server and optionally in the local cache).  Your
-viewer will be passed two keys in the `kwargs` dictionary: `labs` and `cached_labs`.
+viewer will be passed three keys in the `kwargs` dictionary: `labs`, `cached_labs` and `ownerids_usernames`, a dict mapping users UUID to usernames.
 
 The value of `labs` is a list containing elements of type `virl2_client.models.lab.Lab` ([documentation](https://developer.cisco.com/docs/virl2-client/)).
 The value of `cached_labs` is a list containing elements of type `virl.api.cml.CachedLabs`.  Instances of this class offer only basic properties from

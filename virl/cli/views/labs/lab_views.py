@@ -5,15 +5,15 @@ import click
 import tabulate
 
 
-def lab_list_table(labs, cached_labs=None):
+def lab_list_table(labs, ownerids_usernames, cached_labs=None):
     click.secho("Labs on Server", fg="green")
-    print_labs(labs)
+    print_labs(labs, ownerids_usernames)
     if cached_labs:
         click.secho("Cached Labs", fg="yellow")
-        print_labs(cached_labs)
+        print_labs(cached_labs, ownerids_usernames)
 
 
-def print_labs(labs):
+def print_labs(labs, ownerids_usernames):
     table = list()
     headers = ["ID", "Title", "Description", "Owner", "Status", "Nodes", "Links", "Interfaces"]
     for lab in labs:
@@ -22,7 +22,8 @@ def print_labs(labs):
         tr.append(lab.title)
         wrapped_description = textwrap.fill(lab.description, width=40)
         tr.append(wrapped_description)
-        tr.append(lab.username)
+        owner = ownerids_usernames.get(lab.owner, lab.owner)
+        tr.append(owner)
         status = lab.state()
         stats = lab.statistics
         if status in {"BOOTED", "STARTED"}:

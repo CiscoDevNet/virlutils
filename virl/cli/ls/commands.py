@@ -30,6 +30,8 @@ def ls(all, all_users):
     client = get_cml_client(server)
     labs = []
     cached_labs = None
+    users = client.user_management.users()
+    ownerids_usernames = {u["id"]: u["username"] for u in users}
 
     lab_ids = client.get_lab_list(all_users)
     for id in lab_ids:
@@ -45,6 +47,6 @@ def ls(all, all_users):
 
     try:
         pl = ViewerPlugin(viewer="lab")
-        pl.visualize(labs=labs, cached_labs=cached_labs)
+        pl.visualize(labs=labs, ownerids_usernames=ownerids_usernames, cached_labs=cached_labs)
     except NoPluginError:
-        lab_list_table(labs, cached_labs)
+        lab_list_table(labs, ownerids_usernames, cached_labs=cached_labs)

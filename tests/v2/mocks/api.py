@@ -927,3 +927,44 @@ class MockCMLServer(object):
             type: ethernet
         """
         return response
+
+    @staticmethod
+    def get_users(req, ctx=None):
+        response = [
+            {
+                "id": "00000000-0000-4000-a000-000000000000",
+                "created": "2022-09-30T10:03:53+00:00",
+                "modified": "2024-06-21T15:16:42+00:00",
+                "username": "admin",
+                "fullname": "",
+                "email": "",
+                "description": "",
+                "admin": True,
+                "directory_dn": "",
+                "groups": [],
+                "labs": [],
+                "opt_in": True,
+                "resource_pool": None,
+                "tour_version": "2.6.1+build.11",
+                "pubkey_info": "",
+            },
+            {
+                "id": "9e4e75b4-aaab-47af-9edb-9364460a81ae",
+                "created": "2024-06-19T20:29:02+00:00",
+                "modified": "2024-06-21T10:42:20+00:00",
+                "username": "user",
+                "fullname": "",
+                "email": "",
+                "description": "",
+                "admin": False,
+                "directory_dn": "",
+                "groups": ["48c9c605-552f-4666-bd23-5b68cf4de665"],
+                "labs": [],
+                "opt_in": True,
+                "resource_pool": None,
+                "tour_version": "",
+                "pubkey_info": "",
+            },
+        ]
+
+        return response

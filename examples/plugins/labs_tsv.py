@@ -7,12 +7,14 @@ class LabsTSVViewer(ViewerPlugin, viewer="lab"):
         Render the labs list as a tab-delimited set of
         rows.  Replaces the output of `cml ls`.
 
-        The input will be kwargs["labs"] and kwargs["cached_labs"]
+        The input will be kwargs["labs"], kwargs["cached_labs"] and
+        kwargs["ownerids_usernames"] (a mapping UUID to username)
         """
 
         labs = kwargs["labs"]
         if kwargs["cached_labs"]:
             labs += kwargs["cached_labs"]
+        ownerids_usernames = kwargs["ownerids_usernames"]
 
         print("ID\tTitle\tDescription\tOwner\tStatus\tNodes\tLinks\tInterfaces")
         for lab in labs:
@@ -26,7 +28,7 @@ class LabsTSVViewer(ViewerPlugin, viewer="lab"):
                     id=lab.id,
                     title=lab.title,
                     description=lab.description,
-                    owner=lab.owner,
+                    owner=ownerids_usernames.get(lab.owner, lab.owner),
                     status=lab.state(),
                     nodes=lab.statistics["nodes"],
                     links=lab.statistics["links"],
