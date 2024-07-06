@@ -817,13 +817,13 @@ Groups on Server
 ╞════════╪═══════════════╪══════════╪════════════════════════════════════╡
 │ users  │ All Users     │ admin    │ nso-ha (read_only)                 │
 │        │               │ john     │ netbox (read_only)                 │
-│        │               │ sgherdao │ Multi Platform Network (read_only) │
-│        │               │ saladoo  │ BFD (read_only)                    │
-│        │               │ kmilo    │ Vodafone-PT (read_only)            │
-│        │               │ cisco1   │ fastapi-ubuntu (read_only)         │
-│        │               │ alice    │ upm-quick-test (read_only)         │
-│        │               │ bob      │ Quantum IPsec (read_only)          │
-│        │               │ mike     │ Multi-SA HSRP (read_only)          │
+│        │               │ bob      │ Multi Platform Network (read_only) │
+│        │               │          │ BFD (read_only)                    │
+│        │               │          │ Vodafone-PT (read_only)            │
+│        │               │          │ fastapi-ubuntu (read_only)         │
+│        │               │          │ upm-quick-test (read_only)         │
+│        │               │          │ Quantum IPsec (read_only)          │
+│        │               │          │ Multi-SA HSRP (read_only)          │
 ╘════════╧═══════════════╧══════════╧════════════════════════════════════╛
 ```
 

@@ -139,6 +139,9 @@ support.  The list of viewers are:
 - **image_def** : Render the output of `cml definitions image ls`
 - **node_def** : Render the output of `cml definitions node ls`
 - **search** : Render the output of `cml search`
+- **cluster** : Render the output of `cml cluster info`
+- **user** : Render the output of `cml users ls`
+- **group** : Render the output of `cml groups ls`
 
 Each one of these viewers is discussed in more details below.
 
@@ -228,6 +231,155 @@ The value of `computes` is a dictionary of compute nodes, keyed on the node ID. 
       "is_controller": true,
       "hostname": "cml-controller"
     }
+```
+
+#### _user_ Viewer
+
+The _user_ viewer renders the output of `cml users ls` (i.e., the list of user on the server).  Your viewer will be passed a dict, `users` in the `kwargs` dictionary.
+> _Note_: Non-admin users receive limited user info from the CML API (only user UUID and username). `groups` and `lab` keys will be filled with an empty list.  The other missing keys will be filled with the string `"N/A"`.
+
+The value of `users` is a list of dictionary of users. For example:
+
+```json
+[
+  {
+    "id": "00000000-0000-4000-a000-000000000000",
+    "created": "2022-09-30T10:03:53+00:00",
+    "modified": "2024-06-30T23:39:08+00:00",
+    "username": "admin",
+    "fullname": "",
+    "email": "",
+    "description": "",
+    "admin": true,
+    "directory_dn": "",
+    "groups": [
+      "users"
+    ],
+    "labs": [
+      "Multi Platform Network",
+      "fastapi-ubuntu",
+      "Multi-SA HSRP"
+    ],
+    "opt_in": true,
+    "resource_pool": null,
+    "tour_version": "2.6.1+build.11",
+    "pubkey_info": ""
+  },
+  {
+  {
+    "id": "336e0bb9-5b4d-418d-ae48-92544ef5c590",
+    "created": "2024-06-21T22:15:13+00:00",
+    "modified": "2024-06-30T23:37:22+00:00",
+    "username": "alice",
+    "fullname": "",
+    "email": "",
+    "description": "",
+    "admin": false,
+    "directory_dn": "",
+    "groups": [],
+    "labs": [
+      "WONDERLAB"
+    ],
+    "opt_in": true,
+    "resource_pool": null,
+    "tour_version": "2.7.0+build.4",
+    "pubkey_info": ""
+  },
+]
+```
+
+A non-admin user will get:
+
+```json
+[
+  {
+    "id": "00000000-0000-4000-a000-000000000000",
+    "username": "admin",
+    "groups": [],
+    "labs": [],
+    "created": "N/A",
+    "modified": "N/A",
+    "fullname": "N/A",
+    "email": "N/A",
+    "description": "N/A",
+    "admin": "N/A",
+    "directory_dn": "N/A",
+    "opt_in": "N/A",
+    "resource_pool": "N/A",
+    "tour_version": "N/A",
+    "pubkey_info": "N/A"
+  },
+  {
+    "id": "336e0bb9-5b4d-418d-ae48-92544ef5c590",
+    "username": "alice",
+    "groups": [],
+    "labs": [],
+    "created": "N/A",
+    "modified": "N/A",
+    "fullname": "N/A",
+    "email": "N/A",
+    "description": "N/A",
+    "admin": "N/A",
+    "directory_dn": "N/A",
+    "opt_in": "N/A",
+    "resource_pool": "N/A",
+    "tour_version": "N/A",
+    "pubkey_info": "N/A"
+  },
+]
+```
+
+
+
+#### _group_ Viewer
+
+The _group_ viewer renders the output of `cml groups ls` (i.e., the list of groups on the server).  Your viewer will be passed a dict, `groups` in the `kwargs` dictionary.
+Note: non-admin users are only allowed to get group information for the groups they belong to. 
+
+The value of `groups` is a list of dictionaries.  For example:
+
+```json
+[
+  {
+    "id": "48c9c605-552f-4666-bd23-5b68cf4de665",
+    "created": "2024-06-20T02:54:38+00:00",
+    "modified": "2024-06-26T16:10:34+00:00",
+    "name": "users",
+    "description": "All Users",
+    "members": [
+      "admin",
+      "bob",
+      "mike"
+    ],
+    "labs": [
+      {
+        "title": "Multi Platform Network",
+        "permission": "read_only"
+      },
+      {
+        "title": "BFD",
+        "permission": "read_only"
+      },
+    ]
+  },
+  {
+    "id": "a7ae7b7a-8e59-42e9-aa6c-a193a8463c77",
+    "created": "2024-06-25T22:30:31+00:00",
+    "modified": "2024-07-06T12:44:58+00:00",
+    "name": "cryptopals",
+    "description": "",
+    "members": [
+      "bob",
+      "alice"
+    ],
+    "labs": [
+      {
+        "title": "Multi-SA HSRP",
+        "permission": "read_only"
+      }
+    ]
+  },
+]
 ```
 
 ### Common Functions
