@@ -148,6 +148,7 @@ class BaseCMLTest(unittest.TestCase):
             "labs/{}/check_if_converged".format(self.get_test_id()): True,
             "labs/{}/check_if_converged".format(self.get_cml23_id()): True,
             "labs/{}/nodes/n1/check_if_converged".format(self.get_test_id()): True,
+            "users": MockCMLServer.get_users,
         }
 
         text_dict = {
