@@ -5,7 +5,7 @@ import click
 import tabulate
 
 
-def user_list_table(users, verbose):
+def user_list_table(users, verbose=False):
     click.secho("Users on Server", fg="green")
     table = []
     headers = ["ID"] if verbose else []
@@ -19,8 +19,8 @@ def user_list_table(users, verbose):
         wrapped_fullname = textwrap.fill(user["fullname"], width=20)
         tr.append(wrapped_fullname)
         tr.append(user["email"])
-        tr.append(user["groups"])
-        tr.append(user["labs"])
+        tr.append("\n".join(user["groups"]))
+        tr.append("\n".join(user["labs"]))
         table.append(tr)
     # wrap the output in this try/except block as some terminals
     # may have problem with the 'fancy_grid'
