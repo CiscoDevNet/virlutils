@@ -235,239 +235,273 @@ class MockCMLServer(object):
         lab:
           description: ''
           notes: ''
-          timestamp: 1597805276.8213837
           title: Mock Test
-          version: 0.0.3
-        nodes:
-          - id: n0
-            label: Lab Net
-            node_definition: external_connector
-            x: -400
-            y: 0
-            configuration: bridge0
-            tags: []
-            interfaces:
-              - id: i0
-                slot: 0
-                label: port
-                type: physical
-          - id: n1
-            label: rtr-1
-            node_definition: iosxrv9000
-            x: -200
-            y: -50
-            configuration: |-
-              hostname changeme
-              username cisco
-              group root-lr
-              group cisco-support
-              password cisco
-              !
-              username admin
-              group root-lr
-              group cisco-support
-              password admin
-              !
-              username lab
-              group root-lr
-              group cisco-support
-              password lab
-              !
-              end
-            image_definition: iosxrv9000-6-6-2
-            tags: []
-            interfaces:
-              - id: i0
-                label: Loopback0
-                type: loopback
-              - id: i1
-                slot: 0
-                label: MgmtEth0/RP0/CPU0/0
-                type: physical
-              - id: i2
-                slot: 1
-                label: donotuse1
-                type: physical
-              - id: i3
-                slot: 2
-                label: donotuse2
-                type: physical
-              - id: i4
-                slot: 3
-                label: GigabitEthernet0/0/0/0
-                type: physical
-          - id: n2
-            label: rtr-2
-            node_definition: iosxrv9000
-            x: -200
-            y: -50
-            configuration: |-
-              hostname changeme
-              username cisco
-              group root-lr
-              group cisco-support
-              password cisco
-              !
-              username admin
-              group root-lr
-              group cisco-support
-              password admin
-              !
-              username lab
-              group root-lr
-              group cisco-support
-              password lab
-              !
-              end
-            image_definition: iosxrv9000-6-6-2
-            tags: []
-            interfaces:
-              - id: i0
-                label: Loopback0
-                type: loopback
-              - id: i1
-                slot: 0
-                label: MgmtEth0/RP0/CPU0/0
-                type: physical
-              - id: i2
-                slot: 1
-                label: donotuse1
-                type: physical
-              - id: i3
-                slot: 2
-                label: donotuse2
-                type: physical
-              - id: i4
-                slot: 3
-                label: GigabitEthernet0/0/0/0
-                type: physical
+          version: 0.1.0
         links:
           - id: l0
-            i1: i1
             n1: n1
-            i2: i0
             n2: n0
+            i1: i1
+            i2: i0
+            label: rtr-1-MgmtEth0/RP0/CPU0/0<->Lab Net-port
+        nodes:
+          - boot_disk_size: 0
+            configuration: bridge0
+            cpu_limit: 100
+            cpus: 0
+            data_volume: 0
+            hide_links: false
+            id: n0
+            label: Lab Net
+            node_definition: external_connector
+            ram: 0
+            tags: []
+            x: -400
+            y: 0
+            interfaces:
+              - id: i0
+                label: port
+                slot: 0
+                type: physical
+          - boot_disk_size: 0
+            configuration: |-
+              hostname changeme
+              username cisco
+              group root-lr
+              group cisco-support
+              password cisco
+              !
+              username admin
+              group root-lr
+              group cisco-support
+              password admin
+              !
+              username lab
+              group root-lr
+              group cisco-support
+              password lab
+              !
+              end
+            cpu_limit: 100
+            cpus: 0
+            data_volume: 0
+            hide_links: false
+            id: n1
+            image_definition: iosxrv9000-6-6-2
+            label: rtr-1
+            node_definition: iosxrv9000
+            ram: 0
+            tags: []
+            x: -200
+            y: -50
+            interfaces:
+              - id: i0
+                label: Loopback0
+                type: loopback
+              - id: i1
+                label: MgmtEth0/RP0/CPU0/0
+                slot: 0
+                type: physical
+              - id: i2
+                label: donotuse1
+                slot: 1
+                type: physical
+              - id: i3
+                label: donotuse2
+                slot: 2
+                type: physical
+              - id: i4
+                label: GigabitEthernet0/0/0/0
+                slot: 3
+                type: physical
+          - boot_disk_size: 0
+            configuration: |-
+              hostname changeme
+              username cisco
+              group root-lr
+              group cisco-support
+              password cisco
+              !
+              username admin
+              group root-lr
+              group cisco-support
+              password admin
+              !
+              username lab
+              group root-lr
+              group cisco-support
+              password lab
+              !
+              end
+            cpu_limit: 100
+            cpus: 0
+            data_volume: 0
+            hide_links: false
+            id: n2
+            image_definition: iosxrv9000-6-6-2
+            label: rtr-2
+            node_definition: iosxrv9000
+            ram: 0
+            tags: []
+            x: -300
+            y: 50
+            interfaces:
+              - id: i0
+                label: Loopback0
+                type: loopback
+              - id: i1
+                label: MgmtEth0/RP0/CPU0/0
+                slot: 0
+                type: physical
+              - id: i2
+                label: donotuse1
+                slot: 1
+                type: physical
+              - id: i3
+                label: donotuse2
+                slot: 2
+                type: physical
+              - id: i4
+                label: GigabitEthernet0/0/0/0
+                slot: 3
+                type: physical
         """
         return response
 
     @staticmethod
-    def download_lab_23(req, ctx=None):
+    def download_lab_24(req, ctx=None):
         response = """
         lab:
           description: ''
           notes: ''
-          timestamp: 1597805276.8213837
-          title: Mock Test 2.3
-          version: 0.0.3
-        nodes:
-          - id: 88119b68-9d08-40c4-90f5-6dc533fd0255
-            label: Lab Net
-            node_definition: external_connector
-            x: -400
-            y: 0
-            configuration: bridge0
-            tags: []
-            interfaces:
-              - id: i0
-                slot: 0
-                label: port
-                type: physical
-          - id: 88119b68-9d08-40c4-90f5-6dc533fd0256
-            label: rtr-1
-            node_definition: iosxrv9000
-            x: -200
-            y: -50
-            configuration: |-
-              hostname changeme
-              username cisco
-              group root-lr
-              group cisco-support
-              password cisco
-              !
-              username admin
-              group root-lr
-              group cisco-support
-              password admin
-              !
-              username lab
-              group root-lr
-              group cisco-support
-              password lab
-              !
-              end
-            image_definition: iosxrv9000-6-6-2
-            tags: []
-            interfaces:
-              - id: 88119b68-9d08-40c4-90f5-6dc533fd020a
-                label: Loopback0
-                type: loopback
-              - id: 88119b68-9d08-40c4-90f5-6dc533fd020b
-                slot: 0
-                label: MgmtEth0/RP0/CPU0/0
-                type: physical
-              - id: 88119b68-9d08-40c4-90f5-6dc533fd020c
-                slot: 1
-                label: donotuse1
-                type: physical
-              - id: 88119b68-9d08-40c4-90f5-6dc533fd020d
-                slot: 2
-                label: donotuse2
-                type: physical
-              - id: 88119b68-9d08-40c4-90f5-6dc533fd020e
-                slot: 3
-                label: GigabitEthernet0/0/0/0
-                type: physical
-          - id: 88119b68-9d08-40c4-90f5-6dc533fd0257
-            label: rtr-2
-            node_definition: iosxrv9000
-            x: -200
-            y: -50
-            configuration: |-
-              hostname changeme
-              username cisco
-              group root-lr
-              group cisco-support
-              password cisco
-              !
-              username admin
-              group root-lr
-              group cisco-support
-              password admin
-              !
-              username lab
-              group root-lr
-              group cisco-support
-              password lab
-              !
-              end
-            image_definition: iosxrv9000-6-6-2
-            tags: []
-            interfaces:
-              - id: 88119b68-9d08-40c4-90f5-6dc533fd021a
-                label: Loopback0
-                type: loopback
-              - id: 88119b68-9d08-40c4-90f5-6dc533fd021b
-                slot: 0
-                label: MgmtEth0/RP0/CPU0/0
-                type: physical
-              - id: 88119b68-9d08-40c4-90f5-6dc533fd021c
-                slot: 1
-                label: donotuse1
-                type: physical
-              - id: 88119b68-9d08-40c4-90f5-6dc533fd021d
-                slot: 2
-                label: donotuse2
-                type: physical
-              - id: 88119b68-9d08-40c4-90f5-6dc533fd021e
-                slot: 3
-                label: GigabitEthernet0/0/0/0
-                type: physical
+          title: Mock Test 2.4
+          version: 0.1.0
         links:
           - id: l0
-            i1: i1
             n1: n1
-            i2: i0
             n2: n0
+            i1: i1
+            i2: i0
+            label: rtr-1-MgmtEth0/RP0/CPU0/0<->Lab Net-port
+        nodes:
+          - boot_disk_size: 0
+            configuration: bridge0
+            cpu_limit: 100
+            cpus: 0
+            data_volume: 0
+            hide_links: false
+            id: n0
+            label: Lab Net
+            node_definition: external_connector
+            ram: 0
+            tags: []
+            x: -400
+            y: 0
+            interfaces:
+              - id: i0
+                label: port
+                slot: 0
+                type: physical
+          - boot_disk_size: 0
+            configuration: |-
+              hostname changeme
+              username cisco
+              group root-lr
+              group cisco-support
+              password cisco
+              !
+              username admin
+              group root-lr
+              group cisco-support
+              password admin
+              !
+              username lab
+              group root-lr
+              group cisco-support
+              password lab
+              !
+              end
+            cpu_limit: 100
+            cpus: 0
+            data_volume: 0
+            hide_links: false
+            id: n1
+            label: rtr-1
+            node_definition: iosxrv9000
+            ram: 0
+            tags: []
+            x: -200
+            y: -50
+            interfaces:
+              - id: i0
+                label: Loopback0
+                type: loopback
+              - id: i1
+                label: MgmtEth0/RP0/CPU0/0
+                slot: 0
+                type: physical
+              - id: i2
+                label: donotuse1
+                slot: 1
+                type: physical
+              - id: i3
+                label: donotuse2
+                slot: 2
+                type: physical
+              - id: i4
+                label: GigabitEthernet0/0/0/0
+                slot: 3
+                type: physical
+          - boot_disk_size: 0
+            configuration: |-
+              hostname changeme
+              username cisco
+              group root-lr
+              group cisco-support
+              password cisco
+              !
+              username admin
+              group root-lr
+              group cisco-support
+              password admin
+              !
+              username lab
+              group root-lr
+              group cisco-support
+              password lab
+              !
+              end
+            cpu_limit: 100
+            cpus: 0
+            data_volume: 0
+            hide_links: false
+            id: n2
+            label: rtr-2
+            node_definition: iosxrv9000
+            ram: 0
+            tags: []
+            x: -300
+            y: 50
+            interfaces:
+              - id: i0
+                label: Loopback0
+                type: loopback
+              - id: i1
+                label: MgmtEth0/RP0/CPU0/0
+                slot: 0
+                type: physical
+              - id: i2
+                label: donotuse1
+                slot: 1
+                type: physical
+              - id: i3
+                label: donotuse2
+                slot: 2
+                type: physical
+              - id: i4
+                label: GigabitEthernet0/0/0/0
+                slot: 3
+                type: physical
         """
         return response
 
@@ -477,43 +511,51 @@ class MockCMLServer(object):
         lab:
           description: ''
           notes: ''
-          timestamp: 1595337039.0416706
           title: Other Lab
-          version: 0.0.3
+          version: 0.1.0
+        links:
+          - id: l0
+            n1: n0
+            n2: n1
+            i1: i1
+            i2: i1
+            label: nxos9000-0-mgmt0<->xr9kv-0-MgmtEth0/RP0/CPU0/0
         nodes:
-          - id: n0
+          - boot_disk_size: 0
+            configuration: hostname inserthostname_here
+            cpu_limit: 100
+            cpus: 0
+            data_volume: 0
+            hide_links: false
+            id: n0
+            image_definition: nxosv9000-9-2-3
             label: nxos9000-0
             node_definition: nxosv9000
+            ram: 0
+            tags: []
             x: -450
             y: -50
-            configuration: hostname inserthostname_here
-            image_definition: nxosv9000-9-2-3
-            tags: []
             interfaces:
               - id: i0
                 label: Loopback0
                 type: loopback
               - id: i1
-                slot: 0
                 label: mgmt0
+                slot: 0
                 type: physical
               - id: i2
-                slot: 1
                 label: Ethernet1/1
+                slot: 1
                 type: physical
               - id: i3
-                slot: 2
                 label: Ethernet1/2
+                slot: 2
                 type: physical
               - id: i4
-                slot: 3
                 label: Ethernet1/3
+                slot: 3
                 type: physical
-          - id: n1
-            label: xr9kv-0
-            node_definition: iosxrv9000
-            x: -150
-            y: -50
+          - boot_disk_size: 0
             configuration: |-
               hostname changeme
               username cisco
@@ -532,40 +574,44 @@ class MockCMLServer(object):
               password lab
               !
               end
+            cpu_limit: 100
+            cpus: 0
+            data_volume: 0
+            hide_links: false
+            id: n1
             image_definition: iosxrv9000-6-6-2
+            label: xr9kv-0
+            node_definition: iosxrv9000
+            ram: 0
             tags: []
+            x: -150
+            y: -50
             interfaces:
               - id: i0
                 label: Loopback0
                 type: loopback
               - id: i1
-                slot: 0
                 label: MgmtEth0/RP0/CPU0/0
+                slot: 0
                 type: physical
               - id: i2
-                slot: 1
                 label: donotuse1
+                slot: 1
                 type: physical
               - id: i3
-                slot: 2
                 label: donotuse2
+                slot: 2
                 type: physical
               - id: i4
-                slot: 3
                 label: GigabitEthernet0/0/0/0
+                slot: 3
                 type: physical
-        links:
-          - id: l0
-            i1: i1
-            n1: n0
-            i2: i1
-            n2: n1
         """
         return response
 
     @staticmethod
     def get_sys_info(req, ctx=None):
-        response = {"version": "2.4.0+build.3", "ready": True}
+        response = {"version": "2.6.0+build.5", "ready": True}
         return response
 
     @staticmethod
@@ -587,8 +633,8 @@ class MockCMLServer(object):
         return MockCMLServer._get_lab_element_state(req, ctx)
 
     @staticmethod
-    def get_lab_element_state_23(req, ctx=None):
-        return MockCMLServer._get_lab_element_state_23(req, ctx)
+    def get_lab_element_state_24(req, ctx=None):
+        return MockCMLServer._get_lab_element_state_24(req, ctx)
 
     @staticmethod
     def get_lab_element_state_down(req, ctx=None):
@@ -604,7 +650,7 @@ class MockCMLServer(object):
         return response
 
     @staticmethod
-    def _get_lab_element_state_23(req, ctx=None, n2_state="BOOTED"):
+    def _get_lab_element_state_24(req, ctx=None, n2_state="BOOTED"):
         response = {
             "nodes": {
                 "88119b68-9d08-40c4-90f5-6dc533fd0255": "BOOTED",
@@ -694,14 +740,13 @@ class MockCMLServer(object):
                 {"id": "i4", "node": "n1", "data": {"label": "donotuse2", "slot": 2, "state": "STARTED", "type": "physical"}},
                 {"id": "i5", "node": "n1", "data": {"label": "GigabitEthernet0/0/0/0", "slot": 3, "state": "STARTED", "type": "physical"}},
             ],
-            "lab_notes": "",
-            "lab_title": "Mock Test",
-            "lab_description": "",
-            "lab_owner": "admin",
-            "state": "STARTED",
-            "created_timestamp": 1597805276.8213837,
-            "cluster_id": "cluster_1",
-            "version": "0.0.3",
+            "lab": {
+                "description": "",
+                "notes": "",
+                "owner": "00000000-0000-4000-a000-000000000000",
+                "title": "Mock Test",
+                "version": "0.1.0",
+            },
         }
         return response
 
@@ -761,19 +806,18 @@ class MockCMLServer(object):
                 {"id": "i8", "node": "n1", "data": {"label": "donotuse2", "slot": 2, "state": "STOPPED", "type": "physical"}},
                 {"id": "i9", "node": "n1", "data": {"label": "GigabitEthernet0/0/0/0", "slot": 3, "state": "STOPPED", "type": "physical"}},
             ],
-            "lab_notes": "",
-            "lab_title": "Other Lab",
-            "lab_description": "",
-            "lab_owner": "admin",
-            "state": "STOPPED",
-            "created_timestamp": 1595337039.0416706,
-            "cluster_id": "cluster_1",
-            "version": "0.0.3",
+            "lab": {
+                "description": "",
+                "notes": "",
+                "owner": "00000000-0000-4000-a000-000000000000",
+                "title": "Other Lab",
+                "version": "0.1.0",
+            },
         }
         return response
 
     @staticmethod
-    def get_topology_23(req, ctx=None):
+    def get_topology_24(req, ctx=None):
         response = {
             "nodes": [
                 {
@@ -874,14 +918,13 @@ class MockCMLServer(object):
                     "data": {"label": "GigabitEthernet0/0/0/0", "slot": 3, "state": "STARTED", "type": "physical"},
                 },
             ],
-            "lab_notes": "",
-            "lab_title": "Mock Test 2.3",
-            "lab_description": "",
-            "lab_owner": "admin",
-            "state": "STARTED",
-            "created_timestamp": 1597805276.8213837,
-            "cluster_id": "cluster_1",
-            "version": "0.0.3",
+            "lab": {
+                "description": "",
+                "notes": "",
+                "owner": "00000000-0000-4000-a000-000000000000",
+                "title": "Mock Test 2.4",
+                "version": "0.1.0",
+            },
         }
         return response
 

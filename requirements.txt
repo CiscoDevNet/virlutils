@@ -4,4 +4,4 @@ jinja2
 libtmux>=0.34.0
 requests
 tabulate
-virl2-client>=2.2.1
+virl2-client>=2.6.0

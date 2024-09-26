@@ -32,7 +32,7 @@ class CMLTmuxTests(BaseCMLTest):
             mock_pane.send_keys.assert_has_calls(expected_calls, any_order=True)
 
     @patch("virl.cli.tmux.commands.libtmux.server.Server")
-    def test_cml_tmux_panes23(self, mock_server):
+    def test_cml_tmux_panes24(self, mock_server):
         with self.get_context() as m:
             # Mocking libtmux server
             mock_session = mock_server.return_value.new_session.return_value
@@ -44,19 +44,19 @@ class CMLTmuxTests(BaseCMLTest):
             self.setup_mocks(m)
             virl = self.get_virl()
             runner = CliRunner()
-            lab_id = self.get_cml23_id()
+            lab_id = self.get_cml24_id()
             runner.invoke(virl, ["use", "--id", lab_id])
             runner.invoke(virl, ["tmux"])
             mock_server.assert_called_once()
-            mock_server.return_value.new_session.assert_called_once_with(session_name="Mock Test 2_3-8811", kill_session=True)
+            mock_server.return_value.new_session.assert_called_once_with(session_name="Mock Test 2_4-8811", kill_session=True)
             expected_calls = [
                 call("printf '\\033]2;%s\\033\\\\' 'rtr-1'", suppress_history=True),
-                call("ssh -t admin@localhost open /Mock Test 2.3/rtr-1/0", suppress_history=True),
+                call("ssh -t admin@localhost open /Mock Test 2.4/rtr-1/0", suppress_history=True),
             ]
             mock_pane.send_keys.assert_has_calls(expected_calls, any_order=True)
 
     @patch("virl.cli.tmux.commands.libtmux.server.Server")
-    def test_cml_tmux_windows_23(self, mock_server):
+    def test_cml_tmux_windows_24(self, mock_server):
         with self.get_context() as m:
             # Mocking libtmux server
             mock_session = mock_server.return_value.new_session.return_value
@@ -66,11 +66,11 @@ class CMLTmuxTests(BaseCMLTest):
             self.setup_mocks(m)
             virl = self.get_virl()
             runner = CliRunner()
-            lab_id = self.get_cml23_id()
+            lab_id = self.get_cml24_id()
             runner.invoke(virl, ["use", "--id", lab_id])
             runner.invoke(virl, ["tmux", "--group", "windows"])
             mock_server.assert_called_once()
-            mock_server.return_value.new_session.assert_called_once_with(session_name="Mock Test 2_3-8811", kill_session=True)
+            mock_server.return_value.new_session.assert_called_once_with(session_name="Mock Test 2_4-8811", kill_session=True)
             expected_calls = [
                 call("rename-window", "rtr-1"),
             ]

@@ -25,6 +25,7 @@ jobs:
           pip install -U pip
       - name: Install dependencies
         run: |
+          pip install -r requirements.txt
           pip install -r test-requirements.txt
       - name: Execute tests
         run: |

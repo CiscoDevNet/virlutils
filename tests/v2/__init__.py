@@ -103,7 +103,7 @@ class BaseCMLTest(unittest.TestCase):
     def get_alt_title(self):
         return "Other Lab"
 
-    def get_cml23_id(self):
+    def get_cml24_id(self):
         return "88119b68-9d08-40c4-90f5-6dc533fd0254"
 
     def prep_respx(self, **kwargs):
@@ -138,22 +138,22 @@ class BaseCMLTest(unittest.TestCase):
             "populate_lab_tiles": MockCMLServer.get_lab_tiles,
             "labs/{}/topology".format(self.get_test_id()): MockCMLServer.get_topology,
             "labs/{}/topology".format(self.get_alt_id()): MockCMLServer.get_alt_topology,
-            "labs/{}/topology".format(self.get_cml23_id()): MockCMLServer.get_topology_23,
+            "labs/{}/topology".format(self.get_cml24_id()): MockCMLServer.get_topology_24,
             "labs/{}/lab_element_state".format(self.get_test_id()): MockCMLServer.get_lab_element_state,
-            "labs/{}/lab_element_state".format(self.get_cml23_id()): MockCMLServer.get_lab_element_state_23,
+            "labs/{}/lab_element_state".format(self.get_cml24_id()): MockCMLServer.get_lab_element_state_24,
             "system_information": MockCMLServer.get_sys_info,
             "labs/{}/state".format(self.get_test_id()): "STARTED",
-            "labs/{}/state".format(self.get_cml23_id()): "STARTED",
+            "labs/{}/state".format(self.get_cml24_id()): "STARTED",
             "labs/{}/state".format(self.get_alt_id()): "STOPPED",
             "labs/{}/check_if_converged".format(self.get_test_id()): True,
-            "labs/{}/check_if_converged".format(self.get_cml23_id()): True,
+            "labs/{}/check_if_converged".format(self.get_cml24_id()): True,
             "labs/{}/nodes/n1/check_if_converged".format(self.get_test_id()): True,
             "users": MockCMLServer.get_users,
         }
 
         text_dict = {
             "labs/{}/download".format(self.get_test_id()): MockCMLServer.download_lab,
-            "labs/{}/download".format(self.get_cml23_id()): MockCMLServer.download_lab_23,
+            "labs/{}/download".format(self.get_cml24_id()): MockCMLServer.download_lab_24,
             "labs/{}/download".format(self.get_alt_id()): MockCMLServer.download_alt_lab,
             "labs/{}/pyats_testbed".format(self.get_test_id()): MockCMLServer.get_pyats_testbed,
             "authok": MockCMLServer.auth_ok,
