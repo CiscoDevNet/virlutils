@@ -22,9 +22,13 @@ clean-test: ## remove test and coverage artifacts
 	rm -f .coverage
 	rm -fr htmlcov/
 	rm -f 5f0d96.yaml
+	rm -f 5f0d96_inventory.ini
+	rm -f 5f0d96_inventory.yaml
+	rm -f 5f0d96_testbed.yaml
 	rm -f default_inventory.ini
 	rm -f default_inventory.yaml
 	rm -f default_testbed.yaml
+	rm -f topology.yaml
 	rm -f .virl/cached_cml_labs/*
 	rm -f .virl/current_cml_lab
 
@@ -32,7 +36,7 @@ lint: ## check style with flake8
 	flake8
 
 coverage:
-	PYTHONWARNINGS="ignore::DeprecationWarning" coverage run --source=virl setup.py test
+	coverage run --source=virl -m pytest tests/v2/*
 
 report: coverage
 	coverage html
@@ -40,7 +44,7 @@ report: coverage
 	open htmlcov/index.html
 
 test: ## run tests quickly with the default Python
-	python -W ignore::DeprecationWarning setup.py test
+	pytest tests/v2/*
 
 release: dist ## package and upload a release
 	@echo "*** Uploading virlutils... ***"
