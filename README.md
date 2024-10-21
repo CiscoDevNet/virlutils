@@ -488,6 +488,12 @@ Technical Support: http://www.cisco.com/techsupport
 
 ```
 
+#### EVE-NG Lab Support
+
+The `cml up` command can convert EVE-NG labs to CML labs on the fly (".unl" to ".yaml" conversion) if you install the
+[eve2cml](https://pypi.org/project/eve2cml/) Python library.  With that library installed, a command such as
+`cml up -f my-lab.unl` will convert `my-lab.unl` to `my-lab.yaml` in the same directory and import it into CML.
+
 #### Ansible Inventory Generation
 
 quickly turn your simulations into an inventory file that can be used to run your playbooks
@@ -686,7 +692,6 @@ User bob successfully updated
 
 Check the cli help for more options.
 
-
 To delete one or multiple users.
 
 ``` sh
@@ -706,7 +711,6 @@ User bob successfully deleted
 │ chuck      │ False           │ Uncle Chuck │         │            │                        │
 ╘════════════╧═════════════════╧═════════════╧═════════╧════════════╧════════════════════════╛
 ```
-
 
 #### Groups
 

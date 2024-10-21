@@ -5,10 +5,17 @@ from subprocess import call
 import click
 
 from virl.api import CachedLab, VIRLServer
-from virl.helpers import (cache_lab, check_lab_cache, clear_current_lab,
-                          get_cml_client, get_command, get_current_lab,
-                          safe_join_existing_lab,
-                          safe_join_existing_lab_by_title, set_current_lab)
+from virl.helpers import (
+    cache_lab,
+    check_lab_cache,
+    clear_current_lab,
+    get_cml_client,
+    get_command,
+    get_current_lab,
+    safe_join_existing_lab,
+    safe_join_existing_lab_by_title,
+    set_current_lab,
+)
 
 
 def get_lab_title(fname):
@@ -127,6 +134,19 @@ def up(repo=None, provision=False, start=True, **kwargs):
             lab = safe_join_existing_lab_by_title(lab_name, client)
 
         if not lab and os.path.isfile(fname):
+            (lfname, lfext) = os.path.splitext(fname)
+            if lfext.lower() == ".unl":
+                # This is an EVE-NG lab.  Convert it if we can.
+                rc = call(["eve2cml", fname])
+                if rc != 0:
+                    click.secho(
+                        "ERROR: Failed to convert {} from EVE-NG to CML.  Is https://pypi.org/project/eve2cml/ installed?".format(fname),
+                        fg="red",
+                    )
+                    exit(rc)
+
+                fname = "{}.yaml".format(lfname)
+
             lname = get_lab_title(fname)
             click.secho("Importing lab {} from file {}".format(lname, fname))
             lab = client.import_lab_from_path(fname, title=lname)
