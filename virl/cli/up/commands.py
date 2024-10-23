@@ -137,7 +137,12 @@ def up(repo=None, provision=False, start=True, **kwargs):
             (lfname, lfext) = os.path.splitext(fname)
             if lfext.lower() == ".unl":
                 # This is an EVE-NG lab.  Convert it if we can.
-                rc = call(["eve2cml", fname])
+                rc = -1
+                try:
+                    rc = call(["eve2cml", fname])
+                except FileNotFoundError:
+                    pass
+
                 if rc != 0:
                     click.secho(
                         "ERROR: Failed to convert {} from EVE-NG to CML.  Is https://pypi.org/project/eve2cml/ installed?".format(fname),
