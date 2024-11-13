@@ -491,7 +491,7 @@ Technical Support: http://www.cisco.com/techsupport
 #### EVE-NG Lab Support
 
 The `cml up` command can convert EVE-NG labs to CML labs on the fly (".unl" to ".yaml" conversion) if you install the
-[eve2cml](https://pypi.org/project/eve2cml/) Python library.  With that library installed, a command such as
+[eve2cml](https://pypi.org/project/eve2cml/) Python package.  With that library package, a command such as
 `cml up -f my-lab.unl` will convert `my-lab.unl` to `my-lab.yaml` in the same directory and import it into CML.
 
 #### Ansible Inventory Generation
