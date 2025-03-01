@@ -10,7 +10,7 @@ from virl.helpers import get_cml_client, get_current_lab, safe_join_existing_lab
 @click.command()
 @click.argument("node", required=False)
 @click.option("--id", required=False, help="An existing node ID to stop (the node name argument is ignored)")
-def stop(node):
+def stop(node, id):
     """
     stop a node
     """

@@ -9,7 +9,7 @@ from virl.helpers import get_cml_client, get_current_lab, safe_join_existing_lab
 @click.command()
 @click.argument("node", required=False)
 @click.option("--id", required=False, help="An existing node ID to start (the node name argument is ignored)")
-def start(node):
+def start(node, id):
     """
     start a node
     """
