@@ -4,6 +4,11 @@ from click.testing import CliRunner
 
 from . import BaseCMLTest
 
+try:
+    from unittest.mock import patch
+except ImportError:
+    from mock import patch  # type: ignore
+
 
 class CMLStartTests(BaseCMLTest):
     def test_cml_start(self):
@@ -22,13 +27,13 @@ class CMLStartTests(BaseCMLTest):
     def test_cml_start_by_id(self):
         with self.get_context() as m:
             # Mock the request to return what we expect from the API.
-            self.setup_func("get", m, "labs/{}/nodes/n2/check_if_converged".format(self.get_test_id()), json=True)
-            self.setup_func("put", m, "labs/{}/nodes/n2/state/start".format(self.get_test_id()), json=None)
-            self.setup_func("get", m, "labs/{}/nodes/n2/check_if_converged".format(self.get_test_id()), json=True)
+            self.setup_func("get", m, "labs/{}/nodes/{}/check_if_converged".format(self.get_cml24_id(), self.get_cml24_rtr_2()), json=True)
+            self.setup_func("put", m, "labs/{}/nodes/{}/state/start".format(self.get_cml24_id(), self.get_cml24_rtr_2()), json=None)
+            self.setup_func("get", m, "labs/{}/nodes/{}/check_if_converged".format(self.get_cml24_id(), self.get_cml24_rtr_2()), json=True)
             self.setup_mocks(m)
             virl = self.get_virl()
             runner = CliRunner()
-            result = runner.invoke(virl, ["start", "--id"], "88119b68-9d08-40c4-90f5-6dc533fd0257")
+            result = runner.invoke(virl, ["start", "--id"], self.get_cml24_rtr_2())
             self.assertEqual(0, result.exit_code)
             self.assertNotIn("Node rtr-2 is already active", result.output)
 
@@ -48,19 +53,21 @@ class CMLStartTests(BaseCMLTest):
             self.setup_mocks(m)
             virl = self.get_virl()
             runner = CliRunner()
-            result = runner.invoke(virl, ["start", "--id", "88119b68-9d08-40c4-90f5-6dc533fd0256"])
+            result = runner.invoke(virl, ["start", "--id", self.get_cml24_rtr_1()])
             self.assertEqual(0, result.exit_code)
             self.assertIn("Node rtr-1 is already active", result.output)
 
-    def test_cml_start_missing_args(self):
+    @patch("virl.cli.stop.commands.call", autospec=False, return_value=0)
+    def test_cml_start_missing_args(self, call_mock):
         with self.get_context() as m:
             # Mock the request to return what we expect from the API.
             self.setup_mocks(m)
             virl = self.get_virl()
             runner = CliRunner()
             result = runner.invoke(virl, ["start"])
-            self.assertEqual(1, result.exit_code)
-            self.assertIn("Usage: cml start", result.output)
+            self.assertEqual(0, result.exit_code)
+            # The "call" function was called once
+            self.assertEqual(1, len(call_mock.mock_calls))
 
     def test_cml_start_bogus_node(self):
         with self.get_context() as m:

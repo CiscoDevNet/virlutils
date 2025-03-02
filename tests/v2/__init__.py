@@ -106,6 +106,12 @@ class BaseCMLTest(unittest.TestCase):
     def get_cml24_id(self):
         return "88119b68-9d08-40c4-90f5-6dc533fd0254"
 
+    def get_cml24_rtr_1(self):
+        return "88119b68-9d08-40c4-90f5-6dc533fd0256"
+
+    def get_cml24_rtr_2(self):
+        return "88119b68-9d08-40c4-90f5-6dc533fd0257"
+
     def prep_respx(self, **kwargs):
         if "body" in kwargs:
             kwargs["content"] = kwargs.pop("body")
@@ -148,6 +154,7 @@ class BaseCMLTest(unittest.TestCase):
             "labs/{}/check_if_converged".format(self.get_test_id()): True,
             "labs/{}/check_if_converged".format(self.get_cml24_id()): True,
             "labs/{}/nodes/n1/check_if_converged".format(self.get_test_id()): True,
+            "labs/{}/nodes/{}/check_if_converged".format(self.get_cml24_id(), self.get_cml24_rtr_1()): True,
             "users": MockCMLServer.get_users,
         }
 
