@@ -33,7 +33,8 @@ class CMLStartTests(BaseCMLTest):
             self.setup_mocks(m)
             virl = self.get_virl()
             runner = CliRunner()
-            result = runner.invoke(virl, ["start", "--id"], self.get_cml24_rtr_2())
+            result = runner.invoke(virl, ["use", "--id", self.get_cml24_id()])
+            result = runner.invoke(virl, ["start", "--id", self.get_cml24_rtr_2()])
             self.assertEqual(0, result.exit_code)
             self.assertNotIn("Node rtr-2 is already active", result.output)
 
@@ -53,11 +54,13 @@ class CMLStartTests(BaseCMLTest):
             self.setup_mocks(m)
             virl = self.get_virl()
             runner = CliRunner()
+            result = runner.invoke(virl, ["use", "--id", self.get_cml24_id()])
             result = runner.invoke(virl, ["start", "--id", self.get_cml24_rtr_1()])
+            print(result.output)
             self.assertEqual(0, result.exit_code)
             self.assertIn("Node rtr-1 is already active", result.output)
 
-    @patch("virl.cli.stop.commands.call", autospec=False, return_value=0)
+    @patch("virl.cli.start.commands.call", autospec=False, return_value=0)
     def test_cml_start_missing_args(self, call_mock):
         with self.get_context() as m:
             # Mock the request to return what we expect from the API.
