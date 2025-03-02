@@ -19,6 +19,19 @@ class CMLStartTests(BaseCMLTest):
             self.assertEqual(0, result.exit_code)
             self.assertNotIn("Node rtr-2 is already active", result.output)
 
+    def test_cml_start_by_id(self):
+        with self.get_context() as m:
+            # Mock the request to return what we expect from the API.
+            self.setup_func("get", m, "labs/{}/nodes/n2/check_if_converged".format(self.get_test_id()), json=True)
+            self.setup_func("put", m, "labs/{}/nodes/n2/state/start".format(self.get_test_id()), json=None)
+            self.setup_func("get", m, "labs/{}/nodes/n2/check_if_converged".format(self.get_test_id()), json=True)
+            self.setup_mocks(m)
+            virl = self.get_virl()
+            runner = CliRunner()
+            result = runner.invoke(virl, ["start", "--id"], "88119b68-9d08-40c4-90f5-6dc533fd0257")
+            self.assertEqual(0, result.exit_code)
+            self.assertNotIn("Node rtr-2 is already active", result.output)
+
     def test_cml_start_already_active(self):
         with self.get_context() as m:
             # Mock the request to return what we expect from the API.
@@ -28,6 +41,26 @@ class CMLStartTests(BaseCMLTest):
             result = runner.invoke(virl, ["start", "rtr-1"])
             self.assertEqual(0, result.exit_code)
             self.assertIn("Node rtr-1 is already active", result.output)
+
+    def test_cml_start_already_active_by_id(self):
+        with self.get_context() as m:
+            # Mock the request to return what we expect from the API.
+            self.setup_mocks(m)
+            virl = self.get_virl()
+            runner = CliRunner()
+            result = runner.invoke(virl, ["start", "--id", "88119b68-9d08-40c4-90f5-6dc533fd0256"])
+            self.assertEqual(0, result.exit_code)
+            self.assertIn("Node rtr-1 is already active", result.output)
+
+    def test_cml_start_missing_args(self):
+        with self.get_context() as m:
+            # Mock the request to return what we expect from the API.
+            self.setup_mocks(m)
+            virl = self.get_virl()
+            runner = CliRunner()
+            result = runner.invoke(virl, ["start"])
+            self.assertEqual(1, result.exit_code)
+            self.assertIn("Usage: cml start", result.output)
 
     def test_cml_start_bogus_node(self):
         with self.get_context() as m:

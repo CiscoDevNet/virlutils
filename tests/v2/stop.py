@@ -17,6 +17,17 @@ class CMLStopTests(BaseCMLTest):
             self.assertEqual(0, result.exit_code)
             self.assertNotIn("Node rtr-1 is already stopped", result.output)
 
+    def test_cml_sto_by_id(self):
+        with self.get_context() as m:
+            self.setup_func("get", m, "labs/{}/nodes/n1/check_if_converged".format(self.get_test_id()), json=True)
+            self.setup_func("put", m, "labs/{}/nodes/n1/state/stop".format(self.get_test_id()), json=None)
+            self.setup_mocks(m)
+            virl = self.get_virl()
+            runner = CliRunner()
+            result = runner.invoke(virl, ["stop", "--id", "88119b68-9d08-40c4-90f5-6dc533fd0256"])
+            self.assertEqual(0, result.exit_code)
+            self.assertNotIn("Node rtr-1 is already stopped", result.output)
+
     def test_cml_stop_already_stopped(self):
         with self.get_context() as m:
             # Mock the request to return what we expect from the API.
@@ -26,6 +37,26 @@ class CMLStopTests(BaseCMLTest):
             result = runner.invoke(virl, ["stop", "rtr-2"])
             self.assertEqual(0, result.exit_code)
             self.assertIn("Node rtr-2 is already stopped", result.output)
+
+    def test_cml_stop_already_stopped_by_id(self):
+        with self.get_context() as m:
+            # Mock the request to return what we expect from the API.
+            self.setup_mocks(m)
+            virl = self.get_virl()
+            runner = CliRunner()
+            result = runner.invoke(virl, ["stop", "--id", "88119b68-9d08-40c4-90f5-6dc533fd0257"])
+            self.assertEqual(0, result.exit_code)
+            self.assertIn("Node rtr-2 is already stopped", result.output)
+
+    def test_cml_stop_missing_args(self):
+        with self.get_context() as m:
+            # Mock the request to return what we expect from the API.
+            self.setup_mocks(m)
+            virl = self.get_virl()
+            runner = CliRunner()
+            result = runner.invoke(virl, ["stop"])
+            self.assertEqual(1, result.exit_code)
+            self.assertIn("Usage: cml stop", result.output)
 
     def test_cml_stop_bogus_node(self):
         with self.get_context() as m:
