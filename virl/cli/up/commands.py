@@ -65,6 +65,25 @@ def start_lab(lab, provision=False):
             time.sleep(1)
 
 
+def _build_command(cmd, provision, start, **kwargs):
+    if kwargs["f"]:
+        cmd += ["-f", kwargs["f"]]
+    if provision:
+        cmd.append("--provision")
+    else:
+        cmd.append("--noprovision")
+    if start:
+        cmd.append("--start")
+    else:
+        cmd.append("--no-start")
+    if kwargs["id"]:
+        cmd += ["--id", kwargs["id"]]
+    if kwargs["lab_name"]:
+        cmd += ["--lab-name", kwargs["lab_name"]]
+
+    return cmd
+
+
 @click.command()
 @click.argument("repo", default="default")
 @click.option(
@@ -157,10 +176,17 @@ def up(repo=None, provision=False, start=True, **kwargs):
             lab = client.import_lab_from_path(fname, title=lname)
         elif not lab:
             # try to pull from virlfiles
-            if repo and (os.path.basename(fname) == "topology.yaml" or os.path.basename(fname) == "topology.virl"):
-                rc = call([get_command(), "pull", repo])
+            if repo:
+                cmd = [get_command(), "pull", repo]
+                if kwargs["f"]:
+                    cmd += ["--file", kwargs["f"]]
+
+                rc = call(cmd)
                 if rc == 0:
-                    exit(call([get_command(), "up"]))
+                    cmd = [get_command(), "up"]
+                    cmd = _build_command(provision, start, kwargs)
+
+                    exit(call(cmd))
 
         if lab:
             if lab.is_active():
