@@ -184,7 +184,7 @@ def up(repo=None, provision=False, start=True, **kwargs):
                 rc = call(cmd)
                 if rc == 0:
                     cmd = [get_command(), "up"]
-                    cmd = _build_command(provision, start, kwargs)
+                    cmd = _build_command(cmd, provision, start, kwargs)
 
                     exit(call(cmd))
 
