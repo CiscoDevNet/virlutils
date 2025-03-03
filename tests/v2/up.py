@@ -244,7 +244,7 @@ class TestCMLUp(BaseCMLTest):
 
         with self.get_context() as m:
             self.setup_mocks(m)
-            topo_url = "https://raw.githubusercontent.com/foo/bar/master/topology.yaml"
+            topo_url = "https://raw.githubusercontent.com/foo/bar/main/topology.yaml"
             self.setup_func("get", m, topo_url, json=MockGitHub.get_topology)
             virl = self.get_virl()
             runner = CliRunner()
