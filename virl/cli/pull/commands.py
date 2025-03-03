@@ -13,7 +13,7 @@ def do_pull(repo, fname, branch="master", recurse=False):
         click.secho("Saved topology as {}".format(fname), fg="green")
         return True
     else:
-        click.secho("Error pulling {} form {} on branch {} - repo, file, or branch not found".format(fname, repo, branch), fg="red")
+        click.secho("Error pulling {} from {} on branch {} - repo, file, or branch not found".format(fname, repo, branch), fg="red")
         return False
 
 
