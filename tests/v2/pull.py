@@ -10,7 +10,7 @@ class Tests(BaseCMLTest):
         with requests_mock.mock() as m:
             # Mock the request to return what we expect from the API.
             topo_url = "https://raw.githubusercontent.com/"
-            topo_url += "foo/bar/master/topology.yaml"
+            topo_url += "foo/bar/main/topology.yaml"
             m.get(topo_url, json=MockGitHub.get_topology)
             virl = self.get_virl()
             runner = CliRunner()
