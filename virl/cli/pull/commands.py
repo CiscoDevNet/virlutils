@@ -23,7 +23,7 @@ def do_pull(repo, fname, branch="master", recurse=False):
 @click.option("--branch", default="main", required=False, help="Branch name from which to pull (default: main)")
 def pull(repo, file, branch):
     """
-    pull topology.yaml from repo
+    pull CML lab YAML file from repo
     """
     ret = do_pull(repo, fname=file, branch=branch)
     if not ret:
