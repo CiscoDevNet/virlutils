@@ -25,12 +25,6 @@ def command(node, command, config, **kwargs):
         lab = safe_join_existing_lab(current_lab, client)
         if lab:
             pylab = None
-            try:
-                pylab = ClPyats(lab)
-            except PyatsNotInstalled:
-                click.secho("pyATS is not installed, run 'pip install pyats'", fg="red")
-                exit(1)
-
             pyats_username = server.config.get("CML_DEVICE_USERNAME")
             pyats_password = server.config.get("CML_DEVICE_PASSWORD")
             pyats_auth_password = server.config.get("CML_DEVICE_ENABLE_PASSWORD")
@@ -42,7 +36,12 @@ def command(node, command, config, **kwargs):
             if pyats_auth_password:
                 os.environ["PYATS_AUTH_PASS"] = pyats_auth_password
 
-            pylab.sync_testbed(server.user, server.passwd)
+            try:
+                pylab = ClPyats(lab)
+                pylab.sync_testbed(server.user, server.passwd)
+            except PyatsNotInstalled:
+                click.secho("pyATS is not installed, run 'pip install pyats'", fg="red")
+                exit(1)
 
             try:
                 result = ""
