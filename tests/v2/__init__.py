@@ -140,6 +140,7 @@ class BaseCMLTest(unittest.TestCase):
 
     def setup_mocks(self, m):
         json_dict = {
+            "authentication": MockCMLServer.authentication,
             "labs": MockCMLServer.get_labs,
             "populate_lab_tiles": MockCMLServer.get_lab_tiles,
             "labs/{}/topology".format(self.get_test_id()): MockCMLServer.get_topology,
