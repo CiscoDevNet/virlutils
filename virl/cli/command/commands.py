@@ -1,5 +1,3 @@
-import os
-
 import click
 from virl2_client.models.cl_pyats import (ClPyats, PyatsDeviceNotFound,
                                           PyatsNotInstalled)
@@ -29,19 +27,18 @@ def command(node, command, config, **kwargs):
             pyats_password = server.config.get("CML_DEVICE_PASSWORD")
             pyats_auth_password = server.config.get("CML_DEVICE_ENABLE_PASSWORD")
 
-            if pyats_username:
-                os.environ["PYATS_USERNAME"] = pyats_username
-            if pyats_password:
-                os.environ["PYATS_PASSWORD"] = pyats_password
-            if pyats_auth_password:
-                os.environ["PYATS_AUTH_PASS"] = pyats_auth_password
-
             try:
                 pylab = ClPyats(lab)
                 pylab.sync_testbed(server.user, server.passwd)
             except PyatsNotInstalled:
                 click.secho("pyATS is not installed, run 'pip install pyats'", fg="red")
                 exit(1)
+
+            for device in pylab._testbed.devices.values():
+                if device.name != "terminal_server":
+                    device.credentials.default.username = pyats_username or "cisco"
+                    device.credentials.default.password = pyats_password or "cisco"
+                    device.credentials.enable.password = pyats_auth_password or "cisco"
 
             try:
                 result = ""
