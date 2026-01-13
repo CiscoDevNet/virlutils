@@ -611,12 +611,27 @@ class MockCMLServer(object):
 
     @staticmethod
     def get_sys_info(req, ctx=None):
-        response = {"version": "2.7.0+build.7", "ready": True}
+        response = {"version": "2.8.0+build.6", "ready": True}
         return response
 
     @staticmethod
     def auth_ok(req, ctx=None):
         return "OK"
+
+    @staticmethod
+    def authentication(req, ctx=None):
+        return {
+            "username": "admin",
+            "id": "00000000-0000-4000-a000-000000000000",
+            "token": (
+                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjb20uY2lzY28udmlybCIsI"
+                "nN1YiI6IjAwMDAwMDAwLTAwMDAtNDAwMC1hMDAwLTAwMDAwMDAwMDAwMCIsImV4cCI6MTc"
+                "2ODAzNzA0OSwiaWF0IjoxNzY3OTUwNjQ5LCJqdGkiOiIzZDczZDY2Ni02OTcyLTRhNzktO"
+                "TQ1ZS02OTAyZGFiZTJlNTQifQ.4kGui1oSHo56LkssB5AXHYpCpZsYCNuGqQjngiFyhX8"
+            ),
+            "admin": True,
+            "error": None,
+        }
 
     @staticmethod
     def authenticate(req, ctx=None):
