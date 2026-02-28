@@ -3,7 +3,7 @@ import sys
 import click
 
 from virl.api import VIRLServer
-from virl.helpers import get_cml_client
+from virl.helpers import get_cml_client, get_group_associations, get_group_member_ids
 
 
 @click.command()
@@ -32,13 +32,8 @@ def update_groups(groupnames, member, add_all_users, lab, add_all_labs):
     client = get_cml_client(server)
 
     all_users = client.user_management.users()
-    all_users_ids = [u["id"] for u in all_users]
-    members_ids = all_users_ids if add_all_users else [u["id"] for u in all_users if u["username"] in member]
-    members_ids = members_ids if members_ids else None
-
-    lab_ids = [{"id": lab_id, "permission": permission} for lab_id, permission in lab]
-    lab_ids = None if add_all_labs is None else [{"id": lid, "permission": add_all_labs} for lid in client.get_lab_list()]
-    lab_ids = lab_ids if lab_ids else None
+    members_ids = get_group_member_ids(all_users, member, add_all_users)
+    associations = get_group_associations(client, lab, add_all_labs)
 
     groups = client.group_management.groups()
     group_mapping = {group["name"]: group["id"] for group in groups}
@@ -47,10 +42,8 @@ def update_groups(groupnames, member, add_all_users, lab, add_all_labs):
         kwargs = {
             "group_id": group_id,
             "members": members_ids,
-            "labs": lab_ids,
+            "associations": associations,
         }
-        # only pass kwargs that are not None
-        kwargs = {k: v for k, v in kwargs.items() if v is not None}
         try:
             client.group_management.update_group(**kwargs)
             click.secho(f"Group {name} successfully updated", fg="green")

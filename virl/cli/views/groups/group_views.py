@@ -20,7 +20,12 @@ def group_list_table(groups, verbose=False):
         tr.append(wrapped_description)
 
         tr.append("\n".join(group["members"]))
-        tr.append("\n".join(f"{lab['title']} ({lab['permission']})" for lab in group["labs"]))
+        tr.append(
+            "\n".join(
+                f"{lab['title']} ({lab.get('permission') or ','.join(lab.get('permissions', []))})"
+                for lab in group["labs"]
+            )
+        )
         table.append(tr)
     # wrap the output in this try/except block as some terminals
     # may have problem with the 'fancy_grid'

@@ -285,6 +285,35 @@ def get_cml_client(server, ignore=False):
     return client
 
 
+def convert_permissions(permission):
+    """Map legacy CLI permission names to CML permission lists."""
+    if permission == "read_write":
+        return ["lab_view", "lab_edit", "lab_exec", "lab_admin"]
+    return ["lab_view"]
+
+
+def get_group_member_ids(all_users, members, add_all_users):
+    """Build target member IDs for group create/update payloads."""
+    if add_all_users:
+        return [u["id"] for u in all_users]
+    return [u["id"] for u in all_users if u["username"] in members]
+
+
+def get_group_associations(client, labs, add_all_labs):
+    """Build target lab associations for group create/update payloads."""
+    if add_all_labs is not None:
+        return [
+            {"id": lab_id, "permissions": convert_permissions(add_all_labs)}
+            for lab_id in client.get_lab_list()
+        ]
+    if labs:
+        return [
+            {"id": lab_id, "permissions": convert_permissions(permission)}
+            for lab_id, permission in labs
+        ]
+    return []
+
+
 def get_command():
     """
     Get the command that invoked virlutils.
