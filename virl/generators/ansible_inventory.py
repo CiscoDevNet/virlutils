@@ -57,7 +57,7 @@ def generate_inventory_dict(lab, server):
             print("Placing {} into ansible group {}".format(name, ansible_group))
             if ansible_group not in inventory["all"]["children"]:
                 inventory["all"]["children"][ansible_group] = dict()
-            if name not in inventory["all"]["children"]:
+            if name not in inventory["all"]["children"][ansible_group]:
                 inventory["all"]["children"][ansible_group][name] = entry
         else:
             inventory["all"]["hosts"][name] = entry
