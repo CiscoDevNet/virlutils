@@ -22,7 +22,7 @@ def lab_info(lab, server, protocol):
         name = node.label
         entry["name"] = name
         entry["ned"] = "unknown"
-        entry["ns"] = "unkown"
+        entry["ns"] = "unknown"
 
         # determine device/os type
         try:
