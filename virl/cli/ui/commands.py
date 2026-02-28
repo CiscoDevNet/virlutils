@@ -1,4 +1,4 @@
-import subprocess
+import webbrowser
 
 import click
 
@@ -20,4 +20,4 @@ def ui():
         lab = safe_join_existing_lab(current_lab, client)
         if lab:
             url = "https://{}/lab/{}".format(server.host, current_lab)
-            subprocess.Popen(["open", url])
+            webbrowser.open(url)

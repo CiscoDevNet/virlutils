@@ -1,4 +1,4 @@
-import subprocess
+import webbrowser
 
 import click
 
@@ -12,4 +12,4 @@ def cockpit():
     """
     server = VIRLServer()
     url = "https://{}:9090".format(server.host)
-    subprocess.Popen(["open", url])
+    webbrowser.open(url)
