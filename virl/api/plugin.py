@@ -131,7 +131,7 @@ def load_plugins(basedirs):
 
     modules = iter_modules(path=basedirs)
     for d in basedirs:
-        if os.path.isdir:
+        if os.path.isdir(d):
             sys.path.append(d)
 
     for mod in modules:
