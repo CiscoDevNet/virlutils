@@ -4,8 +4,7 @@ import click
 import libtmux
 
 from virl.api import VIRLServer
-from virl.helpers import (get_cml_client, get_current_lab,
-                          safe_join_existing_lab)
+from virl.helpers import get_cml_client, get_current_lab, safe_join_existing_lab
 
 
 def connect_tmux(session_title, node_console_cmd, group):
@@ -20,7 +19,7 @@ def connect_tmux(session_title, node_console_cmd, group):
                 panes_len += 1
                 pane = window.panes[0]
             else:
-                pane = window.split_window()
+                pane = window.split()
             pane.send_keys("printf '\\033]2;%s\\033\\\\' '{}'".format(label), suppress_history=True)
             pane.send_keys(cmd, suppress_history=True)
             window.select_layout("tiled")
@@ -41,7 +40,7 @@ def connect_tmux(session_title, node_console_cmd, group):
     if "TMUX" in os.environ:
         session.switch_client()
     else:
-        session.attach_session()
+        session.attach()
 
 
 @click.command(help="console to all nodes using tmux")
