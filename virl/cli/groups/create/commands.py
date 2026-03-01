@@ -3,7 +3,7 @@ import sys
 import click
 
 from virl.api import VIRLServer
-from virl.helpers import get_cml_client
+from virl.helpers import get_cml_client, get_group_associations, get_group_member_ids
 
 
 @click.command()
@@ -32,17 +32,14 @@ def create_groups(groupnames, member, add_all_users, lab, add_all_labs):
     client = get_cml_client(server)
 
     all_users = client.user_management.users()
-    all_users_ids = [u["id"] for u in all_users]
-    members_ids = all_users_ids if add_all_users else [u["id"] for u in all_users if u["username"] in member]
-
-    lab_ids = [{"id": lab_id, "permission": permission} for lab_id, permission in lab]
-    lab_ids = None if add_all_labs is None else [{"id": lid, "permission": add_all_labs} for lid in client.get_lab_list()]
+    members_ids = get_group_member_ids(all_users, member, add_all_users)
+    associations = get_group_associations(client, lab, add_all_labs)
 
     for name in groupnames:
         kwargs = {
             "name": name,
             "members": members_ids,
-            "labs": lab_ids,
+            "associations": associations,
         }
         try:
             client.group_management.create_group(**kwargs)

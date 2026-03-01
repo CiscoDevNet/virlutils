@@ -47,8 +47,11 @@ class TestCMLGroups(BaseCMLTest):
         "name": "group",
         "description": "",
         "members": ["00000000-0000-4000-a000-000000000000"],
-        "labs": [
-            {"id": "88119b68-9d08-40c4-90f5-6dc533fd0254", "permission": "read_write"},
+        "associations": [
+            {
+                "id": "88119b68-9d08-40c4-90f5-6dc533fd0254",
+                "permissions": ["lab_view", "lab_edit", "lab_exec", "lab_admin"],
+            },
         ],
     }
 
@@ -62,8 +65,16 @@ class TestCMLGroups(BaseCMLTest):
             "name": "group",
             "description": "",
             "members": ["00000000-0000-4000-a000-000000000000"],
-            "labs": [
-                {"id": "88119b68-9d08-40c4-90f5-6dc533fd0254", "permission": "read_write"},
+            "associations": [
+                {
+                    "id": "88119b68-9d08-40c4-90f5-6dc533fd0254",
+                    "permissions": [
+                        "lab_view",
+                        "lab_edit",
+                        "lab_exec",
+                        "lab_admin",
+                    ],
+                },
             ],
         },
     ]

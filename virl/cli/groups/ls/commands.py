@@ -18,7 +18,13 @@ def list_groups(verbose):
     groups = client.group_management.groups()
     for group in groups:
         group["members"] = [user_mapping[uid] for uid in group["members"]]
-        group["labs"] = [{"title": labs_mapping[lab["id"]], "permission": lab["permission"]} for lab in group["labs"]]
+        group["associations"] = [
+            {
+                "title": labs_mapping.get(assoc["id"], assoc["id"]),
+                "permissions": assoc.get("permissions"),
+            }
+            for assoc in group.get("associations", [])
+        ]
     try:
         pl = ViewerPlugin(viewer="group")
         pl.visualize(groups=groups)
