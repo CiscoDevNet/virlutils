@@ -31,8 +31,13 @@ def _get_from_file(virlrc, prop_name):
             config = fh.readlines()
 
         for line in config:
-            if line.startswith(prop_name):
-                prop = line.split("=")[1].strip()
+            stripped = line.strip()
+            if not stripped or stripped.startswith("#") or "=" not in stripped:
+                continue
+
+            key, prop = stripped.split("=", 1)
+            if key.strip() == prop_name:
+                prop = prop.strip()
                 if prop.startswith('"') and prop.endswith('"'):
                     prop = prop[1:-1]
                 return prop
