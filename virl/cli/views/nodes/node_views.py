@@ -10,7 +10,8 @@ def node_list_table(nodes, computes):
         headers.append("Compute Node")
 
     headers += ["State", "Wiped?", "L3 Address(es)"]
-    skip_types = []
+    # These node types do not expose the runtime details expected by this table.
+    skip_types = ["external_connector", "unmanaged_switch"]
     for node in nodes:
         # Skip a full operational sync per node.
         node.lab.auto_sync = True
