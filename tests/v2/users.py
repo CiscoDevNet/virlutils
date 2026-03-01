@@ -140,6 +140,18 @@ class TestCMLUsers(BaseCMLTest):
             result = runner.invoke(virl, ["users", "update", "nonexistent_user"])
             self.assertEqual(1, result.exit_code)
 
+    def test_cml_users_update_all_users(self):
+        with self.get_context() as m:
+            self.setup_mocks(m)
+            self.setup_func("get", m, "users", json=self.get_users)
+            self.setup_func("get", m, "groups", json=self.get_groups)
+            self.setup_func("patch", m, "users/00000000-0000-4000-a000-000000000000", json=self.patch_users)
+            self.setup_func("patch", m, "users/9e4e75b4-aaab-47af-9edb-9364460a81ae", json=self.patch_users)
+            virl = self.get_virl()
+            runner = CliRunner()
+            result = runner.invoke(virl, ["users", "update", "placeholder", "--all-users"])
+            self.assertEqual(0, result.exit_code)
+
     def test_cml_users_delete_user(self):
         with self.get_context() as m:
             self.setup_mocks(m)
