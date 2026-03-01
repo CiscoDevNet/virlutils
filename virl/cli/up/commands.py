@@ -199,7 +199,7 @@ def up(repo=None, provision=False, start=True, **kwargs):
         else:
             click.secho("Could not find a lab to start.  Maybe try -f", fg="red")
             exit(1)
-    elif clab:
+    else:
         click.secho("Lab {} (ID: {}) is already set as the current lab".format(clab.title, current_lab))
         if not clab.is_active() and start:
             start_lab(clab, provision)

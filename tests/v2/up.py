@@ -6,9 +6,9 @@ from . import BaseCMLTest
 from .mocks.github import MockGitHub  # noqa
 
 try:
-    from unittest.mock import patch
+    from unittest.mock import Mock, patch
 except ImportError:
-    from mock import patch  # noqa
+    from mock import Mock, patch  # noqa
 
 
 class TestCMLUp(BaseCMLTest):
@@ -188,6 +188,49 @@ class TestCMLUp(BaseCMLTest):
             self.assertIn(
                 "Lab {} (ID: {}) is already set as the current lab".format(self.get_test_title(), self.get_test_id()), result.output
             )
+
+    def test_cml_up_after_use_no_start(self):
+        super().setUp()
+        with self.get_context() as m:
+            # Mock the request to return what we expect from the API.
+            self.setup_mocks(m)
+            virl = self.get_virl()
+            runner = CliRunner()
+            result = runner.invoke(virl, ["up", "--no-start"])
+            self.assertEqual(0, result.exit_code)
+            self.assertIn(
+                "Lab {} (ID: {}) is already set as the current lab".format(self.get_test_title(), self.get_test_id()), result.output
+            )
+            self.assertNotIn("Starting lab", result.output)
+
+    @patch("virl.cli.up.commands.start_lab", autospec=False)
+    @patch("virl.cli.up.commands.safe_join_existing_lab", autospec=False)
+    @patch("virl.cli.up.commands.get_current_lab", autospec=False)
+    @patch("virl.cli.up.commands.get_cml_client", autospec=False)
+    @patch("virl.cli.up.commands.VIRLServer", autospec=False)
+    def test_cml_up_after_use_starts_inactive_current_lab(
+        self,
+        _server_mock,
+        get_cml_client_mock,
+        get_current_lab_mock,
+        safe_join_existing_lab_mock,
+        start_lab_mock,
+    ):
+        get_cml_client_mock.return_value = object()
+        get_current_lab_mock.return_value = "current-lab-id"
+        inactive_lab = Mock()
+        inactive_lab.id = "current-lab-id"
+        inactive_lab.title = "Current Lab"
+        inactive_lab.is_active.return_value = False
+        safe_join_existing_lab_mock.return_value = inactive_lab
+
+        virl = self.get_virl()
+        runner = CliRunner()
+        result = runner.invoke(virl, ["up"])
+
+        self.assertEqual(0, result.exit_code)
+        self.assertIn("Lab Current Lab (ID: current-lab-id) is already set as the current lab", result.output)
+        start_lab_mock.assert_called_once_with(inactive_lab, False)
 
     def test_cml_up_running_lab(self):
         with self.get_context() as m:
