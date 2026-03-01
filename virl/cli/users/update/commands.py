@@ -32,7 +32,7 @@ def update_users(usernames, admin, group, remove_from_all_groups, change_passwor
 
     users = client.user_management.users()
     user_mapping = {user["username"]: user["id"] for user in users}
-    all_usernames = users if all_users else usernames
+    all_usernames = [user["username"] for user in users] if all_users else usernames
 
     for username in all_usernames:
         user_id = user_mapping[username]
