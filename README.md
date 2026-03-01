@@ -4,7 +4,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/CiscoDevNet/virlutils/badge.svg?branch=master)](https://coveralls.io/github/CiscoDevNet/virlutils?branch=master)
 [![PyPI version](https://badge.fury.io/py/virlutils.svg)](https://badge.fury.io/py/virlutils)
 
-A collection of utilities for interacting with [Cisco Modeling Labs (CML)](https://developer.cisco.com/modeling-labs) v2.6+.
+A collection of utilities for interacting with [Cisco Modeling Labs (CML)](https://developer.cisco.com/modeling-labs) v2.8+.
 
 ## virl up / cml up
 
@@ -61,7 +61,7 @@ Commands:
 
 ## Prerequisites
 
-- Python 3.8+ (tested with Python 3.8, 3.9, 3.10, 3.11 and 3.12)
+- Python 3.10+ (tested with Python 3.10, 3.11 and 3.12)
 
 ## Installation
 
