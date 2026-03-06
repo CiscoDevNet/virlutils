@@ -279,7 +279,11 @@ def get_cml_client(server, ignore=False):
     os.environ.pop("VIRL2_PASS", None)
     os.environ.pop("VIRL2_URL", None)
 
-    client = ClientLibrary(server.host, server.user, server.passwd, raise_for_auth_failure=True, ssl_verify=ssl_verify)
+    client = ClientLibrary(server.host, server.user, server.passwd,
+                           raise_for_auth_failure=True,
+                           ssl_verify=ssl_verify,
+                           client_type="virlutils",
+    )
     logger.setLevel(level)
 
     return client
