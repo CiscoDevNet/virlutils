@@ -9,7 +9,7 @@ import sys
 
 import click
 from requests.exceptions import HTTPError
-from virl2_client import ClientLibrary
+from virl2_client import ClientLibrary, Version
 
 
 # http://code.activestate.com/recipes/578035-disable-file-system-redirector/
@@ -279,11 +279,18 @@ def get_cml_client(server, ignore=False):
     os.environ.pop("VIRL2_PASS", None)
     os.environ.pop("VIRL2_URL", None)
 
-    client = ClientLibrary(server.host, server.user, server.passwd,
-                           raise_for_auth_failure=True,
-                           ssl_verify=ssl_verify,
-                           client_type="virlutils",
-    )
+    if ClientLibrary.VERSION >= Version("2.9.0"):
+        client = ClientLibrary(server.host, server.user, server.passwd,
+                               raise_for_auth_failure=True,
+                               ssl_verify=ssl_verify,
+                               client_type="VirlUtils",
+        )
+    else:
+        client = ClientLibrary(server.host, server.user, server.passwd,
+                               raise_for_auth_failure=True,
+                               ssl_verify=ssl_verify,
+        )
+
     logger.setLevel(level)
 
     return client
