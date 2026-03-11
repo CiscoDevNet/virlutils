@@ -282,15 +282,21 @@ def get_cml_client(server, ignore=False):
 
     version = getattr(ClientLibrary, "VERSION", None)
     if version is not None and version >= Version("2.9.0"):
-        client = ClientLibrary(server.host, server.user, server.passwd,
-                               raise_for_auth_failure=True,
-                               ssl_verify=ssl_verify,
-                               client_type="VirlUtils",
+        client = ClientLibrary(
+            server.host,
+            server.user,
+            server.passwd,
+            raise_for_auth_failure=True,
+            ssl_verify=ssl_verify,
+            client_type="CmlUtils",
         )
     else:
-        client = ClientLibrary(server.host, server.user, server.passwd,
-                               raise_for_auth_failure=True,
-                               ssl_verify=ssl_verify,
+        client = ClientLibrary(
+            server.host,
+            server.user,
+            server.passwd,
+            raise_for_auth_failure=True,
+            ssl_verify=ssl_verify,
         )
 
     logger.setLevel(level)
@@ -315,15 +321,9 @@ def get_group_member_ids(all_users, members, add_all_users):
 def get_group_associations(client, labs, add_all_labs):
     """Build target lab associations for group create/update payloads."""
     if add_all_labs is not None:
-        return [
-            {"id": lab_id, "permissions": convert_permissions(add_all_labs)}
-            for lab_id in client.get_lab_list()
-        ]
+        return [{"id": lab_id, "permissions": convert_permissions(add_all_labs)} for lab_id in client.get_lab_list()]
     if labs:
-        return [
-            {"id": lab_id, "permissions": convert_permissions(permission)}
-            for lab_id, permission in labs
-        ]
+        return [{"id": lab_id, "permissions": convert_permissions(permission)} for lab_id, permission in labs]
     return []
 
 
@@ -338,4 +338,3 @@ def get_command():
         command = "cml"
 
     return command
-
